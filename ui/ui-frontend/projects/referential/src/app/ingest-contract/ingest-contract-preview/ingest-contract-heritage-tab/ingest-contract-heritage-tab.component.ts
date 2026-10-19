@@ -35,11 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, signal, output, input, model, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { disabled, form, FormField, FormRoot } from '@angular/forms/signals';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { diff, IngestContract, SlideToggleComponent } from 'vitamui-library';
+import { diff, IngestContract, requiredValue, SlideToggleComponent } from 'vitamui-library';
 
 import { IngestContractService } from '../../ingest-contract.service';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -48,18 +48,31 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'app-ingest-contract-heritage-tab',
   templateUrl: './ingest-contract-heritage-tab.component.html',
   styleUrls: ['./ingest-contract-heritage-tab.component.scss'],
-  imports: [ReactiveFormsModule, SlideToggleComponent, TranslatePipe],
+  imports: [FormRoot, FormField, SlideToggleComponent, TranslatePipe],
 })
 export class IngestContractHeritageTabComponent implements OnChanges {
-  private readonly formBuilder = inject(FormBuilder);
   private readonly ingestContractService = inject(IngestContractService);
 
   readonly updated = output<boolean>();
 
-  form: FormGroup;
-  submited = signal(false);
-
   readonly readOnly = input<boolean>(undefined);
+
+  readonly form = form(
+    signal({ computeInheritedRulesAtIngest: false }),
+    (path) => {
+      requiredValue(path.computeInheritedRulesAtIngest);
+      disabled(path, () => !!this.readOnly());
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
+  submited = signal(false);
 
   previousValue = (): any => {
     return { computeInheritedRulesAtIngest: this.ingestContract().computeInheritedRulesAtIngest };
@@ -67,29 +80,14 @@ export class IngestContractHeritageTabComponent implements OnChanges {
 
   readonly ingestContract = model<IngestContract>(undefined);
 
-  constructor() {
-    this.form = this.formBuilder.group({
-      computeInheritedRulesAtIngest: [false, Validators.required],
-    });
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['readOnly']) {
-      const readOnly = this.readOnly();
-      if (readOnly && this.form.enabled) {
-        this.form.disable({ emitEvent: false });
-      } else if (this.form.disabled) {
-        this.form.enable({ emitEvent: false });
-        this.form.get('identifier').disable({ emitEvent: false });
-      }
-    }
     if (changes['ingestContract']) {
       this.setIngestContract(this.ingestContract());
     }
   }
 
   unchanged(): boolean {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
+    const unchanged = JSON.stringify(diff(this.form().value(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
   }
@@ -110,7 +108,7 @@ export class IngestContractHeritageTabComponent implements OnChanges {
   }
 
   prepareSubmit(): Observable<IngestContract> {
-    return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
+    return of(diff(this.form().value(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.ingestContract().id, identifier: this.ingestContract().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) =>
@@ -126,9 +124,9 @@ export class IngestContractHeritageTabComponent implements OnChanges {
   }
 
   resetForm(ingestContract: IngestContract) {
-    if (this.form === undefined || ingestContract === undefined) {
+    if (ingestContract === undefined) {
       return;
     }
-    this.form.reset({ computeInheritedRulesAtIngest: ingestContract.computeInheritedRulesAtIngest }, { emitEvent: false });
+    this.form().reset({ computeInheritedRulesAtIngest: ingestContract.computeInheritedRulesAtIngest ?? null });
   }
 }

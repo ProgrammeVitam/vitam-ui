@@ -36,7 +36,6 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -52,7 +51,7 @@ import {
   WINDOW_LOCATION,
 } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
-import { ManagementContractToFormGroupConverterService } from '../components/management-contract-to-form-group-converter.service';
+import { ManagementContractToFormModelConverterService } from '../components/management-contract-to-form-model-converter.service';
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractCreateComponent } from './management-contract-create.component';
 
@@ -61,7 +60,7 @@ describe('ManagementContractCreateComponent', () => {
     vi.useRealTimers();
   });
 
-  let managementContractToFormGroupConverterService: ManagementContractToFormGroupConverterService;
+  let managementContractToFormModelConverterService: ManagementContractToFormModelConverterService;
   let component: ManagementContractCreateComponent;
   let fixture: ComponentFixture<ManagementContractCreateComponent>;
 
@@ -100,7 +99,6 @@ describe('ManagementContractCreateComponent', () => {
         LoggerModule.forRoot(),
         MatSelectModule,
         MatSidenavModule,
-        ReactiveFormsModule,
         VitamUICommonTestModule,
         VitamUILibraryModule,
       ],
@@ -111,16 +109,21 @@ describe('ManagementContractCreateComponent', () => {
         { provide: ManagementContractService, useValue: managementContractServiceMock },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: ConfirmDialogService, useValue: confirmDialogServiceMock },
-        ManagementContractToFormGroupConverterService,
+        ManagementContractToFormModelConverterService,
       ],
     }).compileComponents();
-    managementContractToFormGroupConverterService = TestBed.inject(ManagementContractToFormGroupConverterService);
+    managementContractToFormModelConverterService = TestBed.inject(ManagementContractToFormModelConverterService);
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ManagementContractCreateComponent);
     component = fixture.componentInstance;
   });
+
+  function patchForm(value: any) {
+    component.form().value.update((formValue) => ({ ...formValue, ...value }));
+    TestBed.tick(); // Runs the effects (e.g. starts the async validations)
+  }
 
   describe('when in slave mode', () => {
     beforeEach(() => {
@@ -132,8 +135,8 @@ describe('ManagementContractCreateComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    it('form should have an "identifier" field', () => {
-      expect(component.form.get('identifier')).toBeTruthy();
+    it('form should have a required "identifier" field', () => {
+      expect(component.form.identifier().required()).toBeTruthy();
     });
 
     it('isDisabledButton should be true then false after calling create service', async () => {
@@ -149,8 +152,8 @@ describe('ManagementContractCreateComponent', () => {
           objectStrategy: 'default3',
         },
       };
-      const formGroup = managementContractToFormGroupConverterService.convert(managementContractForm as ManagementContract);
-      component.form.patchValue({ ...managementContractForm, ...formGroup.value });
+      const formModel = managementContractToFormModelConverterService.convert(managementContractForm as ManagementContract);
+      patchForm({ ...managementContractForm, ...formModel });
       component.onSubmit();
       expect(component.isDisabledButton()).toBeTruthy(); // Button disabled while waiting for creation
       await vi.advanceTimersByTimeAsync(500);
@@ -168,7 +171,7 @@ describe('ManagementContractCreateComponent', () => {
         status: 'INACTIVE',
       };
 
-      component.form.patchValue(managementContractForm);
+      patchForm(managementContractForm);
 
       expect(component.firstStepInvalid()).toBeTruthy(); // Form is invalid first while waiting for async validation
       await vi.advanceTimersByTimeAsync(1000); // We "wait" for async validation
@@ -186,7 +189,7 @@ describe('ManagementContractCreateComponent', () => {
         status: 'INACTIVE',
       };
 
-      component.form.patchValue(managementContractForm);
+      patchForm(managementContractForm);
 
       expect(component.firstStepInvalid()).toBeTruthy(); // Form is invalid first while waiting for async validation
       await vi.advanceTimersByTimeAsync(1000); // We "wait" for async validation
@@ -196,7 +199,7 @@ describe('ManagementContractCreateComponent', () => {
     it('second step should be valid only if every field is filled', () => {
       expect(component.secondStepInvalid()).toBeFalsy(); // Step is valid by default as fields have default values that are valid
 
-      component.form.patchValue({
+      patchForm({
         storage: {
           unitStrategy: '',
           objectGroupStrategy: 'default',
@@ -205,7 +208,7 @@ describe('ManagementContractCreateComponent', () => {
       });
       expect(component.secondStepInvalid()).toBeTruthy(); // Step should be invalid if one field is empty
 
-      component.form.patchValue({
+      patchForm({
         storage: {
           unitStrategy: 'default',
           objectGroupStrategy: '',
@@ -214,7 +217,7 @@ describe('ManagementContractCreateComponent', () => {
       });
       expect(component.secondStepInvalid()).toBeTruthy(); // Step should be invalid if one field is empty
 
-      component.form.patchValue({
+      patchForm({
         storage: {
           unitStrategy: 'default',
           objectGroupStrategy: 'default',
@@ -240,8 +243,8 @@ describe('ManagementContractCreateComponent', () => {
           objectStrategy: 'default',
         },
       };
-      const formGroup = managementContractToFormGroupConverterService.convert(managementContractForm as ManagementContract);
-      component.form.patchValue({ ...managementContractForm, ...formGroup.value });
+      const formModel = managementContractToFormModelConverterService.convert(managementContractForm as ManagementContract);
+      patchForm({ ...managementContractForm, ...formModel });
       component.onSubmit();
 
       // Then
@@ -255,8 +258,8 @@ describe('ManagementContractCreateComponent', () => {
       fixture.detectChanges();
     });
 
-    it('form should not have "identifier" field', () => {
-      expect(component.form.get('identifier')).toBeFalsy();
+    it('form should not have a required "identifier" field', () => {
+      expect(component.form.identifier().required()).toBeFalsy();
     });
 
     it('first step should be valid after async validation', async () => {
@@ -270,7 +273,7 @@ describe('ManagementContractCreateComponent', () => {
         status: 'INACTIVE',
       };
 
-      component.form.patchValue(managementContractForm);
+      patchForm(managementContractForm);
 
       expect(component.firstStepInvalid()).toBeTruthy(); // Form is invalid first while waiting for async validation
       await vi.advanceTimersByTimeAsync(1000); // We "wait" for async validation
@@ -288,7 +291,7 @@ describe('ManagementContractCreateComponent', () => {
         status: 'INACTIVE',
       };
 
-      component.form.patchValue(managementContractForm);
+      patchForm(managementContractForm);
 
       expect(component.firstStepInvalid()).toBeTruthy(); // Form is invalid first while waiting for async validation
       await vi.advanceTimersByTimeAsync(1000); // We "wait" for async validation

@@ -34,15 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, HostListener, inject, input, model, output } from '@angular/core';
+import { Component, HostListener, inject, input, model, output, signal } from '@angular/core';
 import { Discussion, DiscussionService } from '../../discussion.service';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { form, FormField } from '@angular/forms/signals';
 import { InputComponent } from '../../../input/input.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-message-new',
-  imports: [ReactiveFormsModule, InputComponent, TranslatePipe],
+  imports: [FormField, InputComponent, TranslatePipe],
   templateUrl: './message-new.component.html',
   styleUrl: './message-new.component.scss',
 })
@@ -53,19 +53,22 @@ export class MessageNewComponent {
   lastReadAt = model<Date>();
   messageAdded = output<void>();
 
-  control = new FormControl();
+  readonly text = signal('');
+  readonly textForm = form(this.text);
+  private readonly submitting = signal(false);
 
   isControlValid() {
-    return !!this.control.value && !this.control.pending;
+    return !!this.text() && !this.submitting();
   }
 
   @HostListener('keydown.control.enter')
   @HostListener('keydown.meta.enter')
   async addMessage() {
     if (!this.isControlValid()) return;
-    this.control.markAsPending();
-    await this.discussionService.addMessage(this.discussion(), this.control.value);
-    this.control.setValue('');
+    this.submitting.set(true);
+    await this.discussionService.addMessage(this.discussion(), this.text());
+    this.text.set('');
+    this.submitting.set(false);
     this.lastReadAt.set(new Date());
     this.messageAdded.emit();
   }

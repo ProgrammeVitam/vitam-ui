@@ -36,7 +36,6 @@
  */
 import { AfterContentChecked, ChangeDetectorRef, Component, inject, input, output } from '@angular/core';
 import type { FilingHoldingSchemeNode } from '../../models/nodes/node.interface';
-import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
@@ -49,7 +48,7 @@ import { TooltipDirective } from '../common-tooltip/tooltip.directive';
   selector: 'vitamui-tree-node',
   templateUrl: './vitamui-tree-node.component.html',
   styleUrls: ['./vitamui-tree-node.component.scss'],
-  imports: [CommonModule, FormsModule, MatButtonModule, MatCheckboxModule, TooltipDirective],
+  imports: [CommonModule, MatButtonModule, MatCheckboxModule, TooltipDirective],
 })
 export class VitamuiTreeNodeComponent implements AfterContentChecked {
   private readonly cdr = inject(ChangeDetectorRef);

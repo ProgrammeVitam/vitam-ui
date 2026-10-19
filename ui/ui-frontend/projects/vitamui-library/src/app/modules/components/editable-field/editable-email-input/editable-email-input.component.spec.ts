@@ -38,7 +38,6 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { DOCUMENT } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 
 import { EditableEmailInputComponent } from './editable-email-input.component';
@@ -49,7 +48,7 @@ describe('EditableEmailInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OverlayModule, ReactiveFormsModule, MatSelectModule, EditableEmailInputComponent],
+      imports: [OverlayModule, MatSelectModule, EditableEmailInputComponent],
       providers: [{ provide: DOCUMENT, useValue: document }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -64,5 +63,25 @@ describe('EditableEmailInputComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should split the written value', () => {
+    component.writeValue('john.doe@example.com');
+
+    expect(component.formEmail().value()).toEqual({ emailFirstPart: 'john.doe', domain: 'example.com' });
+    expect(component.control.dirty).toBe(false);
+  });
+
+  it('should update the control when the first part of the email is typed', async () => {
+    component.writeValue('john.doe@example.com');
+    await fixture.whenStable();
+
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+    input.value = 'jane.doe';
+    input.dispatchEvent(new Event('input'));
+
+    expect(component.formEmail.emailFirstPart().value()).toEqual('jane.doe');
+    expect(component.control.value).toEqual('jane.doe@example.com');
+    expect(component.control.dirty).toBe(true);
   });
 });

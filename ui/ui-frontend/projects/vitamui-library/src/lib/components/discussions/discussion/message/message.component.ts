@@ -35,13 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { DatePipe } from '@angular/common';
-import { Component, computed, HostBinding, HostListener, inject, input, output, signal } from '@angular/core';
+import { Component, HostBinding, HostListener, inject, input, linkedSignal, output, signal } from '@angular/core';
 import { AuthService } from '../../../../../app/modules/auth.service';
 import { VitamUICommonModule } from '../../../../../app/modules/vitamui-common.module';
 import { Discussion, DiscussionService, Message } from '../../discussion.service';
 
 import { InputComponent } from '../../../input/input.component';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { form, FormField } from '@angular/forms/signals';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../dialog/confirm-dialog/confirm-dialog.component';
@@ -51,7 +51,7 @@ import { TooltipDirective } from '../../../../../app/modules/components/common-t
 
 @Component({
   selector: 'vitamui-message',
-  imports: [DatePipe, TooltipDirective, InputComponent, ReactiveFormsModule, TranslatePipe, VitamUICommonModule],
+  imports: [DatePipe, TooltipDirective, InputComponent, FormField, TranslatePipe, VitamUICommonModule],
   templateUrl: './message.component.html',
   styleUrl: './message.component.scss',
 })
@@ -67,10 +67,16 @@ export class MessageComponent {
 
   updateMode = signal(false);
 
-  control = computed(() => new FormControl(this.message().text));
+  // Reset when the message changes
+  readonly text = linkedSignal(() => this.message().text);
+  readonly textForm = form(this.text);
+  private readonly submitting = linkedSignal(() => {
+    this.message();
+    return false;
+  });
 
   isControlValid() {
-    return !!this.control().value && this.control().value !== this.message().text && !this.control().pending;
+    return !!this.text() && this.text() !== this.message().text && !this.submitting();
   }
 
   @HostBinding('class.closed')
@@ -82,8 +88,8 @@ export class MessageComponent {
   @HostListener('keydown.meta.enter')
   async updateMessage() {
     if (!this.isControlValid()) return;
-    this.control().markAsPending();
-    await this.discussionService.updateMessage(this.discussion(), { ...this.message(), text: this.control().value });
+    this.submitting.set(true);
+    await this.discussionService.updateMessage(this.discussion(), { ...this.message(), text: this.text() });
     this.updateMode.set(false);
   }
 

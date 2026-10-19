@@ -36,7 +36,6 @@
  */
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AccessContractAuthorizationsTabComponent } from './access-contract-authorizations-tab.component';
@@ -79,7 +78,7 @@ describe('AccessContractUsageAndServicesTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, VitamUICommonTestModule, MatDialogModule, AccessContractAuthorizationsTabComponent],
+      imports: [VitamUICommonTestModule, MatDialogModule, AccessContractAuthorizationsTabComponent],
       providers: [
         {
           provide: MatDialog,

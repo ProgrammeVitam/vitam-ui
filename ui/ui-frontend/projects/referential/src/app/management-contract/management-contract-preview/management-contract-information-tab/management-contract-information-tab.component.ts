@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, output, model, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, output, model, OnChanges, signal, SimpleChanges } from '@angular/core';
+import { disabled, form, FormField, FormRoot, required } from '@angular/forms/signals';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
@@ -44,31 +44,43 @@ import { ManagementContractService } from '../../management-contract.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';
 
+interface ManagementContractInformationForm {
+  identifier: string;
+  name: string;
+  description: string;
+  status: boolean;
+}
+
 @Component({
   selector: 'app-management-contract-information-tab',
   templateUrl: './management-contract-information-tab.component.html',
   styleUrls: ['./management-contract-information-tab.component.scss'],
-  imports: [ReactiveFormsModule, SlideToggleComponent, InputComponent, MatProgressSpinner, PipesModule, TranslatePipe],
+  imports: [FormRoot, FormField, SlideToggleComponent, InputComponent, MatProgressSpinner, PipesModule, TranslatePipe],
 })
 export class ManagementContractInformationTabComponent implements OnChanges {
-  private readonly formBuilder = inject(FormBuilder);
   private readonly managementContractService = inject(ManagementContractService);
 
   readonly updated = output<boolean>();
 
-  form: FormGroup;
+  readonly form = form(
+    signal<ManagementContractInformationForm>({ identifier: null, name: null, description: '', status: null }),
+    (path) => {
+      required(path.identifier);
+      disabled(path.identifier);
+      required(path.name);
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
   submitting = false;
 
   readonly inputManagementContract = model<ManagementContract>(undefined);
-
-  constructor() {
-    this.form = this.formBuilder.group({
-      identifier: [{ value: null, disabled: true }, Validators.required],
-      name: [null, Validators.required],
-      description: [''],
-      status: [null],
-    });
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['inputManagementContract']) {
@@ -87,14 +99,14 @@ export class ManagementContractInformationTabComponent implements OnChanges {
   };
 
   unchanged(): boolean {
-    const differences = diff(this.form.getRawValue(), this.previousValue());
+    const differences = diff(this.form().value(), this.previousValue());
     const unchanged = JSON.stringify(differences) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
   }
 
   prepareSubmit(): Observable<ManagementContract> {
-    return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
+    return of(diff(this.form().value(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) => {
@@ -147,6 +159,11 @@ export class ManagementContractInformationTabComponent implements OnChanges {
   }
 
   resetForm(managementContract: ManagementContract) {
-    this.form.reset({ ...managementContract, status: managementContract.status === 'ACTIVE' }, { emitEvent: false });
+    this.form().reset({
+      identifier: managementContract.identifier ?? null,
+      name: managementContract.name ?? null,
+      description: managementContract.description ?? null,
+      status: managementContract.status === 'ACTIVE',
+    });
   }
 }

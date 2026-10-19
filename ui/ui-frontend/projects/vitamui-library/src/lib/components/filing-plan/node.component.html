@@ -11,10 +11,10 @@
 
 <mat-checkbox
   id="enable{{ node()?.id }}"
-  [(ngModel)]="node().checked"
+  [checked]="node().checked"
   [(indeterminate)]="node().disabledChild"
   [disabled]="node().disabled"
-  (ngModelChange)="labelClick.emit()"
+  (change)="node().checked = $event.checked; labelClick.emit()"
   >{{ node()?.label }}</mat-checkbox
 >
 <label for="enable{{ node()?.id }}" class="node-label" (click)="labelClick.emit()"></label>

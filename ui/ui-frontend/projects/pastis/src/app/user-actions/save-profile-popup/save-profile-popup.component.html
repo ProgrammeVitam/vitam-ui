@@ -9,7 +9,7 @@
   ]"
 ></vitamui-dialog-header>
 
-<form [formGroup]="noticeForm" (keydown.enter)="$event.preventDefault()">
+<form [formRoot]="noticeForm" (keydown.enter)="$event.preventDefault()">
   <vitamui-stepper #stepper [(selectedIndex)]="stepIndex">
     <cdk-step>
       <mat-dialog-content>
@@ -51,7 +51,7 @@
                 <vitamui-input
                   class="col-9 px-0"
                   [placeholder]="'PROFILE.POP_UP_CREATION_NOTICE.IDENTIFIER' | translate"
-                  formControlName="identifier"
+                  [formField]="noticeForm.identifier"
                   [errorMessageMap]="{
                     identifierExist: 'ERROR_IDENTIFIER.IDENTIFIER_ALREADY_EXISTS' | translate,
                   }"
@@ -63,7 +63,11 @@
 
           <div class="row">
             <div class="col-10 form-control">
-              <vitamui-input class="col-9 px-0" formControlName="name" [placeholder]="'PROFILE.POP_UP_CREATION_NOTICE.NAME' | translate">
+              <vitamui-input
+                class="col-9 px-0"
+                [formField]="noticeForm.name"
+                [placeholder]="'PROFILE.POP_UP_CREATION_NOTICE.NAME' | translate"
+              >
               </vitamui-input>
             </div>
           </div>
@@ -72,7 +76,7 @@
             <div class="col-10 form-control">
               <vitamui-input
                 [textarea]="true"
-                formControlName="description"
+                [formField]="noticeForm.description"
                 [placeholder]="'PROFILE.POP_UP_CREATION_NOTICE.DESCRIPTION' | translate"
                 class="w-100"
               >
@@ -83,7 +87,7 @@
             <div class="row">
               <div class="col-10 form-control">
                 <div class="d-flex justify-content-between align-items-center py-1 px-2 mb-2">
-                  <vitamui-slide-toggle formControlName="additionalProperties">
+                  <vitamui-slide-toggle [formField]="noticeForm.additionalProperties">
                     {{ 'PROFILE.POP_UP_CREATION_NOTICE.ALLOW_METADATA' | translate }}
                   </vitamui-slide-toggle>
                 </div>
@@ -93,7 +97,7 @@
 
           <vitamui-select
             class="d-block"
-            formControlName="status"
+            [formField]="noticeForm.status"
             [placeholder]="'PROFILE.POP_UP_CREATION_NOTICE.SAVE_AS_ACTIVE_OR_INACTIVE' | translate"
             [options]="statusOptions"
             [enableSearch]="false"
@@ -102,7 +106,7 @@
 
         <mat-dialog-actions>
           <div>
-            <button type="submit" [disabled]="!isFormValid()" (click)="validate()" class="btn primary">
+            <button type="submit" [disabled]="!isFormValid()" class="btn primary">
               {{ 'COMMON.SUBMIT' | translate }}
             </button>
             <button (click)="onClose()" class="btn cancel link" type="button">
@@ -115,21 +119,21 @@
     }
     @if (valueSelected() && !gestionNotice()) {
       <cdk-step>
+        @let selectedProfile = profileSelection().value();
         @if (!userValidation()) {
           <mat-dialog-content>
             <vitamui-select
-              [(ngModel)]="selectedProfile"
-              [ngModelOptions]="{ standalone: true }"
+              [formField]="profileSelection"
               [placeholder]="'PROFILE.POP-UP_SELECT_NOTICE.LIST_NOTICE' | translate"
               [options]="profileOptions()"
               [enableSearch]="false"
             ></vitamui-select>
           </mat-dialog-content>
 
-          @if (selectedProfile && selectedProfile.controlSchema && selectedProfile.controlSchema !== '{}') {
+          @if (selectedProfile?.controlSchema && selectedProfile.controlSchema !== '{}') {
             <mat-dialog-actions>
               <div>
-                <button (click)="setUserValidation(true)" class="btn primary" [disabled]="!selectedProfile">
+                <button type="button" (click)="setUserValidation(true)" class="btn primary" [disabled]="!selectedProfile">
                   {{ 'PROFILE.POP-UP_SELECT_NOTICE.NEXT_LABEL' | translate }}
                 </button>
                 <button type="button" class="btn cancel link" (click)="onClose()">
@@ -141,7 +145,7 @@
           } @else {
             <mat-dialog-actions>
               <div>
-                <button (click)="validate()" class="btn primary" [disabled]="!selectedProfile">
+                <button type="button" (click)="validate()" class="btn primary" [disabled]="!selectedProfile">
                   {{ 'COMMON.SUBMIT' | translate }}
                 </button>
                 <button type="button" class="btn cancel link" (click)="onClose()">
@@ -155,7 +159,7 @@
           <mat-dialog-content>{{ 'PROFILE.POP-UP_SELECT_NOTICE.VALIDATION_MESSAGE' | translate }}</mat-dialog-content>
           <mat-dialog-actions>
             <div>
-              <button (click)="validate()" class="btn primary" [disabled]="!selectedProfile">
+              <button type="button" (click)="validate()" class="btn primary" [disabled]="!selectedProfile">
                 {{ 'COMMON.SUBMIT' | translate }}
               </button>
               <button type="button" class="btn cancel link" (click)="onClose()">

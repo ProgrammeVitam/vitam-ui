@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { type AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, effect, inject, Injector, OnDestroy, OnInit, signal, untracked } from '@angular/core';
+import { applyEach, applyWhen, FieldTree, form, FormField, FormRoot, maxLength, minLength, required } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import * as uuid from 'uuid';
@@ -46,13 +46,18 @@ import {
   Option,
   PersistentIdentifierPolicy,
   PersistentIdentifierPolicyTypeEnum,
+  StorageStrategy,
   VitamUICommonModule,
   VitamUILibraryModule,
 } from 'vitamui-library';
-import { FormGroupToManagementContractConverterService } from '../components/form-group-to-management-contract-converter.service';
-import { ManagementContractToFormGroupConverterService } from '../components/management-contract-to-form-group-converter.service';
+import { FormModelToManagementContractConverterService } from '../components/form-model-to-management-contract-converter.service';
+import {
+  ManagementContractToFormModelConverterService,
+  PersistentIdentifierPolicyForm,
+} from '../components/management-contract-to-form-model-converter.service';
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractCreateValidators } from '../validators/management-contract-create.validators';
+import { persistentIdentifierPolicySchema } from '../validators/management-contract-validators';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { CreatePersistentIdentifierPolicyFormComponent } from '../components/create-persistent-identifier-policy-form/create-persistent-identifier-policy-form.component';
@@ -64,12 +69,25 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 
+type ValidatableField = () => { valid: () => boolean };
+
+interface ManagementContractCreateForm {
+  identifier: string;
+  status: boolean;
+  name: string;
+  description: string;
+  storage: StorageStrategy;
+  persistentIdentifierPolicies: PersistentIdentifierPolicyForm[];
+  policyTypeOption: string;
+}
+
 @Component({
   selector: 'app-management-contract-create',
   templateUrl: './management-contract-create.component.html',
   styleUrls: ['./management-contract-create.component.scss'],
   imports: [
-    FormsModule,
+    FormRoot,
+    FormField,
     MatButtonToggleModule,
     MatCheckboxModule,
     MatDialogModule,
@@ -78,7 +96,6 @@ import { MatRadioModule } from '@angular/material/radio';
     MatProgressBarModule,
     MatRadioModule,
     MatSelectModule,
-    ReactiveFormsModule,
     CreatePersistentIdentifierPolicyFormComponent,
     VitamUICommonModule,
     VitamUILibraryModule,
@@ -90,12 +107,12 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   data = inject<{
     isSlaveMode: boolean;
   }>(MAT_DIALOG_DATA);
-  private readonly formBuilder = inject(FormBuilder);
+  private readonly injector = inject(Injector);
   private readonly confirmDialogService = inject(ConfirmDialogService);
   private readonly managementContractService = inject(ManagementContractService);
   private readonly managementContractCreateValidators = inject(ManagementContractCreateValidators);
-  private readonly managementContractToFormGroupConverterService = inject(ManagementContractToFormGroupConverterService);
-  private readonly formGroupToManagementContractConverterService = inject(FormGroupToManagementContractConverterService);
+  private readonly managementContractToFormModelConverterService = inject(ManagementContractToFormModelConverterService);
+  private readonly formModelToManagementContractConverterService = inject(FormModelToManagementContractConverterService);
   private readonly logger = inject(Logger);
   private readonly translateService = inject(TranslateService);
 
@@ -105,7 +122,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
     this.isSlaveMode = data.isSlaveMode;
   }
 
-  form: FormGroup;
+  form: FieldTree<ManagementContractCreateForm>;
 
   isDisabledButton = signal(false);
   isSlaveMode: boolean;
@@ -124,56 +141,81 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   ];
 
   ngOnInit() {
-    this.form = this.formBuilder.group({
-      // Step 1
-      ...(this.isSlaveMode
-        ? {
-            identifier: [
-              null,
-              [Validators.required, Validators.minLength(5), Validators.maxLength(100)],
-              this.managementContractCreateValidators.uniqueIdentifier(),
-            ],
-          }
-        : {}),
-      status: [true],
-      name: [
-        null,
-        [Validators.required, Validators.minLength(3), Validators.maxLength(100)],
-        this.managementContractCreateValidators.uniqueName(),
-      ],
-      description: [null],
-      // Step 2
-      storage: this.formBuilder.group({
-        unitStrategy: ['default', Validators.required],
-        objectGroupStrategy: ['default', Validators.required],
-        objectStrategy: ['default', Validators.required],
+    // Built in ngOnInit as the identifier field depends on isSlaveMode
+    this.form = form(
+      signal<ManagementContractCreateForm>({
+        // Step 1
+        identifier: '',
+        status: true,
+        name: '',
+        description: null,
+        // Step 2
+        storage: {
+          unitStrategy: 'default',
+          objectGroupStrategy: 'default',
+          objectStrategy: 'default',
+        },
+        // Step 3
+        persistentIdentifierPolicies: this.managementContractToFormModelConverterService.getDefaultPersistentIdentifierPolicies(),
+        policyTypeOption: '', // For option behavior
       }),
-      // Step 3
-      persistentIdentifierPolicies: this.getDefaultPersistentIdentifierPolicies(),
-      policyTypeOption: '', // For option behavior
-    });
+      (path) => {
+        // The identifier is only filled in slave mode
+        applyWhen(
+          path,
+          () => this.isSlaveMode,
+          (contractPath) => {
+            required(contractPath.identifier);
+            minLength(contractPath.identifier, 5);
+            maxLength(contractPath.identifier, 100);
+            this.managementContractCreateValidators.uniqueIdentifier(contractPath.identifier);
+          },
+        );
+        required(path.name);
+        minLength(path.name, 3);
+        maxLength(path.name, 100);
+        this.managementContractCreateValidators.uniqueName(path.name);
+        required(path.storage.unitStrategy);
+        required(path.storage.objectGroupStrategy);
+        required(path.storage.objectStrategy);
+        applyEach(path.persistentIdentifierPolicies, persistentIdentifierPolicySchema);
+      },
+      {
+        injector: this.injector,
+        submission: {
+          action: async () => {
+            this.onSubmit();
+          },
+          ignoreValidators: 'all',
+        },
+      },
+    );
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
-    this.form.get('policyTypeOption').valueChanges.subscribe((value) => {
-      let persistentIdentifierPolicies: FormArray = this.formBuilder.array([]);
 
-      if (value === PersistentIdentifierPolicyTypeEnum.ARK) {
-        persistentIdentifierPolicies = this.getDefaultPersistentIdentifierPolicies();
-        persistentIdentifierPolicies.patchValue([{ policyTypeOption: this.policyTypeOptions[1].key }]);
-      }
-      this.form.removeControl('persistentIdentifierPolicies');
-      this.form.setControl('persistentIdentifierPolicies', persistentIdentifierPolicies);
-    });
+    let previousPolicyTypeOption = this.form.policyTypeOption().value();
+    effect(
+      () => {
+        const policyTypeOption = this.form.policyTypeOption().value();
+        untracked(() => {
+          if (policyTypeOption !== previousPolicyTypeOption) {
+            previousPolicyTypeOption = policyTypeOption;
+            this.onPolicyTypeOptionChange(policyTypeOption);
+          }
+        });
+      },
+      { injector: this.injector },
+    );
   }
 
-  getDefaultPersistentIdentifierPolicies(): FormArray {
-    return this.managementContractToFormGroupConverterService
-      .getDefaultManagementContractForm()
-      .get('persistentIdentifierPolicies') as FormArray;
-  }
+  private onPolicyTypeOptionChange(policyTypeOption: string) {
+    let persistentIdentifierPolicies: PersistentIdentifierPolicyForm[] = [];
 
-  getPersistentIdentifierPolicies(): FormArray {
-    return this.form.get('persistentIdentifierPolicies') as FormArray;
+    if (policyTypeOption === PersistentIdentifierPolicyTypeEnum.ARK) {
+      const [defaultPolicy, ...otherPolicies] = this.managementContractToFormModelConverterService.getDefaultPersistentIdentifierPolicies();
+      persistentIdentifierPolicies = [{ ...defaultPolicy, policyTypeOption: this.policyTypeOptions[1].key }, ...otherPolicies];
+    }
+    this.form.persistentIdentifierPolicies().value.set(persistentIdentifierPolicies);
   }
 
   ngOnDestroy() {
@@ -182,7 +224,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    if (this.form.dirty) {
+    if (this.form().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -205,27 +247,25 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
     );
   }
 
-  isInvalid(fieldNames: string[], abstractControl: AbstractControl): boolean {
-    const fieldIsInvalid = (fieldName: string) => !abstractControl.get(fieldName).valid;
-
-    return fieldNames.some(fieldIsInvalid);
+  private isInvalid(fields: ValidatableField[]): boolean {
+    return fields.some((field) => !field().valid());
   }
 
   firstStepInvalid(): boolean {
-    const baseFieldNames = ['name', 'description', 'status'];
-    const fieldNames = this.isSlaveMode ? [...baseFieldNames, 'identifier'] : baseFieldNames;
+    const baseFields: ValidatableField[] = [this.form.name, this.form.description, this.form.status];
+    const fields = this.isSlaveMode ? [...baseFields, this.form.identifier] : baseFields;
 
-    return this.isInvalid(fieldNames, this.form);
+    return this.isInvalid(fields);
   }
 
   secondStepInvalid(): boolean {
-    const fieldNames = ['unitStrategy', 'objectGroupStrategy', 'objectStrategy'];
+    const storage = this.form.storage;
 
-    return this.isInvalid(fieldNames, this.form.controls['storage']);
+    return this.isInvalid([storage.unitStrategy, storage.objectGroupStrategy, storage.objectStrategy]);
   }
 
   hasValidPersistentIdentifierPolicies(): boolean {
-    const managementContract: ManagementContract = this.formGroupToManagementContractConverterService.convert(this.form);
+    const managementContract: ManagementContract = this.formModelToManagementContractConverterService.convert(this.form().value());
     const consistentPersistentIdentifierPolicies = managementContract.persistentIdentifierPolicyList.filter(
       (persistentIdentifierPolicy: PersistentIdentifierPolicy) =>
         Object.values(PersistentIdentifierPolicyTypeEnum).includes(persistentIdentifierPolicy.persistentIdentifierPolicyType),
@@ -235,11 +275,11 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
       return true;
     }
 
-    return this.form.valid;
+    return this.form().valid();
   }
 
   private generateManagementContract(): ManagementContract {
-    const managementContract: ManagementContract = this.formGroupToManagementContractConverterService.convert(this.form);
+    const managementContract: ManagementContract = this.formModelToManagementContractConverterService.convert(this.form().value());
     const consistentPersistentIdentifierPolicies = managementContract.persistentIdentifierPolicyList.filter(
       (persistentIdentifierPolicy: PersistentIdentifierPolicy) =>
         Object.values(PersistentIdentifierPolicyTypeEnum).includes(persistentIdentifierPolicy.persistentIdentifierPolicyType),
@@ -268,17 +308,5 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
     }
 
     return managementContract;
-  }
-
-  get identifier(): AbstractControl | null {
-    return this.form.get('identifier');
-  }
-
-  get name(): AbstractControl | null {
-    return this.form.get('name');
-  }
-
-  get description(): AbstractControl | null {
-    return this.form.get('description');
   }
 }

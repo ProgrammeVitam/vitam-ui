@@ -37,7 +37,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpHeaders } from '@angular/common/http';
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { disabled, form, FormField, FormRoot, required } from '@angular/forms/signals';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -62,6 +62,13 @@ import { AuditService } from '../audit.service';
 
 const CURRENT_VERSION_KEY = 'CURRENT';
 
+interface AuditChainForm {
+  chainType: AuditChainType;
+  wholeChain: boolean;
+  startDate: string;
+  endDate: string;
+}
+
 @Component({
   selector: 'app-audit-chain-create',
   templateUrl: './audit-chain-create.component.html',
@@ -73,7 +80,8 @@ const CURRENT_VERSION_KEY = 'CURRENT';
     MatInputModule,
     MatProgressBarModule,
     MatSelectModule,
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     SelectComponent,
     TranslatePipe,
     VitamUICommonModule,
@@ -82,14 +90,29 @@ const CURRENT_VERSION_KEY = 'CURRENT';
 })
 export class AuditChainCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<AuditChainCreateComponent>>(MatDialogRef);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly confirmDialogService = inject(ConfirmDialogService);
   private readonly auditService = inject(AuditService);
   private readonly externalParameterService = inject(ExternalParametersService);
   private readonly snackBarService = inject(SnackBarService);
 
-  public form: FormGroup;
-  public versionControl = new FormControl({ value: CURRENT_VERSION_KEY, disabled: true });
+  public readonly form = form(
+    signal<AuditChainForm>({ chainType: null, wholeChain: false, startDate: null, endDate: null }),
+    (path) => {
+      required(path.chainType);
+      // Only disables the inputs: the dates are still sent in the request, like before
+      disabled(path.startDate, ({ valueOf }) => valueOf(path.wholeChain));
+      disabled(path.endDate, ({ valueOf }) => valueOf(path.wholeChain));
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
+  public readonly versionField = form(signal(CURRENT_VERSION_KEY), (path) => disabled(path));
   public isDisabledButton = signal(false);
   public accessContractId: string = null;
 
@@ -110,13 +133,6 @@ export class AuditChainCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.form = this.formBuilder.group({
-      chainType: [null, Validators.required],
-      wholeChain: [false],
-      startDate: [null],
-      endDate: [null],
-    });
-
     this.confirmDialogService
       .listenToEscapeKeyPress(this.dialogRef)
       .pipe(takeUntil(this.destroyer$))
@@ -141,20 +157,20 @@ export class AuditChainCreateComponent implements OnInit, OnDestroy {
   }
 
   public showVersionParagraph(): boolean {
-    return !!this.form?.get('chainType')?.value;
+    return !!this.form.chainType().value();
   }
 
   public isStepOneValid(): boolean {
-    return !this.form.get('chainType').invalid;
+    return !this.form.chainType().invalid();
   }
 
   public canSubmit(): boolean {
-    const value = this.form.value;
+    const value = this.form().value();
     return !!this.accessContractId && (value.wholeChain === true || !!value.startDate || !!value.endDate);
   }
 
   onCancel() {
-    if (this.form.dirty) {
+    if (this.form().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -162,16 +178,17 @@ export class AuditChainCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.invalid || !this.canSubmit()) {
+    if (this.form().invalid() || !this.canSubmit()) {
       return;
     }
     this.isDisabledButton.set(true);
 
+    const value = this.form().value();
     const request: TraceabilityChainAuditRequest = {
-      chainType: this.form.value.chainType,
-      wholeChain: this.form.value.wholeChain,
-      startDate: this.form.value.startDate,
-      endDate: this.form.value.endDate,
+      chainType: value.chainType,
+      wholeChain: value.wholeChain,
+      startDate: value.startDate,
+      endDate: value.endDate,
     };
 
     const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, this.accessContractId);

@@ -34,27 +34,31 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, Injector, signal, untracked } from '@angular/core';
 import { DatepickerComponent, PickerType, SelectComponent } from 'vitamui-library';
-import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { disabled, FieldTree, form, FormField, required } from '@angular/forms/signals';
 import { DatePipe, TitleCasePipe } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
-type Row = { default: FormControl; active: FormControl; disabled: FormControl; error: FormControl };
+type DateFormat = 'dd/MM/yyyy' | 'dd-MM-yyyy' | 'yyyy/MM/dd' | 'yyyy-MM-dd';
+// String or Date, depending on the outputType of the datepicker
+type DateValue = string | Date | null;
+type Row = { default: FieldTree<DateValue>; active: FieldTree<DateValue>; disabled: FieldTree<DateValue>; error: FieldTree<DateValue> };
 
 @Component({
   selector: 'design-system-datepicker',
-  imports: [ReactiveFormsModule, DatepickerComponent, MatFormFieldModule, TitleCasePipe, FormsModule, SelectComponent],
+  imports: [FormField, DatepickerComponent, MatFormFieldModule, TitleCasePipe, SelectComponent],
   templateUrl: './design-system-datepicker.component.html',
   styleUrl: './design-system-datepicker.component.scss',
 })
 export class DesignSystemDatepickerComponent {
   private readonly datePipe = inject(DatePipe);
+  private readonly injector = inject(Injector);
 
-  startDate = new FormControl();
-  endDate = new FormControl();
+  // Date output, so that each value can be used as the min/max of the other datepicker
+  readonly minMaxForm = form(signal<{ startDate: Date | null; endDate: Date | null }>({ startDate: null, endDate: null }));
 
-  formats = {
+  formats: Record<DateFormat, Map<PickerType, string>> = {
     'dd/MM/yyyy': new Map<PickerType, string>([
       ['day', 'dd/MM/yyyy'],
       ['month', 'MM/yyyy'],
@@ -77,28 +81,34 @@ export class DesignSystemDatepickerComponent {
     ]),
   };
   availableFormats = Object.keys(this.formats);
-  selectedFormat: keyof typeof this.formats = 'dd/MM/yyyy';
+  readonly formatForm = form(signal<{ selectedFormat: DateFormat }>({ selectedFormat: 'dd/MM/yyyy' }));
 
-  configs: {
-    outputType: 'String' | 'Date';
-    description: string;
-    items: {
-      pickerType: PickerType;
-      rows: {
-        empty: Row;
-        full: Row;
-      };
-    }[];
-  }[];
+  readonly configs = signal<
+    {
+      outputType: 'String' | 'Date';
+      description: string;
+      items: {
+        pickerType: PickerType;
+        rows: {
+          empty: Row;
+          full: Row;
+        };
+      }[];
+    }[]
+  >([]);
 
   columns: (keyof Row)[] = ['default', 'active', 'disabled', 'error'];
 
   constructor() {
-    this.generateConfig();
+    // Regenerates the datepickers when the selected format changes
+    effect(() => {
+      this.formatForm.selectedFormat().value();
+      untracked(() => this.generateConfig());
+    });
   }
 
-  generateConfig() {
-    this.configs = [
+  private generateConfig() {
+    this.configs.set([
       {
         outputType: 'String',
         description: 'Those datepickers output a String representing the chosen date.',
@@ -109,12 +119,15 @@ export class DesignSystemDatepickerComponent {
         description: 'Those datepickers output a Date representing the chosen date.',
         items: this.getItems(),
       },
-    ];
+    ]);
   }
 
   private getDate(y: number, m?: number, d?: number): string {
     return m
-      ? this.datePipe.transform(d ? new Date(y, m - 1, d) : new Date(y, m - 1), this.formats[this.selectedFormat].get(d ? 'day' : 'month'))
+      ? this.datePipe.transform(
+          d ? new Date(y, m - 1, d) : new Date(y, m - 1),
+          this.formats[this.formatForm.selectedFormat().value()].get(d ? 'day' : 'month'),
+        )
       : String(y);
   }
 
@@ -125,31 +138,38 @@ export class DesignSystemDatepickerComponent {
         pickerType: pickerType,
         rows: {
           empty: {
-            default: this.createControl({ value: '', error: false, disabled: false, pickerType }),
-            active: this.createControl({ value: '', error: false, disabled: false, pickerType }),
-            disabled: this.createControl({ value: '', error: false, disabled: true, pickerType }),
-            error: this.createControl({ value: '', error: true, disabled: false, pickerType }),
+            default: this.createField({ value: '', error: false, disabled: false, pickerType }),
+            active: this.createField({ value: '', error: false, disabled: false, pickerType }),
+            disabled: this.createField({ value: '', error: false, disabled: true, pickerType }),
+            error: this.createField({ value: '', error: true, disabled: false, pickerType }),
           },
           full: {
-            default: this.createControl({ value, error: false, disabled: false, pickerType }),
-            active: this.createControl({ value, error: false, disabled: false, pickerType }),
-            disabled: this.createControl({ value, error: false, disabled: true, pickerType }),
-            error: this.createControl({ value, error: true, disabled: false, pickerType }),
+            default: this.createField({ value, error: false, disabled: false, pickerType }),
+            active: this.createField({ value, error: false, disabled: false, pickerType }),
+            disabled: this.createField({ value, error: false, disabled: true, pickerType }),
+            error: this.createField({ value, error: true, disabled: false, pickerType }),
           },
         },
       };
     });
   }
 
-  private createControl(
-    { value, error, disabled, pickerType } = { value: '', error: false, disabled: false, pickerType: 'day' },
-  ): FormControl {
-    const validators = [Validators.required];
+  private createField(
+    { value, error, disabled: isDisabled, pickerType } = { value: '', error: false, disabled: false, pickerType: 'day' },
+  ): FieldTree<DateValue> {
     const valueOrError = error && value ? (pickerType === 'year' ? '1' : pickerType === 'month' ? '2018-13' : '2024-02-30') : value;
-    const fc = new FormControl(valueOrError, validators);
-    if (error) fc.markAsTouched();
-    if (disabled) fc.disable();
-    return fc;
+    const field = form(
+      signal<DateValue>(valueOrError),
+      (path) => {
+        required(path);
+        if (isDisabled) {
+          disabled(path);
+        }
+      },
+      { injector: this.injector },
+    );
+    if (error) field().markAsTouched();
+    return field;
   }
 
   protected readonly Object = Object;

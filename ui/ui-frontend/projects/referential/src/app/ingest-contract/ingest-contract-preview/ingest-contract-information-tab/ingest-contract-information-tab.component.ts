@@ -35,12 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Component, inject, OnInit, input, output, model, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { Component, inject, OnInit, input, output, model, OnChanges, SimpleChanges, linkedSignal, signal } from '@angular/core';
+import { disabled, form, FormField, FormRoot, required } from '@angular/forms/signals';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
 import {
+  DateTimePipe,
   diff,
   IngestContract,
   InputComponent,
@@ -57,30 +59,81 @@ import { IngestContractCreateValidators } from '../../ingest-contract-create/ing
 import { IngestContractService } from '../../ingest-contract.service';
 import { TranslatePipe } from '@ngx-translate/core';
 
+interface IngestContractInformationForm {
+  identifier: string;
+  status: string;
+  name: string;
+  description: string;
+  archiveProfiles: string[];
+  managementContractId: string;
+}
+
+const FORM_KEYS: (keyof IngestContractInformationForm)[] = [
+  'identifier',
+  'status',
+  'name',
+  'description',
+  'archiveProfiles',
+  'managementContractId',
+];
+
 @Component({
   selector: 'app-ingest-contract-information-tab',
   templateUrl: './ingest-contract-information-tab.component.html',
   styleUrls: ['./ingest-contract-information-tab.component.scss'],
-  imports: [ReactiveFormsModule, SlideToggleComponent, InputComponent, SelectComponent, FormsModule, PipesModule, TranslatePipe],
+  imports: [FormRoot, FormField, SlideToggleComponent, InputComponent, SelectComponent, PipesModule, TranslatePipe],
+  providers: [DatePipe, DateTimePipe],
 })
 export class IngestContractInformationTabComponent implements OnChanges, OnInit {
-  private readonly formBuilder = inject(FormBuilder);
   private readonly ingestContractService = inject(IngestContractService);
   private readonly managementContractService = inject(ManagementContractApiService);
   private readonly archiveProfileService = inject(ArchiveProfileApiService);
   private readonly ingestContractCreateValidators = inject(IngestContractCreateValidators);
+  private readonly dateTimePipe = inject(DateTimePipe);
 
   readonly updated = output<boolean>();
   readonly updatedIngestContract = output<IngestContract>();
   readonly isFormValid = output<boolean>();
   readonly tenantIdentifier = input<number>(undefined);
 
-  form: FormGroup;
+  readonly ingestContract = model<IngestContract>(undefined);
+
+  readonly readOnly = input<boolean>(undefined);
+
+  readonly form = form(
+    signal<IngestContractInformationForm>(this.toFormValue({} as IngestContract)),
+    (path) => {
+      required(path.identifier);
+      required(path.name);
+      this.ingestContractCreateValidators.uniqueNameWhileEdit(path.name, () => this.ingestContract());
+      required(path.description);
+      disabled(path, () => !!this.readOnly());
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
+
+  // Read-only dates, displayed in disabled inputs
+  protected readonly datesForm = form(
+    linkedSignal(() => {
+      const ingestContract = this.ingestContract();
+      return {
+        creationDate: this.formatDate(ingestContract?.creationDate),
+        lastUpdate: this.formatDate(ingestContract?.lastUpdate),
+        activationDate: this.formatDate(ingestContract?.status === 'ACTIVE' ? ingestContract?.activationDate : null),
+        deactivationDate: this.formatDate(ingestContract?.deactivationDate),
+      };
+    }),
+    (path) => disabled(path),
+  );
 
   submitted = false;
-
-  ruleFilter = new FormControl();
-  statusControl = new FormControl();
 
   managementContracts: Option[];
   archiveProfiles: Option[];
@@ -96,46 +149,21 @@ export class IngestContractInformationTabComponent implements OnChanges, OnInit 
     };
   };
 
-  readonly ingestContract = model<IngestContract>(undefined);
-
-  readonly readOnly = input<boolean>(undefined);
-
-  constructor() {
-    this.form = this.formBuilder.group({
-      identifier: [null, Validators.required],
-      status: ['ACTIVE'],
-      name: [null, Validators.required, this.ingestContractCreateValidators.uniqueNameWhileEdit(this.previousValue)],
-      description: [null, Validators.required],
-      archiveProfiles: [new Array<string>() /* Validators.required */],
-      managementContractId: [null],
-    });
-
-    this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls['status'].setValue(value === false ? 'INACTIVE' : 'ACTIVE');
-    });
-
-    this.ruleFilter.valueChanges.subscribe((val) => {
-      if (val === true) {
-        this.form.controls['ruleCategoryToFilter'].setValue(new Array<string>());
-      }
-    });
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['ingestContract']) {
       this.setIngestContract(this.ingestContract());
     }
-    if (changes['readOnly']) {
-      const readOnly = this.readOnly();
-      if (readOnly && this.form.enabled) {
-        this.form.disable({ emitEvent: false });
-        this.statusControl.disable({ emitEvent: false });
-      } else if (this.form.disabled) {
-        this.form.enable({ emitEvent: false });
-        this.statusControl.enable({ emitEvent: false });
-        this.form.get('identifier').disable({ emitEvent: false });
-      }
-    }
+  }
+
+  private toFormValue(ingestContract: IngestContract): IngestContractInformationForm {
+    return FORM_KEYS.reduce((acc: any, key) => {
+      acc[key] = (ingestContract as any)[key] ?? null;
+      return acc;
+    }, {}) as IngestContractInformationForm;
+  }
+
+  private formatDate(date: string): string {
+    return date ? this.dateTimePipe.transform(date, 'dd/MM/yyyy') : '-';
   }
 
   ngOnInit(): void {
@@ -159,8 +187,8 @@ export class IngestContractInformationTabComponent implements OnChanges, OnInit 
 
   unchanged(): boolean {
     const currentFormValue = {
-      ...this.form.getRawValue(),
-      managementContractId: this.form.get('managementContractId').value || '',
+      ...this.form().value(),
+      managementContractId: this.form.managementContractId().value() || '',
     };
     const unchanged = JSON.stringify(diff(currentFormValue, this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
@@ -168,21 +196,15 @@ export class IngestContractInformationTabComponent implements OnChanges, OnInit 
   }
 
   isInvalid(): boolean {
-    const isInvalid =
-      this.form.get('name').invalid ||
-      this.form.get('name').pending ||
-      this.form.get('description').invalid ||
-      this.form.get('description').pending ||
-      this.form.get('status').invalid ||
-      this.form.get('status').pending ||
-      this.form.get('archiveProfiles').invalid ||
-      this.form.get('archiveProfiles').pending;
+    const isInvalid = [this.form.name, this.form.description, this.form.status, this.form.archiveProfiles].some(
+      (field) => field().invalid() || field().pending(),
+    );
     this.isFormValid.emit(!isInvalid);
     return isInvalid;
   }
 
   prepareSubmit(): Observable<IngestContract> {
-    return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
+    return of(diff(this.form().value(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.ingestContract().id, identifier: this.ingestContract().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) => {
@@ -241,7 +263,10 @@ export class IngestContractInformationTabComponent implements OnChanges, OnInit 
   }
 
   resetForm(ingestContract: IngestContract) {
-    this.statusControl.setValue(ingestContract.status === 'ACTIVE');
-    this.form.reset(ingestContract, { emitEvent: false });
+    this.form().reset(this.toFormValue(ingestContract));
+  }
+
+  onStatusChange(active: boolean) {
+    this.form.status().value.set(active ? 'ACTIVE' : 'INACTIVE');
   }
 }

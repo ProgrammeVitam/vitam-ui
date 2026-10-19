@@ -37,7 +37,6 @@
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -78,7 +77,7 @@ class Page {
   }
 
   control(name: string) {
-    return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
+    return fixture.nativeElement.querySelector('[data-field=' + name + ']');
   }
 }
 
@@ -94,10 +93,7 @@ describe('RuleCreateComponent', () => {
       existsProperties: vi.fn().mockName('RuleService.existsProperties').mockReturnValue(of(false)),
     };
     const ruleCreateValidatorsSpy = {
-      uniqueRuleId: vi
-        .fn()
-        .mockName('RuleCreateValidators.uniqueRuleId')
-        .mockReturnValue(() => of(null)),
+      uniqueRuleId: vi.fn().mockName('RuleCreateValidators.uniqueRuleId'),
       ruleIdPattern: vi.fn().mockName('RuleCreateValidators.ruleIdPattern').mockReturnValue(ManagementRuleValidators.ruleIdPattern),
     };
 
@@ -109,7 +105,6 @@ describe('RuleCreateComponent', () => {
         MatProgressBarModule,
         MatProgressSpinnerModule,
         MatSelectModule,
-        ReactiveFormsModule,
         VitamUICommonTestModule,
         VitamUILibraryModule,
         RuleCreateComponent,
@@ -126,14 +121,14 @@ describe('RuleCreateComponent', () => {
       .overrideComponent(RuleCreateComponent, {
         set: {
           template: `
-            <form [formGroup]="form">
-              <input formControlName="ruleId" />
-              <input formControlName="ruleType" />
-              <input formControlName="ruleValue" />
-              <input formControlName="ruleDescription" />
-              <input formControlName="ruleDuration" />
-              <input formControlName="ruleMeasurement" />
-              <button type="submit" [disabled]="form.invalid"></button>
+            <form [formRoot]="form">
+              <input data-field="ruleId" [formField]="form.ruleId" />
+              <input data-field="ruleType" [formField]="form.ruleType" />
+              <input data-field="ruleValue" [formField]="form.ruleValue" />
+              <input data-field="ruleDescription" [formField]="form.ruleDescription" />
+              <input data-field="ruleDuration" [formField]="form.ruleDuration" />
+              <input data-field="ruleMeasurement" [formField]="form.ruleMeasurement" />
+              <button type="submit" [disabled]="form().invalid()"></button>
             </form>
           `,
         },
@@ -165,7 +160,7 @@ describe('RuleCreateComponent', () => {
     it('should have a submit button', () => {
       expect(page.submit).toBeTruthy();
       expect(page.submit.attributes.disabled).toBeTruthy();
-      component.form.setValue(expectedRule);
+      component.form().value.set(expectedRule);
       fixture.detectChanges();
       expect(page.submit.attributes.disabled).toBeFalsy();
     });
@@ -173,17 +168,17 @@ describe('RuleCreateComponent', () => {
 
   describe('Form', () => {
     it('should not be valid', () => {
-      component.form.setValue(expectedNotGoodRule);
-      expect(component.form.valid).not.toBeTruthy();
+      component.form().value.set(expectedNotGoodRule);
+      expect(component.form().valid()).not.toBeTruthy();
     });
 
     it('should be invalid when empty', () => {
-      expect(component.form.invalid).toBeTruthy();
+      expect(component.form().invalid()).toBeTruthy();
     });
 
     it('should be valid', () => {
-      component.form.setValue(expectedRule);
-      expect(component.form.valid).toBeTruthy();
+      component.form().value.set(expectedRule);
+      expect(component.form().valid()).toBeTruthy();
     });
 
     describe('Validators', () => {
@@ -215,11 +210,14 @@ describe('RuleCreateComponent', () => {
         });
       });
 
-      function setControlValue(name: string | Array<string | number>, value: any) {
-        const control = component.form.get(name);
-        control.setValue(value);
+      function setControlValue(
+        name: 'ruleId' | 'ruleType' | 'ruleValue' | 'ruleDescription' | 'ruleDuration' | 'ruleMeasurement',
+        value: string,
+      ) {
+        const field = component.form[name]();
+        field.value.set(value);
 
-        return control;
+        return { invalid: field.invalid(), valid: field.valid() };
       }
     });
   });
@@ -240,7 +238,7 @@ describe('RuleCreateComponent', () => {
     it('should call create()', () => {
       const ruleService = TestBed.inject(RuleService);
       const matDialogRef = TestBed.inject(MatDialogRef);
-      component.form.setValue(expectedRule);
+      component.form().value.set(expectedRule);
       component.onSubmit();
       expect(ruleService.create).toHaveBeenCalledTimes(1);
       expect(matDialogRef.close).toHaveBeenCalledTimes(1);

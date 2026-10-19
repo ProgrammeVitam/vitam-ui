@@ -35,82 +35,109 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { FormControl } from '@angular/forms';
-import { from, of } from 'rxjs';
+import { Injector, signal } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { form, ValidationError } from '@angular/forms/signals';
+import { of } from 'rxjs';
+import { ContextPermission } from 'vitamui-library';
 import { ContextCreateValidators } from './context-create.validators';
 
 describe('Context Create Validators', () => {
+  let injector: Injector;
+
+  beforeEach(() => {
+    injector = TestBed.inject(Injector);
+  });
+
   afterEach(() => {
     vi.useRealTimers();
   });
 
-  describe('uniqueCode', () => {
-    it('should return null', async () => {
+  function errorKinds(field: () => { errors: () => readonly ValidationError[] }): string[] {
+    return field()
+      .errors()
+      .map((error) => error.kind);
+  }
+
+  describe('uniqueName', () => {
+    let contextServiceSpy: { existsProperties: ReturnType<typeof vi.fn> };
+
+    function createNameForm(name: string, nameToIgnore?: string) {
+      const contextCreateValidators = new ContextCreateValidators(contextServiceSpy as any);
+      return form(
+        signal({ name }),
+        (path) => contextCreateValidators.uniqueName(path.name, nameToIgnore === undefined ? undefined : () => nameToIgnore),
+        { injector },
+      );
+    }
+
+    beforeEach(() => {
       vi.useFakeTimers();
-      const contextServiceSpy = {
+      contextServiceSpy = {
         existsProperties: vi.fn().mockName('ContextService.existsProperties'),
       };
-      contextServiceSpy.existsProperties.mockReturnValue(of(false));
-      const contextCreateValidators = new ContextCreateValidators(contextServiceSpy as any);
-
-      from(contextCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toBeNull();
-      });
-
-      await vi.advanceTimersByTimeAsync(400);
-      expect(contextServiceSpy.existsProperties).toHaveBeenCalled();
-      expect(contextServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
     });
 
-    it('should return { nameExists: true }', async () => {
-      vi.useFakeTimers();
-      const contextServiceSpy = {
-        existsProperties: vi.fn().mockName('ContextService.existsProperties'),
-      };
-      contextServiceSpy.existsProperties.mockReturnValue(of(true));
-      const contextCreateValidators = new ContextCreateValidators(contextServiceSpy as any);
-      from(contextCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toBeDefined();
-        expect(result).not.toBeNull();
-        expect(result).toEqual({ nameExists: true });
-      });
+    it('should return no error', async () => {
+      contextServiceSpy.existsProperties.mockReturnValue(of(false));
+      const nameForm = createNameForm('123456');
 
+      TestBed.tick();
       await vi.advanceTimersByTimeAsync(400);
-      expect(contextServiceSpy.existsProperties).toHaveBeenCalled();
       expect(contextServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
+      expect(errorKinds(nameForm.name)).toEqual([]);
+    });
+
+    it('should return a nameExists error', async () => {
+      contextServiceSpy.existsProperties.mockReturnValue(of(true));
+      const nameForm = createNameForm('123456');
+
+      TestBed.tick();
+      await vi.advanceTimersByTimeAsync(400);
+      expect(contextServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
+      expect(errorKinds(nameForm.name)).toEqual(['nameExists']);
     });
 
     it('should not call the service', async () => {
-      vi.useFakeTimers();
-      const contextServiceSpy = {
-        existsProperties: vi.fn().mockName('ContextService.existsProperties'),
-      };
       contextServiceSpy.existsProperties.mockReturnValue(of(true));
-      const contextCreateValidators = new ContextCreateValidators(contextServiceSpy as any);
-      from(contextCreateValidators.uniqueName('123456')(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toEqual(null);
-      });
+      const nameForm = createNameForm('123456', '123456');
 
+      TestBed.tick();
       await vi.advanceTimersByTimeAsync(400);
       expect(contextServiceSpy.existsProperties).not.toHaveBeenCalled();
+      expect(errorKinds(nameForm.name)).toEqual([]);
     });
 
     it('should call the service', async () => {
-      vi.useFakeTimers();
-      const contextServiceSpy = {
-        existsProperties: vi.fn().mockName('ContextService.existsProperties'),
-      };
       contextServiceSpy.existsProperties.mockReturnValue(of(true));
-      const contextCreateValidators = new ContextCreateValidators(contextServiceSpy as any);
-      from(contextCreateValidators.uniqueName('123456')(new FormControl('111111'))).subscribe((result) => {
-        expect(result).toBeDefined();
-        expect(result).not.toBeNull();
-        expect(result).toEqual({ nameExists: true });
-      });
-      await vi.advanceTimersByTimeAsync(400);
+      const nameForm = createNameForm('111111', '123456');
 
-      expect(contextServiceSpy.existsProperties).toHaveBeenCalled();
+      TestBed.tick();
+      await vi.advanceTimersByTimeAsync(400);
       expect(contextServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '111111' });
+      expect(errorKinds(nameForm.name)).toEqual(['nameExists']);
+    });
+  });
+
+  describe('permissionInvalid', () => {
+    function createPermissionsForm(permissions: ContextPermission[], enabled = true) {
+      const contextCreateValidators = new ContextCreateValidators({} as any);
+      return form(signal({ permissions }), (path) => contextCreateValidators.permissionInvalid(path.permissions, () => enabled), {
+        injector,
+      });
+    }
+
+    it('should return a noPermissions error', () => {
+      expect(errorKinds(createPermissionsForm([]).permissions)).toEqual(['noPermissions']);
+    });
+
+    it('should return a permissionsTenant error', () => {
+      expect(errorKinds(createPermissionsForm([new ContextPermission('', [], [])]).permissions)).toEqual(['permissionsTenant']);
+    });
+
+    it('should return no error', () => {
+      expect(errorKinds(createPermissionsForm([new ContextPermission('1', [], [])]).permissions)).toEqual([]);
+      expect(errorKinds(createPermissionsForm([], false).permissions)).toEqual([]);
     });
   });
 });

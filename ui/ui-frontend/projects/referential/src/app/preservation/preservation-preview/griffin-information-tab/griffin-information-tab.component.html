@@ -1,42 +1,34 @@
-<form [formGroup]="form" class="gap-6" (ngSubmit)="onSubmit()">
+<form [formRoot]="form" class="gap-6">
   <div class="gap-4 w-100">
-    <vitamui-input class="w-100" formControlName="Identifier" [placeholder]="'PRESERVATION.TAB.INFORMATION.IDENTIFIER' | translate" />
+    <vitamui-input class="w-100" [formField]="form.Identifier" [placeholder]="'PRESERVATION.TAB.INFORMATION.IDENTIFIER' | translate" />
 
-    <vitamui-input class="w-100" formControlName="Name" [placeholder]="'PRESERVATION.TAB.INFORMATION.NAME' | translate" />
+    <vitamui-input class="w-100" [formField]="form.Name" [placeholder]="'PRESERVATION.TAB.INFORMATION.NAME' | translate" />
 
     <vitamui-input
       class="w-100"
-      formControlName="ExecutableName"
+      [formField]="form.ExecutableName"
       [placeholder]="'PRESERVATION.TAB.INFORMATION.EXECUTABLE_NAME' | translate"
     />
 
-    <vitamui-input class="w-100" formControlName="ExecutableVersion" [placeholder]="'PRESERVATION.TAB.INFORMATION.VERSION' | translate" />
+    <vitamui-input class="w-100" [formField]="form.ExecutableVersion" [placeholder]="'PRESERVATION.TAB.INFORMATION.VERSION' | translate" />
 
     <vitamui-input
       [textarea]="true"
       class="w-100"
-      formControlName="Description"
+      [formField]="form.Description"
       [placeholder]="'PRESERVATION.TAB.INFORMATION.DESCRIPTION' | translate"
     />
 
-    <vitamui-input
-      class="w-100"
-      [ngModel]="form.get('CreationDate').value | dateTime: 'dd/MM/yyyy'"
-      [ngModelOptions]="{ standalone: true }"
-      [placeholder]="'PRESERVATION.TAB.INFORMATION.CREATION_DATE' | translate"
-      [disabled]="true"
-    />
+    <vitamui-input class="w-100" [formField]="creationDateForm" [placeholder]="'PRESERVATION.TAB.INFORMATION.CREATION_DATE' | translate" />
 
     <vitamui-input
       class="w-100"
-      [ngModel]="form.get('LastUpdate').value | dateTime: 'dd/MM/yyyy'"
-      [ngModelOptions]="{ standalone: true }"
+      [formField]="lastUpdateForm"
       [placeholder]="'PRESERVATION.TAB.INFORMATION.MODIFICATION_DATE' | translate"
-      [disabled]="true"
     />
   </div>
 
-  <button type="submit" class="btn primary" [disabled]="unchanged() || form.invalid || submitted()">
+  <button type="submit" class="btn primary" [disabled]="unchanged() || form().invalid() || submitted()">
     {{ 'COMMON.SAVE' | translate }}
   </button>
 </form>

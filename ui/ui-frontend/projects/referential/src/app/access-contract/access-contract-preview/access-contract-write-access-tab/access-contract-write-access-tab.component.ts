@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit, signal, model, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, effect, inject, signal, model, OnChanges, SimpleChanges, untracked } from '@angular/core';
+import { form, FormField, FormRoot } from '@angular/forms/signals';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
@@ -44,19 +44,29 @@ import {
   AccessContractService,
   diff,
   Option,
+  requiredValue,
   SelectComponent,
   SlideToggleComponent,
   TooltipDirective,
 } from 'vitamui-library';
-import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
+import { MatButtonToggle, MatButtonToggleChange, MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { TranslatePipe } from '@ngx-translate/core';
+
+interface AccessContractWriteAccessForm {
+  writingPermission: boolean;
+  writingAuthorizedDesc: boolean;
+  downloadChoose: string;
+  everyDataObjectVersion: boolean;
+  dataObjectVersion: string[];
+}
 
 @Component({
   selector: 'app-access-contract-write-access-tab',
   templateUrl: './access-contract-write-access-tab.component.html',
   styleUrls: ['./access-contract-write-access-tab.component.scss'],
   imports: [
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     SlideToggleComponent,
     TooltipDirective,
     MatButtonToggleGroup,
@@ -65,8 +75,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     TranslatePipe,
   ],
 })
-export class AccessContractWriteAccessTabComponent implements OnChanges, OnInit {
-  private readonly formBuilder = inject(FormBuilder);
+export class AccessContractWriteAccessTabComponent implements OnChanges {
   private readonly accessContractService = inject(AccessContractService);
 
   public usages: Option[] = [
@@ -79,7 +88,26 @@ export class AccessContractWriteAccessTabComponent implements OnChanges, OnInit 
 
   readonly accessContract = model<AccessContract>(undefined);
 
-  public form: FormGroup;
+  readonly form = form(
+    signal<AccessContractWriteAccessForm>({
+      writingPermission: false,
+      writingAuthorizedDesc: false,
+      downloadChoose: 'ALL',
+      everyDataObjectVersion: true,
+      dataObjectVersion: [],
+    }),
+    (path) => {
+      requiredValue(path.dataObjectVersion, { when: ({ valueOf }) => valueOf(path.downloadChoose) === 'SELECTION' });
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
   public submitted = signal(false);
 
   previousValue = (): any => {
@@ -92,13 +120,7 @@ export class AccessContractWriteAccessTabComponent implements OnChanges, OnInit 
   };
 
   constructor() {
-    this.form = this.formBuilder.group({
-      writingPermission: [false],
-      writingAuthorizedDesc: [false],
-      downloadChoose: ['ALL'],
-      everyDataObjectVersion: [true],
-      dataObjectVersion: [[]],
-    });
+    this.onWritingRestrictedDescChanges();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -107,26 +129,23 @@ export class AccessContractWriteAccessTabComponent implements OnChanges, OnInit 
     }
   }
 
-  ngOnInit() {
-    this.form.get('downloadChoose').valueChanges.subscribe((val) => {
-      this.form.get('everyDataObjectVersion').setValue(val === 'ALL', { emitEvent: false });
-      this.form.controls['dataObjectVersion'].setValidators(val === 'SELECTION' ? Validators.required : []);
-      this.form.controls['dataObjectVersion'].updateValueAndValidity();
-    });
-
-    this.onWritingRestrictedDescChanges();
+  onDownloadChooseChange({ value }: MatButtonToggleChange): void {
+    this.form.everyDataObjectVersion().value.set(value === 'ALL');
   }
 
-  onWritingRestrictedDescChanges(): void {
-    this.form.get('writingAuthorizedDesc').valueChanges.subscribe((val) => {
-      if (val) {
-        this.form.get('writingPermission').setValue(true, { emitEvent: false });
+  // Only user changes (dirty fields) are propagated, not the values set when resetting the form
+  private onWritingRestrictedDescChanges(): void {
+    effect(() => {
+      const writingAuthorizedDesc = this.form.writingAuthorizedDesc();
+      if (writingAuthorizedDesc.dirty() && writingAuthorizedDesc.value()) {
+        untracked(() => this.form.writingPermission().value.set(true));
       }
     });
 
-    this.form.get('writingPermission').valueChanges.subscribe((val) => {
-      if (!val) {
-        this.form.get('writingAuthorizedDesc').setValue(false, { emitEvent: false });
+    effect(() => {
+      const writingPermission = this.form.writingPermission();
+      if (writingPermission.dirty() && !writingPermission.value()) {
+        untracked(() => this.form.writingAuthorizedDesc().value.set(false));
       }
     });
   }
@@ -152,10 +171,11 @@ export class AccessContractWriteAccessTabComponent implements OnChanges, OnInit 
   }
 
   private formDataValue(): AccessContract {
-    const accessContractValue = {
-      ...this.form.getRawValue(),
-      writingRestrictedDesc: !this.form.getRawValue().writingAuthorizedDesc,
-      dataObjectVersion: this.form.getRawValue().downloadChoose === 'SELECTION' ? this.form.getRawValue().dataObjectVersion : [],
+    const formValue = this.form().value();
+    const accessContractValue: any = {
+      ...formValue,
+      writingRestrictedDesc: !formValue.writingAuthorizedDesc,
+      dataObjectVersion: formValue.downloadChoose === 'SELECTION' ? formValue.dataObjectVersion : [],
     };
     delete accessContractValue.writingAuthorizedDesc;
     delete accessContractValue.downloadChoose;
@@ -186,13 +206,12 @@ export class AccessContractWriteAccessTabComponent implements OnChanges, OnInit 
         ? 'SELECTION'
         : 'NONE';
 
-    const accessContractForm = {
-      ...accessContract,
-      downloadChoose: downloadChoose,
+    this.form().reset({
+      writingPermission: accessContract.writingPermission ?? null,
       writingAuthorizedDesc: !accessContract.writingRestrictedDesc,
-    };
-    delete accessContractForm.writingRestrictedDesc;
-
-    this.form.reset(accessContractForm, { emitEvent: false });
+      downloadChoose: downloadChoose,
+      everyDataObjectVersion: accessContract.everyDataObjectVersion ?? null,
+      dataObjectVersion: accessContract.dataObjectVersion ?? null,
+    });
   }
 }

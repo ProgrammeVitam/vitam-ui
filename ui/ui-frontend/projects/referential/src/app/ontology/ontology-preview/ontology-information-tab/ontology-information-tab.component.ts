@@ -34,18 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, signal, output, model, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, signal, output, model, OnChanges, SimpleChanges, Injector, linkedSignal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { disabled, form, FormField, FormRoot, required } from '@angular/forms/signals';
 import { Observable, of } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError, skip, switchMap } from 'rxjs/operators';
 import {
   ApplicationId,
+  DateTimePipe,
   diff,
+  getTypeDetailAndStringSize,
   Ontology,
   Option,
+  requiredValue,
   Role,
   SecurityService,
-  setTypeDetailAndStringSize,
   VitamUICommonModule,
   VitamUILibraryModule,
 } from 'vitamui-library';
@@ -54,51 +57,101 @@ import { collections, sizes, types } from '../../ontology-form-options';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
+interface OntologyInformationForm {
+  identifier: string;
+  shortName: string;
+  type: string;
+  typeDetail: string;
+  stringSize: string;
+  collections: string[];
+  description: string;
+  creationDate: string;
+}
+
 @Component({
   selector: 'app-ontology-information-tab',
   templateUrl: './ontology-information-tab.component.html',
   styleUrls: ['./ontology-information-tab.component.scss'],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, VitamUICommonModule, VitamUILibraryModule, TranslatePipe],
+  imports: [CommonModule, FormRoot, FormField, VitamUICommonModule, VitamUILibraryModule, TranslatePipe],
+  providers: [DateTimePipe],
 })
 export class OntologyInformationTabComponent implements OnChanges {
-  private readonly formBuilder = inject(FormBuilder);
   private readonly ontologyService = inject(OntologyService);
   private readonly securityService = inject(SecurityService);
+  private readonly dateTimePipe = inject(DateTimePipe);
+  private readonly injector = inject(Injector);
 
   readonly updated = output<boolean>();
-  form: FormGroup;
-  disabled = true;
+  /** The ontology fields (except identifier and creation date which are never editable) are disabled */
+  readonly editDisabled = signal(true);
   submitted = signal(false);
-  sizeFieldVisible = false;
+  readonly sizeFieldVisible = signal(false);
   types = types;
   sizes = sizes;
   collections: Option[] = [];
 
+  private readonly formModel = signal<OntologyInformationForm>({
+    identifier: null,
+    shortName: null,
+    type: null,
+    typeDetail: null,
+    stringSize: null,
+    collections: null,
+    description: null,
+    creationDate: null,
+  });
+  // Value set by the last form reset, to ignore the type change of the reset
+  private resetValue: OntologyInformationForm = this.formModel();
+  readonly form = form(
+    this.formModel,
+    (path) => {
+      disabled(path.identifier);
+      disabled(path.creationDate);
+      disabled(path.shortName, () => this.editDisabled());
+      disabled(path.type, () => this.editDisabled());
+      disabled(path.typeDetail, () => this.editDisabled());
+      disabled(path.stringSize, () => this.editDisabled());
+      disabled(path.collections, () => this.editDisabled());
+      disabled(path.description, () => this.editDisabled());
+      required(path.identifier);
+      required(path.shortName);
+      required(path.type);
+      requiredValue(path.collections);
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
+  readonly creationDateForm = form(
+    linkedSignal(() => this.dateTimePipe.transform(this.formModel().creationDate, 'dd/MM/yyyy')),
+    (path) => disabled(path),
+  );
+
   readonly inputOntology = model<Ontology>(undefined);
 
   previousValue = (): any => {
-    return (Object.keys(this.form.controls) as (keyof Ontology)[]).reduce((acc: any, key) => {
+    return (Object.keys(this.formModel()) as (keyof Ontology)[]).reduce((acc: any, key) => {
       acc[key] = this.inputOntology()[key] || null;
       return acc;
     }, {} as Partial<Ontology>);
   };
 
   constructor() {
-    this.form = this.formBuilder.group({
-      identifier: [{ value: null, disabled: true }, Validators.required],
-      shortName: [{ value: null, disabled: true }, Validators.required],
-      type: [{ value: null, disabled: true }, Validators.required],
-      typeDetail: [{ value: null, disabled: true }],
-      stringSize: [{ value: null, disabled: true }],
-      collections: [{ value: null, disabled: true }, Validators.required],
-      description: [{ value: null, disabled: true }],
-      creationDate: [{ value: null, disabled: true }],
-    });
-
-    this.form.get('type').valueChanges.subscribe((key) => {
-      if (!this.disabled) this.sizeFieldVisible = ['TEXT', 'GEO_POINT', 'KEYWORD'].includes(key);
-      setTypeDetailAndStringSize(key, this.form);
-    });
+    toObservable(this.form.type().value, { injector: this.injector })
+      .pipe(skip(1))
+      .subscribe((key) => {
+        if (this.formModel() === this.resetValue) return; // Not a user change
+        if (!this.editDisabled()) this.sizeFieldVisible.set(['TEXT', 'GEO_POINT', 'KEYWORD'].includes(key));
+        const typeDetailAndStringSize = getTypeDetailAndStringSize(key);
+        if (typeDetailAndStringSize) {
+          this.formModel.update((value) => ({ ...value, ...typeDetailAndStringSize }));
+        }
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -108,7 +161,7 @@ export class OntologyInformationTabComponent implements OnChanges {
   }
 
   unchanged(): boolean {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
+    const unchanged = JSON.stringify(diff(this.formModel(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
   }
@@ -117,7 +170,7 @@ export class OntologyInformationTabComponent implements OnChanges {
     const payload = {
       id: this.inputOntology().id,
       identifier: this.previousValue().identifier,
-      ...this.form.value,
+      ...this.enabledValue(),
     };
 
     return of(payload).pipe(switchMap((formData: any) => this.ontologyService.patch(formData).pipe(catchError(() => of(null)))));
@@ -143,11 +196,7 @@ export class OntologyInformationTabComponent implements OnChanges {
     this.inputOntology.set(ontology);
 
     const canUpdateVocabulary = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, Role.ROLE_UPDATE_ONTOLOGIES);
-    this.disabled = !canUpdateVocabulary || ontology.origin === 'INTERNAL';
-
-    Object.entries(this.form.controls)
-      .filter(([key]) => !['identifier', 'creationDate'].includes(key))
-      .forEach(([_key, control]) => (this.disabled ? control.disable() : control.enable()));
+    this.editDisabled.set(!canUpdateVocabulary || ontology.origin === 'INTERNAL');
 
     if (!ontology.description) {
       this.inputOntology().description = '';
@@ -157,11 +206,11 @@ export class OntologyInformationTabComponent implements OnChanges {
       this.inputOntology().collections = [];
     }
 
-    this.collections = this.disabled
+    this.collections = this.editDisabled()
       ? // When ontology is disabled we cannot modify it, so we can let the values as they are
         this.inputOntology().collections.map((collection) => ({ key: collection, label: collection }))
       : collections;
-    this.sizeFieldVisible = ['TEXT', 'GEO_POINT', 'KEYWORD'].includes(this.inputOntology().type);
+    this.sizeFieldVisible.set(['TEXT', 'GEO_POINT', 'KEYWORD'].includes(this.inputOntology().type));
 
     this.resetForm(this.sortedInputOntology());
     this.updated.emit(false);
@@ -172,6 +221,27 @@ export class OntologyInformationTabComponent implements OnChanges {
   }
 
   resetForm(ontology: Ontology) {
-    this.form.reset(ontology, { emitEvent: false });
+    // Like reactive forms reset, the missing values are reset to null
+    this.resetValue = {
+      identifier: ontology.identifier ?? null,
+      shortName: ontology.shortName ?? null,
+      type: ontology.type ?? null,
+      typeDetail: ontology.typeDetail ?? null,
+      stringSize: ontology.stringSize ?? null,
+      collections: ontology.collections ?? null,
+      description: ontology.description ?? null,
+      creationDate: ontology.creationDate ?? null,
+    };
+    this.form().reset(this.resetValue);
+  }
+
+  /** Values of the enabled fields (like reactive forms `value`) */
+  private enabledValue(): Partial<OntologyInformationForm> {
+    const value = this.formModel();
+    return Object.fromEntries(
+      (Object.keys(value) as (keyof OntologyInformationForm)[])
+        .filter((key) => !this.form[key]().disabled())
+        .map((key) => [key, value[key]]),
+    );
   }
 }

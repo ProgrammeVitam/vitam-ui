@@ -34,9 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { form, FormField } from '@angular/forms/signals';
+import { provideTranslateService } from '@ngx-translate/core';
 import { SelectWithTreeComponent } from './select-with-tree.component';
 import { MatSelectModule } from '@angular/material/select';
+import { ItemNode } from '../../../app/modules/components/autocomplete/utils/item-node.interface';
 
 class Item {
   value: string;
@@ -61,5 +65,42 @@ describe('SelectWithTreeComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('signal forms', () => {
+    const itemA: Item = { value: 'A' };
+    const itemB: Item = { value: 'B' };
+    const options: ItemNode<Item>[] = [
+      { item: itemA, children: [] },
+      { item: itemB, children: [] },
+    ];
+
+    @Component({
+      template: `<vitamui-select-with-tree
+        [formField]="testForm.items"
+        [options]="options"
+        [multiple]="true"
+        [getDisplayValue]="getDisplayValue"
+      ></vitamui-select-with-tree>`,
+      imports: [SelectWithTreeComponent, FormField],
+    })
+    class SignalFormHostComponent {
+      readonly options = options;
+      readonly getDisplayValue = (item: Item) => item.value;
+      readonly testForm = form(signal<{ items: Item[] }>({ items: [itemB] }));
+    }
+
+    it('should apply the initial value of the field once the tree is built', async () => {
+      TestBed.resetTestingModule();
+      await TestBed.configureTestingModule({
+        imports: [SignalFormHostComponent],
+        providers: [provideTranslateService()],
+      }).compileComponents();
+      const hostFixture = TestBed.createComponent(SignalFormHostComponent);
+      await hostFixture.whenStable();
+
+      const select: SelectWithTreeComponent<Item> = hostFixture.debugElement.children[0].componentInstance;
+      expect(select.checklistSelection.selected.map((node) => node.item)).toEqual([itemB]);
+    });
   });
 });

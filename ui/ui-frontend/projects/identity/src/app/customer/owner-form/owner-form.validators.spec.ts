@@ -34,6 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { signal } from '@angular/core';
+import { form } from '@angular/forms/signals';
 import { TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { from, of } from 'rxjs';
@@ -107,5 +109,40 @@ describe('Owner Form Validators', () => {
     });
     vi.advanceTimersByTime(400);
     expect(ownerServiceSpy.exists).toHaveBeenCalledWith('111111');
+  });
+});
+
+describe('Owner Form Validators (signal forms)', () => {
+  const createForm = (exists: boolean, codeToIgnore?: string) => {
+    const ownerServiceSpy = { exists: vi.fn().mockName('OwnerService.exists').mockReturnValue(of(exists)) };
+    TestBed.configureTestingModule({ providers: [{ provide: OwnerService, useValue: ownerServiceSpy }] });
+    const validators = TestBed.inject(OwnerFormValidators);
+    const codeForm = TestBed.runInInjectionContext(() =>
+      form(signal({ code: '' }), (path) => validators.uniqueCodeRule(path.code, () => codeToIgnore)),
+    );
+    return { codeForm, ownerServiceSpy };
+  };
+
+  it('should set the uniqueCode error', async () => {
+    const { codeForm, ownerServiceSpy } = createForm(true);
+    codeForm.code().value.set('123456');
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    expect(ownerServiceSpy.exists).toHaveBeenCalledWith('123456');
+    expect(
+      codeForm
+        .code()
+        .errors()
+        .map((error) => error.kind),
+    ).toEqual(['uniqueCode']);
+  });
+
+  it('should not call the service for the code to ignore', async () => {
+    const { codeForm, ownerServiceSpy } = createForm(true, '123456');
+    codeForm.code().value.set('123456');
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    expect(ownerServiceSpy.exists).not.toHaveBeenCalled();
+    expect(codeForm.code().valid()).toBe(true);
   });
 });

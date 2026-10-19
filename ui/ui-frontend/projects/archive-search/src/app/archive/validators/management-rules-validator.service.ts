@@ -35,12 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable, inject } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
-import { Observable, combineLatest, of, timer } from 'rxjs';
-import { catchError, map, switchMap, take } from 'rxjs/operators';
-import { RuleService } from 'vitamui-library';
+import { PathKind, SchemaPath, SchemaPathRules } from '@angular/forms/signals';
+import { Observable, combineLatest, of } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
+import { RuleService, validateObservable } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { RuleCategoryAction } from '../models/ruleAction.interface';
+
+type RuleIdPath<TPathKind extends PathKind> = SchemaPath<string | null, SchemaPathRules.Supported, TPathKind>;
 
 @Injectable({
   providedIn: 'root',
@@ -81,45 +83,40 @@ export class ManagementRulesValidatorService {
     );
   }
 
-  uniquePreventRuleId(codeToIgnore?: string): AsyncValidatorFn {
-    return (control: AbstractControl) => {
-      return timer(this.debounceTime).pipe(
-        switchMap(() => (control.value && control.value !== codeToIgnore ? this.filterPreventRulesId(control.value) : of(false))),
-        take(1),
-        map((exists: boolean) => (exists ? { uniquePreventRuleId: true } : null)),
-        catchError(() => of(null)),
-      );
-    };
+  /** Adds an async validator (error `uniquePreventRuleId`) checking that the rule id is not already used by a prevent rule action. */
+  uniquePreventRuleId<TPathKind extends PathKind = PathKind.Root>(path: RuleIdPath<TPathKind>, codeToIgnore?: string): void {
+    validateObservable(path, {
+      debounceTime: this.debounceTime,
+      stream: (value) => (value && value !== codeToIgnore ? this.filterPreventRulesId(value).pipe(take(1)) : of(false)),
+      onSuccess: (exists) => (exists ? { kind: 'uniquePreventRuleId' } : undefined),
+    });
   }
 
-  uniqueRuleId(codeToIgnore?: string | (() => string)): AsyncValidatorFn {
-    return (control: AbstractControl) => {
-      return timer(this.debounceTime).pipe(
-        switchMap(() => {
-          const ignored = typeof codeToIgnore === 'function' ? codeToIgnore() : codeToIgnore;
-          return control.value && control.value !== ignored ? this.filterRuleActions(control.value) : of(false);
-        }),
-        take(1),
-        map((exists: boolean) => (exists ? { uniqueRuleId: true } : null)),
-        catchError(() => of(null)),
-      );
-    };
+  /** Adds an async validator (error `uniqueRuleId`) checking that the rule id is not already used by a rule action. */
+  uniqueRuleId<TPathKind extends PathKind = PathKind.Root>(path: RuleIdPath<TPathKind>, codeToIgnore?: string | (() => string)): void {
+    validateObservable(path, {
+      debounceTime: this.debounceTime,
+      stream: (value) => {
+        const ignored = typeof codeToIgnore === 'function' ? codeToIgnore() : codeToIgnore;
+        return value && value !== ignored ? this.filterRuleActions(value).pipe(take(1)) : of(false);
+      },
+      onSuccess: (exists) => (exists ? { kind: 'uniqueRuleId' } : undefined),
+    });
   }
 
-  checkRuleIdExistence(ruleIdToIgnore?: string): AsyncValidatorFn {
-    return (control: AbstractControl) =>
-      timer(this.debounceTime).pipe(
-        switchMap(() => {
-          if (!control.value || control.value === ruleIdToIgnore) return of(true);
+  /** Adds an async validator (error `ruleIdExists`) checking that the rule exists in the referential. */
+  checkRuleIdExistence<TPathKind extends PathKind = PathKind.Root>(path: RuleIdPath<TPathKind>, ruleIdToIgnore?: string): void {
+    validateObservable(path, {
+      debounceTime: this.debounceTime,
+      stream: (value) => {
+        if (!value || value === ruleIdToIgnore) return of(true);
 
-          return this.managementRulesSharedDataService.getRuleCategory().pipe(
-            switchMap((ruleCategory) => this.ruleService.existsProperties({ ruleId: control.value, ruleType: ruleCategory })),
-            take(1),
-          );
-        }),
-        take(1),
-        map((exists: boolean) => (exists ? null : { ruleIdExists: true })),
-        catchError(() => of(null)),
-      );
+        return this.managementRulesSharedDataService.getRuleCategory().pipe(
+          switchMap((ruleCategory) => this.ruleService.existsProperties({ ruleId: value, ruleType: ruleCategory })),
+          take(1),
+        );
+      },
+      onSuccess: (exists) => (exists ? undefined : { kind: 'ruleIdExists' }),
+    });
   }
 }

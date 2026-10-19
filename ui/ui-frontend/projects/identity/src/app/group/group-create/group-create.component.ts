@@ -34,20 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { form, FormField, FormRoot, maxLength, minLength } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import {
   AuthService,
-  buildValidators,
   ConfirmDialogService,
   DialogHeaderComponent,
+  Group,
   InputComponent,
   LevelInputComponent,
-  MiscValidators,
   NextStepComponent,
   PreviousStepComponent,
+  requiredNotBlank,
+  requiredValue,
   SlideToggleComponent,
   StepperComponent,
 } from 'vitamui-library';
@@ -59,6 +60,18 @@ import { ProfilesFormComponent } from '../../shared/profiles-form/profiles-form.
 import { UnitsFormComponent } from '../units-form/units-form.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
+import { levelRules } from '../../shared/signal-forms/signal-form-validators';
+import { hasError } from '../../shared/signal-forms/signal-form-utils';
+
+interface GroupCreateModel {
+  name: string;
+  enabled: boolean;
+  level: string;
+  description: string;
+  profileIds: string[];
+  customerId: string;
+  units: string[];
+}
 
 @Component({
   selector: 'app-group-create',
@@ -66,7 +79,8 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./group-create.component.scss'],
   imports: [
     DialogHeaderComponent,
-    ReactiveFormsModule,
+    FormField,
+    FormRoot,
     StepperComponent,
     CdkStep,
     MatDialogContent,
@@ -79,7 +93,6 @@ import { CommonModule } from '@angular/common';
     UnitsFormComponent,
     TranslatePipe,
     CommonModule,
-    FormsModule,
     LevelInputComponent,
   ],
 })
@@ -87,30 +100,39 @@ export class GroupCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<GroupCreateComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
   authService = inject(AuthService);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly groupService = inject(GroupService);
   private readonly groupValidators = inject(GroupValidators);
   private readonly confirmDialogService = inject(ConfirmDialogService);
 
-  form: FormGroup;
+  private readonly model = signal<GroupCreateModel>({
+    name: null,
+    enabled: true,
+    level: '',
+    description: null,
+    profileIds: null,
+    customerId: this.authService.user.customerId,
+    units: null,
+  });
+  readonly form = form(
+    this.model,
+    (path) => {
+      requiredNotBlank(path.name);
+      minLength(path.name, 2);
+      maxLength(path.name, 100);
+      this.groupValidators.nameExistsRule(path.name, this.authService.user.customerId);
+      levelRules(path.level, this.authService.user);
+      requiredNotBlank(path.description);
+      minLength(path.description, 4);
+      maxLength(path.description, 100);
+      requiredValue(path.profileIds);
+    },
+    { submission: { action: async () => this.onSubmit(), ignoreValidators: 'all' } },
+  );
+  protected readonly hasError = hasError;
 
   private keyPressSubscription: Subscription;
 
   ngOnInit() {
-    this.form = this.formBuilder.group({
-      name: [
-        null,
-        [MiscValidators.requiredNotBlank, Validators.minLength(2), Validators.maxLength(100)],
-        this.groupValidators.nameExists(this.authService.user.customerId),
-      ],
-      enabled: [true],
-      level: ['', buildValidators(this.authService.user)],
-      description: [null, [MiscValidators.requiredNotBlank, Validators.minLength(4), Validators.maxLength(100)]],
-      profileIds: [null, Validators.required],
-      customerId: [this.authService.user.customerId],
-      units: [null],
-    });
-
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
 
@@ -119,7 +141,7 @@ export class GroupCreateComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    if (this.form.dirty) {
+    if (this.form().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -127,10 +149,10 @@ export class GroupCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.invalid) {
+    if (this.form().invalid()) {
       return;
     }
-    this.groupService.create(this.form.getRawValue()).subscribe(
+    this.groupService.create(this.model() as unknown as Group).subscribe(
       () => this.dialogRef.close(true),
       (error) => {
         console.error(error);
@@ -139,20 +161,18 @@ export class GroupCreateComponent implements OnInit, OnDestroy {
   }
 
   firstStepInvalid(): boolean {
-    const nameControl = this.form.controls['name'];
-    const descriptionControl = this.form.controls['description'];
-    const levelControl = this.form.controls['level'];
+    const nameField = this.form.name();
 
-    return nameControl.invalid || nameControl.pending || descriptionControl.invalid || levelControl.invalid;
+    return nameField.invalid() || nameField.pending() || this.form.description().invalid() || this.form.level().invalid();
   }
 
   secondStepInvalid(): boolean {
-    const profileIdsControl = this.form.controls['profileIds'];
+    const profileIdsField = this.form.profileIds();
 
-    return profileIdsControl.invalid || profileIdsControl.pending;
+    return profileIdsField.invalid() || profileIdsField.pending();
   }
 
   formValid(): boolean {
-    return this.form.pending || this.form.invalid;
+    return this.form().pending() || this.form().invalid();
   }
 }

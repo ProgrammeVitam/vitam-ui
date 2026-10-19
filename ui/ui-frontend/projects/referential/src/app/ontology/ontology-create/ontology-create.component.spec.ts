@@ -36,7 +36,8 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormField } from '@angular/forms/signals';
+import { By } from '@angular/platform-browser';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -71,7 +72,9 @@ class Page {
   }
 
   control(name: string) {
-    return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
+    return fixture.debugElement
+      .queryAll(By.directive(FormField))
+      .find((debugElement) => debugElement.injector.get(FormField).field() === (component.form as any)[name])?.nativeElement;
   }
 }
 
@@ -87,14 +90,8 @@ describe('OntologyCreateComponent', () => {
     };
 
     const ontologyCreateValidatorsSpy = {
-      uniqueID: vi
-        .fn()
-        .mockName('OntologyCreateValidators.uniqueID')
-        .mockReturnValue(() => () => of(null)),
-      patternID: vi
-        .fn()
-        .mockName('OntologyCreateValidators.patternID')
-        .mockReturnValue(() => of(null)),
+      uniqueID: vi.fn().mockName('OntologyCreateValidators.uniqueID'),
+      patternID: vi.fn().mockName('OntologyCreateValidators.patternID'),
     };
 
     await TestBed.configureTestingModule({
@@ -104,7 +101,6 @@ describe('OntologyCreateComponent', () => {
         MatProgressBarModule,
         MatProgressSpinnerModule,
         MatSelectModule,
-        ReactiveFormsModule,
         VitamUICommonTestModule,
         VitamUILibraryModule,
       ],
@@ -142,7 +138,7 @@ describe('OntologyCreateComponent', () => {
     it('should have a submit button', () => {
       expect(page.submit).toBeTruthy();
       expect(page.submit.attributes.disabled).toBeTruthy();
-      component.form.setValue(expectedOntology);
+      component.form().value.set(expectedOntology);
       fixture.detectChanges();
       expect(page.submit.attributes.type).toBeDefined();
     });
@@ -150,7 +146,7 @@ describe('OntologyCreateComponent', () => {
 
   describe('Form', () => {
     it('should be invalid when empty', () => {
-      expect(component.form.invalid).toBeTruthy();
+      expect(component.form().invalid()).toBeTruthy();
     });
 
     describe('Validators', () => {
@@ -167,11 +163,11 @@ describe('OntologyCreateComponent', () => {
         });
       });
 
-      function setControlValue(name: string | Array<string | number>, value: any) {
-        const control = component.form.get(name);
-        control.setValue(value);
+      function setControlValue(name: 'shortName' | 'identifier' | 'type', value: string) {
+        const field = component.form[name]();
+        field.value.set(value);
 
-        return control;
+        return { invalid: field.invalid(), valid: field.valid() };
       }
     });
   });
@@ -192,10 +188,10 @@ describe('OntologyCreateComponent', () => {
     it('should call create()', () => {
       const customerService = TestBed.inject(OntologyService);
       const matDialogRef = TestBed.inject(MatDialogRef);
-      component.form.setValue(expectedOntology);
+      component.form().value.set(expectedOntology);
       component.onSubmit();
-      expect(customerService.create).toHaveBeenCalledTimes(0);
-      expect(matDialogRef.close).toHaveBeenCalledTimes(0);
+      expect(customerService.create).toHaveBeenCalledTimes(1);
+      expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
   });
 });

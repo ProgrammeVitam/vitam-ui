@@ -9,31 +9,31 @@
   ]"
 ></vitamui-dialog-header>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formRoot]="form">
   <vitamui-stepper #stepper>
     <cdk-step>
       <mat-dialog-content class="gap-3 align-items-stretch">
-        <vitamui-slide-toggle formControlName="enabled">
-          @if (!form?.get('enabled').value) {
+        <vitamui-slide-toggle [formField]="form.enabled">
+          @if (!form.enabled().value()) {
             <span>{{ 'USER.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
           }
-          @if (form?.get('enabled').value) {
+          @if (form.enabled().value()) {
             <span>{{ 'USER.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
           }
         </vitamui-slide-toggle>
 
         <div class="hgap-2 align-items-start">
-          <vitamui-input class="w-50" formControlName="lastname" [placeholder]="'USER.INFORMATIONS.LASTNAME' | translate"> </vitamui-input>
+          <vitamui-input class="w-50" [formField]="form.lastname" [placeholder]="'USER.INFORMATIONS.LASTNAME' | translate"> </vitamui-input>
 
-          <vitamui-input class="w-50" formControlName="firstname" [placeholder]="'USER.INFORMATIONS.FIRSTNAME' | translate">
+          <vitamui-input class="w-50" [formField]="form.firstname" [placeholder]="'USER.INFORMATIONS.FIRSTNAME' | translate">
           </vitamui-input>
         </div>
 
-        <form [formGroup]="formEmail">
+        <form novalidate (submit)="$event.preventDefault()">
           <div class="row">
             <vitamui-input
               class="col-6"
-              formControlName="emailFirstPart"
+              [formField]="formEmail.emailFirstPart"
               [placeholder]="'USER.INFORMATIONS.MAIL' | translate"
               [errorMessageMap]="{
                 pattern: 'USER.INFORMATIONS.MODAL.INFORMATIONS_STEP.WRONG_FORMAT' | translate,
@@ -46,7 +46,7 @@
 
             <vitamui-select
               class="col"
-              formControlName="domain"
+              [formField]="formEmail.domain"
               [options]="customer?.emailDomains"
               [multiple]="false"
               [enableSearch]="false"
@@ -59,7 +59,7 @@
             {{ 'USER.INFORMATIONS.TYPE' | translate }}
           </label>
           <div class="mt-2">
-            <mat-button-toggle-group formControlName="type" #group="matButtonToggleGroup" class="vitamui-button-toggle-group">
+            <mat-button-toggle-group [formField]="form.type" #group="matButtonToggleGroup" class="vitamui-button-toggle-group">
               <mat-button-toggle value="NOMINATIVE">
                 {{ 'USER.INFORMATIONS.MODAL.INFORMATIONS_STEP.GROUP_TYPE_NOMINATIVE' | translate }}
               </mat-button-toggle>
@@ -70,9 +70,9 @@
           </div>
         </div>
 
-        <vitamui-slide-toggle formControlName="subrogeable">{{ 'USER.INFORMATIONS.ALLOW_SUBROGATION' | translate }} </vitamui-slide-toggle>
+        <vitamui-slide-toggle [formField]="form.subrogeable">{{ 'USER.INFORMATIONS.ALLOW_SUBROGATION' | translate }} </vitamui-slide-toggle>
 
-        <vitamui-slide-toggle formControlName="autoProvisioningEnabled"
+        <vitamui-slide-toggle [formField]="form.autoProvisioningEnabled"
           >{{ 'USER.INFORMATIONS.ACTIVATE_AUTO_PROVISIONING' | translate }}
         </vitamui-slide-toggle>
       </mat-dialog-content>
@@ -107,32 +107,31 @@
 
     <cdk-step>
       <mat-dialog-content class="gap-3 align-items-stretch">
-        <ng-container formGroupName="address">
-          <vitamui-input formControlName="street" [placeholder]="'COMMON.ADRESS.STREET' | translate"> </vitamui-input>
-
-          <div class="row">
-            <vitamui-input class="col-4" formControlName="zipCode" [placeholder]="'COMMON.ADRESS.ZIPCODE' | translate"> </vitamui-input>
-
-            <vitamui-input class="col-4" formControlName="city" [placeholder]="'COMMON.ADRESS.CITY' | translate"> </vitamui-input>
-
-            <vitamui-select
-              class="col-4"
-              formControlName="country"
-              [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
-              [options]="countries"
-              [enableSearch]="false"
-            ></vitamui-select>
-          </div>
-        </ng-container>
+        <vitamui-input [formField]="form.address.street" [placeholder]="'COMMON.ADRESS.STREET' | translate"> </vitamui-input>
 
         <div class="row">
-          <vitamui-input class="col-4" formControlName="centerCodes" [placeholder]="'USER.INFORMATIONS.CENTER_CODES' | translate">
+          <vitamui-input class="col-4" [formField]="form.address.zipCode" [placeholder]="'COMMON.ADRESS.ZIPCODE' | translate">
           </vitamui-input>
 
-          <vitamui-input class="col-4" formControlName="siteCode" [placeholder]="'USER.INFORMATIONS.SITE_CODE' | translate">
+          <vitamui-input class="col-4" [formField]="form.address.city" [placeholder]="'COMMON.ADRESS.CITY' | translate"> </vitamui-input>
+
+          <vitamui-select
+            class="col-4"
+            [formField]="form.address.country"
+            [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
+            [options]="countries"
+            [enableSearch]="false"
+          ></vitamui-select>
+        </div>
+
+        <div class="row">
+          <vitamui-input class="col-4" [formField]="form.centerCodes" [placeholder]="'USER.INFORMATIONS.CENTER_CODES' | translate">
           </vitamui-input>
 
-          <vitamui-input class="col-4" formControlName="internalCode" [placeholder]="'USER.INFORMATIONS.INTERNAL_CODE' | translate">
+          <vitamui-input class="col-4" [formField]="form.siteCode" [placeholder]="'USER.INFORMATIONS.SITE_CODE' | translate">
+          </vitamui-input>
+
+          <vitamui-input class="col-4" [formField]="form.internalCode" [placeholder]="'USER.INFORMATIONS.INTERNAL_CODE' | translate">
           </vitamui-input>
         </div>
       </mat-dialog-content>
@@ -148,12 +147,12 @@
 
     <cdk-step>
       <mat-dialog-content>
-        <vitamui-slide-toggle formControlName="otp">{{ 'USER.INFORMATIONS.VALIDATIONS' | translate }} </vitamui-slide-toggle>
+        <vitamui-slide-toggle [formField]="form.otp">{{ 'USER.INFORMATIONS.VALIDATIONS' | translate }} </vitamui-slide-toggle>
 
         <div class="d-flex mt-3">
           <vitamui-input
             class="col-5 p-0 mr-4"
-            formControlName="mobile"
+            [formField]="form.mobile"
             [placeholder]="'USER.INFORMATIONS.PHONE.MOBILE' | translate"
             [errorMessageMap]="{
               pattern: 'USER.INFORMATIONS.MODAL.SECURITY_STEP.PHONE_FIELD_FORMAT' | translate,
@@ -162,7 +161,7 @@
           </vitamui-input>
           <vitamui-input
             class="col-5 p-0"
-            formControlName="phone"
+            [formField]="form.phone"
             [placeholder]="'USER.INFORMATIONS.PHONE.FIX' | translate"
             [errorMessageMap]="{
               pattern: 'USER.INFORMATIONS.MODAL.SECURITY_STEP.PHONE_FIELD_FORMAT' | translate,

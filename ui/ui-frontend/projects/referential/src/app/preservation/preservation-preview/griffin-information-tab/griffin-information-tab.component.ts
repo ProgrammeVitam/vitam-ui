@@ -35,10 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, computed, effect, inject, input, linkedSignal, output, signal, untracked } from '@angular/core';
+import { disabled, form, FormField, FormRoot, required } from '@angular/forms/signals';
 import {
   ApplicationId,
+  DateTimePipe,
   diff,
   Griffin,
   GriffinsService,
@@ -54,20 +55,29 @@ import { CommonModule } from '@angular/common';
 import { finalize, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
+
+interface GriffinInformationForm {
+  Identifier: string;
+  Name: string;
+  ExecutableName: string;
+  ExecutableVersion: string;
+  Description: string;
+  CreationDate: Date;
+  LastUpdate: Date;
+}
 
 @Component({
   selector: 'app-griffin-information-tab',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, InputComponent, VitamUICommonModule, VitamUILibraryModule, TranslatePipe],
+  imports: [CommonModule, FormRoot, FormField, InputComponent, VitamUICommonModule, VitamUILibraryModule, TranslatePipe],
+  providers: [DateTimePipe],
   templateUrl: './griffin-information-tab.component.html',
 })
 export class GriffinInformationTabComponent {
-  private readonly formBuilder = inject(FormBuilder);
-
   private readonly griffinService = inject(GriffinsService);
   private readonly securityService = inject(SecurityService);
   private readonly snackBarService = inject(SnackBarService);
+  private readonly dateTimePipe = inject(DateTimePipe);
 
   updatedGriffin = output<Griffin>();
 
@@ -75,25 +85,54 @@ export class GriffinInformationTabComponent {
   referenceGriffin = signal<Griffin | null>(null);
   submitted = signal(false);
 
-  readonly form = this.formBuilder.nonNullable.group({
-    Identifier: [{ value: '', disabled: true }, Validators.required],
-    Name: [{ value: '', disabled: true }, Validators.required],
-    ExecutableName: [{ value: '', disabled: true }, Validators.required],
-    ExecutableVersion: [{ value: '', disabled: true }, Validators.required],
-    Description: [{ value: '', disabled: true }],
-    CreationDate: [{ value: null, disabled: true }],
-    LastUpdate: [{ value: null, disabled: true }],
-  });
-
   private readonly canUpdate = computed(() => this.securityService.hasRole(ApplicationId.PRESERVATION_APP, Role.ROLE_UPDATE_GRIFFINS));
 
   readonly disabled = computed(() => !this.canUpdate());
 
-  private readonly formChanges = toSignal(this.form.valueChanges, { initialValue: undefined });
-  readonly unchanged = computed(() => {
-    this.formChanges();
-    return JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
+  private readonly formModel = signal<GriffinInformationForm>({
+    Identifier: '',
+    Name: '',
+    ExecutableName: '',
+    ExecutableVersion: '',
+    Description: '',
+    CreationDate: null,
+    LastUpdate: null,
   });
+  readonly form = form(
+    this.formModel,
+    (path) => {
+      disabled(path.Identifier);
+      disabled(path.CreationDate);
+      disabled(path.LastUpdate);
+      disabled(path.Name, () => this.disabled());
+      disabled(path.ExecutableName, () => this.disabled());
+      disabled(path.ExecutableVersion, () => this.disabled());
+      disabled(path.Description, () => this.disabled());
+      required(path.Identifier);
+      required(path.Name);
+      required(path.ExecutableName);
+      required(path.ExecutableVersion);
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
+  // Read only fields displaying the formatted dates
+  readonly creationDateForm = form(
+    linkedSignal(() => this.dateTimePipe.transform(this.formModel().CreationDate, 'dd/MM/yyyy')),
+    (path) => disabled(path),
+  );
+  readonly lastUpdateForm = form(
+    linkedSignal(() => this.dateTimePipe.transform(this.formModel().LastUpdate, 'dd/MM/yyyy')),
+    (path) => disabled(path),
+  );
+
+  readonly unchanged = computed(() => JSON.stringify(diff(this.formModel(), this.previousValue())) === '{}');
 
   previousValue = (): any => {
     const griffin = this.referenceGriffin();
@@ -101,7 +140,7 @@ export class GriffinInformationTabComponent {
       return {};
     }
 
-    return (Object.keys(this.form.controls) as (keyof Griffin)[]).reduce((acc: any, key) => {
+    return (Object.keys(this.formModel()) as (keyof Griffin)[]).reduce((acc: any, key) => {
       acc[key] = griffin[key] || null;
       return acc;
     }, {} as Partial<Griffin>);
@@ -111,20 +150,15 @@ export class GriffinInformationTabComponent {
     effect(() => {
       const griffin = this.inputGriffin();
       this.referenceGriffin.set(griffin);
-      const disabled = this.disabled();
 
-      Object.entries(this.form.controls)
-        .filter(([key]) => !['Identifier', 'CreationDate', 'LastUpdate'].includes(key))
-        .forEach(([, control]) => (disabled ? control.disable() : control.enable()));
-
-      this.form.reset({ ...griffin, Description: griffin.Description ?? '' }, { emitEvent: false });
+      untracked(() => this.resetForm({ ...griffin, Description: griffin.Description ?? '' }));
     });
   }
 
   onSubmit() {
     this.submitted.set(true);
 
-    const payload: Griffin = { ...this.inputGriffin(), ...this.form.getRawValue() };
+    const payload: Griffin = { ...this.inputGriffin(), ...this.formModel() };
 
     this.griffinService
       .update(payload)
@@ -152,6 +186,15 @@ export class GriffinInformationTabComponent {
   }
 
   resetForm(griffin: Griffin) {
-    this.form.reset(griffin, { emitEvent: false });
+    // Like reactive forms reset of a non nullable form, the missing values are reset to their initial value
+    this.form().reset({
+      Identifier: griffin.Identifier ?? '',
+      Name: griffin.Name ?? '',
+      ExecutableName: griffin.ExecutableName ?? '',
+      ExecutableVersion: griffin.ExecutableVersion ?? '',
+      Description: griffin.Description ?? '',
+      CreationDate: griffin.CreationDate ?? null,
+      LastUpdate: griffin.LastUpdate ?? null,
+    });
   }
 }

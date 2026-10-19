@@ -40,7 +40,6 @@ import { DiscussionDto, DiscussionEntity, DiscussionService } from './discussion
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { filter } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { FormsModule } from '@angular/forms';
 import { DiscussionComponent } from './discussion/discussion.component';
 import { CdkDragMove, DragDropModule } from '@angular/cdk/drag-drop';
 import { DiscussionListComponent } from './discussion-list/discussion-list.component';
@@ -56,7 +55,6 @@ const MIN_HEIGHT = 500;
 @Component({
   selector: 'vitamui-discussion-panel',
   imports: [
-    FormsModule,
     DiscussionComponent,
     DragDropModule,
     OverlayModule,

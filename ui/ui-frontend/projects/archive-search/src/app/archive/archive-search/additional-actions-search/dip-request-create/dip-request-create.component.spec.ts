@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { environment } from 'projects/archive-search/src/environments/environment';
@@ -79,7 +78,6 @@ describe('DipRequestCreateComponent', () => {
     await TestBed.configureTestingModule({
       imports: [InjectorModule, MatButtonToggleModule, LoggerModule.forRoot(), DipRequestCreateComponent],
       providers: [
-        FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         {
@@ -119,31 +117,31 @@ describe('DipRequestCreateComponent', () => {
   });
 
   it('should have correct default values for toggle buttons', () => {
-    expect(component.formGroups[1].get('includeLifeCycleLogs').value).toBe(false);
-    expect(component.formGroups[1].get('sedaVersion').value).toBe('2.3');
-    expect(component.formGroups[1].get('includeObjects').value).toBe(UsageVersionEnum.ALL);
+    expect(component.step2Form.includeLifeCycleLogs().value()).toBe(false);
+    expect(component.step2Form.sedaVersion().value()).toBe('2.3');
+    expect(component.step2Form.includeObjects().value()).toBe(UsageVersionEnum.ALL);
   });
 
   it('should have "Original numérique" usage with "Initiale" version by default', () => {
     const usage: {
       usage: string;
       version: string;
-    } = component.formGroups[1].get('usages').value[0];
+    } = component.step2Form.usages().value()[0];
     expect(usage.usage).toBe('BinaryMaster');
     expect(usage.version).toBe('FIRST');
   });
 
   it('should add a usage when asked', () => {
-    expect(component.formGroups[1].get('usages').value.length).toBe(1);
+    expect(component.step2Form.usages().value().length).toBe(1);
     component.addUsage();
-    expect(component.formGroups[1].get('usages').value.length).toBe(2);
+    expect(component.step2Form.usages().value().length).toBe(2);
   });
 
   it('should remove a usage when asked', () => {
     component.addUsage();
-    expect(component.formGroups[1].get('usages').value.length).toBe(2);
+    expect(component.step2Form.usages().value().length).toBe(2);
     component.removeUsage(1);
-    expect(component.formGroups[1].get('usages').value.length).toBe(1);
+    expect(component.step2Form.usages().value().length).toBe(1);
   });
 
   describe('DOM', () => {

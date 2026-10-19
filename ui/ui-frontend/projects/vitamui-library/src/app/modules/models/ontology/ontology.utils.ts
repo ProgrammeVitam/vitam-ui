@@ -36,23 +36,31 @@
  */
 import { FormGroup } from '@angular/forms';
 
-export function setTypeDetailAndStringSize(key: string, form: FormGroup) {
-  switch (key) {
+/**
+ * Returns the `typeDetail` and `stringSize` values to set for the given ontology type, or `undefined` if they must not change.
+ */
+export function getTypeDetailAndStringSize(type: string): { typeDetail: string; stringSize: string } | undefined {
+  switch (type) {
     case 'TEXT':
     case 'KEYWORD':
     case 'GEO_POINT':
-      form.get('typeDetail').setValue('STRING');
-      form.get('stringSize').setValue('MEDIUM');
-      break;
+      return { typeDetail: 'STRING', stringSize: 'MEDIUM' };
     case 'DATE':
-      form.get('typeDetail').setValue('DATETIME');
-      form.get('stringSize').setValue(null);
-      break;
+      return { typeDetail: 'DATETIME', stringSize: null };
     case 'ENUM':
     case 'LONG':
     case 'DOUBLE':
     case 'BOOLEAN':
-      form.get('typeDetail').setValue(key);
-      form.get('stringSize').setValue(null);
+      return { typeDetail: type, stringSize: null };
+    default:
+      return undefined;
+  }
+}
+
+export function setTypeDetailAndStringSize(key: string, form: FormGroup) {
+  const typeDetailAndStringSize = getTypeDetailAndStringSize(key);
+  if (typeDetailAndStringSize) {
+    form.get('typeDetail').setValue(typeDetailAndStringSize.typeDetail);
+    form.get('stringSize').setValue(typeDetailAndStringSize.stringSize);
   }
 }

@@ -34,9 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit, input, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { merge, of, Subscription } from 'rxjs';
+import { Component, computed, inject, OnChanges, OnInit, input, signal, SimpleChanges } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { AsyncValidatorFn, ValidatorFn, Validators } from '@angular/forms';
+import { disabled, form, FormField, maxLength, min, pattern, required, validate } from '@angular/forms/signals';
+import { of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
 import {
@@ -50,6 +52,7 @@ import {
   FormFieldValueWrapperComponent,
   Option,
   OtpState,
+  requiredValue,
   SelectComponent,
   SlideToggleComponent,
   StartupService,
@@ -70,13 +73,60 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 
 const UPDATE_DEBOUNCE_TIME = 200;
+const GDPR_ALERT_DELAY_PATTERN = /^[0-9]{1,20}$/;
+
+interface CustomerInformationModel {
+  id: string;
+  identifier: string;
+  code: string;
+  name: string;
+  companyName: string;
+  passwordRevocationDelay: number;
+  otp: OtpState;
+  address: {
+    street: string;
+    zipCode: string;
+    city: string;
+    country: string;
+  };
+  internalCode: string;
+  language: string;
+  emailDomains: string[];
+  defaultEmailDomain: string;
+  gdprAlert: boolean;
+  gdprAlertDelay: number;
+}
+
+function toCustomerInformationModel(customer: Customer): CustomerInformationModel {
+  return {
+    id: customer?.id ?? null,
+    identifier: customer?.identifier ?? null,
+    code: customer?.code ?? null,
+    name: customer?.name ?? null,
+    companyName: customer?.companyName ?? null,
+    passwordRevocationDelay: customer?.passwordRevocationDelay ?? null,
+    otp: customer?.otp ?? null,
+    address: {
+      street: customer?.address?.street ?? null,
+      zipCode: customer?.address?.zipCode ?? null,
+      city: customer?.address?.city ?? null,
+      country: customer?.address?.country ?? null,
+    },
+    internalCode: customer?.internalCode ?? null,
+    language: customer?.language ?? null,
+    emailDomains: customer?.emailDomains ?? null,
+    defaultEmailDomain: customer?.defaultEmailDomain ?? null,
+    gdprAlert: customer?.gdprAlert ?? null,
+    gdprAlertDelay: customer?.gdprAlertDelay ?? null,
+  };
+}
 
 @Component({
   selector: 'app-information-tab',
   templateUrl: './information-tab.component.html',
   styleUrls: ['./information-tab.component.scss'],
   imports: [
-    ReactiveFormsModule,
+    FormField,
     VitamUIFieldErrorComponent,
     FormFieldValueWrapperComponent,
     SelectComponent,
@@ -87,7 +137,6 @@ const UPDATE_DEBOUNCE_TIME = 200;
     EditableButtonToggleComponent,
     EditableInputComponent,
     EditableToggleGroupComponent,
-    FormsModule,
     MatButtonToggleModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -97,35 +146,15 @@ const UPDATE_DEBOUNCE_TIME = 200;
     OverlayModule,
   ],
 })
-export class InformationTabComponent implements OnChanges, OnInit, OnDestroy {
-  private readonly formBuilder = inject(FormBuilder);
+export class InformationTabComponent implements OnChanges, OnInit {
   private readonly customerService = inject(CustomerService);
   private readonly customerCreateValidators = inject(CustomerCreateValidators);
   private readonly countryService = inject(CountryService);
   private readonly startupService = inject(StartupService);
 
-  public readonly form: FormGroup;
-  public maxStreetLength: number;
+  public maxStreetLength: number = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
   public customerCodeMaxLength = CUSTOMER_CODE_MAX_LENGTH;
-  previousValue: {
-    code: string;
-    identifier: string;
-    name: string;
-    companyName: string;
-    passwordRevocationDelay: number;
-    otp: OtpState;
-    address: {
-      street: string;
-      zipCode: string;
-      city: string;
-      country: string;
-    };
-    language: string;
-    emailDomains: string[];
-    defaultEmailDomain: string;
-    gdprAlert: boolean;
-    gdprAlertDelay: number;
-  };
+  previousValue: CustomerInformationModel;
 
   readonly customer = input<Customer>();
 
@@ -133,96 +162,99 @@ export class InformationTabComponent implements OnChanges, OnInit, OnDestroy {
 
   readonly gdprReadOnlyStatus = input<boolean>();
 
-  private _gdprReadOnlyStatus: boolean;
-
-  private sub: Subscription;
-
   public countries: Option[];
 
-  constructor() {
-    this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
-    this.form = this.formBuilder.group({
-      id: [null, Validators.required],
-      identifier: [{ value: null, disabled: true }, Validators.required],
-      code: [
-        null,
-        [Validators.required, Validators.pattern(ALPHA_NUMERIC_REGEX), Validators.maxLength(this.customerCodeMaxLength)],
-        this.customerCreateValidators.uniqueCode(),
-      ],
-      name: [null, Validators.required],
-      companyName: [null, Validators.required],
-      passwordRevocationDelay: [null, Validators.required],
-      otp: [null],
-      address: this.formBuilder.group({
-        street: [null, [Validators.required, Validators.maxLength(this.maxStreetLength)]],
-        zipCode: [null, Validators.required],
-        city: [null, Validators.required],
-        country: [null, Validators.required],
-      }),
-      internalCode: [null],
-      language: [null, Validators.required],
-      emailDomains: [null, Validators.required],
-      defaultEmailDomain: [null, Validators.required],
-      gdprAlert: false,
-      gdprAlertDelay: [72, [Validators.required, Validators.min(1), Validators.pattern(/^[0-9]{1,20}$/)]],
+  // Code of the displayed customer, ignored by the unique code validators
+  private readonly customerCode = signal<string>(undefined);
+  private readonly model = signal<CustomerInformationModel>(toCustomerInformationModel(null));
+  // Value set by resetForm: like a reset with emitEvent: false, it must not trigger an update
+  private resetValue = this.model();
+  public readonly form = form(this.model, (path) => {
+    disabled(path, () => !!this.readOnly());
+    required(path.id);
+    // The identifier is never editable
+    disabled(path.identifier);
+    required(path.identifier);
+    maxLength(path.identifier, 12);
+    required(path.code);
+    pattern(path.code, ALPHA_NUMERIC_REGEX);
+    maxLength(path.code, this.customerCodeMaxLength);
+    this.customerCreateValidators.uniqueCodeRule(path.code, () => this.customerCode());
+    required(path.name);
+    maxLength(path.name, 100);
+    required(path.companyName);
+    maxLength(path.companyName, 250);
+    required(path.passwordRevocationDelay);
+    required(path.address.street);
+    maxLength(path.address.street, this.maxStreetLength);
+    required(path.address.zipCode);
+    maxLength(path.address.zipCode, 10);
+    required(path.address.city);
+    maxLength(path.address.city, 100);
+    required(path.address.country);
+    maxLength(path.internalCode, 20);
+    required(path.language);
+    requiredValue(path.emailDomains);
+    required(path.defaultEmailDomain);
+    disabled(path.gdprAlert, () => !!this.gdprReadOnlyStatus());
+    disabled(path.gdprAlertDelay, () => !!this.gdprReadOnlyStatus());
+    required(path.gdprAlertDelay);
+    min(path.gdprAlertDelay, 1);
+    validate(path.gdprAlertDelay, ({ value }) => {
+      const delay = value();
+      return delay == null || String(delay) === '' || GDPR_ALERT_DELAY_PATTERN.test(String(delay)) ? undefined : { kind: 'pattern' };
     });
+  });
+
+  // Validators of the editable fields (they validate the value being edited, before it is set in the form)
+  readonly codeValidator: ValidatorFn = Validators.compose([
+    Validators.required,
+    Validators.pattern(ALPHA_NUMERIC_REGEX),
+    Validators.maxLength(this.customerCodeMaxLength),
+  ]);
+  readonly codeAsyncValidator = computed<AsyncValidatorFn>(() => this.customerCreateValidators.uniqueCode(this.customerCode()));
+  readonly requiredValidator: ValidatorFn = Validators.required;
+  readonly streetValidator: ValidatorFn = Validators.compose([Validators.required, Validators.maxLength(this.maxStreetLength)]);
+  readonly gdprAlertDelayValidator: ValidatorFn = Validators.compose([
+    Validators.required,
+    Validators.min(1),
+    Validators.pattern(GDPR_ALERT_DELAY_PATTERN),
+  ]);
+
+  constructor() {
+    toObservable(computed(() => ({ value: this.model(), valid: this.form().valid() })))
+      .pipe(
+        filter(({ value }) => value !== this.resetValue),
+        debounceTime(UPDATE_DEBOUNCE_TIME),
+        filter(() => this.form().valid()),
+        map(() => diff(this.model(), this.previousValue)),
+        filter((formData) => !isEmpty(formData)),
+        map((formData) => extend({ id: this.customer().id }, formData)),
+        switchMap((formData) => this.customerService.patch(formData).pipe(catchError(() => of(null)))),
+        takeUntilDestroyed(),
+      )
+      .subscribe((customer: Customer) => this.resetForm(customer));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['customer']) {
       this.resetForm(this.customer());
     }
-    if (changes['readOnly']) {
-      const readOnly = this.readOnly();
-      if (readOnly && this.form.enabled) {
-        this.form.disable({ emitEvent: false });
-      } else if (this.form.disabled) {
-        this.form.enable({ emitEvent: false });
-        if (this._gdprReadOnlyStatus) {
-          this.form.get('gdprAlertDelay').disable({ emitEvent: false });
-          this.form.get('gdprAlert').disable({ emitEvent: false });
-          this.form.get('identifier').disable({ emitEvent: false });
-        }
-      }
-    }
-    if (changes['gdprReadOnlyStatus']) {
-      const gdprReadOnlyStatus = this.gdprReadOnlyStatus();
-      this._gdprReadOnlyStatus = gdprReadOnlyStatus;
-      if (gdprReadOnlyStatus) {
-        this.form.get('gdprAlertDelay').disable({ emitEvent: false });
-        this.form.get('gdprAlert').disable({ emitEvent: false });
-      }
-    }
   }
 
   ngOnInit() {
-    this.sub = merge(this.form.statusChanges, this.form.valueChanges)
-      .pipe(
-        debounceTime(UPDATE_DEBOUNCE_TIME),
-        filter(() => this.form.valid),
-        map(() => diff(this.form.value, this.previousValue)),
-        filter((formData) => !isEmpty(formData)),
-        map((formData) => extend({ id: this.customer().id }, formData)),
-        switchMap((formData) => this.customerService.patch(formData).pipe(catchError(() => of(null)))),
-      )
-      .subscribe((customer: Customer) => this.resetForm(customer));
-
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
       this.countries = values.map((country) => ({ key: country.code, label: country.name }));
     });
   }
 
-  ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
-  }
-
   private resetForm(customer: Customer) {
     if (customer) {
-      this.form.get('code').setAsyncValidators(this.customerCreateValidators.uniqueCode(customer.code));
+      this.customerCode.set(customer.code);
     }
-    this.form.reset(customer, { emitEvent: false });
-    this.previousValue = this.form.value;
+    this.resetValue = toCustomerInformationModel(customer);
+    this.model.set(this.resetValue);
+    this.form().reset();
+    this.previousValue = this.resetValue;
   }
 }

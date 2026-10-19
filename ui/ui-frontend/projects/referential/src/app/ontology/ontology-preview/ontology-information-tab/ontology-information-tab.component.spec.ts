@@ -36,7 +36,6 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -74,9 +73,8 @@ describe('OntologyInformationTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatFormFieldModule, MatInputModule, MatSelectModule, ReactiveFormsModule, VitamUICommonTestModule, VitamUILibraryModule],
+      imports: [MatFormFieldModule, MatInputModule, MatSelectModule, VitamUICommonTestModule, VitamUILibraryModule],
       providers: [
-        FormBuilder,
         { provide: OntologyService, useValue: ontologyServiceMock },
         {
           provide: SecurityService,

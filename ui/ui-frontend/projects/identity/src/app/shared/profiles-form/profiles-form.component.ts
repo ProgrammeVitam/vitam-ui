@@ -182,8 +182,8 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit, OnCh
     if (this.profileIds.includes(this.profileSelect.value)) {
       return;
     }
-    this.profileIds.push(this.profileSelect.value);
-    this.profileIds = this.profileIds.sort(byApplicationName(this.profiles, this.applicationsDetails));
+    // A new array is emitted so that signal forms detect the change
+    this.profileIds = [...this.profileIds, this.profileSelect.value].sort(byApplicationName(this.profiles, this.applicationsDetails));
     this.updateApplicationTree();
     this.onChange(this.profileIds);
   }

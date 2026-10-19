@@ -16,7 +16,7 @@
             <h4>{{ state.id + ' (' + entry.type + ')' }}</h4>
             <vitamui-input
               [class.focused]="state.id === 'Active'"
-              [formControl]="state.control"
+              [formField]="state.field"
               placeholder="Label"
               [multiple]="config.multiple"
               [textarea]="config.textarea"

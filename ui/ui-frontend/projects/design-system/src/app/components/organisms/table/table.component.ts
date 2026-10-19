@@ -39,7 +39,6 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Direction, Group, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SampleDialogComponent } from '../dialog/sample-dialog/sample-dialog.component';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -51,7 +50,6 @@ import { MatMenuModule } from '@angular/material/menu';
   styleUrls: ['./table.component.scss'],
   imports: [
     CommonModule,
-    ReactiveFormsModule,
     VitamUICommonModule,
     VitamUILibraryModule,
     MatButtonToggleModule,

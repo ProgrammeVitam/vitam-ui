@@ -1,13 +1,13 @@
-<form [formGroup]="form">
+<form novalidate (submit)="$event.preventDefault()">
   <vitamui-slide-toggle
-    formControlName="enabled"
+    [formField]="form.enabled"
     [vitamuiTooltip]="'USER_PROFILE.INFORMATIONS.ACTIVE_SWITCH_TOOLTIP' | translate"
     [vitamuiTooltipDisabled]="profile()?.groupsCount === 0"
   >
-    @if (!form?.get('enabled').value) {
+    @if (!form.enabled().value()) {
       <span>{{ 'USER_PROFILE.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
     }
-    @if (form?.get('enabled').value) {
+    @if (form.enabled().value()) {
       <span>{{ 'USER_PROFILE.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
     }
   </vitamui-slide-toggle>
@@ -15,11 +15,10 @@
   <div class="row">
     <div class="col-12">
       <vitamui-common-editable-input
-        formControlName="identifier"
+        [formField]="form.identifier"
         [maxlength]="12"
         [label]="'COMMON.ID' | translate"
-        [validator]="form?.get('identifier')?.validator"
-        [asyncValidator]="form?.get('identifier')?.asyncValidator"
+        [validator]="requiredValidator"
       >
       </vitamui-common-editable-input>
     </div>
@@ -28,11 +27,11 @@
   <div class="row">
     <div class="col-12">
       <vitamui-common-editable-input
-        formControlName="name"
+        [formField]="form.name"
         [maxlength]="100"
         [label]="'USER_PROFILE.INFORMATIONS.NAME' | translate"
-        [validator]="form?.get('name')?.validator"
-        [asyncValidator]="form?.get('name')?.asyncValidator"
+        [validator]="requiredValidator"
+        [asyncValidator]="nameAsyncValidator()"
       >
         <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
         <vitamui-common-field-error errorKey="nameExists">{{
@@ -55,11 +54,10 @@
       [vitamuiTooltipDisabled]="profile()?.groupsCount === 0"
     >
       <vitamui-common-editable-level-input
-        formControlName="level"
-        [maxlength]="250"
+        [formField]="form.level"
         [prefix]="userLevel"
         [label]="'USER_PROFILE.INFORMATIONS.SUBLEVEL' | translate"
-        [validator]="form?.get('level')?.validator"
+        [validator]="levelValidator"
       >
         <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
         <vitamui-common-field-error errorKey="nameExists">{{
@@ -72,17 +70,17 @@
   <div class="row">
     <div class="col-12">
       <vitamui-common-editable-input
-        formControlName="description"
+        [formField]="form.description"
         [maxlength]="380"
         [label]="'USER_PROFILE.INFORMATIONS.DESCRIPTION' | translate"
-        [validator]="form?.get('description')?.validator"
+        [validator]="requiredValidator"
       >
         <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
 
     <div class="col-6 my-4">
-      <vitamui-common-role-toggle formControlName="roles">
+      <vitamui-common-role-toggle [formField]="form.roles">
         <vitamui-common-role [name]="roleEnum.ROLE_MFA_USERS">{{
           'USER_PROFILE.INFORMATIONS.STRONG_AUTHENT' | translate
         }}</vitamui-common-role>

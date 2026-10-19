@@ -1,12 +1,12 @@
 <vitamui-dialog-header [title]="'CUSTOMER.HOMEPAGE_MESSAGE.TITLE' | translate"></vitamui-dialog-header>
 
 <mat-dialog-content>
-  <form [formGroup]="homepageMessageForm()" id="homepageMessageForm">
+  <form id="homepageMessageForm" novalidate (submit)="$event.preventDefault()">
     <div class="justify-content-between">
       <div class="d-flex flex-column">
         <vitamui-input
           class="pb-2"
-          formControlName="portalTitle"
+          [formField]="homepageMessageForm.portalTitle"
           [placeholder]="'CUSTOMER.HOMEPAGE_MESSAGE.DEFAULT_PORTAL_TITLE' | translate"
         >
         </vitamui-input>
@@ -14,31 +14,31 @@
         <vitamui-input
           [textarea]="true"
           class="pb-2"
-          formControlName="portalMessage"
+          [formField]="homepageMessageForm.portalMessage"
           [placeholder]="'CUSTOMER.HOMEPAGE_MESSAGE.DEFAULT_PORTAL_MESSAGE' | translate"
         >
         </vitamui-input>
         <small class="d-flex justify-content-end"
-          >{{ homepageMessageForm().get('portalMessage')?.value?.length }}
+          >{{ homepageMessageForm.portalMessage().value()?.length }}
           {{ 'CUSTOMER.HOMEPAGE_MESSAGE.PORTAL_MESSAGE_LENGTH' | translate }}</small
         >
       </div>
 
-      @for (item of homepageMessageForm().get('translations').value; track item; let index = $index) {
+      @for (item of homepageMessageForm.translations; track $index; let index = $index) {
         <div>
           <app-homepage-message-translation
             [form]="item"
             [index]="index + 1"
             [languages]="getLanguages(index)"
-            (formChange)="update()"
             (formRemove)="remove(index)"
           >
           </app-homepage-message-translation>
         </div>
       }
       <button
+        type="button"
         class="pl-4 btn link"
-        [disabled]="!(homepageMessageForm().get('translations')?.value?.length < languages?.length - 1 && isLanguageSet())"
+        [disabled]="!(homepageMessageForm.translations().value().length < languages?.length - 1 && isLanguageSet())"
         (click)="onAdd()"
       >
         <span> {{ 'CUSTOMER.HOMEPAGE_MESSAGE.ADD_LANGUAGE' | translate }}</span>

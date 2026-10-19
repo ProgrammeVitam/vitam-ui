@@ -79,7 +79,6 @@ import { FileTreeModule } from './../profile/edit-profile/file-tree/file-tree.mo
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
@@ -98,11 +97,9 @@ import { TranslatePipe } from '@ngx-translate/core';
     CommonModule,
     CoreModule,
     FileTreeModule,
-    FormsModule,
     MatIconModule,
     MatSlideToggleModule,
     MatTabsModule,
-    ReactiveFormsModule,
     UserActionsModule,
     VitamUICommonModule,
     VitamUILibraryModule,

@@ -62,10 +62,11 @@ import {
   Unit,
   ZipFile,
   ZipFileStatus,
+  requiredValue,
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../archive-collect.service';
 import { SipImportTrackingService } from '../../shared/sip-import-tracking.service';
-import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { form, FormField, required } from '@angular/forms/signals';
 import { last, tap } from 'rxjs/operators';
 import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import { CdkStep } from '@angular/cdk/stepper';
@@ -84,6 +85,11 @@ export enum ImportType {
 
 const HTTP_STATUS_INSUFFICIENT_STORAGE = 507;
 
+interface AddUnitsForm {
+  importType: string | null;
+  linkParentId: { included: string[]; excluded: string[] };
+}
+
 @Component({
   selector: 'app-add-units',
   templateUrl: './add-units.component.html',
@@ -95,8 +101,7 @@ const HTTP_STATUS_INSUFFICIENT_STORAGE = 507;
     MatDialogContent,
     MatProgressSpinner,
     SelectComponent,
-    FormsModule,
-    ReactiveFormsModule,
+    FormField,
     FileSelectorComponent,
     MatDialogActions,
     NextStepComponent,
@@ -130,10 +135,13 @@ export class AddUnitsComponent implements OnInit {
   isLoading = signal(false);
   stepIndex = 0;
 
-  importTypeControl: FormControl<string | null> = new FormControl(null);
-  filesToUploadControl: FormControl<File[]> = new FormControl([], [Validators.required]);
+  readonly addUnitsForm = form(signal<AddUnitsForm>({ importType: null, linkParentId: { included: [], excluded: [] } }), (path) => {
+    required(path.importType);
+  });
+  readonly filesToUploadForm = form(signal<File[]>([]), (path) => {
+    requiredValue(path);
+  });
   zipFileStatus$: Observable<ZipFileStatus>;
-  linkParentIdControl = new FormControl({ included: [], excluded: [] });
   projectUnits = signal<Unit[]>(undefined);
 
   readonly confirmCancelDialogTemplate = viewChild<TemplateRef<AddUnitsComponent>>('confirmCancelDialog');
@@ -180,7 +188,7 @@ export class AddUnitsComponent implements OnInit {
   }
 
   cancel() {
-    if (this.filesToUploadControl.value.length > 0) {
+    if (this.filesToUploadForm().value().length > 0) {
       this.confirmCancelDialog = this.dialog.open(this.confirmCancelDialogTemplate());
     } else {
       this.addUnitsDialogRef.close(false);
@@ -205,21 +213,21 @@ export class AddUnitsComponent implements OnInit {
     // For COMPRESSED and SIP types, use the file directly without zipping it
     let compressedZip: Blob;
     if ([ImportType.COMPRESSED, ImportType.SIP].includes(this.importType as ImportType)) {
-      compressedZip = new Blob(this.filesToUploadControl.value, { type: 'application/zip' });
+      compressedZip = new Blob(this.filesToUploadForm().value(), { type: 'application/zip' });
       zipFile.zipFileStatus.size = compressedZip.size;
       zipFile.zipFileStatus.currentFileUploadedSize = 100;
     }
 
     from(
       this.importType === ImportType.DIRECTORIES_FILES
-        ? zipFile.addFiles(this.filesToUploadControl.value).generateZip()
+        ? zipFile.addFiles(this.filesToUploadForm().value()).generateZip()
         : of(compressedZip).toPromise(),
     )
       .pipe(
         switchMap((content) =>
           this.importType === ImportType.SIP
-            ? this.archiveCollectService.uploadSip(content, this.data.transaction.id, this.linkParentIdControl.value.included[0])
-            : this.archiveCollectService.uploadZip(content, this.data.transaction.id, this.linkParentIdControl.value.included[0]),
+            ? this.archiveCollectService.uploadSip(content, this.data.transaction.id, this.addUnitsForm.linkParentId().value().included[0])
+            : this.archiveCollectService.uploadZip(content, this.data.transaction.id, this.addUnitsForm.linkParentId().value().included[0]),
         ),
         tap((httpEvent) => zipFile.updateUploadingZipFileStatus(httpEvent)),
         last((httpEvent) => httpEvent.type === HttpEventType.Response),
@@ -250,11 +258,7 @@ export class AddUnitsComponent implements OnInit {
   }
 
   resetFilesToImportList() {
-    this.filesToUploadControl.setValue([]);
-    this.filesToUploadControl.clearValidators();
-    this.filesToUploadControl.setValidators([Validators.required]);
-    this.filesToUploadControl.updateValueAndValidity();
-    this.filesToUploadControl.markAsUntouched();
+    this.filesToUploadForm().reset([]);
   }
 
   private handleUploadSuccess(operationId: string | null): void {
@@ -284,7 +288,7 @@ export class AddUnitsComponent implements OnInit {
   }
 
   get importType(): string | null {
-    return this.importTypeControl.value;
+    return this.addUnitsForm.importType().value();
   }
 
   protected ImportType = ImportType;

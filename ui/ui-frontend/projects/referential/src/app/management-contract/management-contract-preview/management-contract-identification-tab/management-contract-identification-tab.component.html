@@ -1,8 +1,8 @@
 <h5>{{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.TITLE' | translate }}</h5>
-<form [formGroup]="contractForm" (ngSubmit)="submit()">
+<form [formRoot]="contractForm">
   <!-- FIXME: add an API able to remove patch a management contract -->
   <vitamui-select
-    formControlName="policyTypeOption"
+    [formField]="contractForm.policyTypeOption"
     [placeholder]="'CONTRACT_MANAGEMENT.FORM_UPDATE.IDENTIFIER_TYPE' | translate"
     [options]="policyTypeOptions"
     [multiple]="false"
@@ -12,20 +12,20 @@
     }"
   ></vitamui-select>
 
-  <div class="mt-3" formArrayName="persistentIdentifierPolicies">
-    @for (persistentIdentifier of getPersistentIdentifierPolicies().controls; track persistentIdentifier) {
+  <div class="mt-3">
+    @for (persistentIdentifier of contractForm.persistentIdentifierPolicies; track persistentIdentifier) {
       <div>
         <app-update-persistent-identifier-policy-form
-          [form]="$any(persistentIdentifier)"
-          (objectUsagePolicyAdded)="contractForm.markAsDirty()"
-          (objectUsagePolicyRemoved)="contractForm.markAsDirty()"
+          [form]="persistentIdentifier"
+          (objectUsagePolicyAdded)="contractForm().markAsDirty()"
+          (objectUsagePolicyRemoved)="contractForm().markAsDirty()"
         ></app-update-persistent-identifier-policy-form>
       </div>
     }
   </div>
-  @for (error of $any(contractForm.errors) ?? []; track error) {
+  @for (error of contractForm().errors(); track $index) {
     <div>
-      {{ error }}
+      {{ error.kind }}
     </div>
   }
   <div class="row">

@@ -1,7 +1,7 @@
 <div>
-  <form [formGroup]="form" class="gap-3 align-items-stretch">
-    <vitamui-slide-toggle formControlName="enabled">
-      {{ (form.get('enabled')?.value ? 'EXTERNAL_PARAM_PROFILE.ACTIVE_PROFILE' : 'EXTERNAL_PARAM_PROFILE.INACTIVE_PROFILE') | translate }}
+  <form class="gap-3 align-items-stretch" novalidate (submit)="$event.preventDefault()">
+    <vitamui-slide-toggle [formField]="form.enabled">
+      {{ (form.enabled().value() ? 'EXTERNAL_PARAM_PROFILE.ACTIVE_PROFILE' : 'EXTERNAL_PARAM_PROFILE.INACTIVE_PROFILE') | translate }}
     </vitamui-slide-toggle>
 
     <div class="row">
@@ -20,11 +20,11 @@
       </div>
       <vitamui-common-editable-input
         class="col-6"
-        formControlName="name"
+        [formField]="form.name"
         [maxlength]="100"
         [label]="'EXTERNAL_PARAM_PROFILE.NAME' | translate"
-        [validator]="form?.get('name')?.validator"
-        [asyncValidator]="form?.get('name')?.asyncValidator"
+        [validator]="requiredValidator"
+        [asyncValidator]="nameAsyncValidator()"
       >
         <vitamui-common-field-error errorKey="required">{{
           'EXTERNAL_PARAM_PROFILE.INPUT_REQUIRED' | translate
@@ -36,16 +36,16 @@
     </div>
 
     <vitamui-common-editable-input
-      formControlName="description"
+      [formField]="form.description"
       [maxlength]="380"
       label="{{ 'EXTERNAL_PARAM_PROFILE.DESCRIPTION' | translate }}"
-      [validator]="form?.get('description')?.validator"
+      [validator]="requiredValidator"
     >
       <vitamui-common-field-error errorKey="required">{{ 'EXTERNAL_PARAM_PROFILE.INPUT_REQUIRED' | translate }}</vitamui-common-field-error>
     </vitamui-common-editable-input>
 
     <vitamui-select
-      formControlName="accessContract"
+      [formField]="form.accessContract"
       [placeholder]="'EXTERNAL_PARAM_PROFILE.SELECT_ACCESSCONTRACT' | translate"
       [options]="activeAccessContractsIdentifiers()"
       [multiple]="false"

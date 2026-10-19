@@ -37,7 +37,6 @@
 
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -138,7 +137,6 @@ describe('ArchiveUnitInformationTabComponent', () => {
         DateTimeStubPipe,
       ],
       providers: [
-        FormBuilder,
         { provide: ArchiveService, useValue: archiveServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: ENVIRONMENT, useValue: environment },

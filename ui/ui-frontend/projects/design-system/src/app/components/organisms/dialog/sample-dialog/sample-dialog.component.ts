@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, signal, untracked } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 import { TranslatePipe } from '@ngx-translate/core';
-import { FormsModule } from '@angular/forms';
+import { form, FormField } from '@angular/forms/signals';
 import { MatRadioModule } from '@angular/material/radio';
 import {
   DialogContentWithStateComponent,
@@ -49,6 +49,14 @@ import {
   VitamUICommonModule,
 } from 'vitamui-library';
 
+interface SampleDialogSettings {
+  showSteps: boolean;
+  showTitle: boolean;
+  showSubhead: boolean;
+  smallDialog: boolean;
+  radioValue: number;
+}
+
 @Component({
   selector: 'design-system-sample-dialog',
   templateUrl: './sample-dialog.component.html',
@@ -58,7 +66,7 @@ import {
     DialogHeaderComponent,
     SlideToggleComponent,
     VitamUICommonModule,
-    FormsModule,
+    FormField,
     NextStepComponent,
     PreviousStepComponent,
     MatRadioModule,
@@ -69,22 +77,16 @@ export class SampleDialogComponent {
   private readonly dialogRef = inject<MatDialogRef<SampleDialogComponent>>(MatDialogRef);
   isSmall = inject(MAT_DIALOG_DATA);
 
-  showSteps = true;
-  showTitle = true;
-  showSubhead = true;
-  smallDialog = false;
-  radioValue = 1;
+  readonly settings = form(
+    signal<SampleDialogSettings>({ showSteps: true, showTitle: true, showSubhead: true, smallDialog: !!this.isSmall, radioValue: 1 }),
+  );
 
   titles = ['Dialog customization', 'Drag & Drop', 'Choose a value', 'Displaying an error', 'Displaying a success message'];
 
   constructor() {
-    const isSmall = this.isSmall;
-
-    this.smallDialog = isSmall;
-  }
-
-  toggleSmall($event: boolean) {
-    this.smallDialog = $event;
-    this.smallDialog ? this.dialogRef.addPanelClass('small') : this.dialogRef.removePanelClass('small');
+    effect(() => {
+      const small = this.settings.smallDialog().value();
+      untracked(() => (small ? this.dialogRef.addPanelClass('small') : this.dialogRef.removePanelClass('small')));
+    });
   }
 }

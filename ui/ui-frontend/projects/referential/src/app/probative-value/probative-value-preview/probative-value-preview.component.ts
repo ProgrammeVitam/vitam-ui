@@ -48,7 +48,6 @@ import {
 import { ProbativeValueService } from '../probative-value.service';
 import { EventTypeBadgeColorPipe } from '../../shared/pipes/event-type-badge-color.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 
@@ -56,15 +55,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-probative-value-preview',
   templateUrl: './probative-value-preview.component.html',
   styleUrls: ['./probative-value-preview.component.scss'],
-  imports: [
-    PipesModule,
-    EventTypeBadgeColorPipe,
-    TranslatePipe,
-    CommonModule,
-    MatProgressSpinnerModule,
-    ReactiveFormsModule,
-    VitamuiSidenavHeaderComponent,
-  ],
+  imports: [PipesModule, EventTypeBadgeColorPipe, TranslatePipe, CommonModule, MatProgressSpinnerModule, VitamuiSidenavHeaderComponent],
 })
 export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
   private readonly probativeValueService = inject(ProbativeValueService);

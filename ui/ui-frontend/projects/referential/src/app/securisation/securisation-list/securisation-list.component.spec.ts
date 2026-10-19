@@ -41,7 +41,6 @@ import { of } from 'rxjs';
 import { SecurisationService } from '../securisation.service';
 import { SecurisationListComponent } from './securisation-list.component';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('SecurisationListComponent', () => {
@@ -62,7 +61,7 @@ describe('SecurisationListComponent', () => {
     });
 
     await TestBed.configureTestingModule({
-      imports: [VitamUICommonTestModule, ReactiveFormsModule, SecurisationListComponent],
+      imports: [VitamUICommonTestModule, SecurisationListComponent],
       providers: [
         { provide: MatDialog, useValue: {} },
         { provide: SecurisationService, useValue: securisationServiceMock },

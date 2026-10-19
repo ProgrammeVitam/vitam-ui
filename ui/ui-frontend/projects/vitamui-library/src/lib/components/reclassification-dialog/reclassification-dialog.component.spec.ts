@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { ReclassificationDialogComponent } from './reclassification-dialog.component';
+import { ReclassificationDialogComponent, ReclassificationMode } from './reclassification-dialog.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmDialogService } from '../../../app/modules/components/common-confirm-dialog/confirm-dialog.service';
@@ -142,13 +142,70 @@ describe('ReclassificationDialogComponent', () => {
   it('should call reclassification of reclassificationService', () => {
     // Given
     vi.spyOn(reclassificationServiceMock, 'reclassification');
-    component.form.controls.action.setValue('PULL' as any);
+    component.form.action().value.set('PULL');
 
     // When
     component.onSubmit();
 
     // Then
     expect(reclassificationServiceMock.reclassification).toHaveBeenCalled();
+  });
+
+  it('should submit the reclassification when the form is submitted', async () => {
+    const reclassificationSpy = vi.spyOn(reclassificationServiceMock, 'reclassification');
+    reclassificationSpy.mockClear();
+    component.form.action().value.set('PULL');
+
+    fixture.nativeElement.querySelector('form').dispatchEvent(new Event('submit'));
+    await fixture.whenStable();
+
+    expect(reclassificationSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should be dirty only after a user change', () => {
+    expect(component.form().dirty()).toBe(false);
+  });
+
+  it('should initialize the archive unit id from the filing plan selection when switching mode', () => {
+    component.form.multiSelect.filingPlan().value.set({ included: ['guid-1'], excluded: [] });
+
+    component.form.reclassificationMode().value.set(ReclassificationMode.ARCHIVE_UNIT_ID);
+    component.onModeChange(ReclassificationMode.ARCHIVE_UNIT_ID);
+
+    expect(component.form.singleSelect.id().value()).toEqual('guid-1');
+    expect(component.form.singleSelect().disabled()).toBe(false);
+    expect(component.form.singleSelect.title().disabled()).toBe(true);
+    expect(component.form.multiSelect().disabled()).toBe(true);
+  });
+
+  it('should reset the filing plan selection when switching back to the filing plan mode', () => {
+    component.form.multiSelect.filingPlan().value.set({ included: ['guid-1'], excluded: [] });
+
+    component.onModeChange(ReclassificationMode.FILING_PLAN);
+
+    expect(component.form.multiSelect.filingPlan().value()).toEqual({ included: [], excluded: [] });
+  });
+
+  it('should validate the archive unit id asynchronously', async () => {
+    vi.useFakeTimers();
+    try {
+      component.form.reclassificationMode().value.set(ReclassificationMode.ARCHIVE_UNIT_ID);
+      component.form.singleSelect.id().value.set('unknown-guid');
+      TestBed.tick();
+      expect(component.form.singleSelect.id().pending()).toBe(true);
+
+      await vi.advanceTimersByTimeAsync(400);
+
+      expect(
+        component.form.singleSelect
+          .id()
+          .errors()
+          .map((error) => error.kind),
+      ).toEqual(['targetGuid']);
+      expect(component.hasInvalidTarget()).toBe(true);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('items Selected should be greater than 0', () => {

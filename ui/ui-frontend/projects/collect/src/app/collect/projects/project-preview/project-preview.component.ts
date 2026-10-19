@@ -37,9 +37,9 @@
 import {
   AfterViewInit,
   Component,
-  computed,
   inject,
   input,
+  linkedSignal,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -48,10 +48,11 @@ import {
   SimpleChanges,
   TemplateRef,
   output,
+  untracked,
   viewChild,
   viewChildren,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { applyEach, disabled, form, FormField, required, validate } from '@angular/forms/signals';
 import { MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader, MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -78,13 +79,13 @@ import {
   getProjectIcon,
   getProjectWorkflow,
   ItemNode,
-  MiscValidators,
-  oneIncludedNodeRequired,
   Option,
   PageRequest,
   PaginatedResponse,
   Project,
   readFileContent,
+  requiredNotBlank,
+  requiredValue,
   SchemaElement,
   SchemaService,
   SecurityService,
@@ -98,7 +99,49 @@ import {
   VitamUILibraryModule,
   Workflow,
 } from 'vitamui-library';
-import { AttachmentMode, LOCAL_ARCHIVING_SYSTEM_ID } from '../create-project/create-project.component';
+import { AttachmentMode, AttachmentNodes, LOCAL_ARCHIVING_SYSTEM_ID, RuleParamForm } from '../create-project/create-project.component';
+
+interface ProjectPreviewForm {
+  messageIdentifier: string;
+  id: string;
+  comment: string;
+  originatingAgencyIdentifier: string;
+  submissionAgencyIdentifier: string;
+  archivalAgencyIdentifier: string;
+  transferringAgencyIdentifier: string;
+  archivalAgreement: string;
+  archiveProfile: string;
+  acquisitionInformation: string;
+  legalStatus: string;
+  // Either a tree selection or a free GUID
+  unitUp: AttachmentNodes | string;
+  unitUps: RuleParamForm[];
+  // toggle for the default fixed attachment position (key/value rules flow)
+  defaultAttachmentEnabled: boolean;
+  automaticIngest: boolean;
+  transformationRules: string;
+}
+
+const emptyProjectPreviewForm = (): ProjectPreviewForm => ({
+  messageIdentifier: null,
+  id: null,
+  comment: null,
+  originatingAgencyIdentifier: null,
+  submissionAgencyIdentifier: null,
+  archivalAgencyIdentifier: null,
+  transferringAgencyIdentifier: null,
+  archivalAgreement: null,
+  archiveProfile: null,
+  acquisitionInformation: null,
+  legalStatus: null,
+  unitUp: null,
+  unitUps: [],
+  defaultAttachmentEnabled: false,
+  automaticIngest: null,
+  transformationRules: null,
+});
+
+const emptyAttachmentNodes = (): AttachmentNodes => ({ included: [], excluded: [] });
 
 @Component({
   selector: 'app-project-preview',
@@ -106,7 +149,7 @@ import { AttachmentMode, LOCAL_ARCHIVING_SYSTEM_ID } from '../create-project/cre
   styleUrls: ['./project-preview.component.scss'],
   imports: [
     AsyncPipe,
-    FormsModule,
+    FormField,
     MatButtonModule,
     MatButtonToggleModule,
     MatDialogModule,
@@ -115,14 +158,12 @@ import { AttachmentMode, LOCAL_ARCHIVING_SYSTEM_ID } from '../create-project/cre
     MatTabsModule,
     NgClass,
     NgTemplateOutlet,
-    ReactiveFormsModule,
     VitamUICommonModule,
     VitamUILibraryModule,
     TranslatePipe,
   ],
 })
 export class ProjectPreviewComponent implements OnChanges, OnInit, AfterViewInit, OnDestroy {
-  private readonly formBuilder = inject(FormBuilder);
   private readonly projectService = inject(ProjectsService);
   private readonly projectApiService = inject(ProjectsApiService);
   private readonly securityService = inject(SecurityService);
@@ -152,17 +193,54 @@ export class ProjectPreviewComponent implements OnChanges, OnInit, AfterViewInit
   // Attachment position mode (Arbres & Plans tree vs free GUID input) for the fixed/default position
   fixedAttachmentMode: AttachmentMode = AttachmentMode.TREE;
 
-  form: FormGroup;
-
   project = signal<Project>({} as Project);
-  jsltFilename = 'TransformationRules.jslt';
-  transformationRulesControl = computed(() => {
-    return new FormControl(
-      this.project().transformationRules && this.form.get('transformationRules').pristine
-        ? [new File([this.project().transformationRules], this.jsltFilename)]
-        : undefined,
-    );
+
+  private readonly model = signal<ProjectPreviewForm>(emptyProjectPreviewForm());
+  readonly form = form(this.model, (path) => {
+    requiredNotBlank(path.messageIdentifier);
+    requiredNotBlank(path.originatingAgencyIdentifier);
+    requiredNotBlank(path.submissionAgencyIdentifier);
+    requiredNotBlank(path.archivalAgencyIdentifier);
+    requiredNotBlank(path.transferringAgencyIdentifier);
+    requiredNotBlank(path.archivalAgreement);
+    requiredValue(path.unitUps, { when: () => !!this.project().unitUps?.length });
+    applyEach(path.unitUps, (ruleParam) => {
+      requiredValue(ruleParam.ontologyList);
+      requiredValue(ruleParam.metadataValue);
+      validate(ruleParam.unitUp, ({ value }) => {
+        const unitUp = value();
+        if (typeof unitUp !== 'string') {
+          // Same errors as oneIncludedNodeRequired()
+          if (!unitUp) return { kind: 'missingNodes' };
+          return unitUp.included?.length ? undefined : { kind: 'missingIncludedNodes' };
+        }
+        // A free GUID can only be typed when connected to the local EAS
+        return this.connectedToLocalEasWithCurrentTenant && !unitUp ? { kind: 'required' } : undefined;
+      });
+    });
   });
+
+  // Read-only fields
+  readonly projectIdField = form(
+    linkedSignal(() => this.project().id ?? null),
+    (path) => disabled(path),
+  );
+  readonly archivingSystemField = form(
+    linkedSignal(() => this.project().archivingSystemId + TENANT_SEPARATOR + this.project().archivingSystemTenant),
+    (path) => {
+      disabled(path);
+      required(path);
+    },
+  );
+
+  jsltFilename = 'TransformationRules.jslt';
+  readonly transformationRulesForm = form(
+    linkedSignal<File[]>(() =>
+      this.project().transformationRules && untracked(() => !this.form.transformationRules().dirty())
+        ? [new File([this.project().transformationRules], this.jsltFilename)]
+        : [],
+    ),
+  );
 
   acquisitionInformationsList: string[];
   legalStatusList: Option[] = [];
@@ -193,7 +271,7 @@ export class ProjectPreviewComponent implements OnChanges, OnInit, AfterViewInit
   #editMode = false;
   isPanelExtended = false;
   dialogRefToClose: MatDialogRef<ProjectPreviewComponent>;
-  selectedValue = 'YES';
+  readonly updateTransactionsField = form(signal<'YES' | 'NO'>('YES'));
 
   transactions$: BehaviorSubject<PaginatedResponse<Transaction>> = new BehaviorSubject<PaginatedResponse<Transaction>>(null);
   openedTransactions$ = this.transactions$.pipe(map((ts) => ts?.values?.filter((t) => t?.status === 'OPEN')));
@@ -238,7 +316,6 @@ export class ProjectPreviewComponent implements OnChanges, OnInit, AfterViewInit
       this.tenantIdentifier = params['tenantIdentifier'];
     });
 
-    this.configForm();
     this.loadProject();
 
     this.legalStatusList = this.projectService.getLegalStatusList();
@@ -290,7 +367,7 @@ export class ProjectPreviewComponent implements OnChanges, OnInit, AfterViewInit
       this.showNormalPanel();
       this.configForm();
       this.initForm();
-      // Build the rules FormArray whenever the project carries rules, even if it also has a default attachment position
+      // Build the rules whenever the project carries rules, even if it also has a default attachment position
       if (project.unitUps?.length) {
         this.initRuleParams(project);
       }
@@ -331,38 +408,24 @@ export class ProjectPreviewComponent implements OnChanges, OnInit, AfterViewInit
     const keys = project.unitUps.map((units) => units.metadataKey);
     this.schemaService.getDescriptiveSchemaTree().subscribe((schema) => {
       const res = this.schemaService.getMetadataKeysByKeys(keys, schema);
-      project.unitUps.forEach((metadataUnitUp) => {
+      const ruleParams = project.unitUps.map((metadataUnitUp): RuleParamForm => {
         const item = res.find((sc) => sc.item.ApiField === metadataUnitUp.metadataKey).item;
-        const ontologyListControl = this.formBuilder.control<SchemaElement>(item, Validators.required);
-        const metadataValueControl = this.formBuilder.control(metadataUnitUp.metadataValue, Validators.required);
-        ontologyListControl.valueChanges.subscribe(() => {
-          metadataValueControl.setValidators(Validators.required); // To override Validators that may be added by datepicker if changing from datepicker to input
-          metadataValueControl.markAsTouched(); // To make sure error messages appear after changing the ontology
-        });
 
         // Restore the saved position: tree selection if the GUID is a node of the filing plan, free GUID input otherwise
         const attachmentMode = this.resolveAttachmentMode(metadataUnitUp.unitUp);
         const useTree = this.connectedToLocalEasWithCurrentTenant && attachmentMode === AttachmentMode.TREE;
 
-        this.unitUps.push(
-          this.formBuilder.group({
-            ontologyList: ontologyListControl,
-            metadataValue: metadataValueControl,
-            // Per-rule attachment position mode: tree (Arbres & Plans) or free GUID input
-            attachmentMode: [attachmentMode],
-            unitUp: useTree
-              ? [
-                  {
-                    included: metadataUnitUp.unitUp ? [metadataUnitUp.unitUp] : [],
-                    excluded: [],
-                  },
-                  oneIncludedNodeRequired(),
-                ]
-              : this.formBuilder.control(metadataUnitUp.unitUp, this.connectedToLocalEasWithCurrentTenant ? Validators.required : null),
-          }),
-        );
+        return {
+          ontologyList: item,
+          metadataValue: metadataUnitUp.metadataValue ?? null,
+          // Per-rule attachment position mode: tree (Arbres & Plans) or free GUID input
+          attachmentMode,
+          unitUp: useTree
+            ? { included: metadataUnitUp.unitUp ? [metadataUnitUp.unitUp] : [], excluded: [] }
+            : (metadataUnitUp.unitUp ?? null),
+        };
       });
-      // Set last: the signal write refreshes the view, which also renders the FormArray rows pushed above (zoneless).
+      this.form.unitUps().value.update((unitUps) => [...unitUps, ...ruleParams]);
       this.schemaOptions.set(schema);
     });
   }
@@ -375,10 +438,6 @@ export class ProjectPreviewComponent implements OnChanges, OnInit, AfterViewInit
     return this.units()?.some((unit) => unit['#id'] === unitId) ? AttachmentMode.TREE : AttachmentMode.GUID;
   }
 
-  get unitUps(): FormArray<FormGroup> {
-    return this.form.controls['unitUps'] as FormArray<FormGroup>;
-  }
-
   getName(item: SchemaElement): string {
     const path = item.Path.split('.').slice(0, -1);
     const parent = path.reduce((acc, p) => acc.children.find((o) => o.item.FieldName === p), {
@@ -388,37 +447,24 @@ export class ProjectPreviewComponent implements OnChanges, OnInit, AfterViewInit
   }
 
   addRuleParam() {
-    const ontologyListControl = this.formBuilder.control<SchemaElement>(undefined, Validators.required);
-    const metadataValueControl = this.formBuilder.control(undefined, Validators.required);
-
-    ontologyListControl.valueChanges.subscribe(() => {
-      metadataValueControl.setValidators(Validators.required); // To override Validators that may be added by datepicker if changing from datepicker to input
-      metadataValueControl.markAsTouched(); // To make sure error messages appear after changing the ontology
-    });
-
-    // rulesParams interface:
-    const newRuleParamForm = this.formBuilder.group({
-      ontologyList: ontologyListControl,
-      metadataValue: metadataValueControl,
+    const newRuleParam: RuleParamForm = {
+      ontologyList: null,
+      metadataValue: null,
       // Per-rule attachment position mode: tree (Arbres & Plans) or free GUID input
-      attachmentMode: [AttachmentMode.TREE],
-      unitUp: this.connectedToLocalEasWithCurrentTenant
-        ? [
-            {
-              included: [],
-              excluded: [],
-            },
-            oneIncludedNodeRequired(),
-          ]
-        : '',
-    });
+      attachmentMode: AttachmentMode.TREE,
+      unitUp: this.connectedToLocalEasWithCurrentTenant ? emptyAttachmentNodes() : '',
+    };
+    this.form.unitUps().value.update((unitUps) => [...unitUps, newRuleParam]);
+  }
 
-    this.unitUps.push(newRuleParamForm);
+  onOntologyChange(index: number) {
+    // To make sure error messages appear after changing the ontology
+    this.form.unitUps[index].metadataValue().markAsTouched();
   }
 
   deleteRuleParam(index: number) {
-    this.unitUps.removeAt(index);
-    this.form.markAsDirty(); // We should be able to submit the form if we only remove a rule
+    this.form.unitUps().value.update((unitUps) => unitUps.filter((_, i) => i !== index));
+    this.form().markAsDirty(); // We should be able to submit the form if we only remove a rule
   }
 
   searchArchiveUnitsByProject() {
@@ -451,25 +497,7 @@ export class ProjectPreviewComponent implements OnChanges, OnInit, AfterViewInit
     `${element.Origin === 'EXTERNAL' ? 'EXT-' : ''}${element.ShortName} - ${element.FieldName}`;
 
   configForm() {
-    this.form = this.formBuilder.group({
-      messageIdentifier: [null, [MiscValidators.requiredNotBlank]],
-      id: [null],
-      comment: [],
-      originatingAgencyIdentifier: [null, [MiscValidators.requiredNotBlank]],
-      submissionAgencyIdentifier: [null, [MiscValidators.requiredNotBlank]],
-      archivalAgencyIdentifier: [null, MiscValidators.requiredNotBlank],
-      transferringAgencyIdentifier: [null, MiscValidators.requiredNotBlank],
-      archivalAgreement: [null, MiscValidators.requiredNotBlank],
-      archiveProfile: [null],
-      acquisitionInformation: [null],
-      legalStatus: [null],
-      unitUp: [null],
-      unitUps: this.formBuilder.array([], this.project().unitUps?.length ? Validators.required : null),
-      // toggle for the default fixed attachment position (key/value rules flow)
-      defaultAttachmentEnabled: [false],
-      automaticIngest: [],
-      transformationRules: [],
-    });
+    this.form().reset(emptyProjectPreviewForm());
   }
 
   get connectedToLocalEasWithCurrentTenant(): boolean {
@@ -482,36 +510,35 @@ export class ProjectPreviewComponent implements OnChanges, OnInit, AfterViewInit
   }
 
   get defaultAttachmentEnabled(): boolean {
-    return this.form?.get('defaultAttachmentEnabled')?.value === true;
+    return this.form.defaultAttachmentEnabled().value() === true;
   }
 
   onDefaultAttachmentToggle(): void {
     if (!this.defaultAttachmentEnabled) {
       this.fixedAttachmentMode = AttachmentMode.TREE;
-      this.form.get('unitUp')?.setValue(this.connectedToLocalEasWithCurrentTenant ? { included: [], excluded: [] } : null);
+      this.form.unitUp().value.set(this.connectedToLocalEasWithCurrentTenant ? emptyAttachmentNodes() : null);
     }
-    this.form.markAsDirty();
+    this.form().markAsDirty();
   }
 
   setFixedAttachmentMode(value: AttachmentMode): void {
     this.fixedAttachmentMode = value;
     // The single unitUp control holds either a tree selection ({ included, excluded }) or a free GUID string
-    this.form.get('unitUp')?.setValue(value === AttachmentMode.TREE ? { included: [], excluded: [] } : '');
-    this.form.markAsDirty();
+    this.form.unitUp().value.set(value === AttachmentMode.TREE ? emptyAttachmentNodes() : '');
+    this.form().markAsDirty();
   }
 
-  setRuleAttachmentMode(ruleParamForm: FormGroup, mode: AttachmentMode): void {
-    ruleParamForm.get('attachmentMode')?.setValue(mode);
-    const unitUpControl = ruleParamForm.get('unitUp');
-    if (mode === AttachmentMode.TREE) {
-      unitUpControl?.setValue({ included: [], excluded: [] });
-      unitUpControl?.setValidators(oneIncludedNodeRequired());
-    } else {
-      unitUpControl?.setValue('');
-      unitUpControl?.setValidators(Validators.required);
-    }
-    unitUpControl?.updateValueAndValidity();
-    this.form.markAsDirty();
+  setRuleAttachmentMode(index: number, mode: AttachmentMode): void {
+    this.form
+      .unitUps()
+      .value.update((unitUps) =>
+        unitUps.map((ruleParam, i) =>
+          i === index
+            ? { ...ruleParam, attachmentMode: mode, unitUp: mode === AttachmentMode.TREE ? emptyAttachmentNodes() : '' }
+            : ruleParam,
+        ),
+      );
+    this.form().markAsDirty();
   }
 
   getNodeTitle(selectedNode?: { unitUp?: { included?: string[] } | string }): string {
@@ -528,34 +555,34 @@ export class ProjectPreviewComponent implements OnChanges, OnInit, AfterViewInit
       // Fixed attachment flow: the position is optional
       return false;
     }
-    const rulesValid = this.unitUps.valid;
+    const rulesValid = this.form.unitUps().valid();
     const defaultFilled = this.defaultAttachmentEnabled && !this.defaultAttachmentPositionIsEmpty();
     return !(rulesValid || defaultFilled);
   }
 
   private defaultAttachmentPositionIsEmpty(): boolean {
     if (this.connectedToLocalEasWithCurrentTenant && this.fixedAttachmentMode === AttachmentMode.TREE) {
-      return !this.form.get('unitUp')?.value?.included?.length;
+      return !(this.form.unitUp().value() as AttachmentNodes)?.included?.length;
     }
-    return !this.form.get('unitUp')?.value;
+    return !this.form.unitUp().value();
   }
 
   private resolveFixedUnitUp(): string {
-    const value = this.form.value.unitUp;
+    const value = this.form.unitUp().value();
     return this.connectedToLocalEasWithCurrentTenant && this.fixedAttachmentMode === AttachmentMode.TREE
-      ? (value?.included?.[0] ?? null)
-      : value || null;
+      ? ((value as AttachmentNodes)?.included?.[0] ?? null)
+      : (value as string) || null;
   }
 
   isModified(): boolean {
     // use pristine to check if the form is unchanged.
-    return this.#editMode && !this.form.pristine;
+    return this.#editMode && this.form().dirty();
   }
 
   showEdit(tab: MatTab) {
     const tabIndex = this.tabs().indexOf(tab);
     if (tabIndex !== -1) {
-      this.form.markAsPristine();
+      this.form().reset();
       this.#editMode = true;
       this.tabGroup().selectedIndex = tabIndex;
       this.showExtendedPanel();
@@ -564,32 +591,31 @@ export class ProjectPreviewComponent implements OnChanges, OnInit, AfterViewInit
   }
 
   initForm() {
-    if (this.form) {
-      this.form.get('messageIdentifier').setValue(this.project().messageIdentifier);
-      this.form.get('comment').setValue(this.project().comment);
-      this.form.get('originatingAgencyIdentifier').setValue(this.project().originatingAgencyIdentifier);
-      this.form.get('submissionAgencyIdentifier').setValue(this.project().submissionAgencyIdentifier);
-      this.form.get('archivalAgencyIdentifier').setValue(this.project().archivalAgencyIdentifier);
-      this.form.get('transferringAgencyIdentifier').setValue(this.project().transferringAgencyIdentifier);
-      this.form.get('archivalAgreement').setValue(this.project().archivalAgreement);
-      this.form.get('archiveProfile').setValue(this.project().archiveProfile);
-      this.form.get('acquisitionInformation').setValue(this.project().acquisitionInformation);
-      this.form.get('legalStatus').setValue(this.project().legalStatus);
-      // Restore the saved position mode: tree if the GUID is a node of the filing plan, free GUID input otherwise
-      this.fixedAttachmentMode = this.resolveAttachmentMode(this.project().unitUp);
-      // A rules-flow project may also carry a fixed default attachment position (project.unitUp)
-      const hasRules = !!this.project().unitUps?.length;
-      this.form.get('defaultAttachmentEnabled').setValue(hasRules && !!this.project().unitUp);
-      this.form
-        .get('unitUp')
-        .setValue(
-          this.connectedToLocalEasWithCurrentTenant && this.fixedAttachmentMode === AttachmentMode.TREE
-            ? { included: this.project().unitUp ? [this.project().unitUp] : [], excluded: [] }
-            : (this.project().unitUp ?? null),
-        );
-      this.form.get('automaticIngest').setValue(this.project().automaticIngest);
-      this.form.get('transformationRules').setValue(this.project().transformationRules);
-    }
+    const project = this.project();
+    // Restore the saved position mode: tree if the GUID is a node of the filing plan, free GUID input otherwise
+    this.fixedAttachmentMode = this.resolveAttachmentMode(project.unitUp);
+    // A rules-flow project may also carry a fixed default attachment position (project.unitUp)
+    const hasRules = !!project.unitUps?.length;
+    this.model.update((value) => ({
+      ...value,
+      messageIdentifier: project.messageIdentifier ?? null,
+      comment: project.comment ?? null,
+      originatingAgencyIdentifier: project.originatingAgencyIdentifier ?? null,
+      submissionAgencyIdentifier: project.submissionAgencyIdentifier ?? null,
+      archivalAgencyIdentifier: project.archivalAgencyIdentifier ?? null,
+      transferringAgencyIdentifier: project.transferringAgencyIdentifier ?? null,
+      archivalAgreement: project.archivalAgreement ?? null,
+      archiveProfile: project.archiveProfile ?? null,
+      acquisitionInformation: project.acquisitionInformation ?? null,
+      legalStatus: project.legalStatus ?? null,
+      defaultAttachmentEnabled: hasRules && !!project.unitUp,
+      unitUp:
+        this.connectedToLocalEasWithCurrentTenant && this.fixedAttachmentMode === AttachmentMode.TREE
+          ? { included: project.unitUp ? [project.unitUp] : [], excluded: [] }
+          : (project.unitUp ?? null),
+      automaticIngest: project.automaticIngest ?? null,
+      transformationRules: project.transformationRules ?? null,
+    }));
   }
 
   async update(): Promise<boolean> {
@@ -647,30 +673,30 @@ export class ProjectPreviewComponent implements OnChanges, OnInit, AfterViewInit
 
   async updateProject(updateTransactions: boolean) {
     const isRulesFlow = !!this.project().unitUps?.length;
-    const projectToUpdate = {
-      ...this.form.value,
+    const projectToUpdate: Omit<Project, 'archivalProfile'> = {
+      ...this.model(),
       id: this.project().id,
       createdOn: this.project().createdOn,
       status: this.project().status,
-      name: this.form.value.messageIdentifier,
+      name: this.form.messageIdentifier().value(),
       archivingSystemId: this.project().archivingSystemId,
       archivingSystemTenant: this.project().archivingSystemTenant,
       connectedToArchivingSystem: this.project().connectedToArchivingSystem,
       // Fixed flow: the position; rules flow: the optional default attachment position
       unitUp: isRulesFlow ? (this.defaultAttachmentEnabled ? this.resolveFixedUnitUp() : null) : this.resolveFixedUnitUp(),
       unitUps: isRulesFlow
-        ? this.unitUps.controls
+        ? Array.from(this.form.unitUps)
             // Only keep fully filled rules (incomplete ones are allowed when a default attachment is set)
-            .filter((ruleParamControl: FormGroup) => ruleParamControl.valid && ruleParamControl.value.ontologyList)
-            .map((ruleParamControl: FormGroup) => {
-              const ruleParam = ruleParamControl.value;
+            .filter((ruleParamField) => ruleParamField().valid() && ruleParamField().value().ontologyList)
+            .map((ruleParamField) => {
+              const ruleParam = ruleParamField().value();
               return {
                 metadataKey: ruleParam.ontologyList.ApiField,
-                metadataValue: ruleParam.metadataValue,
+                metadataValue: ruleParam.metadataValue as string,
                 unitUp:
                   this.connectedToLocalEasWithCurrentTenant && ruleParam.attachmentMode === AttachmentMode.TREE
-                    ? ruleParam.unitUp.included[0]
-                    : ruleParam.unitUp,
+                    ? (ruleParam.unitUp as AttachmentNodes).included[0]
+                    : (ruleParam.unitUp as string),
               };
             })
         : [],
@@ -684,7 +710,7 @@ export class ProjectPreviewComponent implements OnChanges, OnInit, AfterViewInit
       configuration: this.projectService.updateProjectConfiguration,
     }[this.getCurrentTab()].bind(this.projectService);
 
-    const updateProjectOperation$ = updateProjectFunction(projectToUpdate);
+    const updateProjectOperation$ = updateProjectFunction(projectToUpdate as Project);
     const previousProject = this.project();
     try {
       const project = await lastValueFrom(updateProjectOperation$);
@@ -807,7 +833,7 @@ export class ProjectPreviewComponent implements OnChanges, OnInit, AfterViewInit
   async handleJsltFile(files: File[]) {
     const jsltFile = files?.length ? files[0] : undefined;
     const content: string = jsltFile ? await readFileContent(jsltFile) : null;
-    this.form.get('transformationRules').markAsDirty();
-    this.form.get('transformationRules').setValue(content);
+    this.form.transformationRules().markAsDirty();
+    this.form.transformationRules().value.set(content);
   }
 }

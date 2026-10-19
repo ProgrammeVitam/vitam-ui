@@ -41,13 +41,12 @@ import type { Node } from '../../models/node.interface';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { MatIconButton } from '@angular/material/button';
 import { MatCheckbox } from '@angular/material/checkbox';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'vitamui-library-node',
   templateUrl: './node.component.html',
   styleUrls: ['./node.component.scss'],
-  imports: [MatIconButton, MatCheckbox, FormsModule],
+  imports: [MatIconButton, MatCheckbox],
 })
 export class NodeComponent {
   readonly tenantIdentifier = input<number>(undefined);

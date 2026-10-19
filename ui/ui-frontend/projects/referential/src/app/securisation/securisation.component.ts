@@ -34,8 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, viewChild } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, signal, viewChild } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { form, FormField } from '@angular/forms/signals';
 import { MatDialog } from '@angular/material/dialog';
 import {
   DatepickerComponent,
@@ -50,6 +51,13 @@ import { DateTime } from 'luxon';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { SecurisationPreviewComponent } from './securisation-preview/securisation-preview.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { skip } from 'rxjs/operators';
+
+interface DateRangeFilterForm {
+  startDate: Date;
+  endDate: Date;
+  types: string[];
+}
 
 @Component({
   selector: 'app-securisation',
@@ -62,7 +70,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatSidenavContent,
     VitamuiTitleBreadcrumbComponent,
     VitamuiBannerComponent,
-    ReactiveFormsModule,
+    FormField,
     DatepickerComponent,
     SecurisationListComponent,
     TranslatePipe,
@@ -70,10 +78,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class SecurisationComponent extends SidenavPage<Event> {
   dialog = inject(MatDialog);
-  private readonly formBuilder = inject(FormBuilder);
 
   search: string;
-  dateRangeFilterForm: FormGroup;
+  readonly dateRangeFilterForm = form(signal<DateRangeFilterForm>({ startDate: null, endDate: null, types: null }));
   filters: any = {};
 
   readonly searchBar = viewChild(SearchBarComponent);
@@ -82,24 +89,24 @@ export class SecurisationComponent extends SidenavPage<Event> {
   constructor() {
     super();
 
-    this.dateRangeFilterForm = this.formBuilder.group({
-      startDate: null,
-      endDate: null,
-      types: [],
-    });
+    toObservable(this.dateRangeFilterForm.startDate().value)
+      .pipe(skip(1))
+      .subscribe((value) => {
+        this.filters = { ...this.filters, startDate: value ? DateTime.fromJSDate(value).startOf('day').toISO() : null };
+      });
 
-    this.dateRangeFilterForm.controls['startDate'].valueChanges.subscribe((value) => {
-      this.filters = { ...this.filters, startDate: value ? DateTime.fromJSDate(value).startOf('day').toISO() : null };
-    });
+    toObservable(this.dateRangeFilterForm.endDate().value)
+      .pipe(skip(1))
+      .subscribe((value) => {
+        this.filters = { ...this.filters, endDate: value ? DateTime.fromJSDate(value).endOf('day').toISO() : null };
+      });
 
-    this.dateRangeFilterForm.controls['endDate'].valueChanges.subscribe((value) => {
-      this.filters = { ...this.filters, endDate: value ? DateTime.fromJSDate(value).endOf('day').toISO() : null };
-    });
-
-    this.dateRangeFilterForm.controls['types'].valueChanges.subscribe((value) => {
-      this.filters.types = value;
-      this.securisationListComponent().setFilters(this.filters);
-    });
+    toObservable(this.dateRangeFilterForm.types().value)
+      .pipe(skip(1))
+      .subscribe((value) => {
+        this.filters.types = value;
+        this.securisationListComponent().setFilters(this.filters);
+      });
   }
 
   public onSearchSubmit(search: string): void {

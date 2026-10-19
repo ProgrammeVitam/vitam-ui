@@ -53,7 +53,6 @@ import { ConfirmActionComponent, Ontology, SchemaElement, SchemaService, VitamUI
 import { OntologyService } from '../ontology.service';
 import { OntologyInformationTabComponent } from './ontology-information-tab/ontology-information-tab.component';
 
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SchemaInformationTabComponent } from './schema-information-tab/schema-information-tab.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -62,10 +61,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './ontology-preview.component.html',
   styleUrls: ['./ontology-preview.component.scss'],
   imports: [
-    FormsModule,
     MatTabsModule,
     OntologyInformationTabComponent,
-    ReactiveFormsModule,
     SchemaInformationTabComponent,
     VitamUICommonModule,
     VitamUILibraryModule,

@@ -1,37 +1,37 @@
-<form [formGroup]="form" class="gap-5" (ngSubmit)="onSubmit()">
+<form [formRoot]="form" class="gap-5">
   <div class="gap-3 w-100">
-    <vitamui-input class="w-100" formControlName="puid" [placeholder]="puidPlaceholder | translate"> </vitamui-input>
+    <vitamui-input class="w-100" [formField]="form.puid" [placeholder]="puidPlaceholder() | translate"> </vitamui-input>
 
-    <vitamui-input class="w-100" formControlName="name" [placeholder]="'FILE_FORMATS.TAB.INFORMATION.NAME' | translate"> </vitamui-input>
+    <vitamui-input class="w-100" [formField]="form.name" [placeholder]="'FILE_FORMATS.TAB.INFORMATION.NAME' | translate"> </vitamui-input>
 
-    <vitamui-input class="w-100" formControlName="mimeType" [placeholder]="'FILE_FORMATS.TAB.INFORMATION.MIME_TYPE' | translate">
+    <vitamui-input class="w-100" [formField]="form.mimeType" [placeholder]="'FILE_FORMATS.TAB.INFORMATION.MIME_TYPE' | translate">
     </vitamui-input>
 
-    <vitamui-input class="w-100" formControlName="version" [placeholder]="'FILE_FORMATS.TAB.INFORMATION.VERSION' | translate">
+    <vitamui-input class="w-100" [formField]="form.version" [placeholder]="'FILE_FORMATS.TAB.INFORMATION.VERSION' | translate">
     </vitamui-input>
 
     <vitamui-input
       [multiple]="true"
       class="w-100"
-      formControlName="extensions"
+      [formField]="form.extensions"
       [placeholder]="'FILE_FORMATS.TAB.INFORMATION.EXTENSION' | translate"
     >
     </vitamui-input>
 
-    @if (isInternal$ | async) {
+    @if (isInternal()) {
       <vitamui-input
         [multiple]="true"
         class="w-100"
-        formControlName="hasPriorityOverFileFormatIDs"
+        [formField]="form.hasPriorityOverFileFormatIDs"
         [placeholder]="'FILE_FORMATS.TAB.INFORMATION.HAS_PRIORITY_OVER_FILE_FORMAT_ID' | translate"
       ></vitamui-input>
     }
 
-    @if ((isInternal$ | async) === false) {
+    @if (isInternal() === false) {
       <vitamui-select
         [multiple]="true"
         class="w-100"
-        formControlName="hasPriorityOverFileFormatIDs"
+        [formField]="form.hasPriorityOverFileFormatIDs"
         [placeholder]="'FILE_FORMATS.TAB.INFORMATION.HAS_PRIORITY_OVER_FILE_FORMAT_ID' | translate"
         [searchBarPlaceHolder]="'FILE_FORMATS.TAB.INFORMATION.HAS_PRIORITY_OVER_FILE_FORMAT_ID_SEARCH' | translate"
         [options]="fileFormatOptions$ | async"
@@ -41,21 +41,21 @@
 
     <vitamui-input
       class="w-100"
-      formControlName="createdDate"
+      [formField]="form.createdDate"
       [placeholder]="'FILE_FORMATS.TAB.INFORMATION.CREATED_DATE' | translate"
     ></vitamui-input>
 
     <vitamui-input
       class="w-100"
-      formControlName="updateDate"
+      [formField]="form.updateDate"
       [placeholder]="'FILE_FORMATS.TAB.INFORMATION.MODIFIED_DATE' | translate"
     ></vitamui-input>
 
-    <vitamui-input class="w-100" formControlName="versionPronom" [placeholder]="'FILE_FORMATS.TAB.INFORMATION.VERSION_PRONOM' | translate">
+    <vitamui-input class="w-100" [formField]="form.versionPronom" [placeholder]="'FILE_FORMATS.TAB.INFORMATION.VERSION_PRONOM' | translate">
     </vitamui-input>
   </div>
 
-  <button type="submit" class="btn primary" [disabled]="(canUpdate$ | async) || (submitting$ | async) || unchanged() || form.invalid">
+  <button type="submit" class="btn primary" [disabled]="updateDisabled() || submitting() || unchanged() || form().invalid()">
     {{ 'COMMON.SAVE' | translate }}
   </button>
 </form>

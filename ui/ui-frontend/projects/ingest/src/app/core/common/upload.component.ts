@@ -34,10 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit, viewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, OnInit, signal, viewChild } from '@angular/core';
+import { form, FormField } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
-import { DialogHeaderComponent, FileSelectorComponent, SnackBarService, StartupService } from 'vitamui-library';
+import { DialogHeaderComponent, FileSelectorComponent, requiredValue, SnackBarService, StartupService } from 'vitamui-library';
 
 import { IngestType } from './ingest-type.enum';
 import { UploadService } from './upload.service';
@@ -50,12 +50,11 @@ const FILE_MAX_SIZE = 10737418240;
   selector: 'app-upload',
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.scss'],
-  imports: [DialogHeaderComponent, MatDialogContent, FileSelectorComponent, ReactiveFormsModule, MatDialogActions, TranslatePipe],
+  imports: [DialogHeaderComponent, MatDialogContent, FileSelectorComponent, FormField, MatDialogActions, TranslatePipe],
 })
 export class UploadComponent implements OnInit {
   data = inject(MAT_DIALOG_DATA);
   dialogRef = inject<MatDialogRef<UploadComponent>>(MatDialogRef);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly uploadService = inject(UploadService);
   private readonly snackBarService = inject(SnackBarService);
   private readonly startupService = inject(StartupService);
@@ -63,37 +62,25 @@ export class UploadComponent implements OnInit {
 
   IngestType = IngestType;
 
-  sipForm: FormGroup;
   extensions = ['.zip', '.tar', '.tar.gz', '.tar.bz2'];
   contextId: IngestType;
 
-  sipControl = new FormControl<File[]>(undefined, [Validators.required]);
+  readonly sipField = form(signal<File[]>([]), (path) => requiredValue(path));
 
   readonly fileSearch = viewChild<any>('fileSearch');
 
   private snackbarRef: MatSnackBarRef<unknown>;
 
-  constructor() {
-    this.sipForm = this.formBuilder.group({
-      hasSip: null,
-    });
-  }
-
   ngOnInit() {
     this.contextId = this.data.givenContextId;
-    this.sipForm.get('hasSip').setValue(true);
   }
 
   upload() {
-    if (!this.isValidSIP) {
-      return;
-    }
-
     this.uploadService
       .uploadIngest(
         this.data.tenantIdentifier,
-        this.sipControl.value[0],
-        this.sipControl.value[0].name,
+        this.sipField().value()[0],
+        this.sipField().value()[0].name,
         this.contextId,
         async (operationId) => {
           this.snackbarRef?.dismiss();
@@ -127,10 +114,6 @@ export class UploadComponent implements OnInit {
           translate: true,
         });
       });
-  }
-
-  isValidSIP() {
-    return this.sipForm.get('hasSip').value === false || this.sipForm.get('hasSip').value === true;
   }
 
   onCancel() {

@@ -34,12 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit, TemplateRef, output, viewChild, input, model } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  output,
+  viewChild,
+  input,
+  model,
+  signal,
+} from '@angular/core';
 import { MatDialog, MatDialogActions, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { LogbookManagementOperationService } from '../logbook-management-operation.service';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { form, FormField, maxLength, minLength, required } from '@angular/forms/signals';
 import type { OperationDetails } from '../../models/operation-response.interface';
 import {
   DialogHeaderComponent,
@@ -73,7 +85,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatDialogActions,
     MatDialogClose,
     InputComponent,
-    ReactiveFormsModule,
+    FormField,
     PipesModule,
     TranslatePipe,
     CommonModule,
@@ -96,7 +108,11 @@ export class LogbookManagementOperationPreviewComponent implements OnInit, OnDes
     viewChild<TemplateRef<LogbookManagementOperationPreviewComponent>>('confirmCancelOperationDialog');
 
   actionId: string;
-  reason: FormControl;
+  readonly reason = form(signal(''), (path) => {
+    required(path);
+    maxLength(path, 500);
+    minLength(path, 3);
+  });
   operationUpdatedSub: Subscription;
 
   ngOnDestroy(): void {
@@ -104,7 +120,6 @@ export class LogbookManagementOperationPreviewComponent implements OnInit, OnDes
   }
 
   ngOnInit(): void {
-    this.reason = new FormControl('', [Validators.required, Validators.maxLength(500), Validators.minLength(3)]);
     if (this.logbookManagementOperationService.operationUpdated) {
       this.operationUpdatedSub = this.logbookManagementOperationService.operationUpdated.subscribe((updatedOperation: OperationDetails) => {
         this.operation.set(updatedOperation);
@@ -146,7 +161,7 @@ export class LogbookManagementOperationPreviewComponent implements OnInit, OnDes
       .pipe(filter((result) => !!result))
       .subscribe(() => {
         this.logbookManagementOperationService
-          .cancelOperationProcessExecution(operation.operationId, this.operation()?.stepCancellable, this.reason?.value)
+          .cancelOperationProcessExecution(operation.operationId, this.operation()?.stepCancellable, this.reason().value())
           .subscribe((operations) => {
             if (operations.results) {
               this.operation.set(operations.results[operations.hits.total - 1]);

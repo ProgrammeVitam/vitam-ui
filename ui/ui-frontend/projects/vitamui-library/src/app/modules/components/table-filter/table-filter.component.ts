@@ -47,6 +47,8 @@ import {
   input,
   output,
   contentChildren,
+  ElementRef,
+  viewChild,
 } from '@angular/core';
 import { defer, merge, Observable, Subject } from 'rxjs';
 import { startWith, switchMap, takeUntil } from 'rxjs/operators';
@@ -54,14 +56,12 @@ import { outputToObservable } from '@angular/core/rxjs-interop';
 
 import { TableFilterOptionComponent } from './table-filter-option/table-filter-option.component';
 
-import { FormsModule } from '@angular/forms';
 import { queryChanges } from '../../utils/query-changes.util';
 
 @Component({
   selector: 'vitamui-common-table-filter',
   templateUrl: './table-filter.component.html',
   styleUrls: ['./table-filter.component.scss'],
-  imports: [FormsModule],
 })
 export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy {
   private readonly injector = inject(Injector);
@@ -80,6 +80,7 @@ export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy
   private readonly optionsChanges = queryChanges(this.options);
 
   searchText: string;
+  private readonly searchInput = viewChild<ElementRef<HTMLInputElement>>('searchInput');
 
   /** Combined stream of all of the child options' change events. */
   readonly optionSelectionChanges: Observable<TableFilterOptionComponent> = defer(() => {
@@ -135,12 +136,20 @@ export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy
     }
   }
 
+  onSearchInput(text: string) {
+    this.searchText = text;
+    this.onSearchChange(text);
+  }
+
   onSearchChange(text: string) {
     this.search.emit(text);
   }
 
   cancelSearch() {
     this.searchText = null;
+    // Also clear the input directly: the [value] binding is not updated if it has not been refreshed since the last input
+    const searchInput = this.searchInput()?.nativeElement;
+    if (searchInput) searchInput.value = '';
     this.onSearchChange(null);
   }
 

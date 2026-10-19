@@ -86,7 +86,6 @@ import { PastisPopupMetadataLanguageService } from '../../shared/pastis-popup-me
 import { TooltipDirective, VitamuiBannerComponent } from 'vitamui-library';
 import { MatDivider, MatList, MatSelectionList } from '@angular/material/list';
 import { NgStyle } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -100,7 +99,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatList,
     NgStyle,
     MatSelectionList,
-    FormsModule,
     TooltipDirective,
     forwardRef(() => FilterByNamePipe),
     TranslatePipe,
@@ -120,7 +118,6 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
   allowedChildren: SedaData[];
   filterName: string;
   sedaNodeFound: SedaData;
-  selectedSedaNode: SedaData;
   addedItems: SedaData[] = [];
   atLeastOneIsSelected: boolean;
   customTemplate: TemplateRef<any>;
@@ -194,12 +191,6 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
     this.popUpService.btnYesShoudBeDisabled.subscribe((status) => {
       this.btnIsDisabled = status;
     });
-  }
-
-  selectSedaElement(selectedElements: string[]) {
-    const [first] = selectedElements;
-
-    if (first) this.selectedSedaNode = this.sedaService.findSedaNode(first, this.sedaData);
   }
 
   onRemoveSelectedElement(element: SedaData) {

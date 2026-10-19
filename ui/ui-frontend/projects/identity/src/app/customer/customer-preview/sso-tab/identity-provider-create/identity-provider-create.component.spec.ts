@@ -36,7 +36,7 @@
  */
 import { Component, forwardRef, NO_ERRORS_SCHEMA, input, viewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -45,6 +45,7 @@ import { EMPTY, of, throwError as observableThrowError } from 'rxjs';
 import { AuthnRequestBindingEnum, ConfirmDialogService, newFile } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { IdentityProviderService } from '../identity-provider.service';
+import { ProtocoleType } from '../sso-tab-const';
 import { IdentityProviderCreateComponent } from './identity-provider-create.component';
 
 @Component({
@@ -57,7 +58,7 @@ import { IdentityProviderCreateComponent } from './identity-provider-create.comp
       multi: true,
     },
   ],
-  imports: [MatProgressBarModule, ReactiveFormsModule, MatButtonToggleModule, MatSelectModule, VitamUICommonTestModule],
+  imports: [MatProgressBarModule, MatButtonToggleModule, MatSelectModule, VitamUICommonTestModule],
 })
 class PatternStubComponent implements ControlValueAccessor {
   readonly options = input<
@@ -94,7 +95,6 @@ describe('IdentityProviderCreateComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         MatProgressBarModule,
-        ReactiveFormsModule,
         MatButtonToggleModule,
         MatSelectModule,
         VitamUICommonTestModule,
@@ -112,37 +112,67 @@ describe('IdentityProviderCreateComponent', () => {
       .overrideComponent(IdentityProviderCreateComponent, {
         set: {
           template: `
-            <form [formGroup]="form" (ngSubmit)="onSubmit()">
-              <input formControlName="customerId" />
-              <input formControlName="name" />
-              <input formControlName="internal" />
-              <input formControlName="keystorePassword" />
-              <input formControlName="patterns" />
-              <input formControlName="enabled" />
-              <input formControlName="mailAttribute" />
-              <input formControlName="identifierAttribute" />
-              <input formControlName="authnRequestBinding" />
-              <input formControlName="autoProvisioningEnabled" />
-              <input formControlName="protocoleType" />
-              <input formControlName="maximumAuthenticationLifetime" />
-              <input formControlName="wantsAssertionsSigned" />
-              <input formControlName="authnRequestSigned" />
-              <input formControlName="propagateLogout" />
+            <form [formRoot]="form" (submit)="onSubmit()">
+              <input [formField]="form.customerId" />
+              <input [formField]="form.name" />
+              <input [formField]="form.saml.keystorePassword" />
+              <input [formField]="form.mailAttribute" />
+              <input [formField]="form.identifierAttribute" />
               <input type="file" (change)="setKeystore($event.target.files)" />
               <input type="file" (change)="setIdpMetadata($event.target.files)" />
               <button type="submit">COMMON.SUBMIT</button>
               <button type="button" class="btn cancel" (click)="onCancel()">COMMON.UNDO</button>
             </form>
-            <vitamui-slide-toggle [attr.formControlName]="'enabled'">CUSTOMER.SSO.ACTIVE_SWITCH</vitamui-slide-toggle>
-            <vitamui-input [attr.formControlName]="'name'"></vitamui-input>
-            <vitamui-input [attr.formControlName]="'keystorePassword'"></vitamui-input>
-            <app-pattern [attr.formControlName]="'patterns'"></app-pattern>
-            <vitamui-slide-toggle [attr.formControlName]="'autoProvisioningEnabled'">CUSTOMER.SSO.AUTO_PROVISIONING</vitamui-slide-toggle>
+            <vitamui-slide-toggle [attr.data-field]="'enabled'">CUSTOMER.SSO.ACTIVE_SWITCH</vitamui-slide-toggle>
+            <vitamui-input [attr.data-field]="'name'"></vitamui-input>
+            <vitamui-input [attr.data-field]="'keystorePassword'"></vitamui-input>
+            <app-pattern [attr.data-field]="'patterns'"></app-pattern>
+            <vitamui-slide-toggle [attr.data-field]="'autoProvisioningEnabled'">CUSTOMER.SSO.AUTO_PROVISIONING</vitamui-slide-toggle>
           `,
         },
       })
       .compileComponents();
   });
+
+  const expectedSamlIdp = {
+    customerId: '1234',
+    name: 'Test IDP',
+    keystorePassword: 'testpassword1234',
+    patterns: ['test.com', 'test.fr'],
+    enabled: true,
+    mailAttribute: '',
+    identifierAttribute: '',
+    authnRequestBinding: AuthnRequestBindingEnum.POST,
+    autoProvisioningEnabled: true,
+    protocoleType: 'SAML',
+    maximumAuthenticationLifetime: '0',
+    wantsAssertionsSigned: true,
+    authnRequestSigned: true,
+    propagateLogout: false,
+  };
+
+  function setSamlFormValue() {
+    component.form().value.update((idp) => ({
+      ...idp,
+      customerId: '1234',
+      name: 'Test IDP',
+      internal: true,
+      patterns: ['test.com', 'test.fr'],
+      enabled: true,
+      mailAttribute: '',
+      identifierAttribute: '',
+      autoProvisioningEnabled: true,
+      protocoleType: ProtocoleType.SAML,
+      saml: {
+        keystorePassword: 'testpassword1234',
+        authnRequestBinding: AuthnRequestBindingEnum.POST,
+        maximumAuthenticationLifetime: '0',
+        wantsAssertionsSigned: true,
+        authnRequestSigned: true,
+        propagateLogout: false,
+      },
+    }));
+  }
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IdentityProviderCreateComponent);
@@ -170,27 +200,11 @@ describe('IdentityProviderCreateComponent', () => {
     it('should call idpService.create()', () => {
       const idpService = TestBed.inject(IdentityProviderService);
       const matDialogRef = TestBed.inject(MatDialogRef);
-      component.form.setValue({
-        customerId: '1234',
-        name: 'Test IDP',
-        internal: true,
-        keystorePassword: 'testpassword1234',
-        patterns: ['test.com', 'test.fr'],
-        enabled: true,
-        mailAttribute: '',
-        identifierAttribute: '',
-        authnRequestBinding: AuthnRequestBindingEnum.POST,
-        autoProvisioningEnabled: true,
-        protocoleType: 'SAML',
-        maximumAuthenticationLifetime: 0,
-        wantsAssertionsSigned: true,
-        authnRequestSigned: true,
-        propagateLogout: false,
-      });
+      setSamlFormValue();
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;
       component.onSubmit();
-      expect(idpService.create).toHaveBeenCalledWith(component.form.value);
+      expect(idpService.create).toHaveBeenCalledWith({ ...expectedSamlIdp, keystore, idpMetadata, internal: false });
       expect(matDialogRef.close).toHaveBeenCalled();
     });
 
@@ -229,48 +243,37 @@ describe('IdentityProviderCreateComponent', () => {
       const idpService = TestBed.inject(IdentityProviderService);
       const matDialogRef = TestBed.inject(MatDialogRef);
       idpService.create = vi.fn().mockReturnValue(observableThrowError({ error: { error: 'INVALID_KEYSTORE_PASSWORD' } }));
-      component.form.setValue({
-        customerId: '1234',
-        name: 'Test IDP',
-        internal: true,
-        keystorePassword: 'testpassword1234',
-        patterns: ['test.com', 'test.fr'],
-        enabled: true,
-        mailAttribute: '',
-        identifierAttribute: '',
-        authnRequestBinding: AuthnRequestBindingEnum.POST,
-        autoProvisioningEnabled: true,
-        protocoleType: 'SAML',
-        maximumAuthenticationLifetime: 0,
-        wantsAssertionsSigned: true,
-        authnRequestSigned: true,
-        propagateLogout: false,
-      });
+      setSamlFormValue();
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;
       component.onSubmit();
-      expect(idpService.create).toHaveBeenCalledWith(component.form.value);
+      expect(idpService.create).toHaveBeenCalledWith({ ...expectedSamlIdp, keystore, idpMetadata, internal: false });
       expect(matDialogRef.close).not.toHaveBeenCalled();
-      expect(component.form.get('keystorePassword').errors).toEqual({ badPassword: true });
+      expect(
+        component.form.saml
+          .keystorePassword()
+          .errors()
+          .map((error) => error.kind),
+      ).toEqual(['badPassword']);
     });
   });
 
   describe('DOM', () => {
     it('should have all the inputs', () => {
-      const elEnabled = fixture.nativeElement.querySelector('vitamui-slide-toggle[formControlName=enabled]');
+      const elEnabled = fixture.nativeElement.querySelector('vitamui-slide-toggle[data-field=enabled]');
       expect(elEnabled).toBeTruthy();
       expect(elEnabled.textContent).toContain('CUSTOMER.SSO.ACTIVE_SWITCH');
 
-      const elName = fixture.nativeElement.querySelector('vitamui-input[formControlName=name]');
+      const elName = fixture.nativeElement.querySelector('vitamui-input[data-field=name]');
       expect(elName).toBeTruthy();
 
-      const elKeystorePassword = fixture.nativeElement.querySelector('vitamui-input[formControlName=keystorePassword]');
+      const elKeystorePassword = fixture.nativeElement.querySelector('vitamui-input[data-field=keystorePassword]');
       expect(elKeystorePassword).toBeTruthy();
 
-      const elPatterns = fixture.nativeElement.querySelector('app-pattern[formControlName=patterns]');
+      const elPatterns = fixture.nativeElement.querySelector('app-pattern[data-field=patterns]');
       expect(elPatterns).toBeTruthy();
 
-      const elAutoProvision = fixture.nativeElement.querySelector('vitamui-slide-toggle[formControlName=autoProvisioningEnabled]');
+      const elAutoProvision = fixture.nativeElement.querySelector('vitamui-slide-toggle[data-field=autoProvisioningEnabled]');
       expect(elAutoProvision).toBeTruthy();
       expect(elAutoProvision.textContent).toContain('CUSTOMER.SSO.AUTO_PROVISIONING');
     });
@@ -279,23 +282,7 @@ describe('IdentityProviderCreateComponent', () => {
       const elSubmit = fixture.nativeElement.querySelector('button[type=submit]');
       expect(elSubmit).toBeTruthy();
       expect(elSubmit.textContent).toContain('COMMON.SUBMIT');
-      component.form.setValue({
-        customerId: '1234',
-        name: 'Test IDP',
-        internal: true,
-        keystorePassword: 'testpassword1234',
-        patterns: ['test.com', 'test.fr'],
-        enabled: true,
-        mailAttribute: '',
-        identifierAttribute: '',
-        authnRequestBinding: AuthnRequestBindingEnum.POST,
-        autoProvisioningEnabled: true,
-        protocoleType: 'SAML',
-        maximumAuthenticationLifetime: 0,
-        wantsAssertionsSigned: true,
-        authnRequestSigned: true,
-        propagateLogout: false,
-      });
+      setSamlFormValue();
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;
       fixture.detectChanges();

@@ -36,7 +36,6 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, input } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
@@ -64,7 +63,6 @@ import { RuleComponent } from './rule.component';
   template: '',
   imports: [
     VitamUICommonTestModule,
-    ReactiveFormsModule,
     MatMenuModule,
     MatTabsModule,
     MatOptionModule,
@@ -83,7 +81,6 @@ class RulePreviewStubComponent {
   template: '',
   imports: [
     VitamUICommonTestModule,
-    ReactiveFormsModule,
     MatMenuModule,
     MatTabsModule,
     MatOptionModule,
@@ -134,7 +131,6 @@ describe('RuleComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         VitamUICommonTestModule,
-        ReactiveFormsModule,
         MatMenuModule,
         MatTabsModule,
         MatOptionModule,

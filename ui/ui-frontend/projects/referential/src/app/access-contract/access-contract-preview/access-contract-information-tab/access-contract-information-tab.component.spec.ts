@@ -37,7 +37,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { AccessContractCreateValidators } from '../../access-contract-create/access-contract-create.validators';
 import { AccessContractService } from 'vitamui-library';
 import { AccessContractInformationTabComponent } from './access-contract-information-tab.component';
@@ -57,7 +56,6 @@ describe.skip('AccessContractInformationTabComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AccessContractInformationTabComponent],
       providers: [
-        FormBuilder,
         AccessContractCreateValidators,
         { provide: AccessContractService, useValue: {} },
         { provide: AccessContractService, useValue: {} },

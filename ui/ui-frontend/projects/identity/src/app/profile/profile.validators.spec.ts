@@ -34,6 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { signal } from '@angular/core';
+import { form } from '@angular/forms/signals';
 import { TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { from, of } from 'rxjs';
@@ -107,5 +109,46 @@ describe('ProfileValidators', () => {
     });
     vi.advanceTimersByTime(400);
     expect(profileServiceSpy.exists).toHaveBeenCalledWith(42, 'TEST', 'USERS_APP', '111111');
+  });
+});
+
+describe('ProfileValidators (signal forms)', () => {
+  it('should check the name again when the level changes', async () => {
+    const profileServiceSpy = { exists: vi.fn().mockName('ProfileService.exists').mockReturnValue(of(true)) };
+    TestBed.configureTestingModule({ providers: [{ provide: ProfileService, useValue: profileServiceSpy }] });
+    const validators = TestBed.inject(ProfileValidators);
+    const profileForm = TestBed.runInInjectionContext(() =>
+      form(signal({ name: '', level: '' }), (path) =>
+        validators.nameExistsRule(path.name, ({ valueOf }) => ({
+          tenantIdentifier: 42,
+          level: valueOf(path.level),
+          applicationName: 'USERS_APP',
+          nameToIgnore: 'ignored',
+        })),
+      ),
+    );
+
+    profileForm.name().value.set('123456');
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    expect(profileServiceSpy.exists).toHaveBeenCalledWith(42, '', 'USERS_APP', '123456');
+    expect(
+      profileForm
+        .name()
+        .errors()
+        .map((error) => error.kind),
+    ).toEqual(['nameExists']);
+
+    profileForm.level().value.set('TEST');
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    expect(profileServiceSpy.exists).toHaveBeenCalledWith(42, 'TEST', 'USERS_APP', '123456');
+
+    profileServiceSpy.exists.mockClear();
+    profileForm.name().value.set('ignored');
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    expect(profileServiceSpy.exists).not.toHaveBeenCalled();
+    expect(profileForm.name().valid()).toBe(true);
   });
 });

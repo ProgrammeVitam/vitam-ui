@@ -30,27 +30,22 @@
   <ng-container *ngTemplateOutlet="loadingSpinner"></ng-container>
 }
 
-<form [formGroup]="form" class="vitamui-sidepanel-body">
+<div class="vitamui-sidepanel-body">
   <mat-tab-group #tabs [ngClass]="isPanelExtended ? 'extended-preview-tab-group' : 'preview-tab-group'">
     <!-- DESCRIPTION TAB -->
     <mat-tab #description [label]="'COLLECT.PROJECT_UNIT_PREVIEW.TABS.DESCRIPTION' | translate">
       @if (project()) {
         <div class="align-items-stretch" [class]="editMode() ? 'gap-4' : 'gap-2'">
           @if (editMode(description)) {
-            <vitamui-input
-              [ngModel]="project().id"
-              [ngModelOptions]="{ standalone: true }"
-              [placeholder]="'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.ID' | translate"
-              [disabled]="true"
-            >
+            <vitamui-input [formField]="projectIdField" [placeholder]="'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.ID' | translate">
             </vitamui-input>
 
-            <vitamui-input formControlName="messageIdentifier" [placeholder]="'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.NAME' | translate">
+            <vitamui-input [formField]="form.messageIdentifier" [placeholder]="'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.NAME' | translate">
             </vitamui-input>
 
             <vitamui-input
               [textarea]="true"
-              formControlName="comment"
+              [formField]="form.comment"
               [placeholder]="'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate"
             >
             </vitamui-input>
@@ -59,7 +54,7 @@
               @if (project().connectedToArchivingSystem) {
                 <vitamui-select
                   class="w-50"
-                  formControlName="originatingAgencyIdentifier"
+                  [formField]="form.originatingAgencyIdentifier"
                   [placeholder]="'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SP_LABEL' | translate"
                   [searchBarPlaceHolder]="'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SP_LABEL' | translate"
                   [options]="agenciesOptions$ | async"
@@ -68,7 +63,7 @@
                 ></vitamui-select>
                 <vitamui-select
                   class="w-50"
-                  formControlName="submissionAgencyIdentifier"
+                  [formField]="form.submissionAgencyIdentifier"
                   [placeholder]="'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SV_LABEL' | translate"
                   [searchBarPlaceHolder]="'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SV_LABEL' | translate"
                   [options]="agenciesOptions$ | async"
@@ -78,13 +73,13 @@
               } @else {
                 <vitamui-input
                   class="w-50"
-                  formControlName="originatingAgencyIdentifier"
+                  [formField]="form.originatingAgencyIdentifier"
                   [placeholder]="'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SP_ID' | translate"
                 >
                 </vitamui-input>
                 <vitamui-input
                   class="w-50"
-                  formControlName="submissionAgencyIdentifier"
+                  [formField]="form.submissionAgencyIdentifier"
                   [placeholder]="'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SV_ID' | translate"
                 >
                 </vitamui-input>
@@ -152,7 +147,7 @@
               @if (project().connectedToArchivingSystem) {
                 <vitamui-select
                   class="w-50"
-                  formControlName="archivalAgencyIdentifier"
+                  [formField]="form.archivalAgencyIdentifier"
                   [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate"
                   [searchBarPlaceHolder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate"
                   [options]="agenciesOptions$ | async"
@@ -161,7 +156,7 @@
                 ></vitamui-select>
                 <vitamui-select
                   class="w-50"
-                  formControlName="transferringAgencyIdentifier"
+                  [formField]="form.transferringAgencyIdentifier"
                   [placeholder]="'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate"
                   [searchBarPlaceHolder]="'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate"
                   [options]="agenciesOptions$ | async"
@@ -171,13 +166,13 @@
               } @else {
                 <vitamui-input
                   class="w-50"
-                  formControlName="archivalAgencyIdentifier"
+                  [formField]="form.archivalAgencyIdentifier"
                   [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY_ID' | translate"
                 >
                 </vitamui-input>
                 <vitamui-input
                   class="w-50"
-                  formControlName="transferringAgencyIdentifier"
+                  [formField]="form.transferringAgencyIdentifier"
                   [placeholder]="'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY_ID' | translate"
                 >
                 </vitamui-input>
@@ -188,7 +183,7 @@
               @if (project().connectedToArchivingSystem) {
                 <vitamui-select
                   class="w-50"
-                  formControlName="archivalAgreement"
+                  [formField]="form.archivalAgreement"
                   [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate"
                   [searchBarPlaceHolder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate"
                   [options]="archivalAgreementOptions$ | async"
@@ -197,7 +192,7 @@
                 ></vitamui-select>
                 <vitamui-select
                   class="w-50"
-                  formControlName="archiveProfile"
+                  [formField]="form.archiveProfile"
                   [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate"
                   [searchBarPlaceHolder]="'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate"
                   [options]="archiveProfileOptions$ | async"
@@ -207,13 +202,13 @@
               } @else {
                 <vitamui-input
                   class="w-50"
-                  formControlName="archivalAgreement"
+                  [formField]="form.archivalAgreement"
                   [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT_ID' | translate"
                 >
                 </vitamui-input>
                 <vitamui-input
                   class="w-50"
-                  formControlName="archiveProfile"
+                  [formField]="form.archiveProfile"
                   [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE_ID' | translate"
                 >
                 </vitamui-input>
@@ -223,7 +218,7 @@
             <div class="hgap-4">
               <vitamui-select
                 class="w-50"
-                formControlName="acquisitionInformation"
+                [formField]="form.acquisitionInformation"
                 [placeholder]="'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate"
                 [options]="acquisitionInformationsList"
                 [multiple]="false"
@@ -231,7 +226,7 @@
               ></vitamui-select>
               <vitamui-select
                 class="w-50"
-                formControlName="legalStatus"
+                [formField]="form.legalStatus"
                 [placeholder]="'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate"
                 [options]="legalStatusList"
                 [multiple]="false"
@@ -319,14 +314,15 @@
                 <div class="text normal bold primary uppercase">
                   {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ATTACHMENT.RULES.TITLE' | translate }}
                 </div>
-                <div class="gap-4 align-items-stretch mt-4" formArrayName="unitUps">
-                  @for (ruleParamForm of unitUps.controls; track ruleParamForm; let i = $index; let isFirst = $first) {
-                    <vitamui-common-accordion [formGroup]="ruleParamForm" [opened]="isFirst">
+                <div class="gap-4 align-items-stretch mt-4">
+                  @for (ruleParamForm of form.unitUps; track ruleParamForm; let i = $index; let isFirst = $first) {
+                    <vitamui-common-accordion [opened]="isFirst">
                       <div class="title">
-                        {{ 'COLLECT.MODAL.RULE_PARAMETER_PREFIX' | translate }} {{ i + 1 }}{{ getNodeTitle(ruleParamForm.value) }}
+                        {{ 'COLLECT.MODAL.RULE_PARAMETER_PREFIX' | translate }} {{ i + 1 }}{{ getNodeTitle(ruleParamForm().value()) }}
                       </div>
                       <div class="title-extra" style="margin-left: auto">
                         <button
+                          type="button"
                           class="btn btn-circle outline outline-primary small"
                           (click)="deleteRuleParam(i)"
                           [vitamuiTooltip]="'COLLECT.MODAL.REMOVE_PARAM' | translate"
@@ -341,25 +337,26 @@
                             <div class="hgap-4 align-items-start">
                               <vitamui-select-with-tree
                                 class="w-50"
-                                formControlName="ontologyList"
+                                [formField]="ruleParamForm.ontologyList"
+                                (change)="onOntologyChange(i)"
                                 [options]="schemaOptions()"
                                 [getDisplayValue]="getSchemaElementDisplayValue"
                                 [placeholder]="'COLLECT.MODAL.SELECT_METADATA' | translate"
                                 [searchBarPlaceHolder]="'COLLECT.MODAL.SELECT_METADATA_SEARCH_BAR_PLACE_HOLDER' | translate"
                               >
                               </vitamui-select-with-tree>
-                              @if (['TEXT', 'KEYWORD', 'BOOLEAN', 'LONG'].includes(ruleParamForm.value.ontologyList?.Type)) {
+                              @if (['TEXT', 'KEYWORD', 'BOOLEAN', 'LONG'].includes(ruleParamForm.ontologyList().value()?.Type)) {
                                 <vitamui-input
                                   class="w-50"
-                                  formControlName="metadataValue"
-                                  [placeholder]="getName(ruleParamForm.value.ontologyList)"
+                                  [formField]="ruleParamForm.metadataValue"
+                                  [placeholder]="getName(ruleParamForm.ontologyList().value())"
                                 >
                                 </vitamui-input>
-                              } @else if (['DATE'].includes(ruleParamForm.value.ontologyList?.Type)) {
+                              } @else if (['DATE'].includes(ruleParamForm.ontologyList().value()?.Type)) {
                                 <vitamui-datepicker
                                   class="w-50"
-                                  formControlName="metadataValue"
-                                  [label]="getName(ruleParamForm.value.ontologyList)"
+                                  [formField]="ruleParamForm.metadataValue"
+                                  [label]="getName(ruleParamForm.ontologyList().value())"
                                   format="yyyy-MM-dd"
                                 ></vitamui-datepicker>
                               }
@@ -376,34 +373,34 @@
                               <mat-button-toggle-group class="vitamui-button-toggle-group">
                                 <mat-button-toggle
                                   [value]="FixedAttachmentMode.TREE"
-                                  (click)="setRuleAttachmentMode(ruleParamForm, FixedAttachmentMode.TREE)"
-                                  [checked]="ruleParamForm.get('attachmentMode')?.value === FixedAttachmentMode.TREE"
+                                  (click)="setRuleAttachmentMode(i, FixedAttachmentMode.TREE)"
+                                  [checked]="ruleParamForm.attachmentMode().value() === FixedAttachmentMode.TREE"
                                 >
                                   {{ 'COLLECT.MODAL.ATTACHMENT_TREES_AND_PLANS' | translate }}
                                 </mat-button-toggle>
                                 <mat-button-toggle
                                   [value]="FixedAttachmentMode.GUID"
-                                  (click)="setRuleAttachmentMode(ruleParamForm, FixedAttachmentMode.GUID)"
-                                  [checked]="ruleParamForm.get('attachmentMode')?.value === FixedAttachmentMode.GUID"
+                                  (click)="setRuleAttachmentMode(i, FixedAttachmentMode.GUID)"
+                                  [checked]="ruleParamForm.attachmentMode().value() === FixedAttachmentMode.GUID"
                                 >
                                   {{ 'COLLECT.MODAL.ATTACHMENT_ARCHIVAL_UNIT_ID' | translate }}
                                 </mat-button-toggle>
                               </mat-button-toggle-group>
-                              @if (ruleParamForm.get('attachmentMode')?.value === FixedAttachmentMode.TREE) {
+                              @if (ruleParamForm.attachmentMode().value() === FixedAttachmentMode.TREE) {
                                 <vitamui-library-filing-plan
-                                  formControlName="unitUp"
+                                  [formField]="ruleParamForm.unitUp"
                                   [dataSource]="units()"
                                   [mode]="FilingPlanMode.SOLO"
                                 ></vitamui-library-filing-plan>
                               } @else {
                                 <vitamui-input
-                                  formControlName="unitUp"
+                                  [formField]="ruleParamForm.unitUp"
                                   [placeholder]="'COLLECT.ARCHIVAL_UNIT_IDENTIFIER' | translate"
                                 ></vitamui-input>
                               }
                             } @else {
                               <vitamui-input
-                                formControlName="unitUp"
+                                [formField]="ruleParamForm.unitUp"
                                 [placeholder]="'COLLECT.ARCHIVAL_UNIT_IDENTIFIER' | translate"
                               ></vitamui-input>
                             }
@@ -426,7 +423,7 @@
                     {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ATTACHMENT.DEFAULT.TITLE' | translate }}
                   </div>
                   <div class="hgap-2 align-items-center">
-                    <vitamui-slide-toggle formControlName="defaultAttachmentEnabled" (change)="onDefaultAttachmentToggle()">
+                    <vitamui-slide-toggle [formField]="form.defaultAttachmentEnabled" (change)="onDefaultAttachmentToggle()">
                       {{ 'COLLECT.MODAL.DEFAULT_ATTACHMENT_TOGGLE' | translate }}
                     </vitamui-slide-toggle>
                     <i
@@ -455,7 +452,7 @@
                       </mat-button-toggle-group>
                       @if (fixedAttachmentMode === FixedAttachmentMode.TREE) {
                         <vitamui-library-filing-plan
-                          formControlName="unitUp"
+                          [formField]="form.unitUp"
                           [dataSource]="units()"
                           [mode]="FilingPlanMode.SOLO"
                         ></vitamui-library-filing-plan>
@@ -463,12 +460,12 @@
                         <vitamui-input
                           class="w-100"
                           [placeholder]="'COLLECT.ARCHIVAL_UNIT_IDENTIFIER' | translate"
-                          formControlName="unitUp"
+                          [formField]="form.unitUp"
                         >
                         </vitamui-input>
                       }
                     } @else {
-                      <vitamui-input class="w-100" [placeholder]="'COLLECT.ARCHIVAL_UNIT_IDENTIFIER' | translate" formControlName="unitUp">
+                      <vitamui-input class="w-100" [placeholder]="'COLLECT.ARCHIVAL_UNIT_IDENTIFIER' | translate" [formField]="form.unitUp">
                       </vitamui-input>
                     }
                   }
@@ -494,16 +491,16 @@
                     </mat-button-toggle-group>
                     @if (fixedAttachmentMode === FixedAttachmentMode.TREE) {
                       <vitamui-library-filing-plan
-                        formControlName="unitUp"
+                        [formField]="form.unitUp"
                         [mode]="FilingPlanMode.SOLO"
                         [dataSource]="units()"
                       ></vitamui-library-filing-plan>
                     } @else {
-                      <vitamui-input class="w-100" [placeholder]="'COLLECT.ARCHIVAL_UNIT_IDENTIFIER' | translate" formControlName="unitUp">
+                      <vitamui-input class="w-100" [placeholder]="'COLLECT.ARCHIVAL_UNIT_IDENTIFIER' | translate" [formField]="form.unitUp">
                       </vitamui-input>
                     }
                   } @else {
-                    <vitamui-input class="w-100" [placeholder]="'COLLECT.ARCHIVAL_UNIT_IDENTIFIER' | translate" formControlName="unitUp">
+                    <vitamui-input class="w-100" [placeholder]="'COLLECT.ARCHIVAL_UNIT_IDENTIFIER' | translate" [formField]="form.unitUp">
                     </vitamui-input>
                   }
                 </div>
@@ -530,12 +527,9 @@
               }}</vitamui-slide-toggle>
               @if (project().connectedToArchivingSystem) {
                 <vitamui-select
-                  [disabled]="true"
+                  [formField]="archivingSystemField"
                   [placeholder]="'COLLECT.PROJECT_REFERENTIAL_EAS' | translate"
-                  [required]="true"
                   [options]="easOptions$ | async"
-                  [ngModel]="project().archivingSystemId + TENANT_SEPARATOR + project().archivingSystemTenant"
-                  [ngModelOptions]="{ standalone: true }"
                 ></vitamui-select>
               }
             </div>
@@ -543,7 +537,7 @@
               <label class="text caption bold primary">
                 {{ 'COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.AUTO_INGEST' | translate }}
               </label>
-              <mat-button-toggle-group formControlName="automaticIngest" class="vitamui-button-toggle-group">
+              <mat-button-toggle-group [formField]="form.automaticIngest" class="vitamui-button-toggle-group">
                 <mat-button-toggle [value]="true"> {{ 'COMMON.YES' | translate }}</mat-button-toggle>
                 <mat-button-toggle [value]="false">{{ 'COMMON.NO' | translate }}</mat-button-toggle>
               </mat-button-toggle-group>
@@ -558,7 +552,7 @@
                 [directoryMode]="false"
                 [extensions]="['.jslt']"
                 (filesChanged)="handleJsltFile($event)"
-                [formControl]="transformationRulesControl()"
+                [formField]="transformationRulesForm"
               >
               </vitamui-file-selector>
             </div>
@@ -589,7 +583,12 @@
                       : ' '
                   "
                 ></vitamui-common-data>
-                <button class="btn btn-circle primary medium" [disabled]="!project().transformationRules" (click)="downloadJSLT()">
+                <button
+                  type="button"
+                  class="btn btn-circle primary medium"
+                  [disabled]="!project().transformationRules"
+                  (click)="downloadJSLT()"
+                >
                   <i class="vitamui-icon vitamui-icon-telecharger"></i>
                 </button>
               </div>
@@ -607,7 +606,7 @@
       <button
         type="button"
         class="btn primary"
-        [disabled]="!form.dirty || (editMode(attachments) ? attachmentStepInvalid() : !form.valid)"
+        [disabled]="!form().dirty() || (editMode(attachments) ? attachmentStepInvalid() : !form().valid())"
         (click)="update()"
       >
         {{ 'UNIT_UPDATE.SAVE' | translate }}
@@ -615,7 +614,7 @@
       <button class="btn link cancel" type="button" (click)="openCancelDialog()">{{ 'COMMON.UNDO' | translate }}</button>
     </vitamui-save-banner>
   }
-</form>
+</div>
 
 <ng-template #loadingSpinner>
   <div class="spinnerClass">
@@ -633,7 +632,7 @@
       ></div>
 
       <div>
-        <mat-button-toggle-group #group="matButtonToggleGroup" [(ngModel)]="selectedValue" class="vitamui-button-toggle-group">
+        <mat-button-toggle-group #group="matButtonToggleGroup" [formField]="updateTransactionsField" class="vitamui-button-toggle-group">
           <mat-button-toggle value="YES"> {{ 'COMMON.YES' | translate }}</mat-button-toggle>
           <mat-button-toggle value="NO">{{ 'COMMON.NO' | translate }}</mat-button-toggle>
         </mat-button-toggle-group>
@@ -644,7 +643,9 @@
   }
 
   <mat-dialog-actions>
-    <button (click)="updateProject(selectedValue === 'YES')" class="btn primary">{{ 'COMMON.CONFIRM' | translate }}</button>
+    <button (click)="updateProject(updateTransactionsField().value() === 'YES')" class="btn primary">
+      {{ 'COMMON.CONFIRM' | translate }}
+    </button>
     <button matDialogClose class="btn cancel link">{{ 'COMMON.BACK_TO_INPUT' | translate }}</button>
   </mat-dialog-actions>
 </ng-template>

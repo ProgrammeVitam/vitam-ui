@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { form, FormField } from '@angular/forms/signals';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { merge } from 'rxjs';
-import { debounceTime, filter, map } from 'rxjs/operators';
+import { debounceTime, filter, map, skip } from 'rxjs/operators';
 import { CriteriaDataType, CriteriaOperator, CriteriaValue, diff, EditableInputComponent, SearchCriteriaTypeEnum } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
@@ -53,15 +53,18 @@ import { CommonModule } from '@angular/common';
 
 const TITLE_OR_DESCRIPTION = 'TITLE_OR_DESCRIPTION';
 
+interface QuickSearchCriteriaForm {
+  archiveCriteria: string;
+}
+
 @Component({
   selector: 'app-title-and-description-criteria-search',
   templateUrl: './title-and-description-criteria-search.component.html',
   imports: [
-    ReactiveFormsModule,
+    FormField,
     TranslatePipe,
     CommonModule,
     EditableInputComponent,
-    FormsModule,
     MatButtonToggleModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -72,11 +75,11 @@ const TITLE_OR_DESCRIPTION = 'TITLE_OR_DESCRIPTION';
   ],
 })
 export class TitleAndDescriptionCriteriaSearchComponent {
-  private readonly formBuilder = inject(FormBuilder);
   private readonly archiveExchangeDataService = inject(ArchiveSharedDataService);
   dialog = inject(MatDialog);
 
-  quickSearchCriteriaForm: FormGroup;
+  private readonly model = signal<QuickSearchCriteriaForm>({ archiveCriteria: '' });
+  readonly quickSearchCriteriaForm = form(this.model);
 
   previousTitleDescriptionCriteriaValue: {
     archiveCriteria: '';
@@ -90,15 +93,12 @@ export class TitleAndDescriptionCriteriaSearchComponent {
       archiveCriteria: '',
     };
 
-    this.quickSearchCriteriaForm = this.formBuilder.group({
-      archiveCriteria: ['', []],
-    });
-    merge(this.quickSearchCriteriaForm.statusChanges, this.quickSearchCriteriaForm.valueChanges)
+    toObservable(this.model)
       .pipe(
+        skip(1),
         debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
-        filter(() => this.quickSearchCriteriaForm.valid),
-        map(() => this.quickSearchCriteriaForm.value),
-        map(() => diff(this.quickSearchCriteriaForm.value, this.previousTitleDescriptionCriteriaValue)),
+        filter(() => this.quickSearchCriteriaForm().valid()),
+        map(() => diff(this.model(), this.previousTitleDescriptionCriteriaValue)),
         filter((formData) => this.isEmpty(formData)),
       )
       .subscribe(() => {
@@ -127,7 +127,7 @@ export class TitleAndDescriptionCriteriaSearchComponent {
   }
 
   private resetSimpleCriteriaForm() {
-    this.quickSearchCriteriaForm.reset(this.emptyTitleDescriptionCriteriaForm);
+    this.quickSearchCriteriaForm().reset({ ...this.emptyTitleDescriptionCriteriaForm });
   }
 
   addCriteria(keyElt: string, valueElt: CriteriaValue, labelElt: string, translated: boolean, operator: string, valueTranslated: boolean) {
@@ -143,9 +143,5 @@ export class TitleAndDescriptionCriteriaSearchComponent {
         dataType: CriteriaDataType.STRING,
       });
     }
-  }
-
-  get archiveCriteria() {
-    return this.quickSearchCriteriaForm.controls['archiveCriteria'];
   }
 }
