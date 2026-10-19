@@ -237,6 +237,17 @@ class ProbativeValueServiceTest {
             for (String expected : expectedValues) {
                 assertTrue(text.contains(expected), "Missing PDF content: " + expected);
             }
+            int pageCount = document.getNumberOfPages();
+            for (int pageNumber = 1; pageNumber <= pageCount; pageNumber++) {
+                stripper.setStartPage(pageNumber);
+                stripper.setEndPage(pageNumber);
+                String pageText = stripper.getText(document);
+                assertTrue(pageText.contains("Relevé de valeur probante"), "Missing header on page " + pageNumber);
+                assertTrue(
+                    pageText.contains(pageNumber + "/" + pageCount),
+                    "Missing page number " + pageNumber + "/" + pageCount
+                );
+            }
         }
     }
 

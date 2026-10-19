@@ -15,7 +15,6 @@
         <!-- Dependencies version -->
         <antisamy.version>1.7.8</antisamy.version>
         <apache.commons.codec.version>1.22.0</apache.commons.codec.version>
-        <apache.pdfbox.version>2.0.31</apache.pdfbox.version>
         <bouncycastle.version>1.85.2</bouncycastle.version>
         <cas.version>7.3.8</cas.version>
         <commons.beanutils.version>1.11.0</commons.beanutils.version>
@@ -28,7 +27,6 @@
         <esapi.version>2.7.0.0</esapi.version>
         <fake.sftp.server.rule.version>2.0.1</fake.sftp.server.rule.version>
         <fop.version>2.4</fop.version>
-        <freemarker.version>2.3.35</freemarker.version>
         <glassfish.jaxb.version>4.0.9</glassfish.jaxb.version>
         <gson.version>2.14.0</gson.version>
         <hibernate.validatior.version>8.0.3.Final</hibernate.validatior.version>
@@ -300,11 +298,6 @@
                 <groupId>io.opentracing.contrib</groupId>
                 <artifactId>opentracing-spring-jaeger-web-starter</artifactId>
                 <version>${jaeger.tracing.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.freemarker</groupId>
-                <artifactId>freemarker</artifactId>
-                <version>${freemarker.version}</version>
             </dependency>
 
             <!-- Security -->
