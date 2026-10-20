@@ -186,7 +186,7 @@ public class IdentityProviderConverter implements Converter<IdentityProviderDto,
      * @return
      */
     public String buildTechnicalName(final String name) {
-        final int nameHash = Math.abs(name.hashCode());
+        final long nameHash = Math.abs((long) name.hashCode());
         final String sHash = StringUtils.substring(String.valueOf(nameHash), 0, 6);
         return "idp" + sHash;
     }
