@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CdkStepper, CdkStepperModule } from '@angular/cdk/stepper';
-import { Component, ElementRef, HostListener, inject, input } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -49,7 +49,16 @@ import { CommonModule } from '@angular/common';
 })
 export class StepperComponent extends CdkStepper {
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
   readonly disableScrollToTop = input(false);
+
+  // Display the new step synchronously: with zoneless change detection, the view would otherwise be refreshed after
+  // the event, leaving the previous step (and its buttons) displayed for a few frames.
+  // selectedIndexChange is emitted once the new index is set (unlike selectionChange).
+  @HostListener('selectedIndexChange')
+  selectedIndexChanged() {
+    this.changeDetectorRef.detectChanges();
+  }
 
   // Automatically scroll to the top of the stepper after changing step (inspired by https://github.com/angular/components/issues/8881)
   @HostListener('selectionChange')
