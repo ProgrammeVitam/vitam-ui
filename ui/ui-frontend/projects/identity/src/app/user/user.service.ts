@@ -71,8 +71,6 @@ export class UserService extends SearchService<User> {
   }
 
   create(user: User) {
-    user.email = user.email;
-
     return this.userApi.create(user).pipe(
       tap((response: User) => {
         this.snackBarService.open({
