@@ -83,7 +83,7 @@ export class PathService {
 
         return acc;
       }, new Set<{ key: string; value: any }>()),
-    ).sort();
+    );
   }
 
   public value(data: any, path: string): any {

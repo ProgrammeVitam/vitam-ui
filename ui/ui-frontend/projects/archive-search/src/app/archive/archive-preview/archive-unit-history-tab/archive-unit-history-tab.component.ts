@@ -120,7 +120,9 @@ export class ArchiveUnitHistoryTabComponent {
 
   operationGroups = computed(() => (this.historyResource.hasValue() ? this.historyResource.value() : []));
 
-  availableOperationTypes = computed(() => Array.from(new Set(this.operationGroups().map((group) => group.evTypeProc))).sort());
+  availableOperationTypes = computed(() =>
+    Array.from(new Set(this.operationGroups().map((group) => group.evTypeProc))).sort((a, b) => a.localeCompare(b)),
+  );
 
   filteredOperationGroups = computed(() => {
     const operationTypeFilter = this.operationTypeFilter();
