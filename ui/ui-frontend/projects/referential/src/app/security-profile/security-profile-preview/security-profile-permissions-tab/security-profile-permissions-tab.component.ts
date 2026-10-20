@@ -105,7 +105,7 @@ export class SecurityProfilePermissionsTabComponent implements OnChanges {
     let unchanged = true;
     const formValue = this.form().value();
 
-    if (this.previousValue().permissions && this.previousValue().permissions) {
+    if (formValue.permissions && this.previousValue().permissions) {
       if (formValue.permissions.length !== this.previousValue().permissions.length) {
         unchanged = false;
       } else {
