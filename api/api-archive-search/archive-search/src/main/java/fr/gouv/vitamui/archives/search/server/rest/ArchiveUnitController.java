@@ -42,9 +42,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
@@ -85,7 +85,7 @@ public class ArchiveUnitController {
     )
     public ResponseEntity<OperationIdDto> updateArchiveUnitById(
         @RequestBody @Validated final JsonPatch jsonPatch,
-        @RequestParam String archiveUnitId
+        @PathVariable String archiveUnitId
     ) {
         final JsonPatchDto jsonPatchDto = new JsonPatchDto().setId(archiveUnitId).setJsonPatch(jsonPatch);
         return updateArchiveUnit(jsonPatchDto);
