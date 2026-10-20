@@ -105,6 +105,6 @@ public final class IamUtils {
      */
     @SuppressWarnings("unchecked")
     public static <E extends Enum<E>> String buildEmbedded(final List<E> embeddedFieldList) {
-        return buildEmbedded((Enum<E>[]) embeddedFieldList.toArray());
+        return buildEmbedded((Enum<E>[]) embeddedFieldList.toArray(new Enum[0]));
     }
 }
