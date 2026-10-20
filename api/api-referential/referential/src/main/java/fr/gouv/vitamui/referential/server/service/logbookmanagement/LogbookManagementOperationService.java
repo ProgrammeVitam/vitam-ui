@@ -137,7 +137,10 @@ public class LogbookManagementOperationService extends AbstractService {
         VitamContext vitamContext = buildVitamContext();
         try {
             return this.updateOperationActionProcess(vitamContext, actionId, operationId);
-        } catch (VitamClientException | JsonProcessingException | InterruptedException e) {
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new InternalServerException("Unable to update operation action process", e);
+        } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Unable to update operation action process", e);
         }
     }
