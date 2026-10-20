@@ -60,6 +60,6 @@ export class OntologyCreateValidators {
 
   /** Adds an `idPattern` error when the identifier starts with `_`, `#` or contains a whitespace. */
   patternID = (path: SchemaPath<string>): void => {
-    validate(path, ({ value }) => (/^[_#\s]|\s/.test(value()) ? { kind: 'idPattern' } : undefined));
+    validate(path, ({ value }) => (/(^[_#])|\s/.test(value()) ? { kind: 'idPattern' } : undefined));
   };
 }
