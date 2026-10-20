@@ -104,7 +104,7 @@ export class IngestContractAttachmentTabComponent implements OnChanges {
             this.linkParentIdTitle = result.Title;
           }
         });
-        this.checkParentIdTitles.sort();
+        this.checkParentIdTitles.sort((a, b) => a.localeCompare(b));
         this.cdr.markForCheck();
       }
     });
