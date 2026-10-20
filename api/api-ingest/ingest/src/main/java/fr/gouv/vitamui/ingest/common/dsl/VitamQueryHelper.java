@@ -110,7 +110,7 @@ public class VitamQueryHelper {
                 select.addOrderByAscFilter(orderBy.get());
             }
         }
-        select.setLimitFilter(pageNumber * size, size);
+        select.setLimitFilter((long) pageNumber * size, size);
 
         // Manage Query
         if (!searchCriteriaMap.isEmpty()) {
