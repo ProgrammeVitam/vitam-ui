@@ -285,19 +285,16 @@ public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable
     }
 
     /**
-     * Retrieve element if execution was successful. If not return null.
+     * Retrieve element if execution was successful. If not return an empty Optional.
      * @param query must not be {@literal null}.
      * @param writeResult must not be {@literal null}.
      * @return
      */
     private Optional<CustomSequence> retrieveElementIfExists(final Query query, final UpdateResult writeResult) {
-        Optional<CustomSequence> result = null;
         if (writeResult.getMatchedCount() == 1) {
-            result = Optional.ofNullable(mongoOperations.findOne(query, CustomSequence.class));
-        } else {
-            result = Optional.empty();
+            return Optional.ofNullable(mongoOperations.findOne(query, CustomSequence.class));
         }
-        return result;
+        return Optional.empty();
     }
 
     /**
