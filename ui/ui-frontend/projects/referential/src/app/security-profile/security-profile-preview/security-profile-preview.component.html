@@ -1,6 +1,6 @@
 <vitamui-common-sidenav-header
-  [title]="securityProfile?.name"
-  [subtitle]="'(' + securityProfile?.identifier + ')'"
+  [title]="securityProfile()?.name"
+  [subtitle]="'(' + securityProfile()?.identifier + ')'"
   (onclose)="emitClose()"
   [icon]="'vitamui-icon-security-profile'"
 >
@@ -10,7 +10,7 @@
   <mat-tab-group class="preview-tab-group" #tabs>
     <mat-tab [label]="'SECURITY_PROFILE_APP.TAB.INFORMATION.TITLE' | translate">
       <app-security-profile-information-tab
-        [securityProfile]="securityProfile"
+        [securityProfile]="securityProfile()"
         (updated)="updatedChange($event, 0)"
         #infoTab
         (securityProfileUpdated)="updateSecurityProfile($event)"
@@ -20,14 +20,14 @@
     </mat-tab>
 
     <mat-tab [label]="'SECURITY_PROFILE_APP.TAB.PERMISSIONS.TITLE' | translate">
-      <app-security-profile-permissions-tab [SecurityProfile]="securityProfile" (updated)="updatedChange($event, 1)" #permsTab>
+      <app-security-profile-permissions-tab [SecurityProfile]="securityProfile()" (updated)="updatedChange($event, 1)" #permsTab>
       </app-security-profile-permissions-tab>
     </mat-tab>
 
     <mat-tab [label]="'SECURITY_PROFILE_APP.TAB.HISTORY.TITLE' | translate">
       <vitamui-common-operation-history-tab
-        [id]="securityProfile?.identifier"
-        [identifier]="securityProfile?.identifier"
+        [id]="securityProfile()?.identifier"
+        [identifier]="securityProfile()?.identifier"
         collectionName="security-profile"
       />
     </mat-tab>

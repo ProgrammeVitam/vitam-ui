@@ -58,7 +58,7 @@ describe('EditableEmailInputComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EditableEmailInputComponent);
     component = fixture.componentInstance;
-    component.domains = ['example.com'];
+    fixture.componentRef.setInput('domains', ['example.com']);
     fixture.detectChanges();
   });
 

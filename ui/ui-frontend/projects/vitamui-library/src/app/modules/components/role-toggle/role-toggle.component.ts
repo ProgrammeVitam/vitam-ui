@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterContentInit, Component, ContentChildren, forwardRef, QueryList } from '@angular/core';
+import { AfterContentInit, Component, forwardRef, contentChildren } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { merge } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -54,7 +54,7 @@ export const ROLE_TOGGLE_VALUE_ACCESSOR: any = {
   providers: [ROLE_TOGGLE_VALUE_ACCESSOR],
 })
 export class RoleToggleComponent implements ControlValueAccessor, AfterContentInit {
-  @ContentChildren(RoleComponent, { descendants: true }) roleComponents: QueryList<RoleComponent>;
+  readonly roleComponents = contentChildren(RoleComponent, { descendants: true });
 
   onChange: (_: any) => void;
   onTouched: () => void;
@@ -62,14 +62,14 @@ export class RoleToggleComponent implements ControlValueAccessor, AfterContentIn
   private roles: Array<{ name: string }> = [];
 
   ngAfterContentInit(): void {
-    const toggleChangeList = this.roleComponents.map((roleComponent) => {
-      return roleComponent.checkedChange.pipe(map((value) => ({ name: roleComponent.name, value })));
+    const toggleChangeList = this.roleComponents().map((roleComponent) => {
+      return roleComponent.checkedChange.pipe(map((value) => ({ name: roleComponent.name(), value })));
     });
     const toggleChangeMerged = merge(...toggleChangeList);
 
     toggleChangeMerged.subscribe((role) => {
       if (role.value) {
-        if (!this.roles.find((r) => r.name === role.name)) {
+        if (!this.roles.some((r) => r.name === role.name)) {
           this.roles = this.roles.concat([{ name: role.name }]);
         }
       } else {
@@ -78,16 +78,17 @@ export class RoleToggleComponent implements ControlValueAccessor, AfterContentIn
       this.onChange(this.roles);
     });
 
-    this.roleComponents.forEach((roleComponent) => {
-      roleComponent.checked = !!this.roles.find((role) => role.name === roleComponent.name);
+    this.roleComponents().forEach((roleComponent) => {
+      roleComponent.checked.set(this.roles.some((role) => role.name === roleComponent.name()));
     });
   }
 
   writeValue(roles: Array<{ name: string; value: boolean }>): void {
     this.roles = roles || [];
-    if (this.roleComponents) {
-      this.roleComponents.forEach((roleComponent) => {
-        roleComponent.checked = !!this.roles.find((role) => role.name === roleComponent.name);
+    const roleComponents = this.roleComponents();
+    if (roleComponents) {
+      roleComponents.forEach((roleComponent) => {
+        roleComponent.checked.set(this.roles.some((role) => role.name === roleComponent.name()));
       });
     }
   }
@@ -99,8 +100,9 @@ export class RoleToggleComponent implements ControlValueAccessor, AfterContentIn
   }
 
   setDisabledState?(isDisabled: boolean): void {
-    if (this.roleComponents) {
-      this.roleComponents.forEach((roleComponent) => {
+    const roleComponents = this.roleComponents();
+    if (roleComponents) {
+      roleComponents.forEach((roleComponent) => {
         roleComponent.forceDisabled = isDisabled;
       });
     }

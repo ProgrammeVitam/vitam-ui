@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, output } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import {
@@ -98,7 +98,7 @@ export class LogbookManagementOperationListComponent implements OnInit {
   show = false;
   updatedoperationSub: Subscription;
 
-  @Output() operationClick = new EventEmitter<OperationDetails>();
+  readonly operationClick = output<OperationDetails>();
 
   OperationCategories: OperationCategory[] = [
     { key: 'TRACEABILITY', value: 'Sécurisation' },

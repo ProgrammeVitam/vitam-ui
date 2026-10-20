@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, OnInit, inject, input, output } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CustomerSelectionService, MenuOption } from 'vitamui-library';
 import { CustomerMenuService } from '../customer-menu.service';
@@ -51,21 +51,22 @@ export class CustomerSelectContentComponent implements OnInit {
   private readonly customerMenuService = inject(CustomerMenuService);
   private readonly customerSelectionService = inject(CustomerSelectionService);
 
-  @Input() customers: MenuOption[];
-  @Input() isModalMenu: boolean;
+  readonly customers = input<MenuOption[]>(undefined);
+  readonly isModalMenu = input<boolean>(undefined);
 
-  @Output() customerSelected: EventEmitter<string> = new EventEmitter<string>();
+  readonly customerSelected = output<string>();
 
   ngOnInit(): void {
-    if (this.customers) {
-      this.customers.sort((c1, c2) => c1.label.localeCompare(c2.label));
-      this.customerSelectionService.setCustomers(this.customers);
+    const customers = this.customers();
+    if (customers) {
+      customers.sort((c1, c2) => c1.label.localeCompare(c2.label));
+      this.customerSelectionService.setCustomers(customers);
     }
   }
 
   public selectCustomerId(customerId: string): void {
     if (customerId) {
-      if (this.isModalMenu) {
+      if (this.isModalMenu()) {
         this.customerMenuService.sendSelectedCustomerId(customerId);
         this.customerSelectionService.setCustomerId(customerId);
         this.customerSelected.emit(customerId);

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import {
@@ -95,7 +95,7 @@ export class AccessContractNodeUpdateComponent implements OnInit {
 
   FILLING_PLAN_MODE_BOTH = FilingPlanMode.BOTH;
 
-  @ViewChild('fileSearch', { static: false }) fileSearch: any;
+  readonly fileSearch = viewChild<any>('fileSearch');
 
   constructor() {
     this.tenantIdentifier = this.data.tenantIdentifier;

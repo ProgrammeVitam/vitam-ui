@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { Component, inject, OnInit, output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn } from '@angular/forms';
 import {
   AccessContract,
@@ -89,8 +89,8 @@ export class AccessContractAuthorizationsUpdateComponent implements OnInit {
   ruleTypesOptions: VitamuiSelectOptions = { options: RULE_TYPES };
 
   accessContract: AccessContract;
-  @Output() validateEvent: EventEmitter<any> = new EventEmitter();
-  @Output() cancelEvent: EventEmitter<any> = new EventEmitter();
+  readonly validateEvent = output<any>();
+  readonly cancelEvent = output<any>();
 
   form: FormGroup;
   updateMode = false;
@@ -143,7 +143,7 @@ export class AccessContractAuthorizationsUpdateComponent implements OnInit {
   }
 
   onCancel() {
-    this.cancelEvent.emit();
+    this.cancelEvent.emit(undefined);
     this.dialogRef.close();
   }
 

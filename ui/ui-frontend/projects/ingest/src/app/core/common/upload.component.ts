@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { DialogHeaderComponent, FileSelectorComponent, SnackBarService, StartupService } from 'vitamui-library';
@@ -69,7 +69,7 @@ export class UploadComponent implements OnInit {
 
   sipControl = new FormControl<File[]>(undefined, [Validators.required]);
 
-  @ViewChild('fileSearch', { static: false }) fileSearch: any;
+  readonly fileSearch = viewChild<any>('fileSearch');
 
   private snackbarRef: MatSnackBarRef<unknown>;
 

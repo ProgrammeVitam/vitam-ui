@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, inject, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, forwardRef, inject, input, viewChild } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 
 import { EditableFieldComponent } from '../editable-field.component';
@@ -57,10 +57,10 @@ export const EDITABLE_INPUT_VALUE_ACCESSOR: any = {
   imports: [CdkOverlayOrigin, FormsModule, ReactiveFormsModule, MatProgressSpinner, CdkConnectedOverlay, EllipsisDirective],
 })
 export class EditableInputComponent extends EditableFieldComponent {
-  @Input() maxlength: number;
-  @Input() type = 'text';
-  @Input({ transform: coerceBooleanProperty }) writeDisabled: boolean;
-  @ViewChild('input') private input: ElementRef;
+  readonly maxlength = input<number>(undefined);
+  readonly type = input('text');
+  readonly writeDisabled = input<boolean, any>(undefined, { transform: coerceBooleanProperty });
+  private readonly input = viewChild<ElementRef>('input');
 
   constructor() {
     const elementRef = inject(ElementRef);
@@ -70,6 +70,6 @@ export class EditableInputComponent extends EditableFieldComponent {
 
   override enterEditMode() {
     super.enterEditMode();
-    setTimeout(() => this.input.nativeElement.focus(), 0);
+    setTimeout(() => this.input().nativeElement.focus(), 0);
   }
 }

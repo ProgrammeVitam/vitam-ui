@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import {
   MatNestedTreeNode,
   MatTree,
@@ -66,17 +66,17 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class ClassificationTreeComponent {
-  @Input() loadingHolding: boolean;
-  @Input() nestedDataSourceFull: MatTreeNestedDataSource<FilingHoldingSchemeNode>;
-  @Input() nestedTreeControlFull: NestedTreeControl<FilingHoldingSchemeNode>;
-  @Input() hasMatchesInSearch: boolean;
-  @Input() showEveryNodes: boolean;
-  @Input() loadingNodeUnit: boolean;
+  readonly loadingHolding = input<boolean>(undefined);
+  readonly nestedDataSourceFull = input<MatTreeNestedDataSource<FilingHoldingSchemeNode>>(undefined);
+  readonly nestedTreeControlFull = input<NestedTreeControl<FilingHoldingSchemeNode>>(undefined);
+  readonly hasMatchesInSearch = input<boolean>(undefined);
+  readonly showEveryNodes = input<boolean>(undefined);
+  readonly loadingNodeUnit = input<boolean>(undefined);
 
-  @Output() addToSearchCriteria: EventEmitter<FilingHoldingSchemeNode> = new EventEmitter();
-  @Output() showNodeDetail: EventEmitter<string> = new EventEmitter();
-  @Output() switchView: EventEmitter<void> = new EventEmitter();
-  @Output() closePanel: EventEmitter<void> = new EventEmitter();
+  readonly addToSearchCriteria = output<FilingHoldingSchemeNode>();
+  readonly showNodeDetail = output<string>();
+  readonly switchView = output<void>();
+  readonly closePanel = output<void>();
 
   addToSearchCriteriaList(node: FilingHoldingSchemeNode) {
     this.addToSearchCriteria.emit(node);
@@ -99,7 +99,7 @@ export class ClassificationTreeComponent {
   }
 
   nodeHasMatchsOrShowAll(node: FilingHoldingSchemeNode): boolean {
-    return this.showEveryNodes || nodeHasMatch(node);
+    return this.showEveryNodes() || nodeHasMatch(node);
   }
 
   onClosePanel() {

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, EventEmitter, forwardRef, Input, NO_ERRORS_SCHEMA, Output } from '@angular/core';
+import { Component, forwardRef, NO_ERRORS_SCHEMA, input, output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -71,15 +71,11 @@ import { AgencyCreateValidators } from './agency-create.validators';
   ],
 })
 class DomainInputStubComponent implements ControlValueAccessor {
-  @Input()
-  placeholder: string;
-  @Input()
-  selected: string;
-  @Input()
-  spinnerDiameter = 25;
+  readonly placeholder = input<string>(undefined);
+  readonly selected = input<string>(undefined);
+  readonly spinnerDiameter = input(25);
 
-  @Output()
-  selectedChange = new EventEmitter<string>();
+  readonly selectedChange = output<string>();
 
   writeValue() {}
   registerOnChange() {}

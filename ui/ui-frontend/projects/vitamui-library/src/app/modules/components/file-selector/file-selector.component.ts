@@ -37,18 +37,18 @@
 import {
   ChangeDetectorRef,
   Component,
-  ContentChild,
+  computed,
   DestroyRef,
   ElementRef,
-  EventEmitter,
   forwardRef,
   inject,
   Injector,
-  Input,
   OnInit,
-  Output,
   TemplateRef,
-  ViewChild,
+  output,
+  viewChild,
+  input,
+  contentChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DragAndDropDirective } from '../../directives/drag-and-drop/drag-and-drop.directive';
@@ -112,28 +112,25 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
   /**
    * Allowed extensions. Ex: ['.json', '.rng']
    */
-  @Input() extensions?: string[];
+  readonly extensions = input<string[]>(undefined);
   /** Allows to select multiple files. Automatically set to true in directoryMode **/
-  @Input() set multiple(multiple: boolean) {
-    this.#multiple = multiple;
-  }
-  get multiple() {
-    return this.#multiple || this.directoryMode;
-  }
-  #multiple = false;
-  @Input() directoryMode = false;
-  @Input() maxSizeInBytes: number;
+  readonly multiple = input(false);
+  readonly directoryMode = input(false);
+  protected readonly isMultiple = computed(() => this.multiple() || this.directoryMode());
+  readonly maxSizeInBytes = input<number>(undefined);
   /** Extra information to display between picker links and selected files */
-  @Input({ transform: (v: string | string[]) => (v instanceof Array ? v : [v]) }) information: string[];
-  @Input() fileValidators?: FileValidatorFunction | FileValidatorFunction[];
+  readonly information = input<string[], string | string[]>(undefined, {
+    transform: (v: string | string[]) => (Array.isArray(v) ? v : [v]),
+  });
+  readonly fileValidators = input<FileValidatorFunction | FileValidatorFunction[]>(undefined);
 
-  @ContentChild('fileList') fileList: TemplateRef<any>;
-  @ContentChild('content') content: TemplateRef<any>;
+  readonly fileList = contentChild<TemplateRef<any>>('fileList');
+  readonly content = contentChild<TemplateRef<any>>('content');
 
-  @Output() filesChanged = new EventEmitter<File[]>();
+  readonly filesChanged = output<File[]>();
 
-  @ViewChild('fileSelector') fileSelector: ElementRef;
-  @ViewChild('directorySelector') directorySelector: ElementRef;
+  readonly fileSelector = viewChild<ElementRef>('fileSelector');
+  readonly directorySelector = viewChild<ElementRef>('directorySelector');
 
   displayFiles: DisplayFile[] = [];
 
@@ -179,7 +176,7 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
   }
 
   get displayMessageAndLinks() {
-    return this.multiple || this.directoryMode || !this.displayFiles?.length;
+    return this.multiple() || this.directoryMode() || !this.displayFiles?.length;
   }
 
   async handleFilesSelection(files: FileList | File[]) {
@@ -288,11 +285,8 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
   private async computeFileErrors(file: File): Promise<{ fileErrors: ValidationErrors; globalErrors: any[] }> {
     console.group(`Computing errors on file "${file.name}"`);
 
-    const customFileValidators = this.fileValidators
-      ? this.fileValidators instanceof Array
-        ? this.fileValidators
-        : [this.fileValidators]
-      : [];
+    const fileValidators = this.fileValidators();
+    const customFileValidators = fileValidators ? [fileValidators].flat() : [];
     // fileSizeValidator MUST run first so custom validators (e.g. reading file content) can skip oversized files via the hasErrors flag
     const validators: FileValidatorFunction[] = [this.fileSizeValidator, this.fileExtensionValidator, ...customFileValidators];
     const errors = await this.runValidators(validators, file);
@@ -354,11 +348,12 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
   }
 
   private async fileExtensionValidator(file: File): Promise<FileValidationErrors | undefined> {
-    if (!this.extensions) return undefined;
-    if (!this.extensions.some((ext) => file.name.toLowerCase().endsWith(ext.toLowerCase()))) {
-      console.warn(`Invalid extension. Expected: ${this.extensions.join(', ')}`);
+    const extensions = this.extensions();
+    if (!extensions) return undefined;
+    if (!extensions.some((ext) => file.name.toLowerCase().endsWith(ext.toLowerCase()))) {
+      console.warn(`Invalid extension. Expected: ${extensions.join(', ')}`);
       return {
-        fileErrors: { invalidExtension: { extensions: this.extensions.join(', ') } },
+        fileErrors: { invalidExtension: { extensions: extensions.join(', ') } },
         controlErrors: {
           invalidFiles: { files: `<li>${file.name}</li>` },
         },
@@ -372,11 +367,12 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
    * Rejects a file exceeding maxSizeInBytes before any other (potentially content-reading) validator runs on it,
    */
   private readonly fileSizeValidator = async (file: File): Promise<FileValidationErrors | undefined> => {
-    if (!this.maxSizeInBytes || (file.size || 0) <= this.maxSizeInBytes) return undefined;
-    console.warn(`File "${file.name}" exceeds maximum size: ${file.size}/${this.maxSizeInBytes}`);
+    const maxSizeInBytes = this.maxSizeInBytes();
+    if (!maxSizeInBytes || (file.size || 0) <= maxSizeInBytes) return undefined;
+    console.warn(`File "${file.name}" exceeds maximum size: ${file.size}/${maxSizeInBytes}`);
     const details = {
       size: this.bytesPipe.transform(file.size),
-      maxSize: this.bytesPipe.transform(this.maxSizeInBytes),
+      maxSize: this.bytesPipe.transform(maxSizeInBytes),
     };
     return {
       fileErrors: { maxSizeInBytes: details },
@@ -385,7 +381,7 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
   };
 
   private async directoryForbiddenValidator(displayFile: DisplayFile): Promise<FileValidationErrors | undefined> {
-    if (this.directoryMode) return undefined;
+    if (this.directoryMode()) return undefined;
     console.warn(`Directory forbidden.`);
     return {
       fileErrors: { directoryForbidden: true },
@@ -396,11 +392,11 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
   }
 
   openFileSelectorOSDialog() {
-    this.fileSelector.nativeElement.click();
+    this.fileSelector().nativeElement.click();
   }
 
   openDirectorySelectorOSDialog() {
-    this.directorySelector.nativeElement.click();
+    this.directorySelector().nativeElement.click();
   }
 
   async removeFile(displayFile: DisplayFile) {
@@ -416,8 +412,10 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
    * Reset the value to allow a new "change" event.
    */
   private resetInput(): void {
-    if (this.fileSelector) this.fileSelector.nativeElement.value = '';
-    if (this.directorySelector) this.directorySelector.nativeElement.value = '';
+    const fileSelector = this.fileSelector();
+    if (fileSelector) fileSelector.nativeElement.value = '';
+    const directorySelector = this.directorySelector();
+    if (directorySelector) directorySelector.nativeElement.value = '';
   }
 
   private async getRootElements(files: FileList | File[]): Promise<DisplayFile[]> {
@@ -448,23 +446,24 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
   }
 
   maxSizeInBytesValidator = (control: AbstractControl<CustomFile[]>): ValidationErrors => {
-    if (!this.maxSizeInBytes) return null;
+    const maxSizeInBytes = this.maxSizeInBytes();
+    if (!maxSizeInBytes) return null;
     const size = (control.value || []).reduce((acc: number, file: CustomFile) => acc + (file.size || 0), 0);
-    if (size > this.maxSizeInBytes) {
-      console.warn(`Maximum size exceeded: ${size}/${this.maxSizeInBytes}`);
+    if (size > maxSizeInBytes) {
+      console.warn(`Maximum size exceeded: ${size}/${maxSizeInBytes}`);
       return {
         maxSizeInBytes: {
           size: this.bytesPipe.transform(size),
-          maxSize: this.bytesPipe.transform(this.maxSizeInBytes),
+          maxSize: this.bytesPipe.transform(maxSizeInBytes),
         },
       };
     }
-    console.debug(`Maximum size respected: ${size}/${this.maxSizeInBytes}`);
+    console.debug(`Maximum size respected: ${size}/${maxSizeInBytes}`);
     return null;
   };
 
   maxFilesValidator = (control: AbstractControl<CustomFile[]>): ValidationErrors => {
-    const maxFiles = this.multiple ? undefined : 1;
+    const maxFiles = this.isMultiple() ? undefined : 1;
     if (!maxFiles) return null;
     const nbFiles = (control.value || []).length;
     if (nbFiles > maxFiles) {

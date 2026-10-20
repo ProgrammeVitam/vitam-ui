@@ -147,7 +147,7 @@ describe('BlockCategoryInheritanceComponent', () => {
 
   it('should the stepValid parameter be true after a block of category inheritance', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.APPRAISALRULE);
     component.ruleActions = ruleActions;
 
     // When
@@ -167,7 +167,7 @@ describe('BlockCategoryInheritanceComponent', () => {
 
   it('should the paremeter of category inheritance be valid', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.APPRAISALRULE);
     component.ruleActions = ruleActions;
 
     // When
@@ -180,7 +180,7 @@ describe('BlockCategoryInheritanceComponent', () => {
 
   it('should call getManagementRules of ManagementRulesSharedDataService', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.APPRAISALRULE);
     component.ruleTypeDUA = ruleCategoryAction;
     vi.spyOn(managementRulesSharedDataServiceMock, 'getManagementRules');
 

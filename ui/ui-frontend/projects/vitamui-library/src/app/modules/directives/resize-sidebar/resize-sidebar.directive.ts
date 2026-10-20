@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Directive, ElementRef, HostListener, inject, Input, OnInit, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, HostListener, inject, OnInit, Renderer2, input, model } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
 @Directive({ selector: '[vitamuiCommonResizeSidebar]' })
@@ -49,24 +49,24 @@ export class ResizeSidebarDirective implements OnInit {
    * redimensionner
    * valeur possible: left ou right (par défaut)
    */
-  @Input('vitamuiCommonResizeSidebar') orientation: 'right' | 'left' = 'right';
+  readonly orientation = input<'right' | 'left'>('right', { alias: 'vitamuiCommonResizeSidebar' });
 
   /**
    * largeur de la barre permettant de redimensionner
    * valeur par défaut : 4px
    */
-  @Input() barSize = '4px';
+  readonly barSize = input('4px');
 
   /**
    * Couleur de la barre permettant de redimensionner
    */
-  @Input() barColor = 'var(--vitamui-primary)';
+  readonly barColor = input('var(--vitamui-primary)');
 
   /**
    * Largeur du block à redimensionner
    * valeur par défaut 300 (px)
    */
-  @Input() width = 300;
+  readonly width = model(300);
 
   private status = 0;
 
@@ -75,13 +75,13 @@ export class ResizeSidebarDirective implements OnInit {
     const mouse = { x: event.clientX, y: event.clientY };
     if (this.status === 1) {
       const space = Number(mouse.x) ? mouse.x : 0;
-      if (this.orientation === 'left') {
-        this.width = space >= 5 ? space : 5;
-        this.elementRef.nativeElement.style.width = this.width + 'px';
+      if (this.orientation() === 'left') {
+        this.width.set(Math.max(space, 5));
+        this.elementRef.nativeElement.style.width = this.width() + 'px';
       } else {
         const { left } = this.elementRef.nativeElement.getBoundingClientRect();
-        this.width = left - space + this.width;
-        this.elementRef.nativeElement.style.width = this.width + 'px';
+        this.width.set(left - space + this.width());
+        this.elementRef.nativeElement.style.width = this.width() + 'px';
       }
     }
   }
@@ -93,7 +93,7 @@ export class ResizeSidebarDirective implements OnInit {
 
   ngOnInit(): void {
     const nativeElt = this.elementRef.nativeElement;
-    nativeElt.style.width = this.width + 'px';
+    nativeElt.style.width = this.width() + 'px';
     const child = this.createResizeBar();
     this.renderer.appendChild(nativeElt, child);
   }
@@ -106,12 +106,12 @@ export class ResizeSidebarDirective implements OnInit {
     div.className = 'vitamuiResizeSidebar';
     div.style.zIndex = '99';
     div.style.top = '0';
-    if (this.orientation === 'left') {
-      div.style.left = `calc(100% - ${this.barSize})`;
-      div.style.borderRight = `${this.barSize} solid ${this.barColor}`;
+    if (this.orientation() === 'left') {
+      div.style.left = `calc(100% - ${this.barSize()})`;
+      div.style.borderRight = `${this.barSize()} solid ${this.barColor()}`;
     } else {
-      div.style.right = `calc(100% - ${this.barSize})`;
-      div.style.borderLeft = `${this.barSize} solid ${this.barColor}`;
+      div.style.right = `calc(100% - ${this.barSize()})`;
+      div.style.borderLeft = `${this.barSize()} solid ${this.barColor()}`;
     }
 
     div.style.cursor = 'ew-resize';

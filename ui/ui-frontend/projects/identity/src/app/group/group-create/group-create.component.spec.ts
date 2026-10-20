@@ -74,7 +74,7 @@ import { EMPTY, of } from 'rxjs';
 import { AuthService, ConfirmDialogService, Group, LevelInputComponent, ProfileService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
-import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, forwardRef, NO_ERRORS_SCHEMA, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -98,8 +98,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 class ProfilesFormStubComponent implements ControlValueAccessor {
-  @Input()
-  level: string;
+  readonly level = input<string>(undefined);
   writeValue() {}
   registerOnChange() {}
   registerOnTouched() {}

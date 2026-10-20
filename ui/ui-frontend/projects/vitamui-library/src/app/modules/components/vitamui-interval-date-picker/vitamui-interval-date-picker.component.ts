@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, inject, OnInit, input, output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { NgStyle } from '@angular/common';
@@ -50,8 +50,11 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class VitamuiIntervalDatePickerComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
 
-  @Input() label: string;
-  @Output() criteriaChange = new EventEmitter<{ dateMin: string; dateMax: string }>();
+  readonly label = input<string>(undefined);
+  readonly criteriaChange = output<{
+    dateMin: string;
+    dateMax: string;
+  }>();
 
   dateRangeFilterForm: FormGroup;
   showDateMax = false;

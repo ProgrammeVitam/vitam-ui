@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Directive, ElementRef, EventEmitter, HostListener, Input, Output, inject } from '@angular/core';
+import { Directive, ElementRef, HostListener, inject, input, output } from '@angular/core';
 import { Logger } from '../../logger/logger';
 import { CustomFile } from '../../../../lib/models/custom-file';
 
@@ -45,24 +45,24 @@ export class DragAndDropDirective {
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly logger = inject(Logger);
 
-  @Output() private fileToUploadEmitter: EventEmitter<File[]> = new EventEmitter();
-  @Output() private fileDragHover: EventEmitter<boolean> = new EventEmitter();
+  readonly fileToUploadEmitter = output<File[]>();
+  readonly fileDragHover = output<boolean>();
 
   // Disable dropping on the body of the document.
   // This prevents the browser from loading the dropped files
   // using it's default behaviour if the user misses the drop zone.
   // Set this input to false if you want the browser default behaviour.
-  @Input() preventBodyDrop = true;
-  @Input() enableFileDragAndDrop = true;
-  @Input() enableFolderDragAndDrop = false;
-  @Input() hoverClass = 'on-over';
+  readonly preventBodyDrop = input(true);
+  readonly enableFileDragAndDrop = input(true);
+  readonly enableFolderDragAndDrop = input(false);
+  readonly hoverClass = input('on-over');
 
   @HostListener('dragenter', ['$event']) public onDragEnter(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
     if (this.elementRef.nativeElement.contains(event.target as HTMLElement)) {
       this.fileDragHover.emit(true);
-      this.elementRef.nativeElement.classList.add(this.hoverClass);
+      this.elementRef.nativeElement.classList.add(this.hoverClass());
     }
   }
 
@@ -71,17 +71,17 @@ export class DragAndDropDirective {
     event.stopPropagation();
     if (!event.relatedTarget || !this.elementRef.nativeElement.contains(event.relatedTarget as HTMLElement)) {
       this.fileDragHover.emit(false);
-      this.elementRef.nativeElement.classList.remove(this.hoverClass);
+      this.elementRef.nativeElement.classList.remove(this.hoverClass());
     }
   }
 
   @HostListener('drop', ['$event']) public async onDrop(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
-    this.elementRef.nativeElement.classList.remove(this.hoverClass);
+    this.elementRef.nativeElement.classList.remove(this.hoverClass());
 
     const fileSystemEntries: FileSystemEntry[] = (await this.getAllFileEntries(event.dataTransfer.items)).filter(
-      (fileEntry) => (fileEntry.isFile && this.enableFileDragAndDrop) || (fileEntry.isDirectory && this.enableFolderDragAndDrop),
+      (fileEntry) => (fileEntry.isFile && this.enableFileDragAndDrop()) || (fileEntry.isDirectory && this.enableFolderDragAndDrop()),
     );
 
     Promise.all(
@@ -102,7 +102,7 @@ export class DragAndDropDirective {
 
   @HostListener('body:dragover', ['$event'])
   onBodyDragOver(event: DragEvent) {
-    if (this.preventBodyDrop) {
+    if (this.preventBodyDrop()) {
       event.preventDefault();
       event.stopPropagation();
     }
@@ -110,7 +110,7 @@ export class DragAndDropDirective {
 
   @HostListener('body:drop', ['$event'])
   onBodyDrop(event: DragEvent) {
-    if (this.preventBodyDrop) {
+    if (this.preventBodyDrop()) {
       event.preventDefault();
     }
   }

@@ -5,10 +5,10 @@
     </div>
     <mat-card-header>
       <mat-card-title>
-        {{ title | translate: { default: application.name } }}
+        {{ title | translate: { default: application().name } }}
       </mat-card-title>
       <mat-card-subtitle>
-        {{ subtitle | translate: { default: application.tooltip } }}
+        {{ subtitle | translate: { default: application().tooltip } }}
       </mat-card-subtitle>
     </mat-card-header>
   </a>

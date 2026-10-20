@@ -71,7 +71,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, inject, Input, OnDestroy, OnInit, QueryList, signal, ViewChildren } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, input, viewChildren } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
@@ -177,15 +177,15 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   private static readonly ROOT_LEVEL = 1;
   private static readonly ROOT_LEFT_PADDING = 28;
 
-  @Input() rootElementName: string;
-  @Input() rootElementShowName: string;
-  @Input() childrenListToExclude: string[];
-  @Input() childrenListToInclude: string[];
-  @Input() collectionName: string;
-  @Input() rootTabMetadataName: string;
-  @Input() activeTabIndex: number;
+  readonly rootElementName = input<string>(undefined);
+  readonly rootElementShowName = input<string>(undefined);
+  readonly childrenListToExclude = input<string[]>(undefined);
+  readonly childrenListToInclude = input<string[]>(undefined);
+  readonly collectionName = input<string>(undefined);
+  readonly rootTabMetadataName = input<string>(undefined);
+  readonly activeTabIndex = input<number>(undefined);
 
-  @ViewChildren(MatNestedTreeNode) private nestedTreeNodes: QueryList<MatNestedTreeNode<FileNode>>;
+  private readonly nestedTreeNodes = viewChildren(MatNestedTreeNode);
 
   isStandalone: boolean = environment.standalone;
 
@@ -525,7 +525,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
     const [root] = this.fileService.currentTree.getValue();
     const data: FileNode = nodeIdToExpand
       ? this.fileService.getFileNodeById(root, nodeIdToExpand)
-      : this.fileService.getFileNodeByName(root, this.rootTabMetadataName);
+      : this.fileService.getFileNodeByName(root, this.rootTabMetadataName());
     if (data) {
       // Always republish so service-level data stays in sync; the data$
       // subscription also flips the updating signal for zoneless change detection.
@@ -542,7 +542,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   // the top-level data array on dataSource change; nested children rendered once
   // never refresh on in-place mutation without this call.
   private refreshRenderedChildren(parent: FileNode): void {
-    const nestedNode = this.nestedTreeNodes?.find((nested) => nested.data === parent);
+    const nestedNode = this.nestedTreeNodes()?.find((nested) => nested.data === parent);
     if (nestedNode) {
       // updateChildrenNodes is protected on CdkNestedTreeNode: accessed through a
       // minimal structural interface to avoid `any`.
@@ -565,7 +565,12 @@ export class FileTreeComponent implements OnInit, OnDestroy {
       node.sedaData.element === SedaElementConstants.COMPLEX ? node.children.some((el) => el.type === TypeConstants.ELEMENT) : true;
     this.fileMetadataService.shouldLoadMetadataTable.next(shouldLoad);
 
-    const dataTable = this.fileMetadataService.fillDataTable(node.sedaData, node, this.childrenListToInclude, this.childrenListToExclude);
+    const dataTable = this.fileMetadataService.fillDataTable(
+      node.sedaData,
+      node,
+      this.childrenListToInclude(),
+      this.childrenListToExclude(),
+    );
     this.logger.log(this, 'Filled data on table : ', dataTable, '...should load : ', shouldLoad);
     this.fileMetadataService.dataSource.next(dataTable);
   }
@@ -749,7 +754,8 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   findParentLevel(nodeToFind: FileNode): number {
     const parentNodeToSearch = this.fileTreeService.getNestedDataSource().data;
     const node = parentNodeToSearch[0];
-    if (this.rootElementName === node.name && this.rootElementName === nodeToFind.name) {
+    const rootElementName = this.rootElementName();
+    if (rootElementName === node.name && rootElementName === nodeToFind.name) {
       return FileTreeComponent.ROOT_LEVEL;
     }
 
@@ -763,21 +769,22 @@ export class FileTreeComponent implements OnInit, OnDestroy {
     if (!node?.sedaData?.collection) {
       return false;
     }
-    return this.collectionName === node.sedaData.collection.valueOf();
+    return this.collectionName() === node.sedaData.collection.valueOf();
   }
 
   shouldBeOnTab(node: FileNode): boolean {
     const filteredNode = Object.assign({} as FileNode, this.fileTreeService.getNestedDataSource().data[0]);
 
     const includedDataObjectPackageChildren = ['DataObjectGroup', 'BinaryDataObject', 'PhysicalDataObject'];
-    if (this.rootTabMetadataName === 'DataObjectPackage' && !includedDataObjectPackageChildren.includes(node.name)) {
+    const rootTabMetadataName = this.rootTabMetadataName();
+    if (rootTabMetadataName === 'DataObjectPackage' && !includedDataObjectPackageChildren.includes(node.name)) {
       filteredNode.children = filteredNode.children.filter(
         (child: { name: string }) => child.name !== 'DescriptiveMetadata' && child.name !== 'ManagementMetadata',
       );
       const childFound = this.fileService.getFileNodeById(filteredNode, node.id);
       return !!childFound;
     }
-    if (this.rootTabMetadataName === 'ArchiveTransfer') {
+    if (rootTabMetadataName === 'ArchiveTransfer') {
       filteredNode.children = filteredNode.children.filter((child: { name: string }) => child.name !== 'DataObjectPackage');
       const childFound = this.fileService.getFileNodeById(filteredNode, node.id);
       return !!childFound;
@@ -787,7 +794,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
 
   // Returns the positioning, in pixels, of a given node
   calculateNodePosition(node: FileNode): string {
-    if (node.name === this.rootElementName) return FileTreeComponent.ROOT_LEFT_PADDING.toString();
+    if (node.name === this.rootElementName()) return FileTreeComponent.ROOT_LEFT_PADDING.toString();
 
     const basePosition = this.findParentLevel(node) * 40;
     return (node.children.length ? basePosition - 16 : basePosition - 13).toString();

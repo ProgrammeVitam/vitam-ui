@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, viewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -83,8 +83,8 @@ export class AuditComponent extends SidenavPage<Event> {
   public search: string;
   public tenantIdentifier: string;
 
-  @ViewChild(SearchBarComponent, { static: true }) searchBar: SearchBarComponent;
-  @ViewChild(AuditListComponent, { static: true }) auditListComponent: AuditListComponent;
+  readonly searchBar = viewChild(SearchBarComponent);
+  readonly auditListComponent = viewChild(AuditListComponent);
 
   constructor() {
     super();
@@ -109,7 +109,7 @@ export class AuditComponent extends SidenavPage<Event> {
 
   openCreateAuditDialog() {
     const dialogRef = this.dialog.open(AuditCreateComponent, { disableClose: true });
-    dialogRef.componentInstance.tenantIdentifier = +this.tenantIdentifier;
+    dialogRef.componentRef.setInput('tenantIdentifier', +this.tenantIdentifier);
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined && result.success) {
         this.refreshList();
@@ -127,11 +127,12 @@ export class AuditComponent extends SidenavPage<Event> {
   }
 
   private refreshList() {
-    if (!this.auditListComponent) {
+    const auditListComponent = this.auditListComponent();
+    if (!auditListComponent) {
       return;
     }
 
-    this.auditListComponent.searchAuditOrdered();
+    auditListComponent.searchAuditOrdered();
   }
 
   onSearchSubmit(search: string) {

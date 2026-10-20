@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, viewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -96,7 +96,7 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
   private readonly ingestContractService = inject(IngestContractService);
   private readonly snackBarService = inject(SnackBarService);
 
-  @ViewChild(IngestContractListComponent, { static: true }) ingestContractListComponent: IngestContractListComponent;
+  readonly ingestContractListComponent = viewChild(IngestContractListComponent);
 
   search = '';
   tenantId: number;
@@ -152,10 +152,11 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
   }
 
   private refreshList() {
-    if (!this.ingestContractListComponent) {
+    const ingestContractListComponent = this.ingestContractListComponent();
+    if (!ingestContractListComponent) {
       return;
     }
-    this.ingestContractListComponent.searchIngestContractOrdered();
+    ingestContractListComponent.searchIngestContractOrdered();
   }
 
   onSearchSubmit(search: string) {

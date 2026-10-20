@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, inject, OnChanges, SimpleChanges, input } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { InheritedPropertyDto, Logger, PipesModule, RuleActionDetails, Unit, UnitRuleDto } from 'vitamui-library';
 import { NgClass } from '@angular/common';
@@ -49,10 +49,8 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
   private readonly translateService = inject(TranslateService);
   private readonly logger = inject(Logger);
 
-  @Input()
-  archiveUnitRules: Unit;
-  @Input()
-  ruleCategory: string;
+  readonly archiveUnitRules = input<Unit>(undefined);
+  readonly ruleCategory = input<string>(undefined);
 
   unitRuleDTO: UnitRuleDto[];
   propertiesList: InheritedPropertyDto[];
@@ -161,8 +159,9 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
   }
 
   getInheritedRulesDetails(archiveUnit: Unit) {
+    const ruleCategory = this.ruleCategory();
     if (archiveUnit && archiveUnit.InheritedRules) {
-      switch (this.ruleCategory) {
+      switch (ruleCategory) {
         case 'AppraisalRule':
           if (archiveUnit.InheritedRules.AppraisalRule && archiveUnit.InheritedRules.AppraisalRule.Rules) {
             this.unitRuleDTO = archiveUnit.InheritedRules.AppraisalRule.Rules;
@@ -231,13 +230,13 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
           break;
 
         default:
-          this.logger.warn('No Category with name ', this.ruleCategory, 'found');
+          this.logger.warn('No Category with name ', ruleCategory, 'found');
           break;
       }
     }
 
     if (archiveUnit && archiveUnit['#management']) {
-      switch (this.ruleCategory) {
+      switch (ruleCategory) {
         case 'AppraisalRule':
           if (archiveUnit['#management'].AppraisalRule && archiveUnit['#management'].AppraisalRule.Inheritance) {
             this.isPreventInheritance = archiveUnit['#management'].AppraisalRule.Inheritance.PreventInheritance;
@@ -370,7 +369,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
   }
 
   getHoldAndClassificationRulePropertyName(property: string) {
-    switch (this.ruleCategory) {
+    switch (this.ruleCategory()) {
       case 'ClassificationRule':
         if (property) {
           return this.translateService.instant(
@@ -391,30 +390,31 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
   }
 
   getClassificationRulePropertyStatus(property: string) {
-    if (this.archiveUnitRules['#management'] && this.archiveUnitRules['#management'].ClassificationRule) {
+    const archiveUnitRules = this.archiveUnitRules();
+    if (archiveUnitRules['#management'] && archiveUnitRules['#management'].ClassificationRule) {
       switch (property) {
         case 'ClassificationAudience':
-          return this.archiveUnitRules['#management'].ClassificationRule.ClassificationAudience
+          return archiveUnitRules['#management'].ClassificationRule.ClassificationAudience
             ? this.translateService.instant('ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULE_STATUS.CARRIED')
             : this.translateService.instant('ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULE_STATUS.INHERITED');
 
         case 'ClassificationLevel':
-          return this.archiveUnitRules['#management'].ClassificationRule.ClassificationLevel
+          return archiveUnitRules['#management'].ClassificationRule.ClassificationLevel
             ? this.translateService.instant('ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULE_STATUS.CARRIED')
             : this.translateService.instant('ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULE_STATUS.INHERITED');
 
         case 'NeedReassessingAuthorization':
-          return this.archiveUnitRules['#management'].ClassificationRule.NeedReassessingAuthorization
+          return archiveUnitRules['#management'].ClassificationRule.NeedReassessingAuthorization
             ? this.translateService.instant('ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULE_STATUS.CARRIED')
             : this.translateService.instant('ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULE_STATUS.INHERITED');
 
         case 'ClassificationReassessingDate':
-          return this.archiveUnitRules['#management'].ClassificationRule.ClassificationReassessingDate
+          return archiveUnitRules['#management'].ClassificationRule.ClassificationReassessingDate
             ? this.translateService.instant('ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULE_STATUS.CARRIED')
             : this.translateService.instant('ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULE_STATUS.INHERITED');
 
         case 'ClassificationOwner':
-          return this.archiveUnitRules['#management'].ClassificationRule.ClassificationOwner
+          return archiveUnitRules['#management'].ClassificationRule.ClassificationOwner
             ? this.translateService.instant('ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULE_STATUS.CARRIED')
             : this.translateService.instant('ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULE_STATUS.INHERITED');
 
@@ -428,8 +428,9 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
   getHoldRuleInformations(ruleDetails: UnitRuleDto) {
     this.listOfPropertiesCollapsed = false;
 
-    if (this.archiveUnitRules && this.archiveUnitRules.InheritedRules && this.archiveUnitRules.InheritedRules.HoldRule) {
-      this.holdRuleDetails = this.archiveUnitRules.InheritedRules.HoldRule.Rules.find((rule) => rule.Rule === ruleDetails.Rule);
+    const archiveUnitRules = this.archiveUnitRules();
+    if (archiveUnitRules?.InheritedRules?.HoldRule) {
+      this.holdRuleDetails = archiveUnitRules.InheritedRules.HoldRule.Rules.find((rule) => rule.Rule === ruleDetails.Rule);
       this.holdRuleStatus = this.getRuleStatus(ruleDetails);
       this.isShowHoldRuleDetails = !(
         this.holdRuleDetails &&

@@ -38,14 +38,13 @@ import {
   ChangeDetectorRef,
   AfterViewInit,
   Component,
-  EventEmitter,
   HostListener,
   inject,
-  Input,
   OnChanges,
-  Output,
   SimpleChanges,
-  ViewChild,
+  output,
+  viewChild,
+  model,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
@@ -92,12 +91,12 @@ export class ManagementContractPreviewComponent implements OnChanges, AfterViewI
   private readonly matDialog = inject(MatDialog);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  @Output() previewClose: EventEmitter<any> = new EventEmitter();
-  @Input() inputManagementContract: ManagementContract;
-  @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
-  @ViewChild('informationTab', { static: false }) informationTab: ManagementContractInformationTabComponent;
-  @ViewChild('storageTab', { static: false }) storageTab: ManagementContractStorageTabComponent;
-  @ViewChild('identificationTab', { static: false }) identificationTab: ManagementContractIdentificationTabComponent;
+  readonly previewClose = output<any>();
+  readonly inputManagementContract = model<ManagementContract>(undefined);
+  readonly tabs = viewChild<MatTabGroup>('tabs');
+  readonly informationTab = viewChild<ManagementContractInformationTabComponent>('informationTab');
+  readonly storageTab = viewChild<ManagementContractStorageTabComponent>('storageTab');
+  readonly identificationTab = viewChild<ManagementContractIdentificationTabComponent>('identificationTab');
 
   tabUpdated: boolean[] = [false, false, false, false];
   private readonly tabLinks: Array<
@@ -106,7 +105,7 @@ export class ManagementContractPreviewComponent implements OnChanges, AfterViewI
 
   @HostListener('window:beforeunload', ['$event'])
   async beforeunloadHandler(event: any): Promise<string | void> {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
+    if (this.tabUpdated[this.tabs().selectedIndex]) {
       event.preventDefault();
       await this.checkBeforeExit();
       return '';
@@ -115,19 +114,17 @@ export class ManagementContractPreviewComponent implements OnChanges, AfterViewI
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['inputManagementContract'] && this.tabUpdated.some((update) => update)) {
-      this.inputManagementContract = changes['inputManagementContract'].previousValue;
+      this.inputManagementContract.set(changes['inputManagementContract'].previousValue);
       this.checkBeforeExit().then(() => {
-        this.inputManagementContract = changes['inputManagementContract'].currentValue;
+        this.inputManagementContract.set(changes['inputManagementContract'].currentValue);
         this.cdr.markForCheck();
       });
     }
   }
 
   ngAfterViewInit(): void {
-    this.tabs._handleClick = this.interceptTabChange.bind(this);
-    this.tabLinks.push(this.informationTab);
-    this.tabLinks.push(this.storageTab);
-    this.tabLinks.push(this.identificationTab);
+    this.tabs()._handleClick = this.interceptTabChange.bind(this);
+    this.tabLinks.push(this.informationTab(), this.storageTab(), this.identificationTab());
   }
 
   updatedChange(updated: boolean, index: number) {
@@ -135,41 +132,41 @@ export class ManagementContractPreviewComponent implements OnChanges, AfterViewI
   }
 
   async emitClose() {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
+    if (this.tabUpdated[this.tabs().selectedIndex]) {
       await this.checkBeforeExit();
     }
-    this.previewClose.emit();
+    this.previewClose.emit(undefined);
   }
 
   async checkBeforeExit() {
     if (await this.confirmAction()) {
-      const subscription: Subscription = this.tabLinks[this.tabs.selectedIndex]
+      const subscription: Subscription = this.tabLinks[this.tabs().selectedIndex]
         .prepareSubmit()
         .pipe(
           tap((managementContract) => {
-            this.inputManagementContract = managementContract;
+            this.inputManagementContract.set(managementContract);
             this.cdr.markForCheck();
           }),
         )
         .subscribe(() => subscription.unsubscribe());
     } else {
-      this.tabLinks[this.tabs.selectedIndex].resetForm(this.inputManagementContract);
+      this.tabLinks[this.tabs().selectedIndex].resetForm(this.inputManagementContract());
     }
   }
 
   async confirmAction(): Promise<boolean> {
     const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'small' });
 
-    dialog.componentInstance.dialogType = 'changeTab';
+    dialog.componentRef.setInput('dialogType', 'changeTab');
 
     return await dialog.afterClosed().toPromise();
   }
 
   async interceptTabChange(tab: MatTab, tabHeader: MatTabHeader, idx: number) {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
+    if (this.tabUpdated[this.tabs().selectedIndex]) {
       await this.checkBeforeExit();
     }
 
-    return MatTabGroup.prototype._handleClick.apply(this.tabs, [tab, tabHeader, idx]);
+    return MatTabGroup.prototype._handleClick.apply(this.tabs(), [tab, tabHeader, idx]);
   }
 }

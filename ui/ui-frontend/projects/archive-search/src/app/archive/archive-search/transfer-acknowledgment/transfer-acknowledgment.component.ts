@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, inject, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, TemplateRef, viewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import {
@@ -99,8 +99,9 @@ export class TransferAcknowledgmentComponent implements OnDestroy {
 
   atrControl = new FormControl<File[]>(undefined, [Validators.required]);
 
-  @ViewChild('confirmDeleteTransferAcknowledgmentDialog', { static: true })
-  confirmDeleteTransferAcknowledgmentDialog: TemplateRef<TransferAcknowledgmentComponent>;
+  readonly confirmDeleteTransferAcknowledgmentDialog = viewChild<TemplateRef<TransferAcknowledgmentComponent>>(
+    'confirmDeleteTransferAcknowledgmentDialog',
+  );
 
   constructor() {
     this.tenantIdentifier = this.data.tenantIdentifier;
@@ -143,7 +144,7 @@ export class TransferAcknowledgmentComponent implements OnDestroy {
   }
 
   onCancel() {
-    const dialogToOpen = this.confirmDeleteTransferAcknowledgmentDialog;
+    const dialogToOpen = this.confirmDeleteTransferAcknowledgmentDialog();
     this.dialogRefToClose = this.dialog.open(dialogToOpen, { panelClass: 'small' });
   }
 

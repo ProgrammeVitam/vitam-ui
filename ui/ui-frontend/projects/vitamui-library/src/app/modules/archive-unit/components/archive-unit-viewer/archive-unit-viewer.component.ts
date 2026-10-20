@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, inject, OnChanges, OnInit, SimpleChanges, input } from '@angular/core';
 import { DisplayObjectService } from '../../../object-viewer/models/display-object-service';
 import { DisplayRule } from '../../../object-viewer/models/display-rule.model';
 import { customTemplate } from '../../archive-unit-template';
@@ -51,14 +51,14 @@ import { ObjectViewerComponent } from '../../../object-viewer/object-viewer.comp
 export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
   private readonly displayObjectService = inject(DisplayObjectService);
 
-  @Input() data!: any;
-  @Input() template: DisplayRule[] = customTemplate;
+  readonly data = input<any>(undefined);
+  readonly template = input<DisplayRule[]>(customTemplate);
   mode: AUMode = AUMode.DEFAULT;
 
   ngOnInit(): void {
     this.displayObjectService.setMode(this.mode);
-    this.displayObjectService.setTemplate(this.template);
-    this.displayObjectService.setData(this.data);
+    this.displayObjectService.setTemplate(this.template());
+    this.displayObjectService.setData(this.data());
   }
 
   ngOnChanges(changes: SimpleChanges): void {

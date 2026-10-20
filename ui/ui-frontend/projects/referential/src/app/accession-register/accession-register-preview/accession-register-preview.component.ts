@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, output, input } from '@angular/core';
 import { AccessionRegisterDetail, VitamuiSidenavHeaderComponent } from 'vitamui-library';
 import { AccessionRegisterDetailComponent } from './accession-register-detail/accession-register-detail.component';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
@@ -61,15 +61,13 @@ import { CommonModule } from '@angular/common';
   ],
 })
 export class AccessionRegisterPreviewComponent {
-  @Input()
-  accessionRegisterDetail: AccessionRegisterDetail;
+  readonly accessionRegisterDetail = input<AccessionRegisterDetail>(undefined);
 
-  @Output()
-  previewClose: EventEmitter<any> = new EventEmitter();
+  readonly previewClose = output<any>();
 
   constructor() {}
 
   emitClose() {
-    this.previewClose.emit();
+    this.previewClose.emit(undefined);
   }
 }

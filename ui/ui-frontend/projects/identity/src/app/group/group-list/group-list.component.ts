@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, LOCALE_ID, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, inject, LOCALE_ID, OnDestroy, OnInit, output, input, OnChanges, SimpleChanges } from '@angular/core';
 import { merge, Subject, Subscription } from 'rxjs';
 
 import {
@@ -79,20 +79,15 @@ import { TranslatePipe } from '@ngx-translate/core';
     InfiniteScrollDirective,
   ],
 })
-export class GroupListComponent extends InfiniteScrollTable<Group> implements OnDestroy, OnInit {
+export class GroupListComponent extends InfiniteScrollTable<Group> implements OnChanges, OnDestroy, OnInit {
   groupService: GroupService;
   private readonly locale = inject(LOCALE_ID);
 
-  @Output() groupClick = new EventEmitter<Group>();
+  readonly groupClick = output<Group>();
 
   private updatedGroupSub: Subscription;
 
-  @Input()
-  set searchText(text: string) {
-    this._search = text;
-    this.searchChange.next(text);
-  }
-  private _search: string;
+  readonly searchText = input<string>();
   private readonly searchKeys = ['identifier', 'name', 'level', 'description', 'units'];
 
   filterMap: { [key: string]: any[] } = {
@@ -117,6 +112,12 @@ export class GroupListComponent extends InfiniteScrollTable<Group> implements On
     this.groupService = groupService;
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['searchText']) {
+      this.searchChange.next(this.searchText());
+    }
+  }
+
   ngOnInit() {
     this.search();
     this.refreshLevelOptions();
@@ -136,7 +137,7 @@ export class GroupListComponent extends InfiniteScrollTable<Group> implements On
 
     searchCriteriaChange.subscribe(() => {
       const query: CriteriaSearchQuery = {
-        criteria: [...buildCriteriaFromGroupFilters(this.filterMap), ...buildCriteriaFromSearch(this._search, this.searchKeys)],
+        criteria: [...buildCriteriaFromGroupFilters(this.filterMap), ...buildCriteriaFromSearch(this.searchText(), this.searchKeys)],
       };
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
 

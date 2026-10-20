@@ -1,44 +1,52 @@
 <vitamui-common-sidenav-header
-  [title]="operation?.operationId | truncate: 30"
+  [title]="operation()?.operationId | truncate: 30"
   [icon]="'vitamui-icon-info'"
   [hasToolTipOnTitle]="true"
-  [toolTipTitleText]="operation?.operationId"
+  [toolTipTitleText]="operation()?.operationId"
   [toolTipTitleDuration]="600"
   (onclose)="emitClose()"
 >
   <vitamui-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
     <button
       mat-menu-item
-      (click)="updateOperationStatus(operation, 'PAUSE')"
-      [disabled]="operation?.globalState === 'COMPLETED' || operation?.globalState === 'PAUSE'"
+      (click)="updateOperationStatus(operation(), 'PAUSE')"
+      [disabled]="operation()?.globalState === 'COMPLETED' || operation()?.globalState === 'PAUSE'"
     >
       {{ 'LOGBOOK_OPERATION_INFORMATIONS.PAUSE_STEP' | translate }}
     </button>
     <button
       mat-menu-item
-      (click)="updateOperationStatus(operation, 'RESUME')"
-      [disabled]="operation?.globalState === 'COMPLETED' || !(operation?.globalState === 'PAUSE' || operation?.stepStatus === 'FATAL')"
+      (click)="updateOperationStatus(operation(), 'RESUME')"
+      [disabled]="
+        operation()?.globalState === 'COMPLETED' || !(operation()?.globalState === 'PAUSE' || operation()?.stepStatus === 'FATAL')
+      "
     >
       {{ 'LOGBOOK_OPERATION_INFORMATIONS.RESUME_OPERATION' | translate }}
     </button>
     <button
       mat-menu-item
-      (click)="updateOperationStatus(operation, 'NEXT')"
-      [disabled]="operation?.globalState === 'COMPLETED' || !(operation?.globalState === 'PAUSE' || operation?.stepStatus === 'FATAL')"
+      (click)="updateOperationStatus(operation(), 'NEXT')"
+      [disabled]="
+        operation()?.globalState === 'COMPLETED' || !(operation()?.globalState === 'PAUSE' || operation()?.stepStatus === 'FATAL')
+      "
     >
       {{ 'LOGBOOK_OPERATION_INFORMATIONS.NEXT_STEP' | translate }}
     </button>
     <button
       mat-menu-item
-      (click)="updateOperationStatus(operation, 'REPLAY')"
-      [disabled]="operation?.globalState === 'COMPLETED' || !(operation?.globalState === 'PAUSE' || operation?.stepStatus === 'FATAL')"
+      (click)="updateOperationStatus(operation(), 'REPLAY')"
+      [disabled]="
+        operation()?.globalState === 'COMPLETED' || !(operation()?.globalState === 'PAUSE' || operation()?.stepStatus === 'FATAL')
+      "
     >
       {{ 'LOGBOOK_OPERATION_INFORMATIONS.REPLAY_STEP' | translate }}
     </button>
     <button
       mat-menu-item
-      (click)="cancelOperation(operation)"
-      [disabled]="operation?.globalState === 'COMPLETED' || !(operation?.globalState === 'PAUSE' || operation?.stepStatus === 'FATAL')"
+      (click)="cancelOperation(operation())"
+      [disabled]="
+        operation()?.globalState === 'COMPLETED' || !(operation()?.globalState === 'PAUSE' || operation()?.stepStatus === 'FATAL')
+      "
     >
       {{ 'LOGBOOK_OPERATION_INFORMATIONS.CANCEL_OPERATION' | translate }}
     </button>
@@ -49,9 +57,9 @@
   <mat-tab-group class="preview-tab-group">
     <mat-tab label="{{ 'LOGBOOK_OPERATION_INFORMATIONS.INFORMATIONS' | translate }}">
       <app-logbook-management-operation-information-tab
-        [operation]="operation"
-        [tenantIdentifier]="tenantIdentifier"
-        [tenant]="tenant"
+        [operation]="operation()"
+        [tenantIdentifier]="tenantIdentifier()"
+        [tenant]="tenant()"
       ></app-logbook-management-operation-information-tab>
     </mat-tab>
   </mat-tab-group>
@@ -61,7 +69,7 @@
   <vitamui-dialog-header
     [subhead]="'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_' + actionId + '_MESSAGE' | translate"
     [title]="
-      (operation?.globalState === 'PAUSE' && operation?.stepStatus === 'FATAL'
+      (operation()?.globalState === 'PAUSE' && operation()?.stepStatus === 'FATAL'
         ? 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_' + actionId + '_SECOND_MESSAGE'
         : 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_SECOND_TITLE'
       ) | translate
@@ -71,31 +79,31 @@
   <mat-dialog-content class="gap-3 align-items-stretch">
     <div>
       {{ 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_' + actionId + '_MESSAGE' | translate }} :
-      <strong>{{ operation?.operationId }}</strong>
+      <strong>{{ operation()?.operationId }}</strong>
     </div>
     <div class="row row-data">
       <div class="col-3">
         <div class="vitamui-cell-content">
-          <vitamui-common-event-type-label [key]="operation.processType"></vitamui-common-event-type-label>
+          <vitamui-common-event-type-label [key]="operation().processType"></vitamui-common-event-type-label>
         </div>
       </div>
       <div class="col-3">
-        <div>{{ operation?.processDate | dateTime: 'dd/MM/yyyy' }}</div>
+        <div>{{ operation()?.processDate | dateTime: 'dd/MM/yyyy' }}</div>
         <span class="date">
-          {{ operation?.processDate | dateTime: 'HH:mm:ss' }}
+          {{ operation()?.processDate | dateTime: 'HH:mm:ss' }}
         </span>
       </div>
       <div class="col-6">
-        <div>{{ 'STATE_VALUE.' + operation?.globalState | translate }}</div>
+        <div>{{ 'STATE_VALUE.' + operation()?.globalState | translate }}</div>
         <div
           class="text bold"
           [ngClass]="{
-            success: operationStatus(operation) === 'OK',
-            danger: ['KO', 'FATAL'].includes(operationStatus(operation)),
-            warning: operationStatus(operation) === 'WARNING',
+            success: operationStatus(operation()) === 'OK',
+            danger: ['KO', 'FATAL'].includes(operationStatus(operation())),
+            warning: operationStatus(operation()) === 'WARNING',
           }"
         >
-          <strong>{{ 'STATUS_VALUE.' + operation?.stepStatus | translate }}</strong>
+          <strong>{{ 'STATUS_VALUE.' + operation()?.stepStatus | translate }}</strong>
         </div>
       </div>
     </div>
@@ -113,13 +121,13 @@
       'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_' +
         actionId +
         '_' +
-        (operation?.stepCancellable ? 'NON_FORCED' : 'FORCED') +
+        (operation()?.stepCancellable ? 'NON_FORCED' : 'FORCED') +
         '_MODE_MESSAGE' | translate
     "
   ></vitamui-dialog-header>
 
   <mat-dialog-content>
-    @if (!operation?.stepCancellable) {
+    @if (!operation()?.stepCancellable) {
       <div>
         <p>
           {{ 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_' + actionId + '_FORCED_MODE_REASON' | translate }}
@@ -135,7 +143,7 @@
     }
   </mat-dialog-content>
   <mat-dialog-actions class="dialog-action">
-    <button [matDialogClose]="true" [disabled]="!operation?.stepCancellable && !reason.valid" class="btn primary btn-confirm-dialog">
+    <button [matDialogClose]="true" [disabled]="!operation()?.stepCancellable && !reason.valid" class="btn primary btn-confirm-dialog">
       {{ 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_CANCEL_ACTION' | translate }}
     </button>
     <button matDialogClose class="btn cancel link">{{ 'COMMON.CANCEL' | translate }}</button>

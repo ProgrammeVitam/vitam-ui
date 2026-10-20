@@ -1,6 +1,6 @@
 <vitamui-common-sidenav-header
-  [title]="agency.name"
-  [subtitle]="'(' + agency.identifier + ')'"
+  [title]="agency().name"
+  [subtitle]="'(' + agency().identifier + ')'"
   [icon]="'vitamui-icon-agent'"
   (onclose)="emitClose()"
 >
@@ -10,8 +10,8 @@
       [vitamuiTooltip]="'AGENCY.ACTION.EDIT' | translate"
       [vitamuiTooltipShowDelay]="300"
       [disabled]="false"
-      [routerLink]="'agencies/' + agency.identifier + '/edit'"
-      [state]="{ agency: agency }"
+      [routerLink]="'agencies/' + agency().identifier + '/edit'"
+      [state]="{ agency: agency() }"
     >
       {{ 'AGENCY.ACTION.EDIT' | translate }}
     </button>
@@ -23,14 +23,14 @@
     <mat-tab [label]="'AGENCY.TAB.INFORMATION' | translate">
       <app-agency-information-tab
         #infoTab
-        [agency]="agency"
-        [readOnly]="readOnly"
+        [agency]="agency()"
+        [readOnly]="readOnly()"
         (updated)="updatedChange($event, 0)"
       ></app-agency-information-tab>
     </mat-tab>
 
     <mat-tab [label]="'AGENCY.TAB.HISTORY' | translate">
-      <vitamui-common-operation-history-tab [id]="agency?.identifier" [identifier]="agency?.identifier" collectionName="agency" />
+      <vitamui-common-operation-history-tab [id]="agency()?.identifier" [identifier]="agency()?.identifier" collectionName="agency" />
     </mat-tab>
   </mat-tab-group>
 </div>

@@ -1,4 +1,4 @@
-@if (securisation.events[securisation.events.length - 1].outcome !== 'WARNING') {
+@if (securisation().events[securisation().events.length - 1].outcome !== 'WARNING') {
   <button class="btn secondary ml-1 mt-4" (click)="checkTraceability()" [disabled]="!accessContractId || (events && events.length > 0)">
     {{ 'SECURE.TAB.CHECK.CHECK_SECURITY' | translate }}
   </button>

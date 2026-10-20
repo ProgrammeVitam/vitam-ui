@@ -120,7 +120,7 @@ describe('ArchivePreviewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ArchivePreviewComponent);
     component = fixture.componentInstance;
-    component.archiveUnit = {
+    component.archiveUnit.set({
       '#allunitups': [],
       '#id': 'id',
       '#object': '',
@@ -130,7 +130,7 @@ describe('ArchivePreviewComponent', () => {
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
       DescriptionLevel: DescriptionLevel.OTHER_LEVEL,
-    };
+    });
     fixture.detectChanges();
   });
 

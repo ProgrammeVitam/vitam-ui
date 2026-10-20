@@ -1,7 +1,7 @@
 <div>
-  <span class="title-text">{{ facetTitle }}</span>
+  <span class="title-text">{{ facetTitle() }}</span>
   <div class="row row-data">
-    @for (facet of facetDetails; track facet) {
+    @for (facet of facetDetails(); track facet) {
       <div class="col title-text">
         <div
           class="layout-data"

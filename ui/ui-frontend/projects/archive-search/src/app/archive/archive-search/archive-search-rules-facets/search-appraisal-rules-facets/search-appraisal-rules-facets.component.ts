@@ -36,7 +36,7 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { Component, inject, Input, OnChanges } from '@angular/core';
+import { Component, inject, OnChanges, input } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Colors, FacetDetails, RuleFacets, VitamTenantConfigService, VitamuiFacetComponent } from 'vitamui-library';
 import { ArchiveFacetsService } from '../../../common-services/archive-facets.service';
@@ -54,14 +54,11 @@ export class SearchAppraisalRulesFacetsComponent implements OnChanges {
   private readonly datePipe = inject(DatePipe);
   private readonly vitamConfigurationService = inject(VitamTenantConfigService);
 
-  @Input()
-  appraisalRuleFacets: RuleFacets;
+  readonly appraisalRuleFacets = input<RuleFacets>(undefined);
 
-  @Input()
-  totalResults: number;
+  readonly totalResults = input<number>(undefined);
 
-  @Input()
-  exactCount: boolean;
+  readonly exactCount = input<boolean>(undefined);
 
   dateFilterValue: string;
   rulesFacetDetails: FacetDetails[] = [];
@@ -77,7 +74,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnChanges {
     this.finalActionFacetDetails = [];
     this.archiveUnitsCountFacetDetails = [];
     let archiveUnitWithRules = 0;
-    if (this.appraisalRuleFacets) {
+    if (this.appraisalRuleFacets()) {
       archiveUnitWithRules = this.handleWaitingToRecalculateRulesFacets();
       this.handleFinalActionsRulesFacets();
       this.handleRulesDisctinctsFacets();
@@ -87,7 +84,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnChanges {
 
   getFacetTextByExactCountFlag(count: number, exactCount: boolean): string {
     let facetContentValue = count.toString();
-    if (!exactCount && this.totalResults >= this.vitamConfigurationService.tenantConfig()?.resultThreshold) {
+    if (!exactCount && this.totalResults() >= this.vitamConfigurationService.tenantConfig()?.resultThreshold) {
       facetContentValue = ArchiveSearchConstsEnum.BIG_RESULTS_FACETS_DEFAULT_TEXT;
     }
     return facetContentValue;
@@ -97,8 +94,9 @@ export class SearchAppraisalRulesFacetsComponent implements OnChanges {
     let expiredRulesNb = 0;
     this.dateFilterValue = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
-    if (this.appraisalRuleFacets.expiredRulesListFacets && this.appraisalRuleFacets.expiredRulesListFacets.length > 0) {
-      this.appraisalRuleFacets.expiredRulesListFacets.forEach((elt) => {
+    const appraisalRuleFacets = this.appraisalRuleFacets();
+    if (appraisalRuleFacets.expiredRulesListFacets && appraisalRuleFacets.expiredRulesListFacets.length > 0) {
+      appraisalRuleFacets.expiredRulesListFacets.forEach((elt) => {
         if (elt && elt.node && elt.node.length > 10) {
           this.dateFilterValue = ' ' + elt.node.substring(elt.node.length - 10, elt.node.length);
           expiredRulesNb = elt.count ? elt.count : 0;
@@ -106,9 +104,11 @@ export class SearchAppraisalRulesFacetsComponent implements OnChanges {
       });
     }
 
+    const totalResults = this.totalResults();
+    const exactCount = this.exactCount();
     this.expiredRulesFacetDetails.push({
       title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.EXPIRED'),
-      totalResults: this.facetsService.getFacetTextByExactCountFlag(expiredRulesNb, this.exactCount, this.totalResults),
+      totalResults: this.facetsService.getFacetTextByExactCountFlag(expiredRulesNb, exactCount, totalResults),
       clickable: false,
       color: Colors.GRAY,
       filter: '>' + this.dateFilterValue,
@@ -117,11 +117,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnChanges {
 
     this.expiredRulesFacetDetails.push({
       title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.NOT_EXPIRED'),
-      totalResults: this.facetsService.getFacetTextByExactCountFlag(
-        archiveUnitWithRules - expiredRulesNb,
-        this.exactCount,
-        this.totalResults,
-      ),
+      totalResults: this.facetsService.getFacetTextByExactCountFlag(archiveUnitWithRules - expiredRulesNb, exactCount, totalResults),
       clickable: false,
       color: Colors.GRAY,
       filter: '<' + this.dateFilterValue,
@@ -130,13 +126,14 @@ export class SearchAppraisalRulesFacetsComponent implements OnChanges {
   }
 
   private handleRulesDisctinctsFacets() {
-    if (this.appraisalRuleFacets.rulesListFacets && this.appraisalRuleFacets.rulesListFacets.length > 0) {
+    const appraisalRuleFacets = this.appraisalRuleFacets();
+    if (appraisalRuleFacets.rulesListFacets && appraisalRuleFacets.rulesListFacets.length > 0) {
       this.rulesFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.DISTINCT_RULES'),
         totalResults: this.facetsService.getFacetTextByExactCountFlag(
-          this.appraisalRuleFacets.rulesListFacets.length,
-          this.exactCount,
-          this.totalResults,
+          appraisalRuleFacets.rulesListFacets.length,
+          this.exactCount(),
+          this.totalResults(),
         ),
         clickable: false,
         color: Colors.GRAY,
@@ -145,7 +142,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnChanges {
     } else {
       this.rulesFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.DISTINCT_RULES'),
-        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount, this.totalResults),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount(), this.totalResults()),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,
@@ -158,19 +155,18 @@ export class SearchAppraisalRulesFacetsComponent implements OnChanges {
     this.finalActionsFacetsValues.set('DESTROY', 0);
     this.finalActionsFacetsValues.set('CONFLICT', 0);
 
-    if (this.appraisalRuleFacets.finalActionsFacets) {
-      this.appraisalRuleFacets.finalActionsFacets.forEach((elt) => {
+    const appraisalRuleFacets = this.appraisalRuleFacets();
+    if (appraisalRuleFacets.finalActionsFacets) {
+      appraisalRuleFacets.finalActionsFacets.forEach((elt) => {
         this.finalActionsFacetsValues.set(elt.node.toUpperCase(), elt.count ? elt.count : 0);
       });
     }
 
+    const totalResults = this.totalResults();
+    const exactCount = this.exactCount();
     this.finalActionFacetDetails.push({
       title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.KEEP'),
-      totalResults: this.facetsService.getFacetTextByExactCountFlag(
-        this.finalActionsFacetsValues.get('KEEP'),
-        this.exactCount,
-        this.totalResults,
-      ),
+      totalResults: this.facetsService.getFacetTextByExactCountFlag(this.finalActionsFacetsValues.get('KEEP'), exactCount, totalResults),
       clickable: false,
       color: Colors.GREEN,
       filter: 'KEEP',
@@ -179,11 +175,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnChanges {
 
     this.finalActionFacetDetails.push({
       title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.DESTROY'),
-      totalResults: this.facetsService.getFacetTextByExactCountFlag(
-        this.finalActionsFacetsValues.get('DESTROY'),
-        this.exactCount,
-        this.totalResults,
-      ),
+      totalResults: this.facetsService.getFacetTextByExactCountFlag(this.finalActionsFacetsValues.get('DESTROY'), exactCount, totalResults),
       clickable: false,
       color: Colors.ORANGE,
       filter: 'DESTROY',
@@ -194,8 +186,8 @@ export class SearchAppraisalRulesFacetsComponent implements OnChanges {
       title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.CONFLICT'),
       totalResults: this.facetsService.getFacetTextByExactCountFlag(
         this.finalActionsFacetsValues.get('CONFLICT'),
-        this.exactCount,
-        this.totalResults,
+        exactCount,
+        totalResults,
       ),
       clickable: false,
       color: Colors.RED,
@@ -206,11 +198,11 @@ export class SearchAppraisalRulesFacetsComponent implements OnChanges {
 
   private handleWaitingToRecalculateRulesFacets(): number {
     let archiveUnitWithRules = 0;
-    if (
-      this.appraisalRuleFacets.waitingToRecalculateRulesListFacets &&
-      this.appraisalRuleFacets.waitingToRecalculateRulesListFacets.length > 0
-    ) {
-      const facetComputedUnits = this.appraisalRuleFacets.waitingToRecalculateRulesListFacets.filter((elt) => elt.node === 'true');
+    const appraisalRuleFacets = this.appraisalRuleFacets();
+    const totalResults = this.totalResults();
+    const exactCountValue = this.exactCount();
+    if (appraisalRuleFacets.waitingToRecalculateRulesListFacets && appraisalRuleFacets.waitingToRecalculateRulesListFacets.length > 0) {
+      const facetComputedUnits = appraisalRuleFacets.waitingToRecalculateRulesListFacets.filter((elt) => elt.node === 'true');
       let computedCount = 0;
 
       if (facetComputedUnits.length > 0) {
@@ -219,14 +211,15 @@ export class SearchAppraisalRulesFacetsComponent implements OnChanges {
         computedCount = 0;
       }
       let notComputedCount = '';
+      const exactCount = this.exactCount();
       if (
-        !this.exactCount &&
-        (this.totalResults >= this.vitamConfigurationService.tenantConfig()?.resultThreshold ||
+        !exactCount &&
+        (this.totalResults() >= this.vitamConfigurationService.tenantConfig()?.resultThreshold ||
           computedCount >= this.vitamConfigurationService.tenantConfig()?.resultThreshold)
       ) {
         notComputedCount = ArchiveSearchConstsEnum.BIG_RESULTS_FACETS_DEFAULT_TEXT;
       } else {
-        notComputedCount = (this.totalResults - computedCount).toString();
+        notComputedCount = (this.totalResults() - computedCount).toString();
       }
 
       this.archiveUnitsCountFacetDetails.push({
@@ -238,7 +231,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnChanges {
       });
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.CALCULATED'),
-        totalResults: this.facetsService.getFacetTextByExactCountFlag(computedCount, this.exactCount, this.totalResults),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(computedCount, exactCountValue, totalResults),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,
@@ -247,25 +240,25 @@ export class SearchAppraisalRulesFacetsComponent implements OnChanges {
     } else {
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.WAITING_TO_RECALCULATE'),
-        totalResults: this.facetsService.getFacetTextByExactCountFlag(this.totalResults, this.exactCount, this.totalResults),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(totalResults, exactCountValue, totalResults),
         clickable: false,
-        color: this.totalResults === 0 ? Colors.GRAY : Colors.ORANGE,
+        color: totalResults === 0 ? Colors.GRAY : Colors.ORANGE,
         backgroundColor: Colors.DISABLED,
       });
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.CALCULATED'),
-        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount, this.totalResults),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, exactCountValue, totalResults),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,
       });
     }
 
-    if (this.appraisalRuleFacets.noRulesFacets && this.appraisalRuleFacets.noRulesFacets.length > 0) {
-      this.appraisalRuleFacets.noRulesFacets.forEach((elt) => {
+    if (appraisalRuleFacets.noRulesFacets && appraisalRuleFacets.noRulesFacets.length > 0) {
+      appraisalRuleFacets.noRulesFacets.forEach((elt) => {
         this.archiveUnitsCountFacetDetails.push({
           title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.WITHOUT_RULES'),
-          totalResults: this.facetsService.getFacetTextByExactCountFlag(elt.count, this.exactCount, this.totalResults),
+          totalResults: this.facetsService.getFacetTextByExactCountFlag(elt.count, this.exactCount(), this.totalResults()),
           clickable: false,
           color: Colors.GRAY,
           backgroundColor: Colors.DISABLED,
@@ -275,7 +268,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnChanges {
     } else {
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.WITHOUT_RULES'),
-        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount, this.totalResults),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, exactCountValue, totalResults),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,

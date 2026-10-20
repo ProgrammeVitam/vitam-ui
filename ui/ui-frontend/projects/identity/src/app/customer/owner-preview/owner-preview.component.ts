@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 import type { Owner, Tenant } from 'vitamui-library';
 import { VitamuiSidenavHeaderComponent } from 'vitamui-library';
@@ -63,10 +63,10 @@ import { CommonModule } from '@angular/common';
   ],
 })
 export class OwnerPreviewComponent {
-  @Input() owner: Owner;
-  @Input() tenant: Tenant;
-  @Input() isPopup: boolean;
-  @Output() previewClose = new EventEmitter();
+  readonly owner = input<Owner>(undefined);
+  readonly tenant = input<Tenant>(undefined);
+  readonly isPopup = input<boolean>(undefined);
+  readonly previewClose = output();
 
   emitClose() {
     this.previewClose.emit();

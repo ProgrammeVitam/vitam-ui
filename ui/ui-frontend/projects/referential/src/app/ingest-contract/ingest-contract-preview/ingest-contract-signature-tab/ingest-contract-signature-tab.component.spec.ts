@@ -69,7 +69,7 @@ describe('IngestContractSignatureTabComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractSignatureTabComponent);
     component = fixture.componentInstance;
-    component.ingestContract = {
+    fixture.componentRef.setInput('ingestContract', {
       tenant: 0,
       version: 1,
       description: 'desc',
@@ -99,7 +99,7 @@ describe('IngestContractSignatureTabComponent', () => {
         declaredTimestamp: true,
         declaredAdditionalProof: true,
       },
-    };
+    });
     fixture.detectChanges();
   });
 

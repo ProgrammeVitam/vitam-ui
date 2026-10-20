@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* eslint-disable @angular-eslint/component-selector */
-import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -51,8 +51,7 @@ import { SecurityProfileComponent } from './security-profile.component';
   imports: [VitamUICommonTestModule, InjectorModule, MatSidenavModule, MatDialogModule],
 })
 class SecurityProfilePreviewStub {
-  @Input()
-  accessContract: any;
+  readonly accessContract = input<any>(undefined);
 }
 
 @Component({

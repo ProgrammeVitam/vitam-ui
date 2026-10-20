@@ -1,17 +1,17 @@
-@if (!disabled) {
+@if (!disabled()) {
   <div class="editable-field-wrapper">
     <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
       <div class="vitamui-input editable-field" [class.edit-mode]="editMode" (click)="enterEditMode()">
         <div class="editable-field-content">
-          <label>{{ label }}</label>
+          <label>{{ label() }}</label>
           <span class="editable-field-text-content">{{ control?.value?.name }}</span>
           <div class="editable-field-control">
             <div class="vitamui-input-file">
-              <label [for]="customId">
+              <label [for]="customId()">
                 <span class="text primary underline">{{ 'SHARED.EDITABLE_FIELD.UPLOAD_FILE' | translate }}</span>
                 <div class="vitamui-input-file-filename">{{ file?.name }}</div>
               </label>
-              <input [id]="customId" type="file" [accept]="accept" (change)="setFile($event.target.files)" #fileInput />
+              <input [id]="customId()" type="file" [accept]="accept()" (change)="setFile($event.target.files)" #fileInput />
             </div>
           </div>
         </div>
@@ -44,9 +44,9 @@
   </div>
 }
 
-@if (disabled) {
+@if (disabled()) {
   <div class="read-only-field">
-    <label>{{ label }}</label>
+    <label>{{ label() }}</label>
     <div>{{ control?.value?.name }}</div>
   </div>
 }

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal, TemplateRef, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, TemplateRef, input, output, viewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -117,16 +117,16 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
   private readonly updateUnitManagementRuleService = inject(UpdateUnitManagementRuleService);
   private readonly vitamConfigurationService = inject(VitamTenantConfigService);
 
-  @ViewChild('confirmDeleteUpdateRuleDialog', { static: true }) confirmDeleteUpdateRuleDialog: TemplateRef<UpdateUnitRulesComponent>;
+  readonly confirmDeleteUpdateRuleDialog = viewChild<TemplateRef<UpdateUnitRulesComponent>>('confirmDeleteUpdateRuleDialog');
 
-  @Output() delete = new EventEmitter<any>();
-  @Output() confirmStep = new EventEmitter<any>();
-  @Output() cancelStep = new EventEmitter<any>();
+  readonly delete = output<any>();
+  readonly confirmStep = output<void>();
+  readonly cancelStep = output<void>();
 
-  @Input() selectedItem: number;
-  @Input() ruleCategory: string;
-  @Input() hasExactCount: boolean;
-  @Input() rulesList: Observable<Rule[]>;
+  readonly selectedItem = input<number>(undefined);
+  readonly ruleCategory = input<string>(undefined);
+  readonly hasExactCount = input<boolean>(undefined);
+  readonly rulesList = input<Observable<Rule[]>>(undefined);
 
   ruleOptions = signal<VitamuiSelectOptions>(null);
 
@@ -198,6 +198,7 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
       const newRuleControl = this.ruleDetailsForm.get('newRule');
       !!value ? newRuleControl.enable() : newRuleControl.disable();
       if (!value) {
+        // TODO: The 'emit' function requires a mandatory any argument
         this.cancelStep.emit();
         this.ruleDetailsForm.patchValue({ newRule: null });
         this.previousRuleDetails.newRule = null;
@@ -210,6 +211,7 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
       const startDateControl = this.ruleDetailsForm.get('startDate');
       !!value ? startDateControl.enable() : startDateControl.disable();
       if (!value) {
+        // TODO: The 'emit' function requires a mandatory any argument
         this.cancelStep.emit();
         this.ruleDetailsForm.patchValue({ startDate: null });
         this.ruleDetailsForm.patchValue({ endDate: null });
@@ -229,8 +231,8 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    this.ruleCategoryKey = this.archiveService.getRuleCategoryValue(this.ruleCategory);
-    this.ruleService.getRuleOptionsList(this.rulesList, this.ruleCategory).subscribe((options) => this.ruleOptions.set(options));
+    this.ruleCategoryKey = this.archiveService.getRuleCategoryValue(this.ruleCategory());
+    this.ruleService.getRuleOptionsList(this.rulesList(), this.ruleCategory()).subscribe((options) => this.ruleOptions.set(options));
   }
 
   ngOnDestroy() {
@@ -243,6 +245,7 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
     this.disabledControl.set(false);
 
     if (formData.startDate) {
+      // TODO: The 'emit' function requires a mandatory any argument
       this.cancelStep.emit();
       this.isShowCheckButton.set(true);
       this.disabledControl.set(true);
@@ -253,6 +256,7 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
     }
 
     if (formData.oldRule) {
+      // TODO: The 'emit' function requires a mandatory any argument
       this.cancelStep.emit();
       this.subscriptions.add(
         this.ruleService.get(formData.oldRule.trim()).subscribe((ruleResponse) => {
@@ -267,6 +271,7 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
     }
 
     if (formData.newRule) {
+      // TODO: The 'emit' function requires a mandatory any argument
       this.cancelStep.emit();
       this.subscriptions.add(
         this.ruleService.get(formData.newRule.trim()).subscribe((ruleResponse) => {
@@ -313,29 +318,29 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
     );
     if (
       this.managementRules.findIndex(
-        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.UPDATE_RULES,
+        (managementRule) => managementRule.category === this.ruleCategory() && managementRule.actionType === RuleActionsEnum.UPDATE_RULES,
       ) !== -1
     ) {
       this.ruleTypeDUA = this.managementRules.find(
-        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.UPDATE_RULES,
+        (managementRule) => managementRule.category === this.ruleCategory() && managementRule.actionType === RuleActionsEnum.UPDATE_RULES,
       ).ruleCategoryAction;
       if (this.ruleTypeDUA.rules.findIndex((item) => item.oldRule === rule.oldRule) === -1) {
         this.ruleTypeDUA.rules.push(rule);
         this.ruleTypeDUA.rules = this.ruleTypeDUA.rules.filter((item) => item.oldRule !== this.lastRuleId);
         this.managementRules.find(
-          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.UPDATE_RULES,
+          (managementRule) => managementRule.category === this.ruleCategory() && managementRule.actionType === RuleActionsEnum.UPDATE_RULES,
         ).ruleCategoryAction = this.ruleTypeDUA;
       } else {
         const index = this.ruleTypeDUA.rules.findIndex((item) => item.oldRule === rule.oldRule);
         this.ruleTypeDUA.rules[index] = rule;
         this.managementRules.find(
-          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.UPDATE_RULES,
+          (managementRule) => managementRule.category === this.ruleCategory() && managementRule.actionType === RuleActionsEnum.UPDATE_RULES,
         ).ruleCategoryAction = this.ruleTypeDUA;
       }
     } else {
       this.ruleTypeDUA = { finalAction: null, rules: [rule] };
       const managementRule: ManagementRules = {
-        category: this.ruleCategory,
+        category: this.ruleCategory(),
         ruleCategoryAction: this.ruleTypeDUA,
         actionType: RuleActionsEnum.UPDATE_RULES,
       };
@@ -343,12 +348,13 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
     }
     this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
     this.addRuleToQueryAndMakeRequest();
+    // TODO: The 'emit' function requires a mandatory any argument
     this.confirmStep.emit();
     this.lastRuleId = this.ruleDetailsForm.get('oldRule').value;
   }
 
   onDelete() {
-    const dialogToOpen = this.confirmDeleteUpdateRuleDialog;
+    const dialogToOpen = this.confirmDeleteUpdateRuleDialog();
     const dialogRef = this.dialog.open(dialogToOpen);
 
     this.subscriptions.add(
@@ -406,7 +412,7 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
     this.isLoading.set(true);
     this.initDSLQuery();
     const onlyManagementRules: SearchCriteriaEltDto = {
-      category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory),
+      category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory()),
       criteria: ORIGIN_HAS_AT_LEAST_ONE,
       dataType: CriteriaDataType.STRING,
       operator: CriteriaOperator.EQ,
@@ -415,21 +421,21 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
     const criteriaWithId: SearchCriteriaEltDto = {
       criteria: MANAGEMENT_RULE_IDENTIFIER,
       values: [{ id: this.ruleDetailsForm.get('oldRule').value, value: this.ruleDetailsForm.get('oldRule').value }],
-      category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory),
+      category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory()),
       operator: CriteriaOperator.EQ,
       dataType: CriteriaDataType.STRING,
     };
     this.criteriaSearchDSLQuery.criteriaList.push(criteriaWithId);
     this.criteriaSearchDSLQuery.criteriaList.push(onlyManagementRules);
     this.ruleDetailsForm.markAsUntouched();
-    if (this.hasExactCount) {
+    if (this.hasExactCount()) {
       this.archiveService
         .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList)
         .pipe(finalize(() => this.isLoading.set(false)))
         .subscribe({
           next: (resultsNumber) => {
             this.itemsWithSameRule.set(resultsNumber.toString());
-            this.itemsToUpdate.set((this.selectedItem - resultsNumber).toString());
+            this.itemsToUpdate.set((this.selectedItem() - resultsNumber).toString());
           },
           error: (e) => console.error(e),
         });
@@ -440,13 +446,14 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
         .subscribe({
           next: (data) => {
             this.itemsWithSameRule.set(data.totalResults.toString());
+            const selectedItem = this.selectedItem();
             if (
               data.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold ||
-              this.selectedItem === this.vitamConfigurationService.tenantConfig()?.resultThreshold
+              selectedItem === this.vitamConfigurationService.tenantConfig()?.resultThreshold
             ) {
               this.itemsToUpdate.set(this.resultNumberToShow);
             } else {
-              this.itemsToUpdate.set((this.selectedItem - data.totalResults).toString());
+              this.itemsToUpdate.set((selectedItem - data.totalResults).toString());
             }
           },
           error: (e) => console.error(e),

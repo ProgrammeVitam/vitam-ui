@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, OnInit, signal, SimpleChanges } from '@angular/core';
+import { Component, inject, OnChanges, OnInit, signal, SimpleChanges, input } from '@angular/core';
 import { EventTypeLabelComponent, IEvent, LogbookService, PipesModule } from 'vitamui-library';
 import type { OperationDetails } from '../../../models/operation-response.interface';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -48,20 +48,20 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class LogbookManagementOperationInformationTabComponent implements OnInit, OnChanges {
   private readonly logbookService = inject(LogbookService);
 
-  @Input() operation: OperationDetails;
-  @Input() tenantIdentifier: number;
-  @Input() tenant: any;
+  readonly operation = input<OperationDetails>(undefined);
+  readonly tenantIdentifier = input<number>(undefined);
+  readonly tenant = input<any>(undefined);
   event = signal<IEvent>(null);
 
   ngOnInit(): void {
-    this.getLogbookOperationDetails(this.operation);
+    this.getLogbookOperationDetails(this.operation());
   }
 
   getLogbookOperationDetails(operation: OperationDetails) {
     if (operation) {
-      const accessContractLogbookIdentifier = this.tenant.accessContractLogbookIdentifier || '';
+      const accessContractLogbookIdentifier = this.tenant().accessContractLogbookIdentifier || '';
       this.logbookService
-        .getOperationById(operation.operationId, this.tenantIdentifier, accessContractLogbookIdentifier)
+        .getOperationById(operation.operationId, this.tenantIdentifier(), accessContractLogbookIdentifier)
         .subscribe((event) => {
           this.event.set(event);
         });
@@ -76,7 +76,7 @@ export class LogbookManagementOperationInformationTabComponent implements OnInit
 
   getLastEvent(event: IEvent): IEvent | null {
     if (event) {
-      const events: IEvent[] = event.events.filter((element) => element.outcome === this.operation.stepStatus);
+      const events: IEvent[] = event.events.filter((element) => element.outcome === this.operation().stepStatus);
       return events && events.length > 0 ? events[events.length - 1] : null;
     }
     return null;

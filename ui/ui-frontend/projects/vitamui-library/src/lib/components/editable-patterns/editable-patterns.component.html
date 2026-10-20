@@ -1,15 +1,15 @@
-@if (!disabled) {
+@if (!disabled()) {
   <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
     <div class="vitamui-input editable-field squarish" [class.edit-mode]="editMode" (click)="enterEditMode()">
       <div class="editable-field-content">
-        <label>{{ label }}</label>
+        <label>{{ label() }}</label>
         <span class="editable-field-text-content">
           @for (pattern of control.value; track pattern) {
             <div>{{ pattern }}</div>
           }
         </span>
         <div class="mt-2 editable-field-control">
-          <app-pattern [style.width.%]="100" [formControl]="control" [options]="options" (click)="onPatternClick()"></app-pattern>
+          <app-pattern [style.width.%]="100" [formControl]="control" [options]="options()" (click)="onPatternClick()"></app-pattern>
         </div>
       </div>
       @if (!showSpinner && !editMode) {
@@ -38,9 +38,9 @@
   </ng-template>
 }
 
-@if (disabled) {
+@if (disabled()) {
   <div class="read-only-field">
-    <label>{{ label }}</label>
+    <label>{{ label() }}</label>
     @for (pattern of control?.value; track pattern) {
       <div>{{ pattern }}</div>
     }

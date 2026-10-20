@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { ChangeDetectorRef, Component, inject, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, input, model, OnChanges, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import {
   AccessContract,
@@ -54,40 +54,30 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./access-contract-nodes-tab.component.scss'],
   imports: [TranslatePipe],
 })
-export class AccessContractNodesTabComponent {
+export class AccessContractNodesTabComponent implements OnChanges {
   private readonly unitService = inject(SearchUnitApiService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly externalParameterService = inject(ExternalParametersService);
   private readonly dialog = inject(MatDialog);
   private readonly snackBarService = inject(SnackBarService);
 
-  @Input() tenantIdentifier: number;
+  readonly tenantIdentifier = input<number>(undefined);
 
-  @Input() set accessContract(accessContract: AccessContract) {
-    if (!accessContract.rootUnits) {
-      accessContract.rootUnits = [];
-    }
-
-    if (!accessContract.excludedRootUnits) {
-      accessContract.excludedRootUnits = [];
-    }
-
-    this._accessContract = accessContract;
-    this.initSearchAccessContractIdAndTitles();
-  }
-
-  get accessContract(): AccessContract {
-    return this._accessContract;
-  }
+  readonly accessContract = model<AccessContract>(undefined);
 
   public searchAccessContractId: string;
 
-  private _accessContract: AccessContract;
   rootUnitsTitles: string[] = [];
   excludedRootUnitsTitles: string[] = [];
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['accessContract']) {
+      this.setAccessContract(this.accessContract());
+    }
+  }
+
   get isAllRootUnitsSelected(): boolean {
-    return !this._accessContract.rootUnits || this._accessContract.rootUnits.length === 0;
+    return !this.accessContract().rootUnits || this.accessContract().rootUnits.length === 0;
   }
 
   public openUpdateSelectedNodes() {
@@ -99,15 +89,15 @@ export class AccessContractNodesTabComponent {
       .open(AccessContractNodeUpdateComponent, {
         disableClose: true,
         data: {
-          accessContract: this._accessContract,
+          accessContract: this.accessContract(),
           searchAccessContractId: this.searchAccessContractId,
-          tenantIdentifier: this.tenantIdentifier,
+          tenantIdentifier: this.tenantIdentifier(),
         },
       })
       .afterClosed()
       .subscribe((updatedAccessContract: AccessContract) => {
         if (updatedAccessContract) {
-          this.accessContract = updatedAccessContract;
+          this.setAccessContract(updatedAccessContract);
           this.cdr.markForCheck();
         }
       });
@@ -134,10 +124,10 @@ export class AccessContractNodesTabComponent {
         this.rootUnitsTitles = [];
         this.excludedRootUnitsTitles = [];
         response.$results.forEach((result: any) => {
-          if (this.accessContract.rootUnits.includes(result['#id'])) {
+          if (this.accessContract().rootUnits.includes(result['#id'])) {
             this.rootUnitsTitles.push(result.Title);
           }
-          if (this.accessContract.excludedRootUnits.includes(result['#id'])) {
+          if (this.accessContract().excludedRootUnits.includes(result['#id'])) {
             this.excludedRootUnitsTitles.push(result.Title);
           }
         });
@@ -149,8 +139,8 @@ export class AccessContractNodesTabComponent {
   }
 
   private getDslForRootNodes(): any {
-    const excludedRoots: string[] = this._accessContract.excludedRootUnits ? this._accessContract.excludedRootUnits : [];
-    const rootUnits: string[] = this._accessContract.rootUnits ? this._accessContract.rootUnits : [];
+    const excludedRoots: string[] = this.accessContract().excludedRootUnits ? this.accessContract().excludedRootUnits : [];
+    const rootUnits: string[] = this.accessContract().rootUnits ? this.accessContract().rootUnits : [];
 
     return {
       $roots: [],
@@ -172,5 +162,18 @@ export class AccessContractNodesTabComponent {
         },
       },
     };
+  }
+
+  private setAccessContract(accessContract: AccessContract) {
+    if (!accessContract.rootUnits) {
+      accessContract.rootUnits = [];
+    }
+
+    if (!accessContract.excludedRootUnits) {
+      accessContract.excludedRootUnits = [];
+    }
+
+    this.accessContract.set(accessContract);
+    this.initSearchAccessContractIdAndTitles();
   }
 }

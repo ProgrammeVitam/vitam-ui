@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, computed, EventEmitter, inject, input, InputSignal, OnChanges, Output, Signal, SimpleChanges } from '@angular/core';
+import { Component, computed, inject, input, InputSignal, OnChanges, Signal, SimpleChanges, output } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   DataComponent,
@@ -65,8 +65,8 @@ export class ArchiveUnitInformationTabComponent implements OnChanges {
   OBJECTS_TAB_INDEX = 3;
 
   archiveUnit: InputSignal<Unit> = input(null);
-  @Output() showNormalPanel = new EventEmitter<any>();
-  @Output() openObjectsTab = new EventEmitter<any>();
+  readonly showNormalPanel = output<any>();
+  readonly openObjectsTab = output<any>();
 
   uaPath$: Observable<{ fullPath: string; resumePath: string }>;
   fullPath = false;

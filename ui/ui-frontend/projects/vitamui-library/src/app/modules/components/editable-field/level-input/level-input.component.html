@@ -1,16 +1,16 @@
-@if (!isEditableComponent) {
-  <div class="vitamui-input" [class.disabled]="disabled">
+@if (!isEditableComponent()) {
+  <div class="vitamui-input" [class.disabled]="disabled()">
     <label>
       {{ 'LEVEL_INPUT.SUBLEVEL' | translate }}
-      @if (required) {
+      @if (required()) {
         <span class="required-marker">*</span>
       }
     </label>
     <input
       #vitamUILevelInput
       type="text"
-      [disabled]="disabled"
-      [required]="required"
+      [disabled]="disabled()"
+      [required]="required()"
       [(ngModel)]="subLevel"
       (ngModelChange)="onValueChange($event)"
       (blur)="onBlur()"
@@ -20,18 +20,18 @@
   </div>
 }
 
-@if (!isEditableComponent) {
+@if (!isEditableComponent()) {
   <div class="vitamui-input-errors">
     <ng-content></ng-content>
   </div>
 }
 
-@if (isEditableComponent) {
+@if (isEditableComponent()) {
   <div>
     <input
       #vitamUILevelInput
-      [disabled]="disabled"
-      [required]="required"
+      [disabled]="disabled()"
+      [required]="required()"
       [(ngModel)]="subLevel"
       (ngModelChange)="onValueChange($event)"
       (blur)="onBlur()"

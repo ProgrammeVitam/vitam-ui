@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, signal, viewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -93,7 +93,7 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
   public groups = signal<Group[]>(null);
   public readonly exportLoading = signal(false);
 
-  @ViewChild(UserListComponent, { static: true }) userListComponent: UserListComponent;
+  readonly userListComponent = viewChild(UserListComponent);
 
   ngOnInit() {
     this.customerService.getMyCustomer().subscribe((customer) => this.customer.set(customer));
@@ -137,9 +137,10 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
   }
 
   private refreshList() {
-    if (!this.userListComponent) {
+    const userListComponent = this.userListComponent();
+    if (!userListComponent) {
       return;
     }
-    this.userListComponent.search(new PageRequest(0, DEFAULT_PAGE_SIZE, 'lastname', Direction.ASCENDANT));
+    userListComponent.search(new PageRequest(0, DEFAULT_PAGE_SIZE, 'lastname', Direction.ASCENDANT));
   }
 }

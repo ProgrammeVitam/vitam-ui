@@ -82,7 +82,7 @@ describe('ArchiveUnitRulesDetailsTabComponent', () => {
     fixture = TestBed.createComponent(ArchiveUnitRulesDetailsTabComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    component.archiveUnit = {
+    fixture.componentRef.setInput('archiveUnit', {
       '#allunitups': [],
       '#id': 'id',
       '#object': '',
@@ -91,7 +91,7 @@ describe('ArchiveUnitRulesDetailsTabComponent', () => {
       '#opi': '',
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
-    };
+    });
   });
 
   it('should create', () => {
@@ -99,12 +99,12 @@ describe('ArchiveUnitRulesDetailsTabComponent', () => {
   });
 
   it('should the length of listOfCriteriaSearch to be 0', () => {
-    component.selectUnitWithInheritedRules(component.archiveUnit);
+    component.selectUnitWithInheritedRules(component.archiveUnit());
     expect(component.listOfCriteriaSearch.length).toEqual(0);
   });
 
   it('should the archiveUnitRules exists ', () => {
-    component.selectUnitWithInheritedRules(component.archiveUnit);
+    component.selectUnitWithInheritedRules(component.archiveUnit());
     expect(component.archiveUnitRules()).not.toBeNull();
   });
 
@@ -113,7 +113,7 @@ describe('ArchiveUnitRulesDetailsTabComponent', () => {
     vi.spyOn(archiveServiceMock, 'selectUnitWithInheritedRules');
 
     // When
-    component.selectUnitWithInheritedRules(component.archiveUnit);
+    component.selectUnitWithInheritedRules(component.archiveUnit());
 
     // Then
     expect(archiveServiceMock.selectUnitWithInheritedRules).toHaveBeenCalled();

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, signal } from '@angular/core';
+import { Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges, signal, input } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { extend, isEmpty } from 'underscore';
@@ -65,9 +65,9 @@ export class ThresholdsTabComponent implements OnDestroy, OnInit, OnChanges {
   }));
   readonly isUpdated = signal(false);
 
-  @Input() externalParamProfile: ExternalParamProfile;
-  @Input() readOnly: boolean;
-  @Input() tenantIdentifier: string;
+  readonly externalParamProfile = input<ExternalParamProfile>(undefined);
+  readonly readOnly = input<boolean>(undefined);
+  readonly tenantIdentifier = input<string>(undefined);
 
   private updateFormSub: Subscription;
 
@@ -95,7 +95,7 @@ export class ThresholdsTabComponent implements OnDestroy, OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('externalParamProfile') && this.form) {
-      this.resetForm(this.form, this.externalParamProfile, this.readOnly);
+      this.resetForm(this.form, this.externalParamProfile(), this.readOnly());
       this.previousValue = this.form.value;
     }
   }
@@ -117,9 +117,9 @@ export class ThresholdsTabComponent implements OnDestroy, OnInit, OnChanges {
     if (!isEmpty(updated)) {
       updated = extend(
         {
-          id: this.externalParamProfile.id,
-          idExternalParam: this.externalParamProfile.idExternalParam,
-          idProfile: this.externalParamProfile.idProfile,
+          id: this.externalParamProfile().id,
+          idExternalParam: this.externalParamProfile().idExternalParam,
+          idProfile: this.externalParamProfile().idProfile,
         },
         updated,
       );
@@ -128,7 +128,7 @@ export class ThresholdsTabComponent implements OnDestroy, OnInit, OnChanges {
       }
 
       this.externalParamProfileService.patch(updated).subscribe((externalParamProfile: ExternalParamProfile) => {
-        this.resetForm(this.form, externalParamProfile, this.readOnly);
+        this.resetForm(this.form, externalParamProfile, this.readOnly());
         this.isUpdated.set(false);
       });
     }

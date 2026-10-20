@@ -39,23 +39,23 @@ import {
   AfterContentInit,
   afterNextRender,
   Component,
-  ContentChildren,
-  EventEmitter,
   HostListener,
   Injector,
-  Input,
   OnDestroy,
   OnInit,
-  Output,
-  QueryList,
   inject,
+  input,
+  output,
+  contentChildren,
 } from '@angular/core';
 import { defer, merge, Observable, Subject } from 'rxjs';
 import { startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { outputToObservable } from '@angular/core/rxjs-interop';
 
 import { TableFilterOptionComponent } from './table-filter-option/table-filter-option.component';
 
 import { FormsModule } from '@angular/forms';
+import { queryChanges } from '../../utils/query-changes.util';
 
 @Component({
   selector: 'vitamui-common-table-filter',
@@ -66,30 +66,28 @@ import { FormsModule } from '@angular/forms';
 export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy {
   private readonly injector = inject(Injector);
 
-  @Input()
-  set filter(values: any[]) {
-    this._filter = values || [];
-  }
-  private _filter: any[];
+  readonly filter = input<any[], any[]>(undefined, { transform: (values) => values || [] });
 
-  @Input() showSearchBar = false;
-  @Input() multiSelect = true;
+  readonly showSearchBar = input(false);
+  readonly multiSelect = input(true);
 
-  @Output() readonly filterChange = new EventEmitter<any[]>();
+  readonly filterChange = output<any[]>();
   // eslint-disable-next-line @angular-eslint/no-output-native
-  @Output() readonly search = new EventEmitter<string>();
-  @Output() readonly filterClose = new EventEmitter();
+  readonly search = output<string>();
+  readonly filterClose = output();
 
-  @ContentChildren(TableFilterOptionComponent, { descendants: true }) options: QueryList<TableFilterOptionComponent>;
+  readonly options = contentChildren(TableFilterOptionComponent, { descendants: true });
+  private readonly optionsChanges = queryChanges(this.options);
 
   searchText: string;
 
   /** Combined stream of all of the child options' change events. */
   readonly optionSelectionChanges: Observable<TableFilterOptionComponent> = defer(() => {
-    if (this.options) {
-      return this.options.changes.pipe(
-        startWith(this.options),
-        switchMap(() => merge(...this.options.map((option) => option.selectionChange))),
+    const options = this.options();
+    if (options) {
+      return this.optionsChanges.pipe(
+        startWith(options),
+        switchMap(() => merge(...this.options().map((option) => outputToObservable(option.selectionChange)))),
       );
     }
 
@@ -124,7 +122,7 @@ export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy
       event.removed.forEach((option) => option.deselect());
     });
 
-    this.options.changes.pipe(startWith(null), takeUntil(this.destroy)).subscribe(() => {
+    this.optionsChanges.pipe(startWith(null), takeUntil(this.destroy)).subscribe(() => {
       this.resetOptions();
       this.initializeSelection();
     });
@@ -157,7 +155,7 @@ export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy
   }
 
   private selectValue(value: any) {
-    const filterOption = this.options.find((option) => option.value === value);
+    const filterOption = this.options().find((option) => option.value() === value);
 
     if (!filterOption) {
       return;
@@ -167,32 +165,33 @@ export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy
   }
 
   private resetOptions() {
-    const changedOrDestroyed = merge(this.options.changes, this.destroy);
+    const changedOrDestroyed = merge(this.optionsChanges, this.destroy);
 
     this.optionSelectionChanges.pipe(takeUntil(changedOrDestroyed)).subscribe((filterOption) => {
-      if (!this.multiSelect) {
-        this.options.forEach((option) => {
-          if (option.value !== filterOption.value && option.selected) {
+      if (!this.multiSelect()) {
+        this.options().forEach((option) => {
+          if (option.value() !== filterOption.value() && option.selected) {
             this.selectionModel.deselect(option);
           }
         });
       }
       filterOption.selected ? this.selectionModel.select(filterOption) : this.selectionModel.deselect(filterOption);
-      this.filterChange.emit(this.selectionModel.selected.map((option) => option.value));
+      this.filterChange.emit(this.selectionModel.selected.map((option) => option.value()));
     });
   }
 
   private initializeSelection() {
-    if (!this.options) {
+    if (!this.options()) {
       return;
     }
 
     this.selectionModel.clear();
 
-    if (!this._filter) {
+    const filter = this.filter();
+    if (!filter) {
       return;
     }
 
-    this._filter.forEach((currentValue) => this.selectValue(currentValue));
+    filter.forEach((currentValue) => this.selectValue(currentValue));
   }
 }

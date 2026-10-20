@@ -86,7 +86,7 @@ describe('IngestContractPreviewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractPreviewComponent);
     component = fixture.componentInstance;
-    component.ingestContract = ingestContractValue;
+    fixture.componentRef.setInput('ingestContract', ingestContractValue);
     fixture.detectChanges();
   });
 

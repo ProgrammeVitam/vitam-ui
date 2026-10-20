@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
+import { Component, inject, input, OnChanges, signal, output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -54,32 +54,14 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./profile-information-tab.component.scss'],
   imports: [FormsModule, ReactiveFormsModule, SlideToggleComponent, InputComponent, MatProgressSpinner, TranslatePipe],
 })
-export class ProfileInformationTabComponent {
+export class ProfileInformationTabComponent implements OnChanges {
   private readonly formBuilder = inject(FormBuilder);
   private readonly profileService = inject(ProfileService);
   private readonly snackBarService = inject(SnackBarService);
 
-  @Input()
-  set inputProfile(profileDescription: ProfileDescription) {
-    this._inputProfile = profileDescription;
-    this.statusProfile.setValue(this.inputProfile.status !== 'INACTIVE');
-    this.resetForm(this.inputProfile);
-    this.updated.emit(false);
-  }
+  readonly inputProfile = input<ProfileDescription>();
 
-  get inputProfile(): ProfileDescription {
-    return this._inputProfile;
-  }
-
-  @Input()
-  set readOnly(readOnly: boolean) {
-    if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
-    } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
-    }
-  }
+  readonly readOnly = input<boolean>();
 
   constructor() {
     this.form = this.formBuilder.group({
@@ -97,9 +79,31 @@ export class ProfileInformationTabComponent {
     });
   }
 
-  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['inputProfile']) {
+      this.setInputProfile(this.inputProfile());
+    }
+    if (changes['readOnly']) {
+      const readOnly = this.readOnly();
+      if (readOnly && this.form.enabled) {
+        this.form.disable({ emitEvent: false });
+      } else if (this.form.disabled) {
+        this.form.enable({ emitEvent: false });
+        this.form.get('identifier').disable({ emitEvent: false });
+      }
+    }
+  }
 
-  @Output() closed: EventEmitter<boolean> = new EventEmitter<boolean>();
+  private setInputProfile(profileDescription: ProfileDescription) {
+    this._inputProfile = profileDescription;
+    this.statusProfile.setValue(this._inputProfile.status !== 'INACTIVE');
+    this.resetForm(this._inputProfile);
+    this.updated.emit(false);
+  }
+
+  readonly updated = output<boolean>();
+
+  readonly closed = output<boolean>();
   form: FormGroup;
 
   statusProfile = new FormControl();
@@ -139,11 +143,11 @@ export class ProfileInformationTabComponent {
   onSubmit() {
     this.pending.update((pending) => !pending);
     this.submited.set(true);
-    this.updateProfile(this.inputProfile).subscribe(
+    this.updateProfile(this._inputProfile).subscribe(
       () => {
         this.submited.set(false);
         this.pending.update((pending) => !pending);
-        this.inputProfile = this._inputProfile;
+        this.setInputProfile(this._inputProfile);
         this.snackBarService.open({ message: 'PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS', duration: 5000 });
         this.profileService.refreshListProfiles();
         this.closed.emit(true);

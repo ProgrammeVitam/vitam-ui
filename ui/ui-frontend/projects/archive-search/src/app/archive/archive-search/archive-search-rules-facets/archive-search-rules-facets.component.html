@@ -1,4 +1,4 @@
-<mat-tab-group [selectedIndex]="defaultFacetTabIndex">
+<mat-tab-group [selectedIndex]="defaultFacetTabIndex()">
   <mat-tab>
     <ng-template mat-tab-label>
       <span (click)="showHideFacets(true)"> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.STORAGE_RULE' | translate }} </span>
@@ -7,9 +7,9 @@
     @if (facetsVisibles) {
       <div id="facet-content">
         <app-search-storage-rules-facets
-          [exactCount]="exactCount"
-          [totalResults]="totalResults"
-          [storageRuleFacets]="storageRuleFacets"
+          [exactCount]="exactCount()"
+          [totalResults]="totalResults()"
+          [storageRuleFacets]="storageRuleFacets()"
         ></app-search-storage-rules-facets>
       </div>
     }
@@ -22,9 +22,9 @@
     @if (facetsVisibles) {
       <div id="facet-content">
         <app-search-appraisal-rules-facets
-          [exactCount]="exactCount"
-          [totalResults]="totalResults"
-          [appraisalRuleFacets]="appraisalRuleFacets"
+          [exactCount]="exactCount()"
+          [totalResults]="totalResults()"
+          [appraisalRuleFacets]="appraisalRuleFacets()"
         ></app-search-appraisal-rules-facets>
       </div>
     }
@@ -37,9 +37,9 @@
     @if (facetsVisibles) {
       <div id="facet-content">
         <app-search-access-rules-facets
-          [exactCount]="exactCount"
-          [totalResults]="totalResults"
-          [accessRuleFacets]="accessRuleFacets"
+          [exactCount]="exactCount()"
+          [totalResults]="totalResults()"
+          [accessRuleFacets]="accessRuleFacets()"
         ></app-search-access-rules-facets>
       </div>
     }
@@ -52,9 +52,9 @@
     @if (facetsVisibles) {
       <div id="facet-content">
         <app-search-dissemination-rules-facets
-          [exactCount]="exactCount"
-          [totalResults]="totalResults"
-          [disseminationRuleFacets]="disseminationRuleFacets"
+          [exactCount]="exactCount()"
+          [totalResults]="totalResults()"
+          [disseminationRuleFacets]="disseminationRuleFacets()"
         ></app-search-dissemination-rules-facets>
       </div>
     }
@@ -67,9 +67,9 @@
     @if (facetsVisibles) {
       <div id="facet-content">
         <app-search-reuse-rules-facets
-          [exactCount]="exactCount"
-          [totalResults]="totalResults"
-          [reuseRuleFacets]="reuseRuleFacets"
+          [exactCount]="exactCount()"
+          [totalResults]="totalResults()"
+          [reuseRuleFacets]="reuseRuleFacets()"
         ></app-search-reuse-rules-facets>
       </div>
     }

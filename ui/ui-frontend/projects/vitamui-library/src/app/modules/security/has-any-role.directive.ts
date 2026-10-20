@@ -34,17 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Directive, inject, Input, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Directive, inject, input, OnChanges, OnDestroy, SimpleChanges, TemplateRef, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ApplicationId } from '../application-id.enum';
 import { SecurityService } from './security.service';
 
 @Directive({ selector: '[vitamuiCommonHasAnyRole]' })
-export class HasAnyRoleDirective implements OnDestroy {
+export class HasAnyRoleDirective implements OnChanges, OnDestroy {
   private readonly templateRef = inject<TemplateRef<any>>(TemplateRef);
   private readonly viewContainer = inject(ViewContainerRef);
   private readonly securityService = inject(SecurityService);
+
+  readonly vitamuiCommonHasAnyRole = input<{ appId: ApplicationId; tenantIdentifier: number; roles: string[] }>(undefined);
 
   roleSubscription: Subscription;
 
@@ -56,20 +58,22 @@ export class HasAnyRoleDirective implements OnDestroy {
     }
   }
 
-  @Input()
-  set vitamuiCommonHasAnyRole(data: { appId: ApplicationId; tenantIdentifier: number; roles: string[] }) {
-    if (this.roleSubscription) {
-      this.roleSubscription.unsubscribe();
-    }
-
-    this.roleSubscription = this.securityService.hasAnyRole$(data.appId, data.tenantIdentifier, ...data.roles).subscribe((allowed) => {
-      if (allowed && !this.viewEmbedded) {
-        this.viewEmbedded = true;
-        this.viewContainer.createEmbeddedView(this.templateRef);
-      } else if (!allowed && this.viewEmbedded) {
-        this.viewEmbedded = false;
-        this.viewContainer.clear();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['vitamuiCommonHasAnyRole']) {
+      const data = this.vitamuiCommonHasAnyRole();
+      if (this.roleSubscription) {
+        this.roleSubscription.unsubscribe();
       }
-    });
+
+      this.roleSubscription = this.securityService.hasAnyRole$(data.appId, data.tenantIdentifier, ...data.roles).subscribe((allowed) => {
+        if (allowed && !this.viewEmbedded) {
+          this.viewEmbedded = true;
+          this.viewContainer.createEmbeddedView(this.templateRef);
+        } else if (!allowed && this.viewEmbedded) {
+          this.viewEmbedded = false;
+          this.viewContainer.clear();
+        }
+      });
+    }
   }
 }

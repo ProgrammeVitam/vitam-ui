@@ -1,6 +1,6 @@
-@if (title) {
-  <div class="title">{{ title | translate }}</div>
+@if (title()) {
+  <div class="title">{{ title() | translate }}</div>
 }
-<div class="actions hgap-4" [class.only]="!title">
+<div class="actions hgap-4" [class.only]="!title()">
   <ng-content></ng-content>
 </div>

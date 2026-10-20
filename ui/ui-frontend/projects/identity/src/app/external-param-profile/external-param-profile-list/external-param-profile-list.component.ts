@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, output, input, OnChanges, SimpleChanges } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, startWith } from 'rxjs/operators';
 import {
@@ -62,7 +62,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./external-param-profile-list.component.css'],
   imports: [NgClass, MatProgressSpinner, DecimalPipe, PipesModule, TranslatePipe, CommonModule, InfiniteScrollDirective],
 })
-export class ExternalParamProfileListComponent extends InfiniteScrollTable<ExternalParamProfile> implements OnDestroy, OnInit {
+export class ExternalParamProfileListComponent extends InfiniteScrollTable<ExternalParamProfile> implements OnChanges, OnDestroy, OnInit {
   externalParamProfileServiceService: ExternalParamProfileService;
   private readonly profileService = inject(ProfileService);
   private readonly sharedService = inject(SharedService);
@@ -71,17 +71,12 @@ export class ExternalParamProfileListComponent extends InfiniteScrollTable<Exter
   direction = Direction.ASCENDANT;
   private updatedProfileSub: Subscription;
   private searchCriteriaSub: Subscription;
-  private _searchText: string;
   private readonly searchChange = new Subject<string>();
   private readonly searchKeys = ['name'];
   private readonly filterDebounceTimeMs = 400;
 
-  @Output() externalParamProfileClick = new EventEmitter<ExternalParamProfile>();
-  @Input()
-  set searchText(searchText: string) {
-    this._searchText = searchText;
-    this.searchChange.next(searchText);
-  }
+  readonly externalParamProfileClick = output<ExternalParamProfile>();
+  readonly searchText = input<string>();
 
   constructor() {
     const externalParamProfileServiceService = inject(ExternalParamProfileService);
@@ -89,6 +84,12 @@ export class ExternalParamProfileListComponent extends InfiniteScrollTable<Exter
     super(externalParamProfileServiceService);
 
     this.externalParamProfileServiceService = externalParamProfileServiceService;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['searchText']) {
+      this.searchChange.next(this.searchText());
+    }
   }
 
   ngOnInit() {
@@ -138,7 +139,7 @@ export class ExternalParamProfileListComponent extends InfiniteScrollTable<Exter
 
   override search() {
     const query: CriteriaSearchQuery = {
-      criteria: [...buildCriteriaFromSearch(this._searchText, this.searchKeys)],
+      criteria: [...buildCriteriaFromSearch(this.searchText(), this.searchKeys)],
     };
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
     super.search(pageRequest);

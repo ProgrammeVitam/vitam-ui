@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 
 import { CdkStepper } from '@angular/cdk/stepper';
@@ -47,19 +47,19 @@ import { CommonProgressBarComponent } from '../../../../app/modules/components/c
   imports: [MatDialogModule, CommonProgressBarComponent],
 })
 export class DialogHeaderComponent {
-  @Input() stepper?: CdkStepper;
-  @Input() title?: string | string[];
-  @Input() subhead?: string;
+  readonly stepper = input<CdkStepper>(undefined);
+  readonly title = input<string | string[]>(undefined);
+  readonly subhead = input<string>(undefined);
 
   getTitle(): string {
-    if (this.stepper) {
-      return this.title instanceof Array
-        ? this.title[this.stepper.selectedIndex] != null
-          ? this.title[this.stepper.selectedIndex]
-          : `MISSING TITLE AT INDEX ${this.stepper.selectedIndex}`
-        : this.title;
-    } else {
-      return this.title instanceof Array ? `TITLE SHOULDN'T BE AN ARRAY` : this.title;
+    const stepper = this.stepper();
+    const title = this.title();
+    if (!Array.isArray(title)) {
+      return title;
     }
+    if (!stepper) {
+      return `TITLE SHOULDN'T BE AN ARRAY`;
+    }
+    return title[stepper.selectedIndex] ?? `MISSING TITLE AT INDEX ${stepper.selectedIndex}`;
   }
 }

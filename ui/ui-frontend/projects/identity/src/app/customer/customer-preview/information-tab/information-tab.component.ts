@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
@@ -97,7 +97,7 @@ const UPDATE_DEBOUNCE_TIME = 200;
     OverlayModule,
   ],
 })
-export class InformationTabComponent implements OnInit, OnDestroy {
+export class InformationTabComponent implements OnChanges, OnInit, OnDestroy {
   private readonly formBuilder = inject(FormBuilder);
   private readonly customerService = inject(CustomerService);
   private readonly customerCreateValidators = inject(CustomerCreateValidators);
@@ -127,43 +127,13 @@ export class InformationTabComponent implements OnInit, OnDestroy {
     gdprAlertDelay: number;
   };
 
-  @Input()
-  set customer(customer: Customer) {
-    this._customer = customer;
-    this.resetForm(this.customer);
-  }
+  readonly customer = input<Customer>();
 
-  get customer(): Customer {
-    return this._customer;
-  }
-  private _customer: Customer;
+  readonly readOnly = input<boolean>();
+
+  readonly gdprReadOnlyStatus = input<boolean>();
+
   private _gdprReadOnlyStatus: boolean;
-  get gdprReadOnlyStatus(): boolean {
-    return this._gdprReadOnlyStatus;
-  }
-
-  @Input()
-  set readOnly(readOnly: boolean) {
-    if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
-    } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      if (this._gdprReadOnlyStatus) {
-        this.form.get('gdprAlertDelay').disable({ emitEvent: false });
-        this.form.get('gdprAlert').disable({ emitEvent: false });
-        this.form.get('identifier').disable({ emitEvent: false });
-      }
-    }
-  }
-
-  @Input()
-  set gdprReadOnlyStatus(gdprReadOnlyStatus: boolean) {
-    this._gdprReadOnlyStatus = gdprReadOnlyStatus;
-    if (gdprReadOnlyStatus) {
-      this.form.get('gdprAlertDelay').disable({ emitEvent: false });
-      this.form.get('gdprAlert').disable({ emitEvent: false });
-    }
-  }
 
   private sub: Subscription;
 
@@ -198,6 +168,33 @@ export class InformationTabComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['customer']) {
+      this.resetForm(this.customer());
+    }
+    if (changes['readOnly']) {
+      const readOnly = this.readOnly();
+      if (readOnly && this.form.enabled) {
+        this.form.disable({ emitEvent: false });
+      } else if (this.form.disabled) {
+        this.form.enable({ emitEvent: false });
+        if (this._gdprReadOnlyStatus) {
+          this.form.get('gdprAlertDelay').disable({ emitEvent: false });
+          this.form.get('gdprAlert').disable({ emitEvent: false });
+          this.form.get('identifier').disable({ emitEvent: false });
+        }
+      }
+    }
+    if (changes['gdprReadOnlyStatus']) {
+      const gdprReadOnlyStatus = this.gdprReadOnlyStatus();
+      this._gdprReadOnlyStatus = gdprReadOnlyStatus;
+      if (gdprReadOnlyStatus) {
+        this.form.get('gdprAlertDelay').disable({ emitEvent: false });
+        this.form.get('gdprAlert').disable({ emitEvent: false });
+      }
+    }
+  }
+
   ngOnInit() {
     this.sub = merge(this.form.statusChanges, this.form.valueChanges)
       .pipe(
@@ -205,7 +202,7 @@ export class InformationTabComponent implements OnInit, OnDestroy {
         filter(() => this.form.valid),
         map(() => diff(this.form.value, this.previousValue)),
         filter((formData) => !isEmpty(formData)),
-        map((formData) => extend({ id: this.customer.id }, formData)),
+        map((formData) => extend({ id: this.customer().id }, formData)),
         switchMap((formData) => this.customerService.patch(formData).pipe(catchError(() => of(null)))),
       )
       .subscribe((customer: Customer) => this.resetForm(customer));

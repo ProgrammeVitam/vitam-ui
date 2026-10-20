@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { AsyncPipe, formatDate } from '@angular/common';
-import { Component, EventEmitter, inject, Input, LOCALE_ID, Output } from '@angular/core';
+import { Component, inject, LOCALE_ID, output, input, model, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, combineLatest, Observable, of, Subscription } from 'rxjs';
@@ -61,7 +61,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./file-format-information-tab.component.scss'],
   imports: [ReactiveFormsModule, InputComponent, SelectComponent, AsyncPipe, TranslatePipe],
 })
-export class FileFormatInformationTabComponent {
+export class FileFormatInformationTabComponent implements OnChanges {
   private readonly locale = inject(LOCALE_ID);
   private readonly formBuilder = inject(FormBuilder);
   private readonly fileFormatService = inject(FileFormatService);
@@ -69,7 +69,6 @@ export class FileFormatInformationTabComponent {
   private readonly securityService = inject(SecurityService);
 
   private readonly _dateFormat = 'dd/MM/yyyy';
-  private _fileFormat: FileFormat;
   private _subscriptions = new Subscription();
 
   private readonly isInternal = new BehaviorSubject(true);
@@ -78,7 +77,7 @@ export class FileFormatInformationTabComponent {
   private readonly fileFormats$ = new BehaviorSubject<FileFormat[]>([]);
   private readonly tenantId$ = new BehaviorSubject<string>(null);
 
-  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
+  readonly updated = output<boolean>();
 
   isInternal$ = this.isInternal.asObservable();
   canUpdateFileFormat$ = this.canUpdateFileFormat.asObservable();
@@ -90,7 +89,7 @@ export class FileFormatInformationTabComponent {
 
   puidPlaceholder: string;
   previousValue = (): FileFormat => {
-    const fileFormat: FileFormat = { ...this._fileFormat };
+    const fileFormat: FileFormat = { ...this.fileFormat() };
 
     fileFormat.mimeType = fileFormat.mimeType || null;
     fileFormat.extensions = fileFormat.extensions || null;
@@ -99,8 +98,88 @@ export class FileFormatInformationTabComponent {
     return fileFormat;
   };
 
-  @Input()
-  set fileFormat(fileFormat: FileFormat) {
+  readonly fileFormat = model<FileFormat>(undefined);
+
+  readonly readOnly = input<boolean>(undefined);
+
+  constructor() {
+    this.form = this.formBuilder.group({
+      puid: [{ value: null, disabled: true }, Validators.required],
+      name: [{ value: null }, Validators.required],
+      mimeType: [{ value: null }],
+      version: [{ value: null }, Validators.required],
+      extensions: [{ value: null }],
+      hasPriorityOverFileFormatIDs: [{ value: null }],
+      createdDate: [{ value: null, disabled: true }],
+      updateDate: [{ value: null, disabled: true }],
+      versionPronom: [{ value: null, disabled: true }],
+    });
+    this.route.params
+      .pipe(
+        filter((params: any) => params.tenantIdentifier),
+        tap((params: { tenantIdentifier: string }) => this.tenantId$.next(params.tenantIdentifier)),
+        switchMap((params: { tenantIdentifier: string }) =>
+          this.securityService.hasRole$(ApplicationId.FILE_FORMATS_APP, Role.ROLE_UPDATE_FILE_FORMATS, +params.tenantIdentifier),
+        ),
+      )
+      .subscribe((canUpdateFileFormat) => this.canUpdateFileFormat.next(canUpdateFileFormat));
+    this.tenantId$
+      .pipe(switchMap((tenantId) => this.fileFormatService.getAllForTenant(tenantId)))
+      .subscribe((fileFormats) => this.fileFormats$.next(fileFormats));
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['fileFormat']) {
+      this.setFileFormat(this.fileFormat());
+    }
+    if (changes['readOnly']) {
+      const readOnly = this.readOnly();
+      if (readOnly && this.form.enabled) {
+        this.form.disable({ emitEvent: false });
+      } else if (this.form.disabled) {
+        this.form.enable({ emitEvent: false });
+      }
+    }
+  }
+
+  unchanged(): boolean {
+    const unchanged = JSON.stringify(omit(diff(this.form.getRawValue(), this.previousValue()), 'createdDate', 'updateDate')) === '{}';
+    this.updated.emit(!unchanged);
+    return unchanged;
+  }
+
+  prepareSubmit(): Observable<FileFormat> {
+    const previousValue = this.previousValue();
+    const { id, puid } = previousValue;
+    const patchData = diff(this.form.getRawValue(), previousValue);
+
+    return of(patchData).pipe(
+      filter((data) => !isEmpty(data)),
+      map((data) => extend({ id, puid }, data)),
+      map((data) => omit(data, 'createdDate', 'updateDate')),
+      switchMap((formData) => this.fileFormatService.patch(formData).pipe(catchError(() => of(null)))),
+    );
+  }
+
+  onSubmit() {
+    if (this.form.pending || this.form.invalid) return;
+
+    this.submitting.next(true);
+    this.prepareSubmit()
+      .pipe(
+        switchMap(() => this.fileFormatService.get(this.fileFormat().puid)),
+        tap(
+          () => this.submitting.next(false),
+          () => this.submitting.next(false),
+        ),
+      )
+      .subscribe((response) => {
+        this.setFileFormat(response);
+        this.fileFormatService.updated.next(this.fileFormat());
+      });
+  }
+
+  private setFileFormat(fileFormat: FileFormat) {
     this._subscriptions.unsubscribe();
     this._subscriptions = new Subscription();
     this._subscriptions.add(
@@ -130,85 +209,9 @@ export class FileFormatInformationTabComponent {
         }
       }),
     );
-    this._fileFormat = fileFormat;
-    this.resetForm(this.fileFormat);
+    this.fileFormat.set(fileFormat);
+    this.resetForm(this.fileFormat());
     this.updated.emit(false);
-  }
-
-  get fileFormat(): FileFormat {
-    return this._fileFormat;
-  }
-
-  @Input()
-  set readOnly(readOnly: boolean) {
-    if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
-    } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-    }
-  }
-
-  constructor() {
-    this.form = this.formBuilder.group({
-      puid: [{ value: null, disabled: true }, Validators.required],
-      name: [{ value: null }, Validators.required],
-      mimeType: [{ value: null }],
-      version: [{ value: null }, Validators.required],
-      extensions: [{ value: null }],
-      hasPriorityOverFileFormatIDs: [{ value: null }],
-      createdDate: [{ value: null, disabled: true }],
-      updateDate: [{ value: null, disabled: true }],
-      versionPronom: [{ value: null, disabled: true }],
-    });
-    this.route.params
-      .pipe(
-        filter((params: any) => params.tenantIdentifier),
-        tap((params: { tenantIdentifier: string }) => this.tenantId$.next(params.tenantIdentifier)),
-        switchMap((params: { tenantIdentifier: string }) =>
-          this.securityService.hasRole$(ApplicationId.FILE_FORMATS_APP, Role.ROLE_UPDATE_FILE_FORMATS, +params.tenantIdentifier),
-        ),
-      )
-      .subscribe((canUpdateFileFormat) => this.canUpdateFileFormat.next(canUpdateFileFormat));
-    this.tenantId$
-      .pipe(switchMap((tenantId) => this.fileFormatService.getAllForTenant(tenantId)))
-      .subscribe((fileFormats) => this.fileFormats$.next(fileFormats));
-  }
-
-  unchanged(): boolean {
-    const unchanged = JSON.stringify(omit(diff(this.form.getRawValue(), this.previousValue()), 'createdDate', 'updateDate')) === '{}';
-    this.updated.emit(!unchanged);
-    return unchanged;
-  }
-
-  prepareSubmit(): Observable<FileFormat> {
-    const previousValue = this.previousValue();
-    const { id, puid } = previousValue;
-    const patchData = diff(this.form.getRawValue(), previousValue);
-
-    return of(patchData).pipe(
-      filter((data) => !isEmpty(data)),
-      map((data) => extend({ id, puid }, data)),
-      map((data) => omit(data, 'createdDate', 'updateDate')),
-      switchMap((formData) => this.fileFormatService.patch(formData).pipe(catchError(() => of(null)))),
-    );
-  }
-
-  onSubmit() {
-    if (this.form.pending || this.form.invalid) return;
-
-    this.submitting.next(true);
-    this.prepareSubmit()
-      .pipe(
-        switchMap(() => this.fileFormatService.get(this._fileFormat.puid)),
-        tap(
-          () => this.submitting.next(false),
-          () => this.submitting.next(false),
-        ),
-      )
-      .subscribe((response) => {
-        this.fileFormat = response;
-        this.fileFormatService.updated.next(this.fileFormat);
-      });
   }
 
   resetForm(fileFormat: FileFormat) {

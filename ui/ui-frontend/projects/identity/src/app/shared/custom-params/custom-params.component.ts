@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ENTER } from '@angular/cdk/keycodes';
-import { AfterContentInit, Component, ContentChildren, forwardRef, Input, QueryList } from '@angular/core';
+import { AfterContentInit, Component, forwardRef, input, contentChildren } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { InputComponent, VitamUIFieldErrorComponent } from 'vitamui-library';
 import { KeyValuePipe } from '@angular/common';
@@ -56,12 +56,12 @@ export const LIST_INPUT_ACCESSOR: any = {
   imports: [InputComponent, ReactiveFormsModule, KeyValuePipe, TranslatePipe],
 })
 export class CustomParamsComponent implements AfterContentInit, ControlValueAccessor {
-  @Input() keyPlaceholder: string;
-  @Input() valuePlaceholder: string;
-  @Input() spinnerDiameter = 25;
+  readonly keyPlaceholder = input<string>(undefined);
+  readonly valuePlaceholder = input<string>(undefined);
+  readonly spinnerDiameter = input(25);
 
-  @ContentChildren(VitamUIFieldErrorComponent) errors: QueryList<VitamUIFieldErrorComponent>;
-  @Input() selectedValues: Map<string, string>;
+  readonly errors = contentChildren(VitamUIFieldErrorComponent);
+  readonly selectedValues = input<Map<string, string>>(undefined);
   values = new Map<string, string>();
   controlKey: FormControl;
   controlValue: FormControl;
@@ -76,8 +76,8 @@ export class CustomParamsComponent implements AfterContentInit, ControlValueAcce
 
   ngAfterContentInit() {
     this.controlKey.statusChanges.subscribe(() => {
-      this.errors.forEach((error: VitamUIFieldErrorComponent) => {
-        error.show = this.controlKey.errors ? !!this.controlKey.errors[error.errorKey] : false;
+      this.errors().forEach((error: VitamUIFieldErrorComponent) => {
+        error.show = this.controlKey.errors ? !!this.controlKey.errors[error.errorKey()] : false;
       });
     });
   }

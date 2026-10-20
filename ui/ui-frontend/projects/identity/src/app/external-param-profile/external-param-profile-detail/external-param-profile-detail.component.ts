@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ChangeDetectorRef, input, output, model } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ExternalParamProfile, OperationHistoryTabComponent, VitamuiSidenavHeaderComponent } from 'vitamui-library';
 import { ExternalParamProfileService } from '../external-param-profile.service';
@@ -69,10 +69,10 @@ export class ExternalParamProfileDetailComponent implements OnInit, OnDestroy {
   private readonly sharedService = inject(SharedService);
   private readonly externalParamProfileServiceService = inject(ExternalParamProfileService);
 
-  @Input() externalParamProfile: ExternalParamProfile;
-  @Input() tenantIdentifier: string;
-  @Input() isPopup: boolean;
-  @Output() externalParamProfileClose = new EventEmitter();
+  readonly externalParamProfile = model<ExternalParamProfile>(undefined);
+  readonly tenantIdentifier = input<string>(undefined);
+  readonly isPopup = input<boolean>(undefined);
+  readonly externalParamProfileClose = output();
   readOnly: boolean;
   externalParamProfileUpdateSub: Subscription;
 
@@ -87,7 +87,7 @@ export class ExternalParamProfileDetailComponent implements OnInit, OnDestroy {
     this.externalParamProfileUpdateSub = this.externalParamProfileServiceService.updated.subscribe((externalParamProfile) => {
       if (externalParamProfile) {
         this.externalParamProfileServiceService.getOne(externalParamProfile.idProfile).subscribe((newExternalParamProfile) => {
-          this.externalParamProfile = newExternalParamProfile;
+          this.externalParamProfile.set(newExternalParamProfile);
           this.cdr.markForCheck();
         });
       }

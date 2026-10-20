@@ -1,9 +1,9 @@
-<ng-container [formGroup]="formGroup">
+<ng-container [formGroup]="formGroup()">
   @for (color of [THEME_COLORS.VITAMUI_PRIMARY, THEME_COLORS.VITAMUI_SECONDARY]; track color) {
     <div>
       <app-input-color
-        [disabled]="disabled"
-        [colorInput]="$any(formGroup.get(color))"
+        [disabled]="disabled()"
+        [colorInput]="$any(formGroup().get(color))"
         [checkWarning]="true"
         [placeholder]="baseColors[color] | translate"
       >
@@ -23,16 +23,16 @@
 
   <app-input-color
     [style.display]="!displayTertiary ? 'none' : 'block'"
-    [disabled]="disabled"
-    [colorInput]="$any(formGroup.get(THEME_COLORS.VITAMUI_TERTIARY))"
+    [disabled]="disabled()"
+    [colorInput]="$any(formGroup().get(THEME_COLORS.VITAMUI_TERTIARY))"
     [checkWarning]="true"
     [placeholder]="'COLOR.TERTIARY' | translate"
   >
   </app-input-color>
 
   <app-input-color
-    [colorInput]="$any(formGroup.get(THEME_COLORS.VITAMUI_HEADER_FOOTER))"
-    [disabled]="disabled"
+    [colorInput]="$any(formGroup().get(THEME_COLORS.VITAMUI_HEADER_FOOTER))"
+    [disabled]="disabled()"
     [placeholder]="'COLOR.HEADER_FOOTER' | translate"
   >
   </app-input-color>
@@ -40,7 +40,7 @@
   <vitamui-select
     class="mb-4"
     [placeholder]="'COLOR.BACKGROUND' | translate"
-    [disabled]="disabled"
+    [disabled]="disabled()"
     [options]="backgroundColorsOptions"
     [multiple]="false"
     [ngModel]="selectedBgColor"

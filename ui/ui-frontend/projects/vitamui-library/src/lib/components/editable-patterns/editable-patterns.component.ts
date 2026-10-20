@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, inject, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, forwardRef, inject, input, viewChild } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 
@@ -59,9 +59,14 @@ export const EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR: any = {
 export class EditablePatternsComponent extends EditableFieldComponent {
   private document = inject<Document>(DOCUMENT);
 
-  @Input() options: Array<{ value: string; disabled: boolean }>;
+  readonly options = input<
+    Array<{
+      value: string;
+      disabled: boolean;
+    }>
+  >(undefined);
 
-  @ViewChild(PatternComponent, { static: false }) pattern: PatternComponent;
+  readonly pattern = viewChild(PatternComponent);
 
   private patternClicked = false;
 
@@ -80,9 +85,9 @@ export class EditablePatternsComponent extends EditableFieldComponent {
 
       return;
     }
-    const overlayRef = this.cdkConnectedOverlay.overlayRef;
+    const overlayRef = this.cdkConnectedOverlay().overlayRef;
     // Overlay has same id as the "select" element, suffixed by "-panel"
-    const selectOverlayId = this.pattern?.select?.matSelect?.id;
+    const selectOverlayId = this.pattern()?.select()?.matSelect()?.id;
     const selectOverlay = selectOverlayId ? (this.document.querySelector(`#${selectOverlayId}-panel`) as HTMLElement) : null;
     if (
       this.isInside(target, this.elementRef.nativeElement) ||

@@ -36,7 +36,7 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SelectComponent, VitamuiSelectOptions } from './select.component';
-import { Component, ViewChild } from '@angular/core';
+import { Component, viewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { MatSelectHarness } from '@angular/material/select/testing';
@@ -60,8 +60,7 @@ const defaultOptions = {
   imports: [ReactiveFormsModule, SelectComponent],
 })
 class TestHostComponent {
-  @ViewChild(SelectComponent)
-  selectComponent: SelectComponent;
+  readonly selectComponent = viewChild(SelectComponent);
 
   options: VitamuiSelectOptions | any[];
   enableSelectAll: boolean;
@@ -128,7 +127,7 @@ describe('SelectComponent', () => {
         hostFixture.detectChanges();
 
         const expectedOptions = defaultOptions.options.filter((option) => option.label.includes(search));
-        expect(testHostComponent.selectComponent.displayedOptions.length).toEqual(expectedOptions.length);
+        expect(testHostComponent.selectComponent().displayedOptions.length).toEqual(expectedOptions.length);
       }
     });
   }
@@ -137,8 +136,8 @@ describe('SelectComponent', () => {
     beforeEach(init(false));
 
     it('should be non multiple and with search', () => {
-      expect(testHostComponent.selectComponent.multiple).toBe(false);
-      expect(testHostComponent.selectComponent.enableSearch).toBe(true);
+      expect(testHostComponent.selectComponent().multiple()).toBe(false);
+      expect(testHostComponent.selectComponent().enableSearch()).toBe(true);
     });
 
     commonBetweenMultiAndNoMulti();
@@ -183,10 +182,10 @@ describe('SelectComponent', () => {
     beforeEach(init(true));
 
     it('should be multiple and with search, selectAll and displaySelected', () => {
-      expect(testHostComponent.selectComponent.multiple).toBe(true);
-      expect(testHostComponent.selectComponent.enableSearch).toBe(true);
-      expect(testHostComponent.selectComponent.enableSelectAll).toBe(true);
-      expect(testHostComponent.selectComponent.enableDisplaySelected).toBe(true);
+      expect(testHostComponent.selectComponent().multiple()).toBe(true);
+      expect(testHostComponent.selectComponent().enableSearch()).toBe(true);
+      expect(testHostComponent.selectComponent().enableSelectAll()).toBe(true);
+      expect(testHostComponent.selectComponent().enableDisplaySelected()).toBe(true);
     });
 
     commonBetweenMultiAndNoMulti();

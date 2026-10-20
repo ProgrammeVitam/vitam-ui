@@ -51,7 +51,7 @@ import {
   Profile,
 } from 'vitamui-library';
 
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, output, input, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { DEFAULT_PAGE_SIZE } from '../../core/customer.service';
@@ -68,18 +68,13 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   styleUrls: ['./hierarchy-list.component.scss'],
   imports: [NgClass, MatProgressSpinner, PipesModule, TranslatePipe, CommonModule, EllipsisDirective, InfiniteScrollDirective],
 })
-export class HierarchyListComponent extends InfiniteScrollTable<Profile> implements OnDestroy, OnInit {
+export class HierarchyListComponent extends InfiniteScrollTable<Profile> implements OnChanges, OnDestroy, OnInit {
   hierarchyService: HierarchyService;
   private readonly route = inject(ActivatedRoute);
 
-  @Input()
-  set searchText(searchText: string) {
-    this._searchText = searchText;
-    this.searchChange.next(searchText);
-  }
-  private _searchText: string;
+  readonly searchText = input<string>();
 
-  @Output() profileClick = new EventEmitter<Profile>();
+  readonly profileClick = output<Profile>();
 
   private tenantIdentifier: number;
   private readonly updatedProfileSub: Subscription;
@@ -121,6 +116,12 @@ export class HierarchyListComponent extends InfiniteScrollTable<Profile> impleme
     });
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['searchText']) {
+      this.searchChange.next(this.searchText());
+    }
+  }
+
   ngOnInit() {
     const tenantChange = this.route.paramMap.pipe(
       filter((paramMap) => !!paramMap.get('tenantIdentifier')),
@@ -155,7 +156,7 @@ export class HierarchyListComponent extends InfiniteScrollTable<Profile> impleme
     ];
 
     const query: CriteriaSearchQuery = {
-      criteria: [...defaultCriteria, ...buildCriteriaFromSearch(this._searchText, this.searchKeys)],
+      criteria: [...defaultCriteria, ...buildCriteriaFromSearch(this.searchText(), this.searchKeys)],
     };
 
     super.search(new PageRequest(0, DEFAULT_PAGE_SIZE, 'name', Direction.ASCENDANT, JSON.stringify(query)));

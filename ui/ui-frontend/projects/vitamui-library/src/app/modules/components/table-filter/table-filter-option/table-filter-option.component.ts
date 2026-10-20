@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
+import { Component, HostListener, input, output } from '@angular/core';
 
 import { MatPseudoCheckboxModule } from '@angular/material/core';
 
@@ -43,21 +43,17 @@ import { MatPseudoCheckboxModule } from '@angular/material/core';
   templateUrl: './table-filter-option.component.html',
   styleUrls: ['./table-filter-option.component.scss'],
   imports: [MatPseudoCheckboxModule],
+  host: {
+    '[class.table-filter-option-separator]': 'separator()',
+  },
 })
 export class TableFilterOptionComponent {
-  @Input() value: any;
-  @Input()
-  set separator(separator: boolean) {
-    this.separatorClass = separator;
-  }
+  readonly value = input<any>(undefined);
+  readonly separator = input(false);
 
-  @Input()
-  public disabled = false;
+  public readonly disabled = input(false);
 
-  @Output()
-  readonly selectionChange = new EventEmitter<TableFilterOptionComponent>();
-
-  @HostBinding('class.table-filter-option-separator') separatorClass = false;
+  readonly selectionChange = output<TableFilterOptionComponent>();
 
   get selected(): boolean {
     return this._selected;
@@ -83,7 +79,7 @@ export class TableFilterOptionComponent {
 
   @HostListener('click')
   onClick() {
-    if (!this.disabled) {
+    if (!this.disabled()) {
       this._selected = !this._selected;
       this.selectionChange.emit(this);
     }

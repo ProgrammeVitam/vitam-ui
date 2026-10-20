@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -44,5 +44,5 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [TranslatePipe],
 })
 export class EventTypeLabelComponent {
-  @Input() key: string;
+  readonly key = input<string>(undefined);
 }

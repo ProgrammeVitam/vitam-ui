@@ -36,7 +36,7 @@
  */
 /* eslint-disable @angular-eslint/component-selector */
 
-import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTreeModule } from '@angular/material/tree';
@@ -53,11 +53,11 @@ import { FileType } from '../../../app/modules/file-type.enum';
   imports: [MatTreeModule, MatProgressSpinnerModule],
 })
 class NodeStubComponent {
-  @Input() tenantIdentifier: any;
-  @Input() node: any;
-  @Input() expanded: boolean;
-  @Input() disabled: boolean;
-  @Input() archiveParamPositions: any;
+  readonly tenantIdentifier = input<any>(undefined);
+  readonly node = input<any>(undefined);
+  readonly expanded = input<boolean>(undefined);
+  readonly disabled = input<boolean>(undefined);
+  readonly archiveParamPositions = input<any>(undefined);
 }
 
 describe('FilingPlanComponent', () => {
@@ -163,7 +163,7 @@ describe('FilingPlanComponent', () => {
 
     describe('BOTH-Mode', () => {
       beforeEach(() => {
-        component.mode = FilingPlanMode.BOTH;
+        fixture.componentRef.setInput('mode', FilingPlanMode.BOTH);
       });
 
       it('should check all nodes when select root node', () => {
@@ -314,7 +314,7 @@ describe('FilingPlanComponent', () => {
 
     describe('INCLUDE-Mode', () => {
       beforeEach(() => {
-        component.mode = FilingPlanMode.INCLUDE_ONLY;
+        fixture.componentRef.setInput('mode', FilingPlanMode.INCLUDE_ONLY);
       });
 
       it('should check and disable all children nodes', () => {
@@ -407,7 +407,7 @@ describe('FilingPlanComponent', () => {
 
     describe('SOLO-Mode', () => {
       beforeEach(() => {
-        component.mode = FilingPlanMode.SOLO;
+        fixture.componentRef.setInput('mode', FilingPlanMode.SOLO);
       });
 
       it('should include selected node', () => {
