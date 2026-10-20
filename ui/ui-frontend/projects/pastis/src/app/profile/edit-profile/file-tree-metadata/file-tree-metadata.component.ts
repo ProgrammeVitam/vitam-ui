@@ -962,7 +962,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
 
     if (this.editedEnumControl.includes(element)) {
       indexOfElement = this.editedEnumControl.indexOf(element);
-      this.editedEnumControl.splice(indexOfElement, 1)[0];
+      this.editedEnumControl.splice(indexOfElement, 1);
     }
     if (this.enumsControlSelected.length === 0) {
       this.editedEnumControl = null;
