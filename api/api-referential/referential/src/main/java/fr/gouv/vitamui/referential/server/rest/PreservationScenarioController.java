@@ -72,8 +72,8 @@ public class PreservationScenarioController {
     @PutMapping
     @Secured(ROLE_UPDATE_PRESERVATION_SCENARIOS)
     public ResponseEntity<OperationIdDto> putPreservationScenarios(@RequestBody List<PreservationScenario> scenarios)
-        throws AccessExternalClientException, VitamClientException, IOException {
-        return this.preservationScenarioService.put(scenarios);
+        throws AccessExternalClientException, VitamClientException, IOException, InvalidCreateOperationException {
+        return this.preservationScenarioService.importScenarios(scenarios);
     }
 
     @PostMapping
