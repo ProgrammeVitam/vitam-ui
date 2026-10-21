@@ -27,9 +27,11 @@
 
 package fr.gouv.vitamui.referential.server.service.preservation;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
+import fr.gouv.vitam.common.LocalDateUtil;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
@@ -41,6 +43,8 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -111,5 +115,78 @@ class PreservationScenarioServiceTest {
         ArgumentCaptor<List<PreservationScenario>> captor = ArgumentCaptor.forClass(List.class);
         verify(service).put(captor.capture());
         assertThat(captor.getValue()).isEmpty();
+    }
+
+    @Test
+    void importScenarios_should_keep_existing_creation_date_when_missing_in_file()
+        throws VitamClientException, AccessExternalClientException, IOException, InvalidCreateOperationException {
+        PreservationScenario existing = SCENARIO_1.withCreationDate("2019-01-01T00:00:00.000");
+        doReturn(List.of(existing, SCENARIO_2)).when(service).getAll();
+        doReturn(ResponseEntity.accepted().build()).when(service).put(anyList());
+
+        service.importScenarios(List.of(SCENARIO_1));
+
+        ArgumentCaptor<List<PreservationScenario>> captor = ArgumentCaptor.forClass(List.class);
+        verify(service).put(captor.capture());
+        assertThat(captor.getValue()).containsExactly(existing);
+    }
+
+    @Test
+    void importScenarios_from_json_file_without_creation_date_should_send_a_creation_date_computed_by_the_system()
+        throws VitamClientException, AccessExternalClientException, IOException, InvalidCreateOperationException {
+        // Given
+        List<PreservationScenario> scenariosFromFile = new ObjectMapper()
+            .readValue(
+                """
+                [ { "Identifier": "PSC-000010", "Name": "Scenario sans date", "ActionList": ["ANALYSE"] } ]
+                """,
+                new TypeReference<>() {}
+            );
+        doReturn(List.of()).when(service).getAll();
+        doReturn(ResponseEntity.accepted().build()).when(service).put(anyList());
+        LocalDateTime before = LocalDateUtil.now().truncatedTo(ChronoUnit.MILLIS);
+
+        // When
+        service.importScenarios(scenariosFromFile);
+
+        // Then
+        LocalDateTime after = LocalDateUtil.now();
+        ArgumentCaptor<List<PreservationScenario>> captor = ArgumentCaptor.forClass(List.class);
+        verify(service).put(captor.capture());
+        assertThat(captor.getValue())
+            .singleElement()
+            .satisfies(scenario -> {
+                assertThat(scenario.identifier()).isEqualTo("PSC-000010");
+                assertThat(scenario.creationDate()).isNotBlank();
+                assertThat(LocalDateUtil.parseMongoFormattedDate(scenario.creationDate())).isBetween(before, after);
+            });
+    }
+
+    @Test
+    void importScenarios_from_json_file_with_creation_date_should_send_the_creation_date_of_the_file()
+        throws VitamClientException, AccessExternalClientException, IOException, InvalidCreateOperationException {
+        // Given
+        List<PreservationScenario> scenariosFromFile = new ObjectMapper()
+            .readValue(
+                """
+                [ { "Identifier": "PSC-000011", "Name": "Scenario avec date", "CreationDate": "2018-11-20T15:34:21.542" } ]
+                """,
+                new TypeReference<>() {}
+            );
+        doReturn(List.of()).when(service).getAll();
+        doReturn(ResponseEntity.accepted().build()).when(service).put(anyList());
+
+        // When
+        service.importScenarios(scenariosFromFile);
+
+        // Then
+        ArgumentCaptor<List<PreservationScenario>> captor = ArgumentCaptor.forClass(List.class);
+        verify(service).put(captor.capture());
+        assertThat(captor.getValue())
+            .singleElement()
+            .satisfies(scenario -> {
+                assertThat(scenario.identifier()).isEqualTo("PSC-000011");
+                assertThat(scenario.creationDate()).isEqualTo("2018-11-20T15:34:21.542");
+            });
     }
 }
