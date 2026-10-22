@@ -18,9 +18,9 @@ services:
     # no --auth is needed here as presence of username and password add this option automatically
     command: mongod --replSet "rs0" --port=27018
 
-  mongo-express-dev:
-    container_name: vitamui-mongo-express
-    image: mongo-express
+  mongonaut-dev:
+    container_name: vitamui-mongonaut
+    image: ghcr.io/withzu/mongonaut:latest
     restart: unless-stopped
     ports:
       - "18081:8081"
@@ -29,9 +29,24 @@ services:
     networks:
       - local_vitamui_network
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: mongod_dbuser_admin
-      ME_CONFIG_MONGODB_ADMINPASSWORD: mongod_dbpwd_admin
-      ME_CONFIG_MONGODB_URL: "mongodb://mongod_dbuser_admin:mongod_dbpwd_admin@mongo-dev:27018/"
+      MONGO_CONNECTION_URL: "mongodb://mongod_dbuser_admin:mongod_dbpwd_admin@mongo-dev:27018/"
+      MONGONAUT_AUTH_MODE: "NONE"
+
+  dbgate-dev:
+    container_name: vitamui-dbgate
+    image: dbgate/dbgate:latest
+    restart: unless-stopped
+    ports:
+      - "18082:3000"
+    depends_on:
+      - mongo-dev
+    networks:
+      - local_vitamui_network
+    environment:
+      CONNECTIONS: vitamui
+      LABEL_vitamui: vitamui
+      URL_vitamui: "mongodb://mongod_dbuser_admin:mongod_dbpwd_admin@mongo-dev:27018/?directConnection=true"
+      ENGINE_vitamui: "mongo@dbgate-plugin-mongo"
 
 networks:
   local_vitamui_network:
