@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import {
@@ -66,7 +66,7 @@ const defaultDownloadButtonLabel = 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_REPORT';
   animations: [fadeInOutAnimation],
   standalone: false,
 })
-export class LogbookOperationDetailComponent implements OnInit, OnDestroy {
+export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDestroy {
   @Input() eventId: string;
   @Input() tenantIdentifier: number;
   @Input() isPopup: boolean;
@@ -101,6 +101,13 @@ export class LogbookOperationDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    // Only reload when another operation is selected: reacting to tenant changes would reintroduce bug #16920
+    if (changes['eventId'] && !changes['eventId'].firstChange) {
+      this.refreshLogbookOperation();
+    }
   }
 
   private setAccessContractId(userExternalParameters: Map<string, string>) {
@@ -155,14 +162,12 @@ export class LogbookOperationDetailComponent implements OnInit, OnDestroy {
   }
 
   private setAccessContractLogbookIdentifier() {
-    if (this.accessContractLogbookIdentifier || this.doesNotHaveTenant()) {
+    if (this.doesNotHaveTenant()) {
       return;
     }
+    // Recomputed on every refresh (cheap in-memory lookup) so a tenant switch never keeps a stale access contract
     const tenant = this.authService.getTenantByAppAndIdentifier(this.route.snapshot.data.appId, this.tenantIdentifier);
-    if (!tenant) {
-      return;
-    }
-    this.accessContractLogbookIdentifier = tenant.accessContractLogbookIdentifier || '';
+    this.accessContractLogbookIdentifier = tenant?.accessContractLogbookIdentifier || '';
   }
 
   private refreshLogbookOperation() {
