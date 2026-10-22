@@ -44,4 +44,18 @@ public record PreservationScenario(
     @JsonProperty("GriffinByFormat") List<GriffinByFormat> griffinByFormat,
     @JsonProperty("DefaultGriffin") DefaultGriffin defaultGriffin,
     @JsonProperty("TransformationRules") String transformationRules
-) {}
+) {
+    public PreservationScenario withCreationDate(String creationDate) {
+        return new PreservationScenario(
+            identifier,
+            name,
+            description,
+            creationDate,
+            lastUpdateDate,
+            actionList,
+            griffinByFormat,
+            defaultGriffin,
+            transformationRules
+        );
+    }
+}
