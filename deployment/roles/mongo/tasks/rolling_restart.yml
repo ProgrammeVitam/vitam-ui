@@ -1,0 +1,47 @@
+---
+
+# Restart of one replica set member, looped over from main.yml
+# ("throttle: 1" would not serialise the whole sequence).
+
+# A member outside this run (--limit, earlier failure) is left untouched.
+- name: "Report that the restart state of {{ mongod_member }} is unknown"
+  debug:
+    msg: >-
+      WARNING: {{ mongod_member }} is not part of this run, so whether it needs a
+      restart could not be determined and it is left untouched. It may still be
+      running with the previous mongod configuration, sharding.clusterRole
+      included. Run the mongo role against it before considering the replica set
+      up to date.
+  when: hostvars[mongod_member]['mongod_restart_required'] is not defined
+
+- name: "Restart vitamui-mongod on {{ mongod_member }}"
+  # No rs.stepDown() needed: a clean shutdown hands the primary role over.
+  systemd:
+    name: vitamui-mongod
+    state: restarted
+    daemon_reload: yes
+  delegate_to: "{{ mongod_member }}"
+  when: mongod_member_restart_required | bool
+
+- name: "Wait for the vitamui-mongod port to be open on {{ mongod_member }}"
+  wait_for:
+    host: "{{ hostvars[mongod_member]['ip_service'] }}"
+    port: "{{ mongodb.mongod_port }}"
+    timeout: "{{ vitamui_defaults.services.start_timeout }}"
+  delegate_to: "{{ mongod_member }}"
+  when: mongod_member_restart_required | bool
+
+- name: "Wait for {{ mongod_member }} to be back in the replica set"
+  # db.hello() needs no authentication. No setName: replica set not initiated
+  # yet (first installation), nothing to wait for.
+  command: >-
+    mongosh --host {{ hostvars[mongod_member]['ip_service'] }} --port {{ mongodb.mongod_port }}
+    --quiet --eval 'const member = db.hello();
+    quit(!member.setName || member.isWritablePrimary || member.secondary || member.arbiterOnly ? 0 : 1)'
+  delegate_to: "{{ mongod_member }}"
+  register: mongod_member_state
+  until: mongod_member_state.rc == 0
+  retries: "{{ vitamui_defaults.services.status_retries_number | default(60) }}"
+  delay: "{{ vitamui_defaults.services.status_retries_delay | default(5) }}"
+  changed_when: false
+  when: mongod_member_restart_required | bool
