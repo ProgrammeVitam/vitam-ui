@@ -39,8 +39,8 @@ import { take } from 'rxjs/operators';
 
 import { ConfirmDialogService, DialogHeaderComponent, Group } from 'vitamui-library';
 
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { form, FormField, FormRoot } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 
 import { GroupService } from '../../../group.service';
@@ -51,7 +51,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'app-units-edit',
   templateUrl: './units-edit.component.html',
   styleUrls: ['./units-edit.component.css'],
-  imports: [DialogHeaderComponent, MatDialogContent, ReactiveFormsModule, UnitsFormComponent, MatDialogActions, TranslatePipe],
+  imports: [DialogHeaderComponent, MatDialogContent, FormField, FormRoot, UnitsFormComponent, MatDialogActions, TranslatePipe],
 })
 export class UnitsEditComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<UnitsEditComponent>>(MatDialogRef);
@@ -61,17 +61,11 @@ export class UnitsEditComponent implements OnInit, OnDestroy {
   private readonly groupService = inject(GroupService);
   private readonly confirmDialogService = inject(ConfirmDialogService);
 
-  form: FormGroup;
+  readonly form = form(signal<{ units: string[] }>({ units: this.data.group.units }), {
+    submission: { action: async () => this.onSubmit(), ignoreValidators: 'all' },
+  });
 
   private keyPressSubscription: Subscription;
-
-  constructor() {
-    const formBuilder = inject(FormBuilder);
-
-    this.form = formBuilder.group({
-      units: [this.data.group.units],
-    });
-  }
 
   ngOnInit() {
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
@@ -82,11 +76,11 @@ export class UnitsEditComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.pristine || this.form.invalid) {
+    if (!this.form().dirty() || this.form().invalid()) {
       return;
     }
     this.groupService
-      .patch({ id: this.data.group.id, units: this.form.value.units })
+      .patch({ id: this.data.group.id, units: this.form.units().value() })
       .pipe(take(1))
       .subscribe(
         (response) => this.dialogRef.close(response),
@@ -97,6 +91,6 @@ export class UnitsEditComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    this.form.dirty ? this.confirmDialogService.confirmBeforeClosing(this.dialogRef) : this.dialogRef.close();
+    this.form().dirty() ? this.confirmDialogService.confirmBeforeClosing(this.dialogRef) : this.dialogRef.close();
   }
 }

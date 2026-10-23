@@ -158,6 +158,8 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
   private readonly nestedNodeMap = new Map<ItemNode<T>, ItemFlatNode<T>>();
 
   private idIncrement = 0;
+  // Value written before the tree was built
+  private pendingValue?: { value: T | T[] };
 
   private readonly search$: Subject<string> = new Subject();
   private searchSubscription: Subscription;
@@ -177,6 +179,12 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
     }
     if (changes['options']) {
       this.dataSource.data = this.options();
+      if (this.pendingValue) {
+        // Apply the value written before the tree was built (e.g. with [formField], writeValue is called before ngOnChanges)
+        const { value } = this.pendingValue;
+        this.pendingValue = undefined;
+        this.writeValue(value);
+      }
     }
     super.ngOnChanges(changes);
   }
@@ -364,6 +372,10 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
   }
 
   override writeValue(initialValues?: T | T[]) {
+    if (!this.treeControl.dataNodes) {
+      this.pendingValue = { value: initialValues };
+      return;
+    }
     const correspondingFlatNodes = this.treeControl.dataNodes
       .filter((n) => !n.expandable)
       .filter((n) => (Array.isArray(initialValues) ? initialValues : [initialValues])?.includes(n.item));

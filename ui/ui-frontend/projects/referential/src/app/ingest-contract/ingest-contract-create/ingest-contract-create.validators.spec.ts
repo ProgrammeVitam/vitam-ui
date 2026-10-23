@@ -34,13 +34,79 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { Injector, signal } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { form, ValidationError } from '@angular/forms/signals';
+import { of } from 'rxjs';
+import { IngestContract } from 'vitamui-library';
 import { IngestContractCreateValidators } from './ingest-contract-create.validators';
 
 describe('IngestContractCreateValidators', () => {
-  it('should create an instance', () => {
-    const ingestContractServiceSpy = {
+  let injector: Injector;
+  let ingestContractServiceSpy: { existsProperties: ReturnType<typeof vi.fn> };
+
+  function errorKinds(field: () => { errors: () => readonly ValidationError[] }): string[] {
+    return field()
+      .errors()
+      .map((error) => error.kind);
+  }
+
+  beforeEach(() => {
+    injector = TestBed.inject(Injector);
+    ingestContractServiceSpy = {
       existsProperties: vi.fn().mockName('IngestContractService.existsProperties'),
     };
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('should create an instance', () => {
     expect(new IngestContractCreateValidators(ingestContractServiceSpy as any)).toBeTruthy();
+  });
+
+  it('uniqueName should return a nameExists error', async () => {
+    ingestContractServiceSpy.existsProperties.mockReturnValue(of(true));
+    const validators = new IngestContractCreateValidators(ingestContractServiceSpy as any);
+    const testForm = form(signal({ name: ' name ' }), (path) => validators.uniqueName(path.name), { injector });
+
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    expect(ingestContractServiceSpy.existsProperties).toHaveBeenCalledWith({ name: 'name' });
+    expect(errorKinds(testForm.name)).toEqual(['nameExists']);
+  });
+
+  it('uniqueIdentifier should not call the service for the ignored identifier', async () => {
+    const validators = new IngestContractCreateValidators(ingestContractServiceSpy as any);
+    const testForm = form(signal({ identifier: 'id' }), (path) => validators.uniqueIdentifier(path.identifier, () => 'id'), {
+      injector,
+    });
+
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    expect(ingestContractServiceSpy.existsProperties).not.toHaveBeenCalled();
+    expect(errorKinds(testForm.identifier)).toEqual([]);
+  });
+
+  it('uniqueNameWhileEdit should ignore the name of the edited ingest contract', async () => {
+    ingestContractServiceSpy.existsProperties.mockReturnValue(of(true));
+    const validators = new IngestContractCreateValidators(ingestContractServiceSpy as any);
+    const ingestContract = { name: 'current' } as IngestContract;
+    const testForm = form(signal({ name: 'current' }), (path) => validators.uniqueNameWhileEdit(path.name, () => ingestContract), {
+      injector,
+    });
+
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    expect(ingestContractServiceSpy.existsProperties).not.toHaveBeenCalled();
+    expect(errorKinds(testForm.name)).toEqual([]);
+
+    testForm.name().value.set('other');
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    expect(ingestContractServiceSpy.existsProperties).toHaveBeenCalledWith({ name: 'other' });
+    expect(errorKinds(testForm.name)).toEqual(['nameExists']);
   });
 });

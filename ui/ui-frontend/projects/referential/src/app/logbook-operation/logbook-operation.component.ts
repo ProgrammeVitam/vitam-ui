@@ -34,8 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, AfterViewInit, Component, inject, OnInit, viewChild } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectorRef, AfterViewInit, Component, inject, Injector, OnInit, signal, viewChild } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { form, FormField } from '@angular/forms/signals';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { DatepickerComponent, SidenavPage, VitamuiBannerComponent, VitamuiTitleBreadcrumbComponent } from 'vitamui-library';
@@ -44,6 +45,12 @@ import { LogbookOperationListComponent } from './logbook-operation-list/logbook-
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { LogbookOperationDetailComponent } from './logbook-operation-detail/logbook-operation-detail.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { skip } from 'rxjs/operators';
+
+interface DateRangeFilterForm {
+  startDate: Date;
+  endDate: Date;
+}
 
 @Component({
   selector: 'app-logbook-operation',
@@ -56,7 +63,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatSidenavContent,
     VitamuiTitleBreadcrumbComponent,
     VitamuiBannerComponent,
-    ReactiveFormsModule,
+    FormField,
     DatepickerComponent,
     LogbookOperationListComponent,
     TranslatePipe,
@@ -66,14 +73,15 @@ export class LogbookOperationComponent extends SidenavPage<any> implements OnIni
   private route = inject(ActivatedRoute);
   private readonly cdr = inject(ChangeDetectorRef);
   dialog = inject(MatDialog);
-  private readonly formBuilder = inject(FormBuilder);
+  private readonly injector = inject(Injector);
 
   readonly list = viewChild(LogbookOperationListComponent);
   readonly bannerComponent = viewChild(VitamuiBannerComponent);
 
   public search = '';
   public tenantIdentifier: number;
-  public dateRangeFilterForm: FormGroup;
+  private readonly dateRangeFilterModel = signal<DateRangeFilterForm>({ startDate: null, endDate: null });
+  public readonly dateRangeFilterForm = form(this.dateRangeFilterModel);
   public filters: Readonly<EventFilter> = {};
   private openOperationDetailAfterLoading: boolean;
 
@@ -83,21 +91,18 @@ export class LogbookOperationComponent extends SidenavPage<any> implements OnIni
       this.cdr.markForCheck();
     });
 
-    this.dateRangeFilterForm = this.formBuilder.group({
-      startDate: null,
-      endDate: null,
-    });
-
-    this.dateRangeFilterForm.valueChanges.subscribe((value) => {
-      this.filters = {
-        type: this.filters.type,
-        status: this.filters.status,
-        dateRange: {
-          startDate: value.startDate ?? null,
-          endDate: value.endDate ?? null,
-        },
-      };
-    });
+    toObservable(this.dateRangeFilterModel, { injector: this.injector })
+      .pipe(skip(1))
+      .subscribe((value) => {
+        this.filters = {
+          type: this.filters.type,
+          status: this.filters.status,
+          dateRange: {
+            startDate: value.startDate ?? null,
+            endDate: value.endDate ?? null,
+          },
+        };
+      });
     this.route.queryParams.subscribe((params) => {
       if (params['guid']) {
         this.onSearchSubmit(params['guid']);

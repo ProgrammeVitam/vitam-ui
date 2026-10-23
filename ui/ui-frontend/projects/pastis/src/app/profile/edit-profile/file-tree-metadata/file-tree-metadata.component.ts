@@ -103,7 +103,8 @@ import { UserActionsDownloadDocComponent } from '../../../user-actions/download-
 import { PastisPopupMetadataLanguageComponent } from '../../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.component';
 import { CommonModule, NgClass } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { disabled, form, FormField, maxLength, required } from '@angular/forms/signals';
 import { MatOption, MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatIconButton } from '@angular/material/button';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
@@ -131,6 +132,15 @@ const PA_MANDATORY_ENUM_FIELDS = [
   'SigningRole',
   'DetachedSigningRole',
 ];
+
+type RegexControlMode = 'select' | 'input';
+
+interface RegexControlForm {
+  mode: RegexControlMode | null;
+  regex: string | null;
+  customRegex: string | null;
+  commentaire: string | null;
+}
 
 function constantToTranslate() {
   this.notificationAjoutMetadonnee = this.translated('.NOTIFICATION_AJOUT_METADONNEE');
@@ -201,7 +211,7 @@ function constantToTranslate() {
     MatProgressSpinnerModule,
     MatSelectModule,
     OverlayModule,
-    ReactiveFormsModule,
+    FormField,
   ],
 })
 export class FileTreeMetadataComponent implements OnInit, OnDestroy {
@@ -243,16 +253,22 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
   enumsControlSelected: string[] = [];
   editedEnumControl: string[];
   openControls = signal(false);
-  radioExpressionReguliere: 'select' | 'input';
-  regex: string;
-  customRegex: string;
   private readonly formatagePredefini: Option[] = [
     { label: 'AAAA-MM-JJ', key: DatePatternConstants.YEAR_MONTH_DAY },
     { label: 'AAAA-MM-JJTHH:MM:SS', key: DatePatternConstants.FULL_DATE },
     { label: 'AAAA', key: DatePatternConstants.YEAR },
     { label: 'AAAA-MM', key: DatePatternConstants.YEAR_MONTH },
   ];
-  availableRegex: Option[];
+  readonly availableRegex = signal<Option[]>(undefined);
+  readonly regexControlForm = form(signal<RegexControlForm>({ mode: null, regex: null, customRegex: null, commentaire: null }), (path) => {
+    disabled(path.regex, () => this.availableRegex()?.length <= 1);
+    disabled(path.customRegex, () => this.isNotRegexCustomisable());
+    disabled(path.commentaire, () => this.isNotRegexCustomisable());
+    required(path.customRegex, { when: ({ valueOf }) => valueOf(path.mode) === 'input' });
+    required(path.commentaire, { when: ({ valueOf }) => valueOf(path.mode) === 'input' });
+    maxLength(path.customRegex, 115);
+    maxLength(path.commentaire, 115);
+  });
   public breadcrumbDataTop: Array<BreadcrumbDataTop>;
   public breadcrumbDataMetadata = signal<Array<BreadcrumbDataMetadata>>(null);
   profileModeLabel: string;
@@ -273,7 +289,6 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
   type: string;
   valeurFixe: string;
   cardinalite: string[];
-  commentaire: string;
   enumeration: string[];
   additionalPropertiesMetadonnee: boolean;
   buttonClickedId?: number;
@@ -651,17 +666,24 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
       const actualPattern = fileNode.puaData.pattern;
       this.openControls.set(true);
       this.expressionControl.set(true);
-      this.commentaire = fileNode.documentation;
+      this.patchRegexControlForm({ commentaire: fileNode.documentation ?? null });
       this.setAvailableRegex(this.selectedSedaNode().type);
-      if (this.availableRegex.map((e) => e.key).includes(actualPattern)) {
-        this.regex = this.availableRegex.filter((e) => e.key === actualPattern).map((e) => e.key)[0];
-        this.radioExpressionReguliere = 'select';
+      if (
+        this.availableRegex()
+          .map((e) => e.key)
+          .includes(actualPattern)
+      ) {
+        this.patchRegexControlForm({
+          regex: this.availableRegex()
+            .filter((e) => e.key === actualPattern)
+            .map((e) => e.key)[0],
+          mode: 'select',
+        });
       } else {
-        this.customRegex = actualPattern;
-        this.radioExpressionReguliere = 'input';
+        this.patchRegexControlForm({ customRegex: actualPattern, mode: 'input' });
       }
     } else {
-      this.customRegex = '';
+      this.patchRegexControlForm({ customRegex: '' });
     }
   }
 
@@ -693,13 +715,25 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
     this.enumsControlSelected = [];
     this.editedEnumControl = [];
     this.openControls.set(false);
-    this.regex = undefined;
-    this.customRegex = undefined;
+    this.patchRegexControlForm({ regex: null, customRegex: null });
     this.enumerationsSedaControl = [];
   }
 
+  private patchRegexControlForm(value: Partial<RegexControlForm>) {
+    this.regexControlForm().value.update((formValue) => ({ ...formValue, ...value }));
+  }
+
+  setRegexControlMode(mode: RegexControlMode) {
+    this.regexControlForm.mode().value.set(mode);
+  }
+
+  isSubmitControlsDisabled(): boolean {
+    const { mode, customRegex, commentaire } = this.regexControlForm().value();
+    return mode === 'input' && (!customRegex || !commentaire);
+  }
+
   private setAvailableRegex(type: string) {
-    this.availableRegex = this.getAvailableRegex(type);
+    this.availableRegex.set(this.getAvailableRegex(type));
   }
 
   private getAvailableRegex(type: string): Option[] {
@@ -735,13 +769,11 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
       elements.includes('Expression régulière') ||
       elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.EXPRESSION_REGULIERE_LABEL'))
     ) {
-      this.radioExpressionReguliere = 'select';
       this.expressionControl.set(true);
-      this.customRegex = '';
-      this.commentaire = fileNode.documentation;
+      this.patchRegexControlForm({ mode: 'select', customRegex: '', commentaire: fileNode.documentation ?? null });
       const type: string = this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode()).type;
       this.setAvailableRegex(type);
-      this.regex = this.formatagePredefini[0].key;
+      this.patchRegexControlForm({ regex: this.formatagePredefini[0].key });
     }
     if (
       (this.isStandalone && elements.includes('Longueur Min/Max')) ||
@@ -915,11 +947,12 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
       this.clickedControl().puaData = {} as PuaData;
     }
 
-    this.clickedControl().puaData.pattern = this.radioExpressionReguliere === 'select' ? this.regex : this.customRegex;
-    if (this.radioExpressionReguliere === 'input') {
-      this.clickedControl().documentation = this.commentaire;
+    const { mode, regex, customRegex, commentaire } = this.regexControlForm().value();
+    this.clickedControl().puaData.pattern = mode === 'select' ? regex : customRegex;
+    if (mode === 'input') {
+      this.clickedControl().documentation = commentaire;
       const item = this.matDataSource().data.find((d) => d.id === this.clickedControl().id);
-      if (item) item.commentaire = this.commentaire; // Force la mise à jour du commentaire dans le matTable
+      if (item) item.commentaire = commentaire; // Force la mise à jour du commentaire dans le matTable
     }
   }
 

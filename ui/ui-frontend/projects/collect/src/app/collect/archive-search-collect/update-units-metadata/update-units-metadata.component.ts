@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, TemplateRef, viewChild } from '@angular/core';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, OnDestroy, signal, TemplateRef, viewChild } from '@angular/core';
+import { form, FormField } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, throwError } from 'rxjs';
 import {
@@ -47,6 +47,7 @@ import {
   TooltipDirective,
   Transaction,
   VitamErrorDetails,
+  requiredValue,
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../archive-collect.service';
 import { CdkStep } from '@angular/cdk/stepper';
@@ -67,7 +68,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     FileSelectorComponent,
     MatDialogActions,
     TranslatePipe,
-    ReactiveFormsModule,
+    FormField,
   ],
 })
 export class UpdateUnitsMetadataComponent implements OnDestroy {
@@ -84,7 +85,9 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
 
   isLoadingData = false;
 
-  fileControl: FormControl<File[]> = new FormControl([], [Validators.required]);
+  readonly fileForm = form(signal<File[]>([]), (path) => {
+    requiredValue(path);
+  });
   errorsDetails: VitamErrorDetails[];
   errorMessage: string;
 
@@ -99,7 +102,7 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
   }
 
   updateUnitsMetadata() {
-    const fileToUpload = this.fileControl.value[0];
+    const fileToUpload = this.fileForm().value()[0];
     this.isLoadingData = true;
     const waitSnackBarRef = this.snackBarService.open({
       message: 'COLLECT.UPDATE_UNITS_METADATA.WAIT_MESSAGE',

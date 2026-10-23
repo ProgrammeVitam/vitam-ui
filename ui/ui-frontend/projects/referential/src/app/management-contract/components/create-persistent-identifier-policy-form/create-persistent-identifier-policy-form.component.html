@@ -1,7 +1,7 @@
-<div [formGroup]="form()">
+<div>
   <vitamui-select
     style="display: none"
-    formControlName="policyTypeOption"
+    [formField]="form().policyTypeOption"
     [placeholder]="'CONTRACT_MANAGEMENT.FORM_UPDATE.CHOOSE_IDENTIFIER_TYPE' | translate"
     [options]="policyTypeOptions"
     [multiple]="false"
@@ -9,7 +9,7 @@
   ></vitamui-select>
   @if (isExistingTypeOption()) {
     <vitamui-input
-      formControlName="authority"
+      [formField]="form().authority"
       [placeholder]="'CONTRACT_MANAGEMENT.FORM_UPDATE.NAMING_AUTHORITY' | translate"
       class="w-100 mt-2"
       [errorMessageMap]="authorityErrorMap"
@@ -18,14 +18,14 @@
     <h5 class="primary title">{{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.POSITIONING_TITLE' | translate }}</h5>
     <div class="r-header row dark-background">
       <div class="col">
-        <mat-checkbox formControlName="shouldConcernArchiveUnits">
+        <mat-checkbox [formField]="form().shouldConcernArchiveUnits">
           <span>{{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.ARCHIVAL_UNIT' | translate }}</span>
         </mat-checkbox>
       </div>
     </div>
     <div class="r-header row dark-background" [ngClass]="{ opened: objectUsagePoliciesToggle() }" (click)="toggle($event)">
       <div class="col">
-        <mat-checkbox formControlName="shouldConcernObjects">
+        <mat-checkbox [formField]="form().shouldConcernObjects" (change)="onShouldConcernObjectsChange($event)">
           <div class="d-flex align-items-center">
             <i
               class="vitamui-icon icon primary"
@@ -40,16 +40,16 @@
       </div>
     </div>
     <div class="p-3 dark-background" [ngStyle]="{ display: objectUsagePoliciesToggle() ? 'block' : 'none' }">
-      <div class="container" formArrayName="objectUsagePolicies">
-        @for (objectUsagePolicy of getObjectUsagePolicies(); track objectUsagePolicy; let i = $index) {
-          <div class="row" [formGroupName]="i">
+      <div class="container">
+        @for (objectUsagePolicy of form().objectUsagePolicies; track objectUsagePolicy; let i = $index) {
+          <div class="row">
             <div class="col">
               <div class="row">
                 <div class="col-4">
                   <vitamui-select
-                    formControlName="objectUsage"
+                    [formField]="objectUsagePolicy.objectUsage"
                     [placeholder]="('CONTRACT_MANAGEMENT.FORM_UPDATE.TARGET_USAGE' | translate) + (i + 1)"
-                    [options]="objectUsageOptions"
+                    [options]="objectUsageOptions()"
                     [multiple]="false"
                     [enableSearch]="false"
                   ></vitamui-select>
@@ -57,14 +57,14 @@
                 <div class="col-3">
                   <label> {{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.INITIAL_VERSION' | translate }}</label>
                   <div class="radio-button-group-wrapper">
-                    <mat-radio-group formControlName="initialVersion">
+                    <mat-radio-group [formField]="objectUsagePolicy.initialVersion">
                       <mat-radio-button class="mr-2" [value]="true">{{
                         'CONTRACT_MANAGEMENT.FORM_UPDATE.YES' | translate
                       }}</mat-radio-button>
                       <mat-radio-button
                         class="mr-2"
                         [value]="false"
-                        [disabled]="objectUsagePolicies.at(i).get('intermediaryVersion').value === 'NONE'"
+                        [disabled]="objectUsagePolicy.intermediaryVersion().value() === 'NONE'"
                         >{{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.NO' | translate }}</mat-radio-button
                       >
                     </mat-radio-group>
@@ -73,12 +73,12 @@
                 <div class="col-4">
                   <label> {{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.LATER_VERSIONS' | translate }}</label>
                   <div class="radio-button-group-wrapper">
-                    <mat-radio-group formControlName="intermediaryVersion">
+                    <mat-radio-group [formField]="objectUsagePolicy.intermediaryVersion">
                       <mat-radio-button class="mr-2" value="ALL">{{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.ALL' | translate }}</mat-radio-button>
                       <mat-radio-button class="mr-2" value="LAST">{{
                         'CONTRACT_MANAGEMENT.FORM_UPDATE.LAST' | translate
                       }}</mat-radio-button>
-                      <mat-radio-button class="mr-2" value="NONE" [disabled]="!objectUsagePolicies.at(i).get('initialVersion').value">{{
+                      <mat-radio-button class="mr-2" value="NONE" [disabled]="!objectUsagePolicy.initialVersion().value()">{{
                         'CONTRACT_MANAGEMENT.FORM_UPDATE.NONE' | translate
                       }}</mat-radio-button>
                     </mat-radio-group>
@@ -86,6 +86,7 @@
                 </div>
                 <div class="col-1 d-flex align-items-center justify-content-center p-0">
                   <button
+                    type="button"
                     class="mat-icon-button delete-button d-flex justify-content-center align-items-center"
                     (click)="removeObjectUsagePolicy(i)"
                     [vitamuiTooltip]="'CONTRACT_MANAGEMENT.FORM_UPDATE.REMOVE_USAGE' | translate"
@@ -94,7 +95,7 @@
                   </button>
                 </div>
               </div>
-              @if (objectUsagePolicies.at(i).hasError('invalidObjectUsagePolicy')) {
+              @if (hasError(objectUsagePolicy, 'invalidObjectUsagePolicy')) {
                 <div>
                   {{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.ERROR_MESSAGES.INVALID_OBJECT_USAGE_POLICY' | translate }}
                 </div>
@@ -108,7 +109,7 @@
               type="button"
               class="col btn link back justify-content-start"
               [vitamuiTooltip]="'CONTRACT_MANAGEMENT.FORM_UPDATE.ADD_USAGE' | translate"
-              [disabled]="addButtonDisabled"
+              [disabled]="addButtonDisabled()"
               (click)="addObjectUsagePolicy()"
             >
               <i class="vitamui-icon vitamui-icon-plus"></i>
@@ -118,7 +119,7 @@
         </div>
       </div>
     </div>
-    @if (form().hasError('invalidPersistentIdentifierPolicyTarget')) {
+    @if (hasError(form(), 'invalidPersistentIdentifierPolicyTarget')) {
       <div class="vitamui-input-errors">
         {{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.ERROR_MESSAGES.INVALID_PERSISTENT_IDENTIFIER_POLICY_TARGET' | translate }}
       </div>

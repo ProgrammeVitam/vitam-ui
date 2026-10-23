@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
@@ -140,7 +139,6 @@ describe('ManagementRulesComponent', () => {
     await TestBed.configureTestingModule({
       imports: [InjectorModule, LoggerModule.forRoot(), ManagementRulesComponent],
       providers: [
-        FormBuilder,
         { provide: StartupService, useValue: startupServiceStub },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },

@@ -1,11 +1,11 @@
 <div class="container p-4">
-  <form [formGroup]="ruleDetailsForm" class="gap-4 align-items-stretch">
+  <form [formRoot]="ruleDetailsForm" class="gap-4 align-items-stretch">
     <div class="gap-2 align-items-stretch">
       <label class="text bold normal primary uppercase"> {{ 'RULES.SOURCE_MANAGEMENT_RULE' | translate }}</label>
       <div class="row content vitamui-form">
         <vitamui-select
           class="col"
-          formControlName="oldRule"
+          [formField]="ruleDetailsForm.oldRule"
           [options]="ruleOptions()"
           [placeholder]="'RULES.MANAGEMENT_RULE' | translate"
           [searchBarPlaceHolder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.PLACEHOLDER_SEARCHBAR_CHOOSE_MANAGEMENT_RULE' | translate"
@@ -17,14 +17,14 @@
       <label class="text bold normal primary uppercase"> {{ 'RULES.TARGET_MANAGEMENT_RULE' | translate }}</label>
       <div class="row">
         <div class="mr-2">
-          <vitamui-slide-toggle class="toggle-design" formControlName="ruleUpdated"
+          <vitamui-slide-toggle class="toggle-design" [formField]="ruleDetailsForm.ruleUpdated"
             >{{ 'RULES.UPDATED' | translate }}
           </vitamui-slide-toggle>
         </div>
 
         <vitamui-select
           class="col"
-          formControlName="newRule"
+          [formField]="ruleDetailsForm.newRule"
           [options]="ruleOptions()"
           [placeholder]="'RULES.MANAGEMENT_RULE' | translate"
         ></vitamui-select>
@@ -35,7 +35,7 @@
       <label class="text bold normal primary uppercase"> {{ 'RULES.APPRAISAL_RULES.TARGET_START_DATE' | translate }}</label>
       <div class="row hgap-4">
         <div class="mr-2">
-          <vitamui-slide-toggle class="toggle-design" formControlName="startDateUpdated"
+          <vitamui-slide-toggle class="toggle-design" [formField]="ruleDetailsForm.startDateUpdated"
             >{{ 'RULES.APPRAISAL_RULES.UPDATED' | translate }}
           </vitamui-slide-toggle>
         </div>
@@ -43,7 +43,7 @@
           <div class="hgap-2">
             <vitamui-datepicker
               [label]="'RULES.APPRAISAL_RULES.START_DATE' | translate"
-              formControlName="startDate"
+              [formField]="ruleDetailsForm.startDate"
               outputType="Date"
               format="dd/MM/yyyy"
               class="w-100"
@@ -55,7 +55,7 @@
                 width: '30',
                 height: '30',
               }"
-              [style.visibility]="ruleDetailsForm.get('startDate').value && isShowCheckButton() ? 'visible' : 'hidden'"
+              [style.visibility]="ruleDetailsForm.startDate().value() && isShowCheckButton() ? 'visible' : 'hidden'"
               type="button"
               mat-mini-fab
               (click)="addStartDate()"
@@ -69,7 +69,7 @@
           <div class="hgap-2">
             <vitamui-datepicker
               [label]="'RULES.APPRAISAL_RULES.END_DATE' | translate"
-              formControlName="endDate"
+              [formField]="ruleDetailsForm.endDate"
               outputType="Date"
               format="dd/MM/yyyy"
               class="w-100"
@@ -102,18 +102,18 @@
       }
     }
 
-    @if (ruleDetailsForm.dirty && ruleDetailsForm.errors?.['sameTargetRule']) {
+    @if (ruleDetailsForm().dirty() && formError('sameTargetRule')) {
       <div class="vitamui-input-errors d-flex row">
         <div class="d-flex col align-items-center">
           <i class="material-icons">error</i>
           <span class="ml-1">
-            {{ 'RULES.APPRAISAL_RULES.SAME_TARGET_RULE' | translate: { value: ruleDetailsForm.errors?.['sameTargetRule']?.value } }}
+            {{ 'RULES.APPRAISAL_RULES.SAME_TARGET_RULE' | translate: { value: formError('sameTargetRule')?.value } }}
           </span>
         </div>
       </div>
     }
 
-    @if (ruleDetailsForm.dirty && ruleDetailsForm.errors?.['mustUpdateRuleOrStartDate']) {
+    @if (ruleDetailsForm().dirty() && formError('mustUpdateRuleOrStartDate')) {
       <div class="vitamui-input-errors d-flex row">
         <div class="d-flex col align-items-center">
           <i class="material-icons">error</i>
@@ -128,11 +128,8 @@
           type="submit"
           class="btn primary mr-4"
           [disabled]="
-            disabledControl() ||
-            !ruleDetailsForm.valid ||
-            (ruleDetailsForm.dirty && ruleDetailsForm.errors && ruleDetailsForm.errors['mustUpdateRuleOrStartDate'])
+            disabledControl() || !ruleDetailsForm().valid() || (ruleDetailsForm().dirty() && formError('mustUpdateRuleOrStartDate'))
           "
-          (click)="submit()"
         >
           {{ 'RULES.COMMON.CONTROL' | translate }}
         </button>

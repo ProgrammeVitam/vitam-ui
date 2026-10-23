@@ -36,7 +36,6 @@
  */
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -163,7 +162,6 @@ describe('CreateProjectComponent', () => {
         MockFileSizePipe,
       ],
       providers: [
-        FormBuilder,
         { provide: ENVIRONMENT, useValue: environment },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -216,14 +214,15 @@ describe('CreateProjectComponent', () => {
       messageIdentifier: 'abcd',
       connectedToArchivingSystem: true,
       unitUp: 'test',
-      linkParentIdControl: {
+      linkParentId: {
         included: ['inc'],
+        excluded: [] as string[],
       },
     };
 
     component.selectedWorkflow = Workflow.MANUAL;
     component.selectedFlowType = FlowType.FIX;
-    component.projectForm.patchValue(form);
+    component.projectForm().value.update((value) => ({ ...value, ...form }));
 
     // When
     component.validateAndCreateProject();
@@ -245,15 +244,16 @@ describe('CreateProjectComponent', () => {
     // Given
     const form = {
       messageIdentifier: 'abcd',
-      linkParentIdControl: {
+      linkParentId: {
         included: ['inc'],
+        excluded: [] as string[],
       },
       automaticIngest: true,
     };
 
     component.selectedWorkflow = Workflow.FLOW;
     component.selectedFlowType = FlowType.RULES;
-    component.projectForm.patchValue(form);
+    component.projectForm().value.update((value) => ({ ...value, ...form }));
 
     // When
     component.validateAndCreateProject();
@@ -273,7 +273,7 @@ describe('CreateProjectComponent', () => {
         importType: 'DIRECTORIES_FILES',
       };
 
-      component.projectForm.patchValue(form);
+      component.projectForm().value.update((value) => ({ ...value, ...form }));
 
       expect(component.importType).toBe('DIRECTORIES_FILES');
     });

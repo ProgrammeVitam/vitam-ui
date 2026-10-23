@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, effect, inject, OnDestroy, OnInit, signal, untracked, viewChild } from '@angular/core';
+import { form, FormField, FormRoot, maxLength, minLength, required } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { ConfirmDialogService, SecurityProfile, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileCreateValidators } from './security-profile-create.validators';
 
@@ -49,6 +49,13 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 
 import { TranslatePipe } from '@ngx-translate/core';
+
+interface SecurityProfileCreateForm {
+  name: string;
+  identifier: string;
+  fullAccess: boolean;
+  permissions: string[] | null;
+}
 
 @Component({
   selector: 'app-security-profile-create',
@@ -61,7 +68,8 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatInputModule,
     MatProgressBarModule,
     MatSelectModule,
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     VitamUICommonModule,
     VitamUILibraryModule,
     TranslatePipe,
@@ -72,14 +80,33 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
   data = inject<{
     isSlaveMode: boolean;
   }>(MAT_DIALOG_DATA);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly confirmDialogService = inject(ConfirmDialogService);
   private readonly securityProfileService = inject(SecurityProfileService);
   private readonly securityProfileCreateValidators = inject(SecurityProfileCreateValidators);
 
   isSlaveMode: boolean;
 
-  form: FormGroup;
+  readonly form = form(
+    signal<SecurityProfileCreateForm>({ name: '', identifier: '', fullAccess: true, permissions: null }),
+    (path) => {
+      required(path.name);
+      minLength(path.name, 2);
+      maxLength(path.name, 100);
+      this.securityProfileCreateValidators.uniqueName(path.name);
+      required(path.identifier);
+      minLength(path.identifier, 2);
+      maxLength(path.identifier, 100);
+      this.securityProfileCreateValidators.uniqueIdentifier(path.identifier);
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
@@ -93,30 +120,16 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
     const data = this.data;
 
     this.isSlaveMode = data.isSlaveMode;
+
+    effect(() => {
+      const name = this.form.name().value();
+      if (!this.isSlaveMode) {
+        untracked(() => this.form.identifier().value.set(name));
+      }
+    });
   }
 
   ngOnInit() {
-    this.form = this.formBuilder.group({
-      name: [
-        null,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
-        this.securityProfileCreateValidators.uniqueName(),
-      ],
-      identifier: [
-        null,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
-        this.securityProfileCreateValidators.uniqueIdentifier(),
-      ],
-      fullAccess: [true],
-      permissions: null,
-    });
-
-    this.form.controls['name'].valueChanges.subscribe((value) => {
-      if (!this.isSlaveMode) {
-        this.form.controls['identifier'].setValue(value);
-      }
-    });
-
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
 
@@ -125,7 +138,7 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    if (this.form.dirty) {
+    if (this.form().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -133,17 +146,17 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
   }
 
   finishAfterFirstStep() {
-    this.form.value.permissions = [];
+    this.form.permissions().value.set([]);
     this.onSubmit();
   }
 
   onSubmit() {
-    if (this.form.invalid) {
+    if (this.form().invalid()) {
       this.isDisabledButton.set(true);
       return;
     }
     this.isDisabledButton.set(true);
-    this.securityProfileService.create(this.form.value).subscribe(
+    this.securityProfileService.create(this.form().value() as SecurityProfile).subscribe(
       () => {
         this.isDisabledButton.set(false);
         this.dialogRef.close({ success: true, action: 'none' });
@@ -156,11 +169,6 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
   }
 
   firstStepInvalid(): boolean {
-    return (
-      this.form.get('name').invalid ||
-      this.form.get('name').pending ||
-      this.form.get('fullAccess').invalid ||
-      this.form.get('fullAccess').pending
-    );
+    return [this.form.name, this.form.fullAccess].some((field) => field().invalid() || field().pending());
   }
 }

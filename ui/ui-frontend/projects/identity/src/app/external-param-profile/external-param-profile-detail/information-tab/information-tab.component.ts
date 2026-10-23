@@ -34,9 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges, signal, input } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { of, skip, Subscription } from 'rxjs';
+import { Component, computed, inject, OnChanges, OnInit, SimpleChanges, signal, input } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { AsyncValidatorFn, ValidatorFn, Validators } from '@angular/forms';
+import { disabled, form, FormField, required } from '@angular/forms/signals';
+import { of } from 'rxjs';
 import { catchError, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEqual } from 'underscore';
 import {
@@ -58,12 +60,28 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
+interface ExternalParamProfileInformationModel {
+  name: string;
+  description: string;
+  enabled: boolean;
+  accessContract: string;
+}
+
+function toExternalParamProfileInformationModel(externalParamProfile: ExternalParamProfile): ExternalParamProfileInformationModel {
+  return {
+    name: externalParamProfile?.name ?? null,
+    description: externalParamProfile?.description ?? null,
+    enabled: externalParamProfile?.enabled ?? null,
+    accessContract: externalParamProfile?.accessContract ?? null,
+  };
+}
+
 @Component({
   selector: 'app-information-tab',
   templateUrl: './information-tab.component.html',
   styleUrls: ['./information-tab.component.scss'],
   imports: [
-    ReactiveFormsModule,
+    FormField,
     SlideToggleComponent,
     NgStyle,
     VitamUIFieldErrorComponent,
@@ -71,7 +89,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     TranslatePipe,
     CommonModule,
     EditableInputComponent,
-    FormsModule,
     MatButtonToggleModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -81,61 +98,52 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     OverlayModule,
   ],
 })
-export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
-  private readonly formBuilder = inject(FormBuilder);
+export class InformationTabComponent implements OnInit, OnChanges {
   private readonly externalParamProfileService = inject(ExternalParamProfileService);
   private readonly externalParamProfileValidators = inject(ExternalParamProfileValidators);
 
-  form: FormGroup;
   groupsCount: boolean;
-  previousValue: ExternalParamProfile;
+  previousValue: ExternalParamProfileInformationModel;
   readonly activeAccessContractsIdentifiers = signal<string[]>(undefined);
-  private isResetting = false;
+  // The profile is applied to the form only after the initialization (as when the form was created in ngOnInit)
+  private initialized = false;
 
   readonly externalParamProfile = input<ExternalParamProfile>(undefined);
   readonly readOnly = input<boolean>(undefined);
   readonly tenantIdentifier = input<string>(undefined);
 
-  private updateFormSub: Subscription;
+  // Name of the displayed profile, ignored by the name validators
+  private readonly profileName = signal<string>(undefined);
+  private readonly model = signal<ExternalParamProfileInformationModel>({
+    ...toExternalParamProfileInformationModel(null),
+    enabled: false,
+  });
+  // Value set by resetForm: like a reset with emitEvent: false, it must not trigger an update
+  private resetValue = this.model();
+  private readonly formReadOnly = signal(false);
+  readonly form = form(this.model, (path) => {
+    disabled(path, () => this.formReadOnly());
+    required(path.name);
+    this.externalParamProfileValidators.nameExistsRule(
+      path.name,
+      () => +this.tenantIdentifier(),
+      () => this.profileName(),
+    );
+    required(path.description);
+    required(path.accessContract);
+  });
 
-  ngOnInit() {
-    this.initForm();
-    this.initListenersOnFormsValuesChanges();
+  // Validators of the editable fields (they validate the value being edited, before it is set in the form)
+  readonly requiredValidator: ValidatorFn = Validators.required;
+  readonly nameAsyncValidator = computed<AsyncValidatorFn>(() =>
+    this.externalParamProfileValidators.nameExists(+this.tenantIdentifier(), this.profileName()),
+  );
 
-    this.externalParamProfileService
-      .getAllActiveAccessContracts(this.tenantIdentifier())
-      .pipe(map((accessContracts) => accessContracts.map((accessContract) => accessContract.identifier)))
-      .subscribe((activeAccessContractsIdentifiers) => this.activeAccessContractsIdentifiers.set(activeAccessContractsIdentifiers));
-  }
-
-  ngOnDestroy() {
-    this.updateFormSub.unsubscribe();
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.hasOwnProperty('externalParamProfile') && this.form) {
-      this.isResetting = true;
-      this.resetForm(this.externalParamProfile());
-      this.previousValue = { ...this.form.getRawValue() } as ExternalParamProfile;
-      this.isResetting = false;
-    }
-  }
-
-  private initForm() {
-    this.form = this.formBuilder.group({
-      name: [null, Validators.required],
-      description: [null, Validators.required],
-      enabled: false,
-      accessContract: [null, Validators.required],
-    });
-  }
-
-  private initListenersOnFormsValuesChanges() {
-    this.updateFormSub = this.form.valueChanges
+  constructor() {
+    toObservable(this.model)
       .pipe(
-        filter(() => !this.isResetting),
-        skip(1),
-        filter(() => this.form.valid),
+        filter((value) => value !== this.resetValue),
+        filter(() => this.form().valid()),
         distinctUntilChanged(isEqual),
         filter((formValue) => !isEqual(formValue, this.previousValue)),
         map((formData) =>
@@ -149,27 +157,32 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
           ),
         ),
         switchMap((formData) => this.externalParamProfileService.patch(formData).pipe(catchError((error) => of(error)))),
+        takeUntilDestroyed(),
       )
       .subscribe();
   }
 
-  private resetForm(externalParamProfile: ExternalParamProfile) {
-    this.form.reset(externalParamProfile, { emitEvent: false });
-    this.initFormValidators(externalParamProfile);
-    this.initFormActivationState(this.readOnly());
+  ngOnInit() {
+    this.initialized = true;
+
+    this.externalParamProfileService
+      .getAllActiveAccessContracts(this.tenantIdentifier())
+      .pipe(map((accessContracts) => accessContracts.map((accessContract) => accessContract.identifier)))
+      .subscribe((activeAccessContractsIdentifiers) => this.activeAccessContractsIdentifiers.set(activeAccessContractsIdentifiers));
   }
 
-  private initFormValidators(externalParamProfile: ExternalParamProfile) {
-    this.form
-      .get('name')
-      .setAsyncValidators(this.externalParamProfileValidators.nameExists(+this.tenantIdentifier(), externalParamProfile.name));
-  }
-
-  private initFormActivationState(readOnly: boolean) {
-    if (readOnly) {
-      this.form.disable({ emitEvent: false });
-      return;
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.hasOwnProperty('externalParamProfile') && this.initialized) {
+      this.resetForm(this.externalParamProfile());
+      this.previousValue = this.model();
     }
-    this.form.enable({ emitEvent: false });
+  }
+
+  private resetForm(externalParamProfile: ExternalParamProfile) {
+    this.resetValue = toExternalParamProfileInformationModel(externalParamProfile);
+    this.model.set(this.resetValue);
+    this.form().reset();
+    this.profileName.set(externalParamProfile.name);
+    this.formReadOnly.set(!!this.readOnly());
   }
 }

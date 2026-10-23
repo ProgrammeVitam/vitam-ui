@@ -37,7 +37,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { of } from 'rxjs';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -63,9 +62,8 @@ describe.skip('ContextInformationTabComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, VitamUICommonTestModule, MatSelectModule, ContextInformationTabComponent],
+      imports: [VitamUICommonTestModule, MatSelectModule, ContextInformationTabComponent],
       providers: [
-        FormBuilder,
         { provide: SecurityProfileService, useValue: securityProfileServiceMock },
         { provide: ContextService, useValue: {} },
       ],

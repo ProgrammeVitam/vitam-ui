@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, signal, output, input, model, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { disabled, form, FormField, FormRoot, required } from '@angular/forms/signals';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
@@ -43,14 +43,21 @@ import { diff, InputComponent, Option, SecurityProfile, SlideToggleComponent } f
 import { SecurityProfileService } from '../../security-profile.service';
 import { TranslatePipe } from '@ngx-translate/core';
 
+interface SecurityProfileInformationForm {
+  identifier: string;
+  name: string;
+  fullAccess: boolean;
+}
+
+const FORM_KEYS: (keyof SecurityProfileInformationForm)[] = ['identifier', 'name', 'fullAccess'];
+
 @Component({
   selector: 'app-security-profile-information-tab',
   templateUrl: './security-profile-information-tab.component.html',
   styleUrls: ['./security-profile-information-tab.component.scss'],
-  imports: [ReactiveFormsModule, InputComponent, SlideToggleComponent, TranslatePipe],
+  imports: [FormRoot, FormField, InputComponent, SlideToggleComponent, TranslatePipe],
 })
 export class SecurityProfileInformationTabComponent implements OnChanges {
-  private readonly formBuilder = inject(FormBuilder);
   private readonly securityProfileService = inject(SecurityProfileService);
 
   readonly updated = output<boolean>();
@@ -67,14 +74,27 @@ export class SecurityProfileInformationTabComponent implements OnChanges {
     { key: 'AppraisalRule', label: 'Délai de communicabilité', info: '' },
   ];
 
-  form: FormGroup;
+  readonly form = form(
+    signal<SecurityProfileInformationForm>({ identifier: null, name: null, fullAccess: null }),
+    (path) => {
+      required(path.identifier);
+      required(path.name);
+      disabled(path, () => !!this.readOnly());
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
 
   submitted = signal(false);
 
-  ruleFilter = new FormControl();
-
   previousValue = (): any => {
-    return (Object.keys(this.form.controls || {}) as (keyof SecurityProfile)[]).reduce((acc: any, key) => {
+    return FORM_KEYS.reduce((acc: any, key) => {
       acc[key] = this.securityProfile()[key];
       return acc;
     }, {} as Partial<SecurityProfile>);
@@ -84,37 +104,20 @@ export class SecurityProfileInformationTabComponent implements OnChanges {
 
   readonly readOnly = input<boolean>(undefined);
 
-  constructor() {
-    this.form = this.formBuilder.group({
-      identifier: [null, Validators.required],
-      name: [null, Validators.required],
-      fullAccess: [null],
-    });
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['securityProfile']) {
       this.setSecurityProfile(this.securityProfile());
     }
-    if (changes['readOnly']) {
-      const readOnly = this.readOnly();
-      if (readOnly && this.form.enabled) {
-        this.form.disable({ emitEvent: false });
-      } else if (this.form.disabled) {
-        this.form.enable({ emitEvent: false });
-        this.form.get('identifier').disable({ emitEvent: false });
-      }
-    }
   }
 
   unchanged(): boolean {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
+    const unchanged = JSON.stringify(diff(this.form().value(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
   }
 
   prepareSubmit(): Observable<SecurityProfile> {
-    return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
+    return of(diff(this.form().value(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) => {
@@ -128,7 +131,7 @@ export class SecurityProfileInformationTabComponent implements OnChanges {
 
   onSubmit() {
     this.submitted.set(true);
-    if (this.form.invalid) {
+    if (this.form().invalid()) {
       return;
     }
     this.prepareSubmit().subscribe(
@@ -136,7 +139,7 @@ export class SecurityProfileInformationTabComponent implements OnChanges {
         this.securityProfileService.get(this.securityProfile().identifier).subscribe((response) => {
           this.submitted.set(false);
           this.setSecurityProfile(response);
-          this.fullAccessUpdated.emit(this.form.value.fullAccess);
+          this.fullAccessUpdated.emit(this.form.fullAccess().value());
           this.securityProfileUpdated.emit(response);
         });
       },
@@ -153,6 +156,11 @@ export class SecurityProfileInformationTabComponent implements OnChanges {
   }
 
   resetForm(SecurityProfile: SecurityProfile) {
-    this.form.reset(SecurityProfile, { emitEvent: false });
+    this.form().reset(
+      FORM_KEYS.reduce((acc: any, key) => {
+        acc[key] = SecurityProfile[key] ?? null;
+        return acc;
+      }, {}) as SecurityProfileInformationForm,
+    );
   }
 }

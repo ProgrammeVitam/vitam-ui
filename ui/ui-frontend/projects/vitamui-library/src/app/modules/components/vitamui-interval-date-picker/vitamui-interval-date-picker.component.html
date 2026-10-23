@@ -1,4 +1,4 @@
-<form [formGroup]="dateRangeFilterForm" [ngStyle]="{ padding: '10px' }">
+<div [ngStyle]="{ padding: '10px' }">
   <div class="col-12">
     <div class="row">
       <div class="col-3 filter-text">
@@ -8,8 +8,8 @@
       <div class="col-3">
         <vitamui-datepicker
           [label]="'LOGBOOK_OPERATION_PAGE.OPERATION_DATE' | translate"
-          formControlName="dateMin"
-          [max]="dateRangeFilterForm.get('dateMax').value"
+          [formField]="dateRangeFilterForm.dateMin"
+          [max]="dateRangeFilterForm.dateMax().value()"
           outputType="Date"
           format="dd/MM/yyyy"
         ></vitamui-datepicker>
@@ -33,8 +33,8 @@
         <div class="col-3">
           <vitamui-datepicker
             [label]="'LOGBOOK_OPERATION_PAGE.OPERATION_DATE' | translate"
-            formControlName="dateMax"
-            [min]="dateRangeFilterForm.get('dateMin').value"
+            [formField]="dateRangeFilterForm.dateMax"
+            [min]="dateRangeFilterForm.dateMin().value()"
             outputType="Date"
             format="dd/MM/yyyy"
           ></vitamui-datepicker>
@@ -50,4 +50,4 @@
       }
     </div>
   </div>
-</form>
+</div>

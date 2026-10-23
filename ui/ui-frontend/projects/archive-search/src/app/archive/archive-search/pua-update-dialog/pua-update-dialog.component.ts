@@ -34,9 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, signal } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { form, FormField, hidden, required } from '@angular/forms/signals';
 import { MatRadioModule } from '@angular/material/radio';
 import { finalize, Observable } from 'rxjs';
 import { AsyncPipe, I18nPluralPipe } from '@angular/common';
@@ -50,10 +51,17 @@ import {
   VitamuiSelectOptions,
   SnackBarService,
 } from 'vitamui-library';
-import { map } from 'rxjs/operators';
+import { map, skip } from 'rxjs/operators';
 import { ArchiveService } from '../../archive.service';
 import { RuleActions, RuleSearchCriteriaDto } from '../../models/ruleAction.interface';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+
+type PuaAction = 'update' | 'delete';
+
+interface PuaUpdateForm {
+  action: PuaAction | null;
+  pua: string | null;
+}
 
 export interface PuaUpdateDialogComponentData {
   tenantIdentifier: number;
@@ -62,17 +70,7 @@ export interface PuaUpdateDialogComponentData {
 }
 
 @Component({
-  imports: [
-    FormsModule,
-    MatRadioModule,
-    ReactiveFormsModule,
-    MatDialogModule,
-    AsyncPipe,
-    SelectComponent,
-    TranslatePipe,
-    I18nPluralPipe,
-    DialogHeaderComponent,
-  ],
+  imports: [FormField, MatRadioModule, MatDialogModule, AsyncPipe, SelectComponent, TranslatePipe, I18nPluralPipe, DialogHeaderComponent],
   templateUrl: './pua-update-dialog.component.html',
   styleUrl: './pua-update-dialog.component.scss',
 })
@@ -85,7 +83,12 @@ export class PuaUpdateDialogComponent {
   private readonly snackBarService = inject(SnackBarService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  form: FormGroup;
+  readonly form = form(signal<PuaUpdateForm>({ action: null, pua: null }), (path) => {
+    required(path.action);
+    // The archive unit profile is only asked (and required) for an update
+    hidden(path.pua, ({ valueOf }) => valueOf(path.action) !== 'update');
+    required(path.pua);
+  });
   puas$: Observable<VitamuiSelectOptions>;
 
   subtitle: { [k: string]: string } = {
@@ -95,37 +98,33 @@ export class PuaUpdateDialogComponent {
   updating: boolean;
 
   constructor() {
-    const fb = inject(FormBuilder);
     const archiveUnitProfilesService = inject(ArchiveUnitProfilesService);
 
     this.puas$ = archiveUnitProfilesService
       .getAll()
       .pipe(map((puas) => ({ options: puas.map((pua) => ({ key: pua.identifier, label: `${pua.identifier} - ${pua.name}` })) })));
 
-    const actionControl = new FormControl(null, Validators.required);
-    this.form = fb.group({
-      action: actionControl,
-    });
-
-    actionControl.valueChanges.subscribe((value) => {
-      if ((value as unknown as string) === 'update') {
-        this.form.addControl('pua', new FormControl(null, Validators.required));
-      } else {
-        this.form.removeControl('pua');
-      }
-    });
+    toObservable(this.form.action().value)
+      .pipe(skip(1), takeUntilDestroyed())
+      .subscribe((value) => {
+        if (value !== 'update') {
+          // As if the archive unit profile control was removed: it is empty when asked again
+          this.form.pua().reset(null);
+        }
+      });
   }
 
   submit() {
     let actions: Partial<RuleActions>;
-    if (this.form.value.action === 'update') {
+    const { action, pua } = this.form().value();
+    if (action === 'update') {
       actions = {
         addOrUpdateMetadata: {
-          archiveUnitProfile: this.form.value.pua,
+          archiveUnitProfile: pua,
         },
       };
     }
-    if (this.form.value.action === 'delete') {
+    if (action === 'delete') {
       actions = {
         deleteMetadata: {
           archiveUnitProfile: 'NOT_EMPTY', // Any value will do

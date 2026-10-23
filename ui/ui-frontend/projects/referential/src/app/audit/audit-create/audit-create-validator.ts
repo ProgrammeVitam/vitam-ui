@@ -35,10 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable, inject } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
+import { SchemaPath } from '@angular/forms/signals';
 
-import { of, timer } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { validateObservable } from 'vitamui-library';
 import { AuditService } from '../audit.service';
 
 @Injectable({
@@ -47,24 +47,15 @@ import { AuditService } from '../audit.service';
 export class AuditCreateValidators {
   private readonly auditService = inject(AuditService);
 
-  private readonly debounceTime = 400;
-
-  checkEvidenceAuditId = (): AsyncValidatorFn => {
-    return this.auditExists('invalidEvidenceAuditId');
+  /** Adds an `invalidEvidenceAuditId` error when the backend check of the evidence audit identifier returns `true`. */
+  checkEvidenceAuditId = (path: SchemaPath<string>): void => {
+    validateObservable(path, {
+      stream: (value: string) => this.evidenceAuditExists(value),
+      onSuccess: (exists: boolean) => (exists ? { kind: 'invalidEvidenceAuditId' } : undefined),
+    });
   };
 
-  private auditExists(existTag: string) {
-    return (control: AbstractControl) => {
-      const auditExists: any = {};
-      auditExists[existTag] = true;
-
-      const result = timer(this.debounceTime).pipe(
-        switchMap(() => (control.value !== null ? this.auditService.checkEvidenceAuditExistence(control.value) : of(false))),
-        take(1),
-        map((exists: boolean) => (exists ? auditExists : null)),
-      );
-
-      return result;
-    };
+  evidenceAuditExists(value: string): Observable<boolean> {
+    return value !== null ? this.auditService.checkEvidenceAuditExistence(value) : of(false);
   }
 }

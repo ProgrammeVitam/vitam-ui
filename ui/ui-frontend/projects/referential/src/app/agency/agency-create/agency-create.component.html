@@ -4,10 +4,10 @@
 ></vitamui-dialog-header>
 
 <mat-dialog-content>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" cdkFocusInitial class="gap-3 align-items-stretch">
+  <form [formRoot]="form" cdkFocusInitial class="gap-3 align-items-stretch">
     @if (!isLoading()) {
       <vitamui-input
-        formControlName="identifier"
+        [formField]="form.identifier"
         [placeholder]="'AGENCY.CREATE_DIALOG.IDENTIFIER' | translate"
         [errorMessageMap]="{
           identifierExists: 'AGENCY.CREATE_DIALOG.IDENTIFIER_ALREADY_EXISTS' | translate,
@@ -16,7 +16,7 @@
       >
       </vitamui-input>
       <vitamui-input
-        formControlName="name"
+        [formField]="form.name"
         [placeholder]="'AGENCY.CREATE_DIALOG.NAME' | translate"
         [errorMessageMap]="{
           nameExists: 'AGENCY.CREATE_DIALOG.NAME_ALREADY_EXISTS' | translate,
@@ -24,7 +24,7 @@
         }"
       >
       </vitamui-input>
-      <vitamui-input formControlName="description" [placeholder]="'AGENCY.CREATE_DIALOG.DESCRIPTION' | translate" [textarea]="true">
+      <vitamui-input [formField]="form.description" [placeholder]="'AGENCY.CREATE_DIALOG.DESCRIPTION' | translate" [textarea]="true">
       </vitamui-input>
     } @else {
       <div class="loader">
@@ -37,14 +37,14 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button type="submit" (click)="onSubmit()" class="btn primary" [disabled]="form.invalid || form.pending || isLoading()">
+  <button type="submit" (click)="onSubmit()" class="btn primary" [disabled]="form().invalid() || form().pending() || isLoading()">
     <span>{{ 'COMMON.TERMINATE' | translate }}</span>
   </button>
 
   <button
     type="button"
     class="btn outline outline-primary"
-    [disabled]="form.invalid || form.pending || isLoading()"
+    [disabled]="form().invalid() || form().pending() || isLoading()"
     (click)="submitAndEdit()"
   >
     <span>{{ 'AGENCY.CREATE_DIALOG.VALIDATE_AND_EDIT' | translate }}</span>

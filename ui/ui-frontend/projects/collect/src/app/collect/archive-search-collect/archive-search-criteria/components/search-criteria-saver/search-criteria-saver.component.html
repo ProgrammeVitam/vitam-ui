@@ -19,18 +19,17 @@
   @if (ToUpdate === false) {
     <div class="col-7">
       <div class="row triangle"></div>
-      <form [formGroup]="searchCriteriaForm" class="pl-5">
+      <form [formRoot]="searchCriteriaForm" class="pl-5">
         <span class="large text bold pb-4">
           {{ 'COLLECT.SEARCH_CRITERIA_SAVER.NEW_SAVE_IN_POPUP' | translate }}
         </span>
         <div class="row mt-3">
           <vitamui-input
-            [(ngModel)]="nameControl"
-            formControlName="name"
+            [formField]="searchCriteriaForm.name"
             class="w-75 ml-5"
             [placeholder]="'COLLECT.SEARCH_CRITERIA_SAVER.NAME' | translate"
           ></vitamui-input>
-          <button type="submit" class="btn primary ml-2" (click)="onSubmit()" [disabled]="searchCriteriaForm.invalid">OK</button>
+          <button type="submit" class="btn primary ml-2" [disabled]="searchCriteriaForm().invalid()">OK</button>
         </div>
       </form>
     </div>

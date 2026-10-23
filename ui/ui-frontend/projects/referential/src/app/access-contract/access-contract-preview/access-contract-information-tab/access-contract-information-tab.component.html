@@ -1,11 +1,11 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()" class="gap-5">
+<form [formRoot]="form" class="gap-5">
   <div class="gap-3 w-100">
-    <vitamui-slide-toggle class="w-100" [formControl]="statusControl">
+    <vitamui-slide-toggle class="w-100" [checked]="form.status().value() === 'ACTIVE'" (checkedChange)="onStatusChange($event)">
       <span>{{ 'ACCESS_CONTRACT.TAB.INFORMATION.ACTIVE_CONTRACT' | translate }}</span>
     </vitamui-slide-toggle>
 
     <vitamui-input
-      formControlName="name"
+      [formField]="form.name"
       class="w-100"
       [placeholder]="'ACCESS_CONTRACT.TAB.INFORMATION.NAME' | translate"
       [errorMessageMap]="{ nameExists: 'COMMON.NAME_ALREADY_EXISTS' | translate }"
@@ -14,53 +14,41 @@
 
     <vitamui-input
       class="w-100"
-      formControlName="description"
+      [formField]="form.description"
       [placeholder]="'ACCESS_CONTRACT.TAB.INFORMATION.DESCRIPTION' | translate"
       [textarea]="true"
     >
     </vitamui-input>
 
-    <vitamui-slide-toggle class="w-100" [formControl]="accessLogControl">
+    <vitamui-slide-toggle class="w-100" [checked]="form.accessLog().value() === 'ACTIVE'" (checkedChange)="onAccessLogChange($event)">
       <span>{{ 'ACCESS_CONTRACT.TAB.INFORMATION.ACCESS_LOGS' | translate }}</span>
     </vitamui-slide-toggle>
 
     <vitamui-input
       class="w-100"
       [placeholder]="'ACCESS_CONTRACT.TAB.INFORMATION.CREATION_DATE' | translate"
-      [ngModel]="accessContract()?.creationDate | dateTime: 'dd/MM/yyyy'"
-      [ngModelOptions]="{ standalone: true }"
-      disabled
+      [formField]="datesForm.creationDate"
     >
     </vitamui-input>
 
     <vitamui-input
       class="w-100"
       [placeholder]="'ACCESS_CONTRACT.TAB.INFORMATION.LAST_MODIFICATION_DATE' | translate"
-      [ngModel]="accessContract()?.lastUpdate | dateTime: 'dd/MM/yyyy'"
-      [ngModelOptions]="{ standalone: true }"
-      disabled
+      [formField]="datesForm.lastUpdate"
     >
     </vitamui-input>
 
     <vitamui-input
       class="w-100"
       [placeholder]="'ACCESS_CONTRACT.TAB.INFORMATION.ACTIVATION_DATE' | translate"
-      [ngModel]="
-        accessContract()?.status === 'ACTIVE' && accessContract()?.activationDate
-          ? (accessContract().activationDate | dateTime: 'dd/MM/yyyy')
-          : '-'
-      "
-      [ngModelOptions]="{ standalone: true }"
-      disabled
+      [formField]="datesForm.activationDate"
     >
     </vitamui-input>
 
     <vitamui-input
       class="w-100"
       [placeholder]="'ACCESS_CONTRACT.TAB.INFORMATION.DEACTIVATION_DATE' | translate"
-      [ngModel]="accessContract()?.deactivationDate ? (accessContract().deactivationDate | dateTime: 'dd/MM/yyyy') : '-'"
-      [ngModelOptions]="{ standalone: true }"
-      disabled
+      [formField]="datesForm.deactivationDate"
     >
     </vitamui-input>
   </div>

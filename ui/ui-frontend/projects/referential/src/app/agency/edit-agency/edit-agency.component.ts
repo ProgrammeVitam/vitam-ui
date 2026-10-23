@@ -37,7 +37,6 @@
 import { Component, OnDestroy, OnInit, TemplateRef, inject, signal, viewChild } from '@angular/core';
 
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   Agency,
   ApplicationId,
@@ -66,16 +65,7 @@ import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dial
   selector: 'app-edit-agency',
   templateUrl: 'edit-agency.component.html',
   styleUrls: ['edit-agency.component.scss'],
-  imports: [
-    RouterModule,
-    VitamUICommonModule,
-    VitamUILibraryModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ObjectEditorModule,
-    MatDialogModule,
-    TranslatePipe,
-  ],
+  imports: [RouterModule, VitamUICommonModule, VitamUILibraryModule, ObjectEditorModule, MatDialogModule, TranslatePipe],
 })
 export class EditAgencyComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);

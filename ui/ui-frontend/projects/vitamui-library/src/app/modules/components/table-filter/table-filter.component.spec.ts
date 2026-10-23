@@ -37,7 +37,6 @@
 
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { TableFilterOptionComponent } from './table-filter-option/table-filter-option.component';
@@ -52,7 +51,7 @@ import { TableFilterComponent } from './table-filter.component';
       <vitamui-common-table-filter-option [value]="3">Option 3</vitamui-common-table-filter-option>
     </vitamui-common-table-filter>
   `,
-  imports: [FormsModule, TableFilterComponent, TableFilterOptionComponent],
+  imports: [TableFilterComponent, TableFilterOptionComponent],
   schemas: [NO_ERRORS_SCHEMA],
 })
 export class TestHostComponent {

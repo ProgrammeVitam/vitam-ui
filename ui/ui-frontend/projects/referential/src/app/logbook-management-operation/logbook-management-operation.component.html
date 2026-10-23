@@ -27,7 +27,7 @@
         </button>
       </vitamui-banner>
 
-      <form [formGroup]="dateRangeFilterForm" [ngStyle]="{ padding: '10px' }">
+      <div [ngStyle]="{ padding: '10px' }">
         <div class="row row-data">
           <div class="col-10">
             <div class="row">
@@ -38,8 +38,8 @@
               <div class="col-3">
                 <vitamui-datepicker
                   [label]="'LOGBOOK_OPERATION_PAGE.OPERATION_DATE' | translate"
-                  formControlName="startDateMin"
-                  [max]="dateRangeFilterForm.get('startDateMax').value"
+                  [formField]="dateRangeFilterForm.startDateMin"
+                  [max]="dateRangeFilterForm.startDateMax().value()"
                   outputType="Date"
                   format="dd/MM/yyyy"
                 ></vitamui-datepicker>
@@ -61,8 +61,8 @@
                 <div class="col-3">
                   <vitamui-datepicker
                     [label]="'LOGBOOK_OPERATION_PAGE.OPERATION_DATE' | translate"
-                    formControlName="startDateMax"
-                    [min]="dateRangeFilterForm.get('startDateMin').value"
+                    [formField]="dateRangeFilterForm.startDateMax"
+                    [min]="dateRangeFilterForm.startDateMin().value()"
                     outputType="Date"
                     format="dd/MM/yyyy"
                   ></vitamui-datepicker>
@@ -78,7 +78,7 @@
           </div>
           <div class="col-2"></div>
         </div>
-      </form>
+      </div>
     </div>
 
     <div class="vitamui-content logbook-list">

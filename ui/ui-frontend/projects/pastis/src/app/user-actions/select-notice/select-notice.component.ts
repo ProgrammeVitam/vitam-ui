@@ -42,7 +42,7 @@ import { ProfileDescription } from '../../models/profile-description.model';
 import { ProfileType } from '../../models/profile-type.enum';
 import { PastisDialogDataCreate } from '../save-profile/save-profile.component';
 import { DialogHeaderComponent, Option, SelectComponent } from 'vitamui-library';
-import { FormsModule } from '@angular/forms';
+import { form, FormField } from '@angular/forms/signals';
 
 const POPUP_CREATION_CHOICE_PATH = 'PROFILE.POP_UP_CREATION_NOTICE.CHOICE';
 
@@ -56,7 +56,7 @@ function constantToTranslate() {
   selector: 'select-notice',
   templateUrl: './select-notice.component.html',
   styleUrls: ['./select-notice.component.scss'],
-  imports: [DialogHeaderComponent, FormsModule, MatDialogContent, SelectComponent, MatDialogActions, TranslatePipe],
+  imports: [DialogHeaderComponent, FormField, MatDialogContent, SelectComponent, MatDialogActions, TranslatePipe],
 })
 export class SelectNoticeComponent implements OnInit {
   dialogRef = inject<MatDialogRef<SelectNoticeComponent>>(MatDialogRef);
@@ -65,7 +65,7 @@ export class SelectNoticeComponent implements OnInit {
   private readonly profilService = inject(ProfileService);
 
   profileOptions = signal<Option[]>(undefined);
-  selectedProfile: ProfileDescription;
+  readonly profileSelection = form(signal<ProfileDescription | null>(null));
   userValidation = false;
 
   ngOnInit(): void {
@@ -97,7 +97,7 @@ export class SelectNoticeComponent implements OnInit {
     this.dialogRef.close({
       success: true,
       action: 'none',
-      data: this.selectedProfile,
+      data: this.profileSelection().value(),
       profileType: this.data.profileType,
       profileVersion: this.data.profileVersion,
     });

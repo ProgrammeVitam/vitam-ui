@@ -10,20 +10,20 @@
 <vitamui-stepper #stepper [selectedIndex]="stepIndex()" (selectionChange)="stepIndex.set($event.selectedIndex)">
   <cdk-step>
     <mat-dialog-content>
-      <form [formGroup]="form">
+      <div>
         <div class="d-flex">
-          <vitamui-input formControlName="emailFirstPart" [placeholder]="'SUBROGATION.HOME.RESULTS_TABLE.MODAL.MAIL' | translate">
+          <vitamui-input [formField]="form.emailFirstPart" [placeholder]="'SUBROGATION.HOME.RESULTS_TABLE.MODAL.MAIL' | translate">
           </vitamui-input>
 
           <h4 class="mx-2 mt-1 light">&#64;</h4>
 
-          <vitamui-select formControlName="domain" [options]="domains" [multiple]="false" [enableSearch]="false"></vitamui-select>
+          <vitamui-select [formField]="form.domain" [options]="domains" [multiple]="false" [enableSearch]="false"></vitamui-select>
         </div>
-      </form>
+      </div>
     </mat-dialog-content>
 
     <mat-dialog-actions>
-      <button class="btn primary" appStepperNext (click)="askForSubrogation()" [disabled]="form.invalid">
+      <button class="btn primary" appStepperNext (click)="askForSubrogation()" [disabled]="form().invalid()">
         {{ 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.BUTTON' | translate }}
       </button>
       <button class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>

@@ -1,6 +1,13 @@
 @if (editmode) {
   <span>
-    <input (click)="$event.stopPropagation()" class="pastis-input-edit" [(ngModel)]="editText" type="text" />
+    <input
+      #editInput
+      (click)="$event.stopPropagation()"
+      class="pastis-input-edit"
+      [value]="editText()"
+      (input)="editText.set(editInput.value)"
+      type="text"
+    />
   </span>
 } @else {
   <span class="mr-3">{{ node().editName ? node().editName : node().name }}</span>

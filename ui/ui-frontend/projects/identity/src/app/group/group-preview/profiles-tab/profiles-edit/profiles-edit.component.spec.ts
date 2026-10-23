@@ -37,7 +37,7 @@
 import { EMPTY, of } from 'rxjs';
 import { ConfirmDialogService } from 'vitamui-library';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
@@ -56,7 +56,7 @@ import { ProfilesEditComponent } from './profiles-edit.component';
       multi: true,
     },
   ],
-  imports: [MatProgressBarModule, ReactiveFormsModule, VitamUICommonTestModule],
+  imports: [MatProgressBarModule, VitamUICommonTestModule],
 })
 class ProfilesFormStubComponent {
   readonly level = input<any>(undefined);
@@ -79,7 +79,7 @@ describe('ProfilesEditComponent', () => {
 
     await TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [MatProgressBarModule, ReactiveFormsModule, VitamUICommonTestModule, ProfilesEditComponent, ProfilesFormStubComponent],
+      imports: [MatProgressBarModule, VitamUICommonTestModule, ProfilesEditComponent, ProfilesFormStubComponent],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { group: { id: '42', name: 'Test', profileIds: [] } } },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -101,14 +101,14 @@ describe('ProfilesEditComponent', () => {
 
   describe('DOM', () => {
     it('should have a app-profiles-form', () => {
-      const elProfilesForm = fixture.nativeElement.querySelector('app-profiles-form[formControlName=profileIds]');
+      const elProfilesForm = fixture.nativeElement.querySelector('app-profiles-form');
       expect(elProfilesForm).toBeTruthy();
     });
 
     it('should have a submit button', () => {
       vi.spyOn(component, 'onSubmit');
-      component.form.setValue({ profileIds: ['1'] });
-      component.form.markAsDirty();
+      component.form().value.set({ profileIds: ['1'] });
+      component.form().markAsDirty();
       fixture.detectChanges();
       const elSubmit = fixture.nativeElement.querySelector('button[type=submit]');
       expect(elSubmit).toBeTruthy();
@@ -132,8 +132,8 @@ describe('ProfilesEditComponent', () => {
       const groupService = TestBed.inject(GroupService);
       vi.spyOn(groupService, 'patch');
       const matDialogRefSpy = TestBed.inject(MatDialogRef);
-      component.form.setValue({ profileIds: ['1', '2', '3'] });
-      component.form.markAsDirty();
+      component.form().value.set({ profileIds: ['1', '2', '3'] });
+      component.form().markAsDirty();
       component.onSubmit();
       expect(groupService.patch).toHaveBeenCalledWith({ id: '42', profileIds: ['1', '2', '3'] });
       expect(matDialogRefSpy.close).toHaveBeenCalledWith({ result: 'test' });
@@ -142,7 +142,7 @@ describe('ProfilesEditComponent', () => {
     it('should not call profileGroupService.patch', () => {
       const profileGroupService = TestBed.inject(GroupService);
       vi.spyOn(profileGroupService, 'patch');
-      component.form.markAsDirty();
+      component.form().markAsDirty();
       component.onSubmit();
       expect(profileGroupService.patch).toHaveBeenCalledTimes(0);
     });
@@ -150,7 +150,7 @@ describe('ProfilesEditComponent', () => {
     it('should not call profileGroupService.patch', () => {
       const profileGroupService = TestBed.inject(GroupService);
       vi.spyOn(profileGroupService, 'patch');
-      component.form.setValue({ profileIds: ['1', '2', '3'] });
+      component.form().value.set({ profileIds: ['1', '2', '3'] });
       component.onSubmit();
       expect(profileGroupService.patch).toHaveBeenCalledTimes(0);
     });

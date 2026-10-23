@@ -36,7 +36,6 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AccessContractService } from 'vitamui-library';
 import { AccessContractWriteAccessTabComponent } from './access-contract-write-access-tab.component';
@@ -54,8 +53,8 @@ describe.skip('AccessContractWriteAccessTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, VitamUICommonTestModule, AccessContractWriteAccessTabComponent],
-      providers: [FormBuilder, { provide: AccessContractService, useValue: {} }],
+      imports: [VitamUICommonTestModule, AccessContractWriteAccessTabComponent],
+      providers: [{ provide: AccessContractService, useValue: {} }],
     }).compileComponents();
   });
 

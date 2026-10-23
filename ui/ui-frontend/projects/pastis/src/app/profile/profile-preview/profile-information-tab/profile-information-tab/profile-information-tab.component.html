@@ -1,8 +1,8 @@
-<form (ngSubmit)="onSubmit()" [formGroup]="form" class="side-form">
+<form [formRoot]="form" class="side-form">
   <div class="row">
     <div class="col-6">
-      <vitamui-slide-toggle [formControl]="statusProfile" [checked]="form.controls['status'].value === 'ACTIVE'">
-        @if (form.controls['status'].value === 'ACTIVE') {
+      <vitamui-slide-toggle [checked]="form.status().value() === 'ACTIVE'" (checkedChange)="setStatus($event)">
+        @if (form.status().value() === 'ACTIVE') {
           {{ 'PROFILE_PREVIEW.INFORMATION_TAB.ACTIVE_PROFILE' | translate }}
         } @else {
           {{ 'PROFILE_PREVIEW.INFORMATION_TAB.INACTIVE_PROFILE' | translate }}
@@ -24,13 +24,13 @@
 
   <div class="row mb-3">
     <div class="col-10 form-control">
-      <vitamui-input formControlName="name" [placeholder]="'PROFILE_PREVIEW.INFORMATION_TAB.INTITULE' | translate"> </vitamui-input>
+      <vitamui-input [formField]="form.name" [placeholder]="'PROFILE_PREVIEW.INFORMATION_TAB.INTITULE' | translate"> </vitamui-input>
     </div>
   </div>
 
   <div class="row mb-3">
     <div class="col-10 form-control">
-      <vitamui-input formControlName="description" [placeholder]="'PROFILE_PREVIEW.INFORMATION_TAB.DESCRIPTION' | translate">
+      <vitamui-input [formField]="form.description" [placeholder]="'PROFILE_PREVIEW.INFORMATION_TAB.DESCRIPTION' | translate">
       </vitamui-input>
     </div>
   </div>

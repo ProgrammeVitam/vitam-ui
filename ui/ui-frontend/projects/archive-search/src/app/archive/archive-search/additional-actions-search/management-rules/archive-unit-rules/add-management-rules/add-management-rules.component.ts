@@ -34,13 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit, signal, TemplateRef, input, output, viewChild } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, computed, inject, OnDestroy, OnInit, signal, TemplateRef, input, output, viewChild } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { disabled, form, FormField, FormRoot, required } from '@angular/forms/signals';
 import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
-import { merge, Observable, Subscription } from 'rxjs';
-import { debounceTime, filter, finalize, map } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { debounceTime, filter, finalize, map, skip } from 'rxjs/operators';
 import {
   CriteriaDataType,
   CriteriaOperator,
@@ -48,9 +49,9 @@ import {
   DialogHeaderComponent,
   diff,
   InputComponent,
-  ManagementRuleValidators,
   Rule,
   RuleService,
+  ruleIdPattern,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
   VitamTenantConfigService,
@@ -71,12 +72,19 @@ const MANAGEMENT_RULE_IDENTIFIER = 'MANAGEMENT_RULE_IDENTIFIER';
 const MANAGEMENT_RULE_START_DATE = 'MANAGEMENT_RULE_START_DATE';
 const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
 
+interface RuleDetailsForm {
+  rule: string | null;
+  startDate: Date | null;
+  endDate: string | null;
+}
+
 @Component({
   selector: 'app-add-management-rules',
   templateUrl: './add-management-rules.component.html',
   styleUrls: ['./add-management-rules.component.css'],
   imports: [
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     SelectComponent,
     DatepickerComponent,
     MatMiniFabButton,
@@ -92,7 +100,6 @@ const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
 export class AddManagementRulesComponent implements OnDestroy, OnInit {
   private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
   private readonly archiveService = inject(ArchiveService);
-  private readonly formBuilder = inject(FormBuilder);
   dialog = inject(MatDialog);
   ruleService = inject(RuleService);
   private readonly managementRulesValidatorService = inject(ManagementRulesValidatorService);
@@ -110,11 +117,34 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
 
   ruleOptions = signal<VitamuiSelectOptions>(null);
 
-  ruleDetailsForm: FormGroup;
+  private readonly model = signal<RuleDetailsForm>({ rule: null, startDate: null, endDate: null });
+  readonly ruleDetailsForm = form(
+    this.model,
+    (path) => {
+      required(path.rule);
+      ruleIdPattern(path.rule);
+      this.managementRulesValidatorService.uniqueRuleId(path.rule);
+      this.managementRulesValidatorService.checkRuleIdExistence(path.rule);
+      disabled(path.endDate);
+    },
+    {
+      submission: {
+        action: async () => {
+          this.submit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
+  // Value of the enabled fields (as the value of a reactive form)
+  private readonly enabledValue = computed(() => {
+    const { rule, startDate } = this.model();
+    return { rule, startDate };
+  });
   ruleTypeDUA: RuleCategoryAction;
   public previousRuleDetails: {
     rule: string;
-    startDate: string;
+    startDate: Date | string;
     endDate: string;
   };
   lastRuleId: string;
@@ -150,36 +180,31 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
       endDate: '',
     };
 
-    this.ruleDetailsForm = this.formBuilder.group({
-      rule: [
-        null,
-        [Validators.required, ManagementRuleValidators.ruleIdPattern],
-        [
-          this.managementRulesValidatorService.uniqueRuleId(this.ruleCategory()),
-          this.managementRulesValidatorService.checkRuleIdExistence(),
-        ],
-      ],
-      startDate: [null],
-      endDate: [{ value: null, disabled: true }],
-    });
-
-    merge(this.ruleDetailsForm.statusChanges, this.ruleDetailsForm.valueChanges)
+    toObservable(this.enabledValue)
       .pipe(
+        skip(1),
         debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
-        map(() => diff(this.ruleDetailsForm.value, this.previousRuleDetails)),
+        map(() => diff(this.enabledValue(), this.previousRuleDetails)),
         filter((formData) => this.isEmpty(formData)),
         filter((formData) => this.patchForm(formData)),
       )
       .subscribe(() => {
-        this.ruleDetailsForm.reset(this.previousRuleDetails);
+        // The previous rule details are the current value of the form: only back to pristine and untouched
+        this.ruleDetailsForm().reset();
+        // The reactive form reset used to notify the start date change again
+        this.onStartDateChange(this.ruleDetailsForm.startDate().value());
       });
 
-    this.ruleDetailsForm.get('startDate').valueChanges.subscribe((date) => {
-      // TODO: The 'emit' function requires a mandatory any argument
-      this.cancelStep.emit();
-      this.isShowCheckButton = true;
-      this.selectedStartDate = date;
-    });
+    toObservable(this.ruleDetailsForm.startDate().value)
+      .pipe(skip(1))
+      .subscribe((date) => this.onStartDateChange(date));
+  }
+
+  private onStartDateChange(date: Date | null) {
+    // TODO: The 'emit' function requires a mandatory any argument
+    this.cancelStep.emit();
+    this.isShowCheckButton = true;
+    this.selectedStartDate = date;
   }
 
   isEmpty(formData: any): boolean {
@@ -187,7 +212,6 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
       if (formData.rule) {
         this.getRuleSuscription = this.ruleService.get(formData.rule.trim()).subscribe((ruleResponse) => {
           this.rule = ruleResponse;
-          this.ruleDetailsForm.patchValue({ name: ruleResponse.ruleValue });
         });
         // TODO: The 'emit' function requires a mandatory any argument
         this.cancelStep.emit();
@@ -230,7 +254,7 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
 
     const criteriaWithId: SearchCriteriaEltDto = {
       criteria: MANAGEMENT_RULE_IDENTIFIER,
-      values: [{ id: this.ruleDetailsForm.get('rule').value, value: this.ruleDetailsForm.get('rule').value }],
+      values: [{ id: this.ruleDetailsForm.rule().value(), value: this.ruleDetailsForm.rule().value() }],
       category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory()),
       operator: CriteriaOperator.EQ,
       dataType: CriteriaDataType.STRING,
@@ -268,7 +292,7 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
           error: () => this.isLoading.set(false),
         });
     }
-    if (this.ruleDetailsForm.get('startDate').value) {
+    if (this.ruleDetailsForm.startDate().value()) {
       this.addRuleAndStartDateToQuery();
     }
   }
@@ -276,10 +300,10 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
   addRuleAndStartDateToQuery() {
     this.isWarningLoading.set(true);
     this.initDSLQuery();
-    if (this.ruleDetailsForm.get('startDate').value) {
+    if (this.ruleDetailsForm.startDate().value()) {
       const criteriaWithId: SearchCriteriaEltDto = {
         criteria: MANAGEMENT_RULE_IDENTIFIER,
-        values: [{ id: this.ruleDetailsForm.get('rule').value, value: this.ruleDetailsForm.get('rule').value }],
+        values: [{ id: this.ruleDetailsForm.rule().value(), value: this.ruleDetailsForm.rule().value() }],
         category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory()),
         operator: CriteriaOperator.EQ,
         dataType: CriteriaDataType.STRING,
@@ -288,8 +312,9 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
         criteria: MANAGEMENT_RULE_START_DATE,
         values: [
           {
-            id: this.ruleDetailsForm.get('startDate').value,
-            value: this.ruleDetailsForm.get('startDate').value,
+            // The date is serialized when the query is sent
+            id: this.ruleDetailsForm.startDate().value() as unknown as string,
+            value: this.ruleDetailsForm.startDate().value() as unknown as string,
           },
         ],
         category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory()),
@@ -336,8 +361,8 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
     this.isDisabled.set(false);
     this.previousRuleDetails = {
       rule: data.rule ? data.rule : this.previousRuleDetails.rule,
-      startDate: this.ruleDetailsForm.get('startDate').value,
-      endDate: this.ruleDetailsForm.get('endDate').value,
+      startDate: this.ruleDetailsForm.startDate().value(),
+      endDate: this.ruleDetailsForm.endDate().value(),
     };
 
     return true;
@@ -347,25 +372,28 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
     const dialogToOpen = this.confirmDeleteAddRuleDialog();
     const dialogRef = this.dialog.open(dialogToOpen);
     this.managementRulesSharedDataService.emitIsRuleDuplicated(
-      !!(this.ruleDetailsForm.get('rule').errors && this.ruleDetailsForm.get('rule').errors['uniqueRuleId']),
+      this.ruleDetailsForm
+        .rule()
+        .errors()
+        .some((error) => error.kind === 'uniqueRuleId'),
     );
 
     this.showConfirmDeleteAddRuleSuscription = dialogRef
       .afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {
-        this.delete.emit(this.ruleDetailsForm.get('rule').value);
+        this.delete.emit(this.ruleDetailsForm.rule().value());
       });
   }
 
   addStartDate() {
     this.previousRuleDetails = {
-      rule: this.ruleDetailsForm.get('rule').value,
-      startDate: this.ruleDetailsForm.get('startDate').value,
-      endDate: this.ruleDetailsForm.get('endDate').value,
+      rule: this.ruleDetailsForm.rule().value(),
+      startDate: this.ruleDetailsForm.startDate().value(),
+      endDate: this.ruleDetailsForm.endDate().value(),
     };
     if (this.rule && this.rule.ruleMeasurement) {
-      const startDateSelected = new Date(this.ruleDetailsForm.get('startDate').value);
+      const startDateSelected = new Date(this.ruleDetailsForm.startDate().value());
       switch (this.rule.ruleMeasurement.toUpperCase()) {
         case 'YEAR':
           startDateSelected.setFullYear(startDateSelected.getFullYear() + Number(this.rule.ruleDuration));
@@ -385,7 +413,7 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
         '/' +
         new Date(startDateSelected).getFullYear().toString();
 
-      this.ruleDetailsForm.patchValue({ endDate });
+      this.ruleDetailsForm.endDate().value.set(endDate);
     }
 
     this.isShowCheckButton = !this.isShowCheckButton;
@@ -397,8 +425,8 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
     this.showText = true;
     this.isLoading.set(true);
     const rule: RuleAction = {
-      rule: this.ruleDetailsForm.get('rule').value,
-      startDate: this.ruleDetailsForm.get('startDate').value,
+      rule: this.ruleDetailsForm.rule().value(),
+      startDate: this.ruleDetailsForm.startDate().value(),
       endDate: null,
     };
 
@@ -442,7 +470,7 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
     this.addRuleToQuery();
     // TODO: The 'emit' function requires a mandatory any argument
     this.confirmStep.emit();
-    this.lastRuleId = this.ruleDetailsForm.get('rule').value;
+    this.lastRuleId = this.ruleDetailsForm.rule().value();
   }
 
   private getMonth(num: number): string {

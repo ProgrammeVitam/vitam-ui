@@ -35,10 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { AsyncPipe, formatDate } from '@angular/common';
-import { Component, inject, LOCALE_ID, output, input, model, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, computed, inject, LOCALE_ID, output, input, model, OnChanges, signal, SimpleChanges } from '@angular/core';
+import { disabled, form, FormField, FormRoot, required } from '@angular/forms/signals';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, combineLatest, Observable, of, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import { extend, isEmpty, omit } from 'underscore';
 import {
@@ -55,39 +55,87 @@ import {
 import { FileFormatService } from '../../file-format.service';
 import { TranslatePipe } from '@ngx-translate/core';
 
+interface FileFormatInformationForm {
+  puid: string;
+  name: string;
+  mimeType: string;
+  version: string;
+  extensions: string[];
+  hasPriorityOverFileFormatIDs: string[];
+  createdDate: string;
+  updateDate: string;
+  versionPronom: string;
+}
+
 @Component({
   selector: 'app-file-format-information-tab',
   templateUrl: './file-format-information-tab.component.html',
   styleUrls: ['./file-format-information-tab.component.scss'],
-  imports: [ReactiveFormsModule, InputComponent, SelectComponent, AsyncPipe, TranslatePipe],
+  imports: [FormRoot, FormField, InputComponent, SelectComponent, AsyncPipe, TranslatePipe],
 })
 export class FileFormatInformationTabComponent implements OnChanges {
   private readonly locale = inject(LOCALE_ID);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly fileFormatService = inject(FileFormatService);
   private readonly route = inject(ActivatedRoute);
   private readonly securityService = inject(SecurityService);
 
   private readonly _dateFormat = 'dd/MM/yyyy';
-  private _subscriptions = new Subscription();
 
-  private readonly isInternal = new BehaviorSubject(true);
-  private readonly canUpdateFileFormat = new BehaviorSubject<boolean>(false);
-  private readonly submitting = new BehaviorSubject<boolean>(false);
+  private readonly canUpdateFileFormat = signal(false);
   private readonly fileFormats$ = new BehaviorSubject<FileFormat[]>([]);
   private readonly tenantId$ = new BehaviorSubject<string>(null);
 
   readonly updated = output<boolean>();
 
-  isInternal$ = this.isInternal.asObservable();
-  canUpdateFileFormat$ = this.canUpdateFileFormat.asObservable();
-  submitting$ = this.submitting.asObservable();
-  canUpdate$: Observable<boolean>;
+  readonly submitting = signal(false);
   fileFormatOptions$: Observable<VitamuiSelectOptions>;
 
-  form: FormGroup;
+  private readonly formModel = signal<FileFormatInformationForm>({
+    puid: null,
+    name: null,
+    mimeType: null,
+    version: null,
+    extensions: null,
+    hasPriorityOverFileFormatIDs: null,
+    createdDate: null,
+    updateDate: null,
+    versionPronom: null,
+  });
+  /** A file format is internal when its PUID does not start with the external prefix */
+  readonly isInternal = computed(() => {
+    const puid = this.formModel().puid;
+    return puid === null || !puid.startsWith(FILE_FORMAT_EXTERNAL_PREFIX);
+  });
+  readonly puidPlaceholder = computed(() => `FILE_FORMATS.TAB.INFORMATION.PUID${this.isInternal() ? '' : '_EXTERNAL'}`);
+  /** Internal file formats cannot be updated */
+  readonly updateDisabled = computed(() => this.isInternal() || !this.canUpdateFileFormat());
 
-  puidPlaceholder: string;
+  readonly form = form(
+    this.formModel,
+    (path) => {
+      disabled(path, () => !!this.readOnly());
+      disabled(path.puid);
+      disabled(path.createdDate);
+      disabled(path.updateDate);
+      disabled(path.versionPronom);
+      disabled(path.name, () => this.updateDisabled());
+      disabled(path.mimeType, () => this.updateDisabled());
+      disabled(path.version, () => this.updateDisabled());
+      disabled(path.extensions, () => this.updateDisabled());
+      disabled(path.hasPriorityOverFileFormatIDs, () => this.updateDisabled());
+      required(path.name);
+      required(path.version);
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
+
   previousValue = (): FileFormat => {
     const fileFormat: FileFormat = { ...this.fileFormat() };
 
@@ -103,17 +151,6 @@ export class FileFormatInformationTabComponent implements OnChanges {
   readonly readOnly = input<boolean>(undefined);
 
   constructor() {
-    this.form = this.formBuilder.group({
-      puid: [{ value: null, disabled: true }, Validators.required],
-      name: [{ value: null }, Validators.required],
-      mimeType: [{ value: null }],
-      version: [{ value: null }, Validators.required],
-      extensions: [{ value: null }],
-      hasPriorityOverFileFormatIDs: [{ value: null }],
-      createdDate: [{ value: null, disabled: true }],
-      updateDate: [{ value: null, disabled: true }],
-      versionPronom: [{ value: null, disabled: true }],
-    });
     this.route.params
       .pipe(
         filter((params: any) => params.tenantIdentifier),
@@ -122,7 +159,7 @@ export class FileFormatInformationTabComponent implements OnChanges {
           this.securityService.hasRole$(ApplicationId.FILE_FORMATS_APP, Role.ROLE_UPDATE_FILE_FORMATS, +params.tenantIdentifier),
         ),
       )
-      .subscribe((canUpdateFileFormat) => this.canUpdateFileFormat.next(canUpdateFileFormat));
+      .subscribe((canUpdateFileFormat) => this.canUpdateFileFormat.set(canUpdateFileFormat));
     this.tenantId$
       .pipe(switchMap((tenantId) => this.fileFormatService.getAllForTenant(tenantId)))
       .subscribe((fileFormats) => this.fileFormats$.next(fileFormats));
@@ -132,18 +169,10 @@ export class FileFormatInformationTabComponent implements OnChanges {
     if (changes['fileFormat']) {
       this.setFileFormat(this.fileFormat());
     }
-    if (changes['readOnly']) {
-      const readOnly = this.readOnly();
-      if (readOnly && this.form.enabled) {
-        this.form.disable({ emitEvent: false });
-      } else if (this.form.disabled) {
-        this.form.enable({ emitEvent: false });
-      }
-    }
   }
 
   unchanged(): boolean {
-    const unchanged = JSON.stringify(omit(diff(this.form.getRawValue(), this.previousValue()), 'createdDate', 'updateDate')) === '{}';
+    const unchanged = JSON.stringify(omit(diff(this.formModel(), this.previousValue()), 'createdDate', 'updateDate')) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
   }
@@ -151,7 +180,7 @@ export class FileFormatInformationTabComponent implements OnChanges {
   prepareSubmit(): Observable<FileFormat> {
     const previousValue = this.previousValue();
     const { id, puid } = previousValue;
-    const patchData = diff(this.form.getRawValue(), previousValue);
+    const patchData = diff(this.formModel(), previousValue);
 
     return of(patchData).pipe(
       filter((data) => !isEmpty(data)),
@@ -162,16 +191,16 @@ export class FileFormatInformationTabComponent implements OnChanges {
   }
 
   onSubmit() {
-    if (this.form.pending || this.form.invalid) return;
+    if (this.form().pending() || this.form().invalid()) return;
 
-    this.submitting.next(true);
+    this.submitting.set(true);
     this.prepareSubmit()
       .pipe(
         switchMap(() => this.fileFormatService.get(this.fileFormat().puid)),
-        tap(
-          () => this.submitting.next(false),
-          () => this.submitting.next(false),
-        ),
+        tap({
+          next: () => this.submitting.set(false),
+          error: () => this.submitting.set(false),
+        }),
       )
       .subscribe((response) => {
         this.setFileFormat(response);
@@ -180,48 +209,26 @@ export class FileFormatInformationTabComponent implements OnChanges {
   }
 
   private setFileFormat(fileFormat: FileFormat) {
-    this._subscriptions.unsubscribe();
-    this._subscriptions = new Subscription();
-    this._subscriptions.add(
-      this.form
-        .get('puid')
-        .valueChanges.pipe(
-          map((puid: string) => !puid.startsWith(FILE_FORMAT_EXTERNAL_PREFIX)),
-          tap((isInternal) => (this.puidPlaceholder = `FILE_FORMATS.TAB.INFORMATION.PUID${isInternal ? '' : '_EXTERNAL'}`)),
-        )
-        .subscribe((isInternal) => this.isInternal.next(isInternal)),
-    );
-    this.canUpdate$ = combineLatest([this.isInternal$, this.canUpdateFileFormat$]).pipe(
-      map(([isInternal, canUpdateFileFormat]: boolean[]) => isInternal || !canUpdateFileFormat),
-      tap((disabled) => {
-        if (disabled) {
-          this.form.controls['name'].disable({ onlySelf: true });
-          this.form.controls['mimeType'].disable({ onlySelf: true });
-          this.form.controls['version'].disable({ onlySelf: true });
-          this.form.controls['extensions'].disable({ onlySelf: true });
-          this.form.controls['hasPriorityOverFileFormatIDs'].disable({ onlySelf: true });
-        } else {
-          this.form.controls['name'].enable({ onlySelf: true });
-          this.form.controls['mimeType'].enable({ onlySelf: true });
-          this.form.controls['version'].enable({ onlySelf: true });
-          this.form.controls['extensions'].enable({ onlySelf: true });
-          this.form.controls['hasPriorityOverFileFormatIDs'].enable({ onlySelf: true });
-        }
-      }),
-    );
     this.fileFormat.set(fileFormat);
     this.resetForm(this.fileFormat());
     this.updated.emit(false);
   }
 
   resetForm(fileFormat: FileFormat) {
-    this.form.reset({
-      ...fileFormat,
-      createdDate: fileFormat.createdDate ? formatDate(fileFormat.createdDate, this._dateFormat, this.locale) : undefined,
-      updateDate: fileFormat.updateDate ? formatDate(fileFormat.updateDate, this._dateFormat, this.locale) : undefined,
+    // Like reactive forms reset, the missing values are reset to null
+    this.form().reset({
+      puid: fileFormat.puid ?? null,
+      name: fileFormat.name ?? null,
+      mimeType: fileFormat.mimeType ?? null,
+      version: fileFormat.version ?? null,
+      extensions: fileFormat.extensions ?? null,
+      hasPriorityOverFileFormatIDs: fileFormat.hasPriorityOverFileFormatIDs ?? null,
+      createdDate: fileFormat.createdDate ? formatDate(fileFormat.createdDate, this._dateFormat, this.locale) : null,
+      updateDate: fileFormat.updateDate ? formatDate(fileFormat.updateDate, this._dateFormat, this.locale) : null,
+      versionPronom: fileFormat.versionPronom ?? null,
     });
 
-    if (this.isInternal.value) return;
+    if (this.isInternal()) return;
 
     this.fileFormatOptions$ = this.fileFormats$.pipe(
       map((ffs) => ffs.filter((ff) => ff.puid !== fileFormat.puid)),

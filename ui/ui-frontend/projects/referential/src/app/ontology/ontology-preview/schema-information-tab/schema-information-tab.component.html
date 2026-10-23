@@ -1,21 +1,22 @@
-<form [formGroup]="form" class="gap-5">
+<div class="gap-5">
   <div class="gap-3 w-100 align-items-stretch">
-    <vitamui-input formControlName="Path" [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.PATH' | translate"> </vitamui-input>
+    <vitamui-input [formField]="form.Path" [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.PATH' | translate"> </vitamui-input>
 
-    <vitamui-input formControlName="ApiPath" [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.API_PATH' | translate"> </vitamui-input>
+    <vitamui-input [formField]="form.ApiPath" [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.API_PATH' | translate"> </vitamui-input>
 
-    <vitamui-input formControlName="ShortName" [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.SHORT_NAME' | translate"> </vitamui-input>
+    <vitamui-input [formField]="form.ShortName" [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.SHORT_NAME' | translate"> </vitamui-input>
 
-    <vitamui-input formControlName="FieldName" [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.FIELD_NAME' | translate"> </vitamui-input>
+    <vitamui-input [formField]="form.FieldName" [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.FIELD_NAME' | translate"> </vitamui-input>
 
-    <vitamui-input formControlName="SedaField" [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.SEDA_FIELD' | translate"> </vitamui-input>
+    <vitamui-input [formField]="form.SedaField" [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.SEDA_FIELD' | translate"> </vitamui-input>
 
-    <vitamui-input formControlName="ApiField" [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.API_FIELD' | translate"> </vitamui-input>
+    <vitamui-input [formField]="form.ApiField" [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.API_FIELD' | translate"> </vitamui-input>
 
-    <vitamui-input formControlName="Description" [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.DESCRIPTION' | translate"> </vitamui-input>
+    <vitamui-input [formField]="form.Description" [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.DESCRIPTION' | translate">
+    </vitamui-input>
 
     <vitamui-select
-      formControlName="Type"
+      [formField]="form.Type"
       [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.TYPE' | translate"
       [options]="types"
       [enableSearch]="false"
@@ -24,11 +25,14 @@
     ></vitamui-select>
 
     @if (stringSizeVisible) {
-      <vitamui-input formControlName="StringSize" [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.STRING_SIZE' | translate"></vitamui-input>
+      <vitamui-input
+        [formField]="form.StringSize"
+        [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.STRING_SIZE' | translate"
+      ></vitamui-input>
     }
 
     <vitamui-select
-      formControlName="DataType"
+      [formField]="form.DataType"
       [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.TYPE_DETAIL' | translate"
       [options]="dataTypes"
       [enableSearch]="false"
@@ -38,13 +42,13 @@
 
     @if (showCustomSearchTypes) {
       <vitamui-input
-        formControlName="CustomSearchTypes"
+        [formField]="form.CustomSearchTypes"
         [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.CUSTOM_SEARCH_TYPES' | translate"
       ></vitamui-input>
     }
 
     <vitamui-select
-      formControlName="Collection"
+      [formField]="form.Collection"
       [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.COLLECTION' | translate"
       [options]="collections"
       [enableSearch]="false"
@@ -53,7 +57,7 @@
     ></vitamui-select>
 
     <vitamui-select
-      formControlName="Origin"
+      [formField]="form.Origin"
       [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.ORIGIN' | translate"
       [options]="origins"
       [enableSearch]="false"
@@ -62,7 +66,7 @@
     ></vitamui-select>
 
     <vitamui-select
-      formControlName="Category"
+      [formField]="form.Category"
       [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.CATEGORY' | translate"
       [options]="categories"
       [enableSearch]="false"
@@ -71,7 +75,7 @@
     ></vitamui-select>
 
     <vitamui-select
-      formControlName="Cardinality"
+      [formField]="form.Cardinality"
       [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.CARDINALITY' | translate"
       [options]="cardinalities"
       [enableSearch]="false"
@@ -81,26 +85,18 @@
 
     @if (!isExternal) {
       <vitamui-input
-        formControlName="SedaVersions"
+        [formField]="form.SedaVersions"
         [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.SEDA_VERSIONS' | translate"
       ></vitamui-input>
     }
 
     @if (isExternal) {
-      <vitamui-input
-        formControlName="CreationDate"
-        [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.CREATION_DATE' | translate"
-        [disabled]="true"
-      >
+      <vitamui-input [formField]="form.CreationDate" [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.CREATION_DATE' | translate">
       </vitamui-input>
     }
 
     @if (isExternal) {
-      <vitamui-input
-        formControlName="LastUpdate"
-        [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.MODIFICATION_DATE' | translate"
-        [disabled]="true"
-      >
+      <vitamui-input [formField]="form.LastUpdate" [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.MODIFICATION_DATE' | translate">
       </vitamui-input>
     }
   </div>
@@ -108,4 +104,4 @@
   <button type="submit" class="btn primary" [disabled]="true">
     {{ 'COMMON.SAVE' | translate }}
   </button>
-</form>
+</div>

@@ -45,7 +45,6 @@ import {
 } from 'vitamui-library';
 import { AuditService } from '../audit.service';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 
 import { AuditInformationTabComponent } from './audit-information-tab/audit-information-tab.component';
@@ -60,7 +59,6 @@ import { EventTypeBadgeColorPipe } from '../../shared/pipes/event-type-badge-col
   imports: [
     AuditInformationTabComponent,
     CommonModule,
-    FormsModule,
     MatTabsModule,
     EventTypeBadgeColorPipe,
     TranslatePipe,

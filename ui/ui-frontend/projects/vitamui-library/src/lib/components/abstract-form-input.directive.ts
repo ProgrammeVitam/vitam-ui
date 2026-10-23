@@ -42,10 +42,16 @@ import {
   OnDestroy,
   OnInit,
   SimpleChanges,
+  effect,
   inject,
   input,
   linkedSignal,
+  ModelSignal,
   output,
+  runInInjectionContext,
+  signal,
+  untracked,
+  WritableSignal,
 } from '@angular/core';
 import {
   AsyncValidatorFn,
@@ -57,17 +63,33 @@ import {
   FormGroup,
   NgControl,
   NgModel,
+  ValidationErrors,
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { FORM_FIELD, FormField, transformedValue } from '@angular/forms/signals';
 import { Subscription } from 'rxjs';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { MiscValidators } from '../validators/misc.validators';
+import { fromValidationErrors, toValidationErrors } from '../signal-forms/signal-form-errors';
+
+function isSameValue(a: unknown, b: unknown): boolean {
+  if (Array.isArray(a) && Array.isArray(b)) {
+    return a.length === b.length && a.every((item, index) => item === b[index]);
+  }
+  return a === b;
+}
 
 @Directive()
 export class AbstractFormInputDirective implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
   private readonly injector: Injector;
   readonly #changeDetectorRef = inject(ChangeDetectorRef);
+  // Set when the component is bound to a signal forms field with [formField]
+  #formField: FormField<unknown> | null = null;
+  // Errors computed by the component, reported to the signal forms field (see reportErrors)
+  #reportedErrors: WritableSignal<ValidationErrors | null> | null = null;
+  // Required state of the signal forms field, copied by the bindFormField effect (the field must not be read outside of it: it can be orphan)
+  readonly #fieldRequired = signal(false);
 
   constructor(injector: Injector = inject(Injector)) {
     this.injector = injector;
@@ -136,6 +158,11 @@ export class AbstractFormInputDirective implements ControlValueAccessor, OnInit,
       this.control = container.controls[ngControl.name] as FormControl;
     } else {
       this.control = new FormControl();
+      // Resolved lazily: FormField depends on this component (as NG_VALUE_ACCESSOR)
+      this.#formField = this.injector.get(FORM_FIELD, null, { self: true, optional: true });
+      if (this.#formField) {
+        this.bindFormField(this.#formField);
+      }
     }
 
     this.updateValidators();
@@ -163,7 +190,73 @@ export class AbstractFormInputDirective implements ControlValueAccessor, OnInit,
   writeValue(_obj: any) {}
 
   isRequired(): boolean {
-    return this.control.hasValidator(Validators.required) || this.control.hasValidator(MiscValidators.requiredNotBlank);
+    return (
+      this.#fieldRequired() || this.control.hasValidator(Validators.required) || this.control.hasValidator(MiscValidators.requiredNotBlank)
+    );
+  }
+
+  /**
+   * Reports errors computed by the component itself (e.g. by validators added to the internal control) to the signal forms field
+   * bound with [formField], so that the field (and its form) is invalid. It has no effect with reactive forms or ngModel,
+   * where the control is shared with the parent.
+   */
+  protected reportErrors(errors: ValidationErrors | null) {
+    this.#reportedErrors?.set(errors);
+  }
+
+  /**
+   * Mirrors the state of the signal forms field (value, errors, touched, disabled) in the internal control,
+   * so that subclasses and their templates can keep using `control`.
+   */
+  private bindFormField(formField: FormField<unknown>) {
+    // transformedValue reports its parse errors to the field bound on this element: use it to report the component errors
+    this.#reportedErrors = runInInjectionContext(this.injector, () =>
+      // transformedValue expects a ModelSignal, but only uses it as a WritableSignal
+      transformedValue(signal(null) as unknown as ModelSignal<null>, {
+        parse: (errors: ValidationErrors | null) => ({ error: fromValidationErrors(errors) }),
+        format: (): ValidationErrors | null => null,
+      }),
+    );
+    // The field state is only read in the effect below, and copied in these variables. The validator and the valueChanges subscription
+    // can run outside of the effect (e.g. control.enable() in a setTimeout), when the field can be orphan (e.g. an array item that has
+    // been removed or replaced): reading it would throw NG01904.
+    let fieldErrors: ValidationErrors | null = null;
+    // Last value written from the field to the internal control
+    let fieldValue: unknown = this.control.value;
+    let fieldControlValue: WritableSignal<unknown> | null = null;
+    this.control.addValidators(() => fieldErrors);
+    // Some subclasses only update the internal control (without calling onChange): propagate its changes to the field.
+    // Values equal to the last field value are ignored (e.g. emitted by control.enable()), so that they cannot override a newer field value.
+    // Arrays are compared by content: some subclasses copy them (e.g. SelectComponent), which would otherwise loop with writeValue.
+    this.#subscription = this.control.valueChanges.subscribe((value) => {
+      if (fieldControlValue && !isSameValue(value, fieldValue) && !isSameValue(value, untracked(fieldControlValue))) {
+        fieldControlValue.set(value);
+      }
+    });
+    effect(
+      () => {
+        const state = formField.state();
+        const value = state.value();
+        const disabled = state.disabled();
+        const touched = state.touched();
+        const required = state.required();
+        const errors = toValidationErrors(formField.errors());
+        untracked(() => {
+          fieldErrors = errors;
+          fieldControlValue = state.controlValue;
+          this.#fieldRequired.set(required);
+          if (disabled !== this.control.disabled) {
+            disabled ? this.control.disable({ emitEvent: false }) : this.control.enable({ emitEvent: false });
+          }
+          // Also recomputes the errors of the internal control from the field errors
+          fieldValue = value;
+          this.control.setValue(value, { emitEvent: false });
+          touched ? this.control.markAsTouched() : this.control.markAsUntouched();
+          this.#changeDetectorRef.markForCheck();
+        });
+      },
+      { injector: this.injector },
+    );
   }
 
   private updateValidators() {

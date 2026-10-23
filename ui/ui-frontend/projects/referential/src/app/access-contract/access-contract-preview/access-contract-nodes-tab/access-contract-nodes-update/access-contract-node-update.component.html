@@ -1,8 +1,8 @@
 <vitamui-dialog-header [title]="'ACCESS_CONTRACT.UPDATE_NODE_DIALOG.TITLE' | translate"></vitamui-dialog-header>
 
-<form [formGroup]="selectNodesForm" (ngSubmit)="updateAccessContractNodes()">
+<form [formRoot]="selectNodesForm">
   <mat-dialog-content>
-    <vitamui-slide-toggle class="mt-3" [formControl]="allRootUnitsControl">
+    <vitamui-slide-toggle class="mt-3" [formField]="selectNodesForm.allRootUnits">
       <div class="d-flex align-items-center">
         <span>{{ 'ACCESS_CONTRACT.CREATE_DIALOG.ALL_POSITIONS' | translate }}</span>
 
@@ -15,9 +15,9 @@
       </div>
     </vitamui-slide-toggle>
 
-    @if (!allRootUnitsControl.value) {
+    @if (!selectNodesForm.allRootUnits().value()) {
       <vitamui-library-filing-plan
-        [formControl]="selectedRootsControl"
+        [formField]="selectNodesForm.selectedRoots"
         [tenantIdentifier]="tenantIdentifier"
         [mode]="FILLING_PLAN_MODE_BOTH"
       >

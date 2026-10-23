@@ -58,4 +58,9 @@ export class UserCreateValidators {
       );
     };
   };
+
+  /** Observable checking that the email is not used yet, to use with signal forms (`validateObservable`). */
+  emailExists(email: string, emailToIgnore?: string): Observable<boolean> {
+    return email !== emailToIgnore ? this.userService.exists(email) : of(false);
+  }
 }

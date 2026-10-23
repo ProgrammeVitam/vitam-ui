@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, OnDestroy, OnInit, signal, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { form, FormField, FormRoot, required } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { concatMap, finalize, Observable, Subscription } from 'rxjs';
 import {
@@ -45,6 +45,7 @@ import {
   InputComponent,
   Owner,
   PreviousStepComponent,
+  requiredValue,
   SelectComponent,
   StepperComponent,
   Tenant,
@@ -54,8 +55,16 @@ import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { TenantService } from '../tenant.service';
 import { map, tap } from 'rxjs/operators';
 import { CdkStep, CdkStepperNext } from '@angular/cdk/stepper';
-import { OwnerFormComponent } from '../owner-form/owner-form.component';
+import { OwnerFormComponent, OwnerFormModel } from '../owner-form/owner-form.component';
 import { TranslatePipe } from '@ngx-translate/core';
+
+interface TenantFormModel {
+  name: string;
+  identifier: number;
+  ownerId: string;
+  customerId: string;
+  enabled: boolean;
+}
 
 @Component({
   selector: 'app-owner-create',
@@ -65,7 +74,8 @@ import { TranslatePipe } from '@ngx-translate/core';
     DialogHeaderComponent,
     StepperComponent,
     CdkStep,
-    ReactiveFormsModule,
+    FormField,
+    FormRoot,
     MatDialogContent,
     OwnerFormComponent,
     MatDialogActions,
@@ -82,39 +92,40 @@ export class OwnerCreateComponent implements OnInit, OnDestroy {
   data = inject<{
     customer: Customer;
   }>(MAT_DIALOG_DATA);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly ownerService = inject(OwnerService);
   private readonly tenantService = inject(TenantService);
   private readonly tenantFormValidators = inject(TenantFormValidators);
   private readonly confirmDialogService = inject(ConfirmDialogService);
 
-  public ownerForm: FormGroup;
-  public tenantForm: FormGroup;
+  public readonly ownerForm = form(signal<{ owner: OwnerFormModel }>({ owner: null }), (path) => requiredValue(path.owner), {
+    submission: { action: async () => this.onOwnerSubmit(), ignoreValidators: 'all' },
+  });
+  private readonly tenantModel = signal<TenantFormModel>({
+    name: null,
+    identifier: null,
+    ownerId: null,
+    customerId: this.data.customer.id,
+    enabled: true,
+  });
+  public readonly tenantForm = form(
+    this.tenantModel,
+    (path) => {
+      required(path.name);
+      this.tenantFormValidators.uniqueNameRule(path.name);
+      required(path.identifier);
+      requiredValue(path.enabled);
+    },
+    { submission: { action: async () => this.onTenantSubmit(), ignoreValidators: 'all' } },
+  );
 
   private keyPressSubscription: Subscription;
   availableTenants: number[];
   readonly isLoading = signal(false);
 
   ngOnInit() {
-    this.ownerForm = this.formBuilder.group({
-      owner: [null, Validators.required],
-    });
-    this.tenantForm = this.formBuilder.group({
-      name: [null, [Validators.required], this.tenantFormValidators.uniqueName()],
-      identifier: [null, [Validators.required]],
-      ownerId: [null],
-      customerId: [this.data.customer.id],
-      enabled: [true, Validators.required],
-    });
-
     this.tenantService.getAvailableTenants().subscribe((availableTenants) => {
       this.availableTenants = availableTenants.sort((tenantI1: number, tenantI2: number) => tenantI1 - tenantI2);
-      if (this.availableTenants && this.availableTenants.length > 0) {
-        const tenantIdToSelect =
-          this.availableTenants[0] === 0 && this.availableTenants.length > 1 ? this.availableTenants[1] : this.availableTenants[0];
-        // To select as default tenant the first one other than 0
-        this.tenantForm.patchValue({ tenantId: tenantIdToSelect });
-      }
+      // The default tenant was patched in a 'tenantId' control that does not exist in the form: no tenant is selected by default
       this.cdr.markForCheck();
     });
 
@@ -126,7 +137,7 @@ export class OwnerCreateComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    if (this.ownerForm.dirty || this.tenantForm.dirty) {
+    if (this.ownerForm().dirty() || this.tenantForm().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -134,7 +145,7 @@ export class OwnerCreateComponent implements OnInit, OnDestroy {
   }
 
   onOwnerSubmit() {
-    if (this.ownerForm.pending || this.ownerForm.invalid) {
+    if (this.ownerForm().pending() || this.ownerForm().invalid()) {
       return;
     }
     this.isLoading.set(true);
@@ -150,19 +161,19 @@ export class OwnerCreateComponent implements OnInit, OnDestroy {
   }
 
   private ownerCreation(): Observable<Owner> {
-    return this.ownerService.create(this.ownerForm.value.owner);
+    return this.ownerService.create(this.ownerForm.owner().value() as Owner);
   }
 
   onTenantSubmit() {
-    if (this.ownerForm.pending || this.ownerForm.invalid || this.tenantForm.pending || this.tenantForm.invalid) {
+    if (this.ownerForm().pending() || this.ownerForm().invalid() || this.tenantForm().pending() || this.tenantForm().invalid()) {
       return;
     }
     this.isLoading.set(true);
     this.ownerCreation()
       .pipe(
-        tap((newOwner: Owner) => this.tenantForm.get('ownerId').setValue(newOwner.id)),
+        tap((newOwner: Owner) => this.tenantForm.ownerId().value.set(newOwner.id)),
         concatMap((newOwner: Owner) =>
-          this.tenantService.create(this.tenantForm.value, newOwner.name).pipe(
+          this.tenantService.create(this.tenantModel() as Tenant, newOwner.name).pipe(
             map((newTenant: Tenant) => {
               return { owner: newOwner, tenant: newTenant };
             }),

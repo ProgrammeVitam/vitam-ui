@@ -35,13 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, OnDestroy } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FieldTree } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ConfirmDialogService, Customer } from 'vitamui-library';
 import { CustomerService } from '../../../../core/customer.service';
-import { HomepageMessageComponent } from '../homepage-message/homepage-message.component';
+import { HomepageMessageComponent, HomepageMessageModel } from '../homepage-message/homepage-message.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -60,16 +60,11 @@ export class HomepageMessageUpdateComponent implements OnDestroy {
 
   private readonly destroy = new Subject<void>();
 
-  private _customForm: FormGroup;
-  public get customForm(): FormGroup {
-    return this._customForm;
-  }
-  public set customForm(form: FormGroup) {
-    this._customForm = form;
-    this.disabled = !(this._customForm && this._customForm.valid && this.checkValidation(this._customForm.value.translations));
-  }
+  public customForm: FieldTree<HomepageMessageModel>;
 
-  public disabled = true;
+  public get disabled(): boolean {
+    return !this.customForm?.().valid();
+  }
 
   public portalTitles: {
     [language: string]: string;
@@ -84,28 +79,18 @@ export class HomepageMessageUpdateComponent implements OnDestroy {
   }
 
   onCancel() {
-    if (this.customForm.dirty) {
+    if (this.customForm().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
     }
   }
 
-  private checkValidation(forms: FormGroup[]): boolean {
-    let isValid = true;
-    forms.forEach((x) => {
-      if (!x.valid) {
-        isValid = false;
-      }
-    });
-    return isValid;
-  }
-
   public updateHomepageMessage(): void {
-    if (this.customForm.valid && this.checkValidation(this.customForm.value.translations)) {
+    if (this.customForm().valid()) {
       const form = {
         ...{
-          id: this.customForm.get('id').value,
+          id: this.customForm.id().value(),
           portalTitles: this.portalTitles,
           portalMessages: this.portalMessages,
         },

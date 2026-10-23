@@ -3,16 +3,16 @@
   [title]="data.selectedItemCount | i18nPlural: subtitle | translate: { number: data.selectedItemCount }"
 ></vitamui-dialog-header>
 
-<mat-dialog-content [formGroup]="form">
+<mat-dialog-content>
   <div class="text medium bold primary uppercase">{{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.PUA_UPDATE.SELECT_ACTION' | translate }}</div>
-  <mat-radio-group formControlName="action">
+  <mat-radio-group [formField]="form.action">
     <mat-radio-button color="primary" value="update">{{
       'ARCHIVE_SEARCH.OTHER_ACTIONS.PUA_UPDATE.ACTION_UPDATE' | translate
     }}</mat-radio-button>
-    @if (form.contains('pua')) {
+    @if (!form.pua().hidden()) {
       <div>
         <vitamui-select
-          formControlName="pua"
+          [formField]="form.pua"
           [placeholder]="'ARCHIVE_SEARCH.OTHER_ACTIONS.PUA_UPDATE.SELECT_PUA_PLACEHOLDER' | translate"
           [searchBarPlaceHolder]="'ARCHIVE_SEARCH.OTHER_ACTIONS.PUA_UPDATE.SELECT_PUA_FILTER_PLACEHOLDER' | translate"
           [options]="puas$ | async"
@@ -25,7 +25,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button type="button" class="btn primary" [disabled]="form.invalid || updating" (click)="submit()">
+  <button type="button" class="btn primary" [disabled]="form().invalid() || updating" (click)="submit()">
     {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.PUA_UPDATE.UPDATE' | translate }}
   </button>
   <button [matDialogClose]="false" class="btn link cancel" [disabled]="updating">

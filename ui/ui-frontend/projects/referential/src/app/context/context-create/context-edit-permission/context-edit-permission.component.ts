@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, forwardRef, inject, OnInit, input, output } from '@angular/core';
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectorRef, Component, inject, OnInit, input, model, output, signal } from '@angular/core';
+import { form, FormField, FormValueControl } from '@angular/forms/signals';
 import { AccessContractService, AuthService, ContextPermission, Option, SelectComponent, Tenant, TooltipDirective } from 'vitamui-library';
 import { CustomerApiService } from '../../../core/api/customer-api.service';
 import { TenantApiService } from '../../../core/api/tenant-api.service';
@@ -44,20 +44,13 @@ import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { TranslatePipe } from '@ngx-translate/core';
 
-export const CONTEXT_PERMISSION_VALUE_ACCESSOR: any = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => ContextEditPermissionComponent),
-  multi: true,
-};
-
 @Component({
   selector: 'app-context-edit-permission',
   templateUrl: './context-edit-permission.component.html',
   styleUrls: ['./context-edit-permission.component.scss'],
-  providers: [CONTEXT_PERMISSION_VALUE_ACCESSOR],
-  imports: [TooltipDirective, SelectComponent, ReactiveFormsModule, FormsModule, TranslatePipe],
+  imports: [TooltipDirective, SelectComponent, FormField, TranslatePipe],
 })
-export class ContextEditPermissionComponent implements ControlValueAccessor, OnInit {
+export class ContextEditPermissionComponent implements FormValueControl<ContextPermission[]>, OnInit {
   private readonly customerApiService = inject(CustomerApiService);
   private readonly tenantApiService = inject(TenantApiService);
   private readonly authService = inject(AuthService);
@@ -65,22 +58,21 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
   private readonly ingestService = inject(IngestContractService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  permissions: ContextPermission[];
-  selectedOrganisations: string[];
+  // Bound to the signal forms field of the parent form with [formField]
+  readonly value = model<ContextPermission[]>([]);
+  readonly selectedOrganisations = signal<string[]>([]);
+  protected readonly permissionsForm = form(this.value);
+  protected readonly organisationsForm = form(this.selectedOrganisations);
 
   readonly editMode = input(false);
   readonly changeOrganisations = output<string[]>();
 
   private tenants: Tenant[] = [];
-  disabled: boolean;
 
   customersOptions: Option[] = [];
   tenantOptionsByOrganisation: Map<string, Option[]> = new Map();
   accessContractsOptionsByOrganisation: Map<string, Option[]>;
   ingestContractsOptionsByOrganisation: Map<string, Option[]>;
-  onChange = (_x: any) => {};
-  onTouched = () => {};
-
   ngOnInit(): void {
     // Get the list of all the organisations
     // and find for each permission the tenant organisation
@@ -95,20 +87,17 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
         this.customersOptions = customers ? customers.map((customer) => ({ key: customer.id, label: customer.name })) : [];
         this.customersOptions.sort((c1, c2) => c1.label.localeCompare(c2.label));
 
-        if (this.permissions && this.permissions.length > 0) {
-          this.selectedOrganisations = new Array<string>();
-          this.permissions.forEach((permission) => {
-            let tenant: Tenant;
-            if (permission.tenant != null) {
-              tenant = this.tenants.find((t) => '' + t.identifier === permission.tenant);
-            }
-
-            if (tenant) {
-              this.selectedOrganisations.push(tenant.customerId);
-            } else {
-              this.selectedOrganisations.push(null);
-            }
-          });
+        const permissions = this.value();
+        if (permissions && permissions.length > 0) {
+          this.selectedOrganisations.set(
+            permissions.map((permission) => {
+              let tenant: Tenant;
+              if (permission.tenant != null) {
+                tenant = this.tenants.find((t) => '' + t.identifier === permission.tenant);
+              }
+              return tenant ? tenant.customerId : null;
+            }),
+          );
         }
         this.cdr.markForCheck();
       });
@@ -160,69 +149,19 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
   }
 
   onDelete(index: number) {
-    this.permissions.splice(index, 1);
-    this.selectedOrganisations.splice(index, 1);
-    this.changeOrganisations.emit(this.selectedOrganisations);
-    if (this.onChange) {
-      this.onChange(this.permissions);
-    }
+    this.value.update((permissions) => permissions.filter((_permission, i) => i !== index));
+    this.selectedOrganisations.update((organisations) => organisations.filter((_organisation, i) => i !== index));
+    this.changeOrganisations.emit(this.selectedOrganisations());
   }
 
   onAdd() {
-    this.permissions.push({ tenant: '', accessContracts: [], ingestContracts: [] });
-    if (!this.selectedOrganisations) {
-      this.selectedOrganisations = new Array<string>();
-    }
-    this.selectedOrganisations.push(null);
-    this.changeOrganisations.emit(this.selectedOrganisations);
-    if (this.onChange) {
-      this.onChange(this.permissions);
-    }
+    this.value.update((permissions) => [...permissions, { tenant: '', accessContracts: [], ingestContracts: [] }]);
+    this.selectedOrganisations.update((organisations) => [...organisations, null]);
+    this.changeOrganisations.emit(this.selectedOrganisations());
   }
 
-  onCustomerSelect(permission: ContextPermission) {
-    permission.tenant = '';
-    permission.accessContracts = [];
-    permission.ingestContracts = [];
-    if (this.onChange) {
-      this.onChange(this.permissions);
-    }
-    this.changeOrganisations.emit(this.selectedOrganisations);
-  }
-
-  onTenantSelect() {
-    if (this.onChange) {
-      this.onChange(this.permissions);
-    }
-  }
-
-  onContractSelect() {
-    if (this.onChange) {
-      this.onChange(this.permissions);
-    }
-  }
-
-  writeValue(value: ContextPermission[]) {
-    if (value) {
-      this.permissions = value;
-    } else {
-      this.permissions = [];
-    }
-    this.cdr.markForCheck();
-    if (this.onChange) {
-      this.onChange(this.permissions);
-    }
-  }
-
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
-
-  setDisabledState(isDisabled: boolean) {
-    this.disabled = isDisabled;
+  onCustomerSelect(index: number) {
+    this.permissionsForm[index]().value.set({ tenant: '', accessContracts: [], ingestContracts: [] });
+    this.changeOrganisations.emit(this.selectedOrganisations());
   }
 }

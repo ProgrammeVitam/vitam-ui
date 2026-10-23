@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal, untracked } from '@angular/core';
 import { Route, Router, RouterLink, RouterLinkActive, RouterOutlet, Routes } from '@angular/router';
 import {
   AppConfiguration,
@@ -46,7 +46,7 @@ import {
   ThemeService,
   VitamuiSelectOptions,
 } from 'vitamui-library';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { form, FormField } from '@angular/forms/signals';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { RouteData } from './app.routes';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
@@ -64,7 +64,7 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [
     MatSidenavContainer,
     MatSidenav,
-    ReactiveFormsModule,
+    FormField,
     SelectComponent,
     MatList,
     MatAccordion,
@@ -77,7 +77,6 @@ import { MatButtonModule } from '@angular/material/button';
     RouterOutlet,
     TranslatePipe,
     CommonModule,
-    FormsModule,
     MatButtonModule,
     MatMenuModule,
     MatSelectModule,
@@ -91,7 +90,7 @@ export class AppComponent {
 
   routes: Routes;
   readonly searchOptions = signal<VitamuiSelectOptions>(undefined);
-  form: FormGroup;
+  readonly form = form(signal<{ search: string }>({ search: '' }));
   url: string;
 
   constructor() {
@@ -113,7 +112,6 @@ export class AppComponent {
     });
 
     const router = this.router;
-    const fb = inject(FormBuilder);
     const translateService = inject(TranslateService);
 
     this.routes = router.config;
@@ -147,14 +145,13 @@ export class AppComponent {
       );
     });
 
-    const searchControl = fb.control('');
-    this.form = fb.group({
-      search: searchControl,
-    });
-    searchControl.valueChanges.subscribe((value) => {
+    effect(() => {
+      const value = this.form.search().value();
       if (value) {
-        router.navigateByUrl(value);
-        setTimeout(() => searchControl.reset());
+        untracked(() => {
+          router.navigateByUrl(value);
+          setTimeout(() => this.form().reset({ search: '' }));
+        });
       }
     });
   }

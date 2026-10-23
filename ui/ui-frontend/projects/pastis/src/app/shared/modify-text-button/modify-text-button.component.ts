@@ -34,16 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
 import type { FileNode } from '../../models/file-node';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'modify-text-button',
   templateUrl: './modify-text-button.component.html',
   styleUrls: ['./modify-text-button.component.scss'],
-  imports: [FormsModule],
 })
 export class ModifyTextButtonComponent {
   readonly node = input<FileNode>(undefined);
@@ -51,23 +49,23 @@ export class ModifyTextButtonComponent {
   readonly textEdit = output<string>();
 
   editmode = false;
-  editText = '';
+  readonly editText = signal('');
   constructor() {}
 
   edit() {
     this.editmode = true;
     const node = this.node();
-    this.editText = node.editName ? node.editName : node.name;
+    this.editText.set(node.editName ? node.editName : node.name);
   }
 
   save() {
     this.editmode = false;
-    this.node().editName = this.editText;
-    this.textEdit.emit(this.editText);
+    this.node().editName = this.editText();
+    this.textEdit.emit(this.editText());
   }
 
   cancel() {
     this.editmode = false;
-    this.editText = '';
+    this.editText.set('');
   }
 }

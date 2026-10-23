@@ -34,13 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
-import { InputComponent } from 'vitamui-library';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, signal } from '@angular/core';
+import { disabled, FieldTree, form, FormField, patternError, validate } from '@angular/forms/signals';
+import { InputComponent, requiredValue } from 'vitamui-library';
+
+type InputValue = string | string[] | null;
+
+const TEXT_CONTENT_PATTERN = /^.*TextContent.*$/;
 
 @Component({
   selector: 'design-system-input',
-  imports: [ReactiveFormsModule, InputComponent],
+  imports: [FormField, InputComponent],
   templateUrl: './design-system-input.component.html',
   styleUrl: './design-system-input.component.scss',
 })
@@ -49,7 +53,7 @@ export class DesignSystemInputComponent {
     name: string;
     multiple?: boolean;
     textarea?: boolean;
-    entries: { type: string; states: { id: string; control: FormControl }[] }[];
+    entries: { type: string; states: { id: string; field: FieldTree<InputValue> }[] }[];
   }[];
 
   constructor() {
@@ -91,32 +95,38 @@ export class DesignSystemInputComponent {
       {
         type: 'empty',
         states: [
-          { id: 'Default', control: this.createControl() },
-          { id: 'Active', control: this.createControl() },
-          { id: 'Disabled', control: this.createControl({ disabled: true, error: true }) },
-          { id: 'Error', control: this.createControl({ error: true }) },
+          { id: 'Default', field: this.createField() },
+          { id: 'Active', field: this.createField() },
+          { id: 'Disabled', field: this.createField({ disabled: true, error: true }) },
+          { id: 'Error', field: this.createField({ error: true }) },
         ],
       },
       {
         type: 'full',
         states: [
-          { id: 'Default', control: this.createControl({ value: value }) },
-          { id: 'Active', control: this.createControl({ value: value }) },
-          { id: 'Disabled', control: this.createControl({ disabled: true, error: true, value: value }) },
-          { id: 'Error', control: this.createControl({ error: true, value: value }) },
+          { id: 'Default', field: this.createField({ value: value }) },
+          { id: 'Active', field: this.createField({ value: value }) },
+          { id: 'Disabled', field: this.createField({ disabled: true, error: true, value: value }) },
+          { id: 'Error', field: this.createField({ error: true, value: value }) },
         ],
       },
     ];
   }
 
-  private createControl(config?: { disabled?: boolean; error?: boolean; value?: any }): FormControl {
-    const validators = config?.error ? [Validators.required, Validators.pattern('.*TextContent.*')] : [];
-
-    const fc = new FormControl(null, validators);
-    if (config?.disabled) fc.disable();
-    if (config?.error) fc.markAsTouched();
-    if (config?.value) fc.setValue(config.value);
-
-    return fc;
+  private createField(config?: { disabled?: boolean; error?: boolean; value?: InputValue }): FieldTree<InputValue> {
+    const field = form(signal<InputValue>(config?.value ?? null), (path) => {
+      if (config?.error) {
+        requiredValue(path);
+        // Same as Validators.pattern('.*TextContent.*'), which also applies to the comma-separated values of a multiple input
+        validate(path, ({ value }) =>
+          value()?.length && !TEXT_CONTENT_PATTERN.test(String(value())) ? patternError(TEXT_CONTENT_PATTERN) : undefined,
+        );
+      }
+      if (config?.disabled) {
+        disabled(path);
+      }
+    });
+    if (config?.error) field().markAsTouched();
+    return field;
   }
 }

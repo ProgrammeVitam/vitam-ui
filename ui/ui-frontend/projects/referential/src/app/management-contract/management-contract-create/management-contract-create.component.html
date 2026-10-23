@@ -4,19 +4,19 @@
   [title]="['CONTRACT_MANAGEMENT.CONTRACTS_CREATION.INFORMATIONS' | translate, '', '']"
 ></vitamui-dialog-header>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
+<form [formRoot]="form" (keydown.enter)="$event.preventDefault()">
   <vitamui-stepper #stepper>
     <!-- Step 1 -->
     <cdk-step>
       <mat-dialog-content>
         <div class="gap-4">
-          <vitamui-slide-toggle class="w-100" formControlName="status">{{
+          <vitamui-slide-toggle class="w-100" [formField]="form.status">{{
             'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.CONTRACT_STATUS' | translate
           }}</vitamui-slide-toggle>
           @if (isSlaveMode) {
             <vitamui-input
               class="w-100"
-              formControlName="identifier"
+              [formField]="form.identifier"
               [placeholder]="'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.IDENTIFIER' | translate"
               [errorMessageMap]="{ identifierExists: 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.IDENTIFIER_ALREADY_EXIST' | translate }"
             >
@@ -25,7 +25,7 @@
 
           <vitamui-input
             class="w-100"
-            formControlName="name"
+            [formField]="form.name"
             [placeholder]="'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.NAME' | translate"
             [errorMessageMap]="{ nameExists: 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.NAME_ALREADY_EXIST' | translate }"
           >
@@ -34,7 +34,7 @@
           <vitamui-input
             [textarea]="true"
             class="w-100"
-            formControlName="description"
+            [formField]="form.description"
             [placeholder]="'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.DESCRIPTION' | translate"
           >
           </vitamui-input>
@@ -58,22 +58,22 @@
       </div>
 
       <mat-dialog-content>
-        <div class="gap-4" formGroupName="storage" style="width: 100%">
+        <div class="gap-4" style="width: 100%">
           <vitamui-input
             class="w-100"
-            formControlName="unitStrategy"
+            [formField]="form.storage.unitStrategy"
             [placeholder]="'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.UNIT_STRATEGY' | translate"
           >
           </vitamui-input>
           <vitamui-input
             class="w-100"
-            formControlName="objectGroupStrategy"
+            [formField]="form.storage.objectGroupStrategy"
             placeholder=" {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.OBJECT_GROUP_STRATEGY' | translate }}"
           >
           </vitamui-input>
           <vitamui-input
             class="w-100"
-            formControlName="objectStrategy"
+            [formField]="form.storage.objectStrategy"
             [placeholder]="'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.OBJECT_STRATEGY' | translate"
           >
           </vitamui-input>
@@ -104,20 +104,20 @@
       <mat-dialog-content>
         <vitamui-select
           class="w-100"
-          formControlName="policyTypeOption"
+          [formField]="form.policyTypeOption"
           [placeholder]="'CONTRACT_MANAGEMENT.FORM_UPDATE.CHOOSE_IDENTIFIER_TYPE' | translate"
           [options]="policyTypeOptions"
           [multiple]="false"
           [enableSearch]="false"
         ></vitamui-select>
 
-        <div class="mt-3" formArrayName="persistentIdentifierPolicies">
-          @for (persistentIdentifier of getPersistentIdentifierPolicies().controls; track persistentIdentifier) {
+        <div class="mt-3">
+          @for (persistentIdentifier of form.persistentIdentifierPolicies; track persistentIdentifier) {
             <div>
               <app-create-persistent-identifier-policy-form
-                [form]="$any(persistentIdentifier)"
-                (objectUsagePolicyAdded)="form.markAsDirty()"
-                (objectUsagePolicyRemoved)="form.markAsDirty()"
+                [form]="persistentIdentifier"
+                (objectUsagePolicyAdded)="form().markAsDirty()"
+                (objectUsagePolicyRemoved)="form().markAsDirty()"
               ></app-create-persistent-identifier-policy-form>
             </div>
           }

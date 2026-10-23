@@ -34,11 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, effect, inject, OnDestroy, OnInit, signal, untracked, viewChild } from '@angular/core';
+import { form, FormField, FormRoot, maxLength, minLength, required } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Context, Option, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import {
+  allowedIdentifier,
+  ConfirmDialogService,
+  Context,
+  ContextPermission,
+  Option,
+  VitamUICommonModule,
+  VitamUILibraryModule,
+} from 'vitamui-library';
 import { SecurityProfileService } from '../../security-profile/security-profile.service';
 import { ContextService } from '../context.service';
 import { ContextCreateValidators } from './context-create.validators';
@@ -51,6 +59,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { ContextEditPermissionComponent } from './context-edit-permission/context-edit-permission.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
+interface ContextCreateForm {
+  status: string;
+  name: string;
+  identifier: string;
+  securityProfile: string | null;
+  enableControl: boolean;
+  permissions: ContextPermission[];
+}
+
 @Component({
   selector: 'app-context-create',
   templateUrl: './context-create.component.html',
@@ -62,7 +79,8 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatInputModule,
     MatProgressBarModule,
     MatSelectModule,
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     ContextEditPermissionComponent,
     VitamUICommonModule,
     VitamUILibraryModule,
@@ -74,7 +92,6 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
   data = inject<{
     isSlaveMode: boolean;
   }>(MAT_DIALOG_DATA);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly confirmDialogService = inject(ConfirmDialogService);
   private readonly contextService = inject(ContextService);
   private readonly contextCreateValidators = inject(ContextCreateValidators);
@@ -82,8 +99,39 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
 
   protected readonly isSlaveMode: boolean;
 
-  form: FormGroup;
-  statusControl = new FormControl(false);
+  readonly form = form(
+    signal<ContextCreateForm>({
+      status: 'INACTIVE',
+      name: '',
+      identifier: '',
+      securityProfile: null,
+      enableControl: false,
+      permissions: [],
+    }),
+    (path) => {
+      required(path.name);
+      minLength(path.name, 2);
+      maxLength(path.name, 100);
+      this.contextCreateValidators.allowedName(path.name);
+      this.contextCreateValidators.uniqueName(path.name);
+      required(path.identifier);
+      minLength(path.identifier, 2);
+      maxLength(path.identifier, 100);
+      allowedIdentifier(path.identifier);
+      this.contextCreateValidators.uniqueIdentifier(path.identifier);
+      required(path.securityProfile);
+      // Controls on the permissions are only enabled with enableControl
+      this.contextCreateValidators.permissionInvalid(path.permissions, ({ valueOf }) => valueOf(path.enableControl));
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
@@ -100,46 +148,16 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
     const data = this.data;
 
     this.isSlaveMode = data.isSlaveMode;
+
+    effect(() => {
+      const name = this.form.name().value();
+      if (!this.isSlaveMode) {
+        untracked(() => this.form.identifier().value.set(name));
+      }
+    });
   }
 
   ngOnInit() {
-    this.form = this.formBuilder.group({
-      status: ['INACTIVE'],
-      name: [
-        null,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100), this.contextCreateValidators.allowedName()],
-        [this.contextCreateValidators.uniqueName()],
-      ],
-      identifier: [
-        null,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100), this.contextCreateValidators.allowedIdentifier()],
-        this.contextCreateValidators.uniqueIdentifier(),
-      ],
-      securityProfile: [null, Validators.required],
-      enableControl: [false],
-      permissions: [[]],
-    });
-
-    this.form.controls['name'].valueChanges.subscribe((value) => {
-      if (!this.isSlaveMode) {
-        this.form.controls['identifier'].setValue(value);
-      }
-    });
-
-    this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls['status'].setValue(value === false ? 'INACTIVE' : 'ACTIVE');
-    });
-
-    // Add or remove controls on the permissions
-    this.form.controls['enableControl'].valueChanges.subscribe((value) => {
-      if (value) {
-        this.form.controls['permissions'].setValidators([this.contextCreateValidators.permissionInvalid()]);
-      } else {
-        this.form.controls['permissions'].clearValidators();
-      }
-      this.form.controls['permissions'].updateValueAndValidity(this.form.controls['permissions'].value);
-    });
-
     this.securityProfileService.getAll().subscribe((securityProfiles) => {
       this.securityProfiles = securityProfiles.map((x) => ({ label: x.name, key: x.identifier }));
     });
@@ -152,7 +170,7 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    if (this.form.dirty) {
+    if (this.form().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -160,12 +178,12 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.invalid) {
+    if (this.form().invalid()) {
       this.isDisabledButton.set(true);
       return;
     }
     this.isDisabledButton.set(true);
-    const context = this.form.value as Context;
+    const context = { ...this.form().value() } as unknown as Context;
     context.status === 'ACTIVE'
       ? (context['activationDate'] = new Date().toISOString())
       : (context['deactivationDate'] = new Date().toISOString());
@@ -181,20 +199,24 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
   }
 
   firstStepInvalid() {
-    return (
-      this.form.get('name').invalid ||
-      this.form.get('name').pending ||
-      this.form.get('status').invalid ||
-      this.form.get('status').pending ||
-      this.form.get('enableControl').invalid ||
-      this.form.get('enableControl').pending ||
-      this.form.get('securityProfile').invalid ||
-      this.form.get('securityProfile').pending
+    return [this.form.name, this.form.status, this.form.enableControl, this.form.securityProfile].some(
+      (field) => field().invalid() || field().pending(),
     );
   }
 
   lastStepInvalid() {
-    return this.form.get('permissions').invalid;
+    return this.form.permissions().invalid();
+  }
+
+  hasPermissionsError(kind: string): boolean {
+    return this.form
+      .permissions()
+      .errors()
+      .some((error) => error.kind === kind);
+  }
+
+  onStatusChange(active: boolean) {
+    this.form.status().value.set(active ? 'ACTIVE' : 'INACTIVE');
   }
 
   onChangeOrganisations(organisations: string[]) {

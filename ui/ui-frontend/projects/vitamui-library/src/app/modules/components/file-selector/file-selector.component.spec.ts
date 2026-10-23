@@ -40,7 +40,9 @@ import { PipesModule } from '../../pipes/pipes.module';
 import { LoggerModule } from '../../logger/logger.module';
 import { CustomFile } from '../../../../lib/models/custom-file';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Component, viewChild } from '@angular/core';
+import { Component, signal, viewChild } from '@angular/core';
+import { form, FormField } from '@angular/forms/signals';
+import { requiredValue } from '../../../../lib/signal-forms/signal-form-validators';
 
 @Component({
   template: `
@@ -380,6 +382,93 @@ describe('FileSelectorComponent', () => {
       expect(control.getError('invalidFiles').files).toContain(`file1.txt`);
       expect(control.getError('invalidFiles').files).toContain(`file2.json`);
     });
+  });
+});
+
+@Component({
+  template: `
+    @if (displayed()) {
+      <vitamui-file-selector [formField]="testForm.files" [extensions]="['.json']" [maxSizeInBytes]="10" />
+    }
+  `,
+  imports: [FileSelectorComponent, FormField],
+})
+class SignalFormHostComponent {
+  readonly displayed = signal(true);
+  readonly testForm = form(signal<{ files: CustomFile[] }>({ files: [] }), (path) => {
+    requiredValue(path.files);
+  });
+  readonly component = viewChild(FileSelectorComponent);
+}
+
+describe('FileSelectorComponent with signal forms', () => {
+  let fixture: ComponentFixture<SignalFormHostComponent>;
+  let host: SignalFormHostComponent;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [SignalFormHostComponent, PipesModule, LoggerModule.forRoot()],
+    }).compileComponents();
+    fixture = TestBed.createComponent(SignalFormHostComponent);
+    host = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should be rendered inside an @if', async () => {
+    host.displayed.set(false);
+    await fixture.whenStable();
+    host.displayed.set(true);
+    await fixture.whenStable();
+    expect(host.component()).toBeTruthy();
+  });
+
+  it('should update the field with the selected files', async () => {
+    const file1 = file('file1.json');
+    await host.component().handleFilesSelection([file1]);
+    await fixture.whenStable();
+
+    expect(host.testForm.files().value()).toEqual([file1]);
+    expect(host.testForm().valid()).toBe(true);
+  });
+
+  it('should make the field invalid when a file has an invalid extension', async () => {
+    await host.component().handleFilesSelection([file('file1.txt')]);
+    await fixture.whenStable();
+
+    expect(host.testForm().invalid()).toBe(true);
+    expect(
+      host.testForm
+        .files()
+        .errors()
+        .map((error) => error.kind),
+    ).toEqual(['invalidFiles']);
+  });
+
+  it('should make the field invalid when the files are too big', async () => {
+    await host.component().handleFilesSelection([file('file1.json', 'more than 10 bytes')]);
+    await fixture.whenStable();
+
+    expect(
+      host.testForm
+        .files()
+        .errors()
+        .map((error) => error.kind),
+    ).toContain('maxSizeInBytes');
+  });
+
+  it('should make the field valid again when the invalid file is removed', async () => {
+    await host.component().handleFilesSelection([file('file1.txt')]);
+    await fixture.whenStable();
+    await host.component().removeFile(host.component().displayFiles[0]);
+    await fixture.whenStable();
+
+    expect(host.testForm.files().value()).toEqual([]);
+    expect(
+      host.testForm
+        .files()
+        .errors()
+        .map((error) => error.kind),
+    ).toEqual(['required']);
   });
 });
 

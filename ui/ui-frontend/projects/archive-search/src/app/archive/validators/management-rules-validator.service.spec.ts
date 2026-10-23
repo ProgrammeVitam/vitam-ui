@@ -34,8 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { Injector, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { form, SchemaFn } from '@angular/forms/signals';
+import { firstValueFrom, of } from 'rxjs';
+import { RuleService } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ManagementRules, RuleAction, RuleCategoryAction } from '../models/ruleAction.interface';
 import { ManagementRulesValidatorService } from './management-rules-validator.service';
@@ -59,6 +62,7 @@ const ruleCategoryAction: RuleCategoryAction = {
   finalAction: 'keep',
   preventInheritance: false,
   rules,
+  preventRulesIdToRemove: ['preventRuleId1'],
 };
 const managementRules: ManagementRules[] = [
   {
@@ -71,44 +75,85 @@ const managementRules: ManagementRules[] = [
 describe('ManagementRulesValidatorService', () => {
   let service: ManagementRulesValidatorService;
   const managementRulesSharedDataServiceMock = {
-    getCriteriaSearchDSLQuery: () => of({}),
     getManagementRules: () => of(managementRules),
-    getAccessContract: () => of('AccessContract'),
-    getselectedItems: () => of(35),
-    getCriteriaSearchListToSave: () => of({}),
-    getRuleActions: () => of({}),
+    getRuleCategory: () => of('category'),
   };
-
-  const managementRulesValidatorServiceMock = {
-    filterRuleActions: () => of(Boolean),
-    uniqueRuleId: () => of({}),
-  };
+  let ruleServiceMock: { existsProperties: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
+    vi.useFakeTimers();
+    ruleServiceMock = { existsProperties: vi.fn().mockReturnValue(of(true)) };
     TestBed.configureTestingModule({
       providers: [
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
-        { provide: ManagementRulesValidatorService, useValue: managementRulesValidatorServiceMock },
+        { provide: RuleService, useValue: ruleServiceMock },
       ],
     });
     service = TestBed.inject(ManagementRulesValidatorService);
   });
 
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  async function validate(rule: string, schema: SchemaFn<{ rule: string }>) {
+    const testForm = form(signal({ rule }), schema, { injector: TestBed.inject(Injector) });
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    return testForm
+      .rule()
+      .errors()
+      .map((error) => error.kind);
+  }
+
   it('should the service be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('filterRuleActions should return true when ruleId exists in the list', () => {
-    // When
-    service.ruleCategorySelected = 'category';
-    // Then
-    expect(service.filterRuleActions('ruleId1')).toBeTruthy();
+  it('filterRuleActions should return true when ruleId exists in the list', async () => {
+    expect(await firstValueFrom(service.filterRuleActions('ruleId1'))).toBe(true);
+    expect(await firstValueFrom(service.filterRuleActions('unknown'))).toBe(false);
   });
 
-  it(' uniqueRuleId should return true when ruleId exists in the list', () => {
-    // When
-    service.ruleCategorySelected = 'category';
-    // Then
-    expect(service.uniqueRuleId('ruleId1')).toBeTruthy();
+  describe('uniqueRuleId', () => {
+    it('should return uniqueRuleId when ruleId exists in the list', async () => {
+      expect(await validate('ruleId1', (path) => service.uniqueRuleId(path.rule))).toEqual(['uniqueRuleId']);
+    });
+
+    it('should not return any error when ruleId does not exist in the list', async () => {
+      expect(await validate('unknown', (path) => service.uniqueRuleId(path.rule))).toEqual([]);
+    });
+
+    it('should not return any error when ruleId is ignored', async () => {
+      expect(await validate('ruleId1', (path) => service.uniqueRuleId(path.rule, () => 'ruleId1'))).toEqual([]);
+    });
+  });
+
+  describe('uniquePreventRuleId', () => {
+    it('should return uniquePreventRuleId when ruleId exists in the prevent rules', async () => {
+      expect(await validate('preventRuleId1', (path) => service.uniquePreventRuleId(path.rule))).toEqual(['uniquePreventRuleId']);
+    });
+
+    it('should not return any error when ruleId does not exist in the prevent rules', async () => {
+      expect(await validate('ruleId1', (path) => service.uniquePreventRuleId(path.rule))).toEqual([]);
+    });
+  });
+
+  describe('checkRuleIdExistence', () => {
+    it('should not return any error when the rule exists', async () => {
+      expect(await validate('ruleId1', (path) => service.checkRuleIdExistence(path.rule))).toEqual([]);
+      expect(ruleServiceMock.existsProperties).toHaveBeenCalledWith({ ruleId: 'ruleId1', ruleType: 'category' });
+    });
+
+    it('should return ruleIdExists when the rule does not exist', async () => {
+      ruleServiceMock.existsProperties.mockReturnValue(of(false));
+
+      expect(await validate('ruleId1', (path) => service.checkRuleIdExistence(path.rule))).toEqual(['ruleIdExists']);
+    });
+
+    it('should not call the service when the value is empty', async () => {
+      expect(await validate('', (path) => service.checkRuleIdExistence(path.rule))).toEqual([]);
+      expect(ruleServiceMock.existsProperties).not.toHaveBeenCalled();
+    });
   });
 });

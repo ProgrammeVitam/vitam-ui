@@ -12,10 +12,10 @@
 
 <mat-checkbox
   id="enable{{ node()?.id }}"
-  [(ngModel)]="node().checked"
+  [checked]="node().checked"
   [(indeterminate)]="node().disabledChild"
   [disabled]="node().disabled"
-  (ngModelChange)="onCheckboxClick()"
+  (change)="node().checked = $event.checked; onCheckboxClick()"
   (click)="onCheckboxClick()"
   [vitamuiTooltip]="node()?.title"
   [vitamuiTooltipShowDelay]="300"

@@ -34,8 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, viewChild } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, signal, viewChild } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { form, FormField } from '@angular/forms/signals';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -54,6 +55,12 @@ import { DateTime } from 'luxon';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { AuditPreviewComponent } from './audit-preview/audit-preview.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { skip } from 'rxjs/operators';
+
+interface DateRangeFilterForm {
+  startDate: Date;
+  endDate: Date;
+}
 
 @Component({
   selector: 'app-audit',
@@ -66,7 +73,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatSidenavContent,
     VitamuiTitleBreadcrumbComponent,
     VitamuiBannerComponent,
-    ReactiveFormsModule,
+    FormField,
     DatepickerComponent,
     AuditListComponent,
     TranslatePipe,
@@ -76,9 +83,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class AuditComponent extends SidenavPage<Event> {
   dialog = inject(MatDialog);
   private readonly route = inject(ActivatedRoute);
-  private readonly formBuilder = inject(FormBuilder);
 
-  public dateRangeFilterForm: FormGroup;
+  public readonly dateRangeFilterForm = form(signal<DateRangeFilterForm>({ startDate: null, endDate: null }));
   public filters: any = {};
   public search: string;
   public tenantIdentifier: string;
@@ -93,18 +99,17 @@ export class AuditComponent extends SidenavPage<Event> {
       this.tenantIdentifier = params['tenantIdentifier'];
     });
 
-    this.dateRangeFilterForm = this.formBuilder.group({
-      startDate: null,
-      endDate: null,
-    });
+    toObservable(this.dateRangeFilterForm.startDate().value)
+      .pipe(skip(1))
+      .subscribe((value: Date) => {
+        this.filters = { ...this.filters, startDate: value ? DateTime.fromJSDate(value).startOf('day').toISO() : null };
+      });
 
-    this.dateRangeFilterForm.controls['startDate'].valueChanges.subscribe((value: Date) => {
-      this.filters = { ...this.filters, startDate: value ? DateTime.fromJSDate(value).startOf('day').toISO() : null };
-    });
-
-    this.dateRangeFilterForm.controls['endDate'].valueChanges.subscribe((value: Date) => {
-      this.filters = { ...this.filters, endDate: value ? DateTime.fromJSDate(value).endOf('day').toISO() : null };
-    });
+    toObservable(this.dateRangeFilterForm.endDate().value)
+      .pipe(skip(1))
+      .subscribe((value: Date) => {
+        this.filters = { ...this.filters, endDate: value ? DateTime.fromJSDate(value).endOf('day').toISO() : null };
+      });
   }
 
   openCreateAuditDialog() {

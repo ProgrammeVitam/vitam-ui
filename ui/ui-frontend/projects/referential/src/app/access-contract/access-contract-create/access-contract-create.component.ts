@@ -34,17 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  ValidationErrors,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { Component, effect, inject, OnDestroy, OnInit, signal, untracked } from '@angular/core';
+import { form, FormField, FormRoot, maxLength, minLength, required, validate } from '@angular/forms/signals';
+import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import {
   AccessContract,
@@ -73,6 +65,27 @@ import { MatSelectModule } from '@angular/material/select';
 import { AccessContractAuthorizationsUpdateComponent } from '../access-contract-preview/access-contract-authorizations-tab/access-contract-authorizations-update/access-contract-authorizations-update.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
+interface AccessContractCreateForm {
+  identifier: string;
+  status: boolean;
+  name: string;
+  description: string | null;
+  accessLog: boolean;
+  /* <- step 3 -> */
+  thirdStep: {
+    writingPermission: boolean;
+    downloadChoose: string;
+    everyDataObjectVersion: boolean;
+    dataObjectVersion: string[];
+    writingAuthorizedDesc: boolean;
+  };
+}
+
+interface SelectedNodes {
+  included: string[];
+  excluded: string[];
+}
+
 @Component({
   selector: 'app-access-contract-create',
   templateUrl: './access-contract-create.component.html',
@@ -85,7 +98,8 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatProgressBarModule,
     MatRadioModule,
     MatSelectModule,
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     SelectComponent,
     AccessContractAuthorizationsUpdateComponent,
     VitamUICommonModule,
@@ -99,7 +113,6 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     tenantIdentifier: number;
     isSlaveMode: boolean;
   }>(MAT_DIALOG_DATA);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly accessContractCreateValidators = inject(AccessContractCreateValidators);
   private readonly accessContractService = inject(AccessContractService);
   private readonly agencyService = inject(AgencyService);
@@ -109,13 +122,49 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
   protected readonly tenantIdentifier: number;
   protected readonly isSlaveMode: boolean;
 
-  form: FormGroup;
+  readonly form = form(
+    signal<AccessContractCreateForm>({
+      identifier: '',
+      status: false,
+      name: '',
+      description: null,
+      accessLog: false,
+      thirdStep: {
+        writingPermission: false,
+        downloadChoose: 'ALL',
+        everyDataObjectVersion: true,
+        dataObjectVersion: [],
+        writingAuthorizedDesc: false,
+      },
+    }),
+    (path) => {
+      required(path.identifier);
+      minLength(path.identifier, 2);
+      maxLength(path.identifier, 100);
+      this.accessContractCreateValidators.uniqueIdentifier(path.identifier);
+      required(path.name);
+      minLength(path.name, 2);
+      maxLength(path.name, 100);
+      this.accessContractCreateValidators.uniqueName(path.name);
+      validate(path.thirdStep, ({ value }) =>
+        value().downloadChoose === 'SELECTION' && value().dataObjectVersion.length === 0 ? { kind: 'dataObjectVersion' } : undefined,
+      );
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
 
   private readonly unsubscribe = new Subject<void>();
 
-  allNodes = new FormControl(false);
-  ruleFilter = new FormControl(false);
-  selectNodesControl = new FormControl({ included: [], excluded: [] });
+  readonly allNodes = signal(false);
+  /* <- step 4 -> */
+  readonly selectNodesForm = form(signal<SelectedNodes>({ included: [], excluded: [] }));
 
   isLoading = signal(false);
 
@@ -135,29 +184,18 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
 
     this.tenantIdentifier = data.tenantIdentifier;
     this.isSlaveMode = data.isSlaveMode;
+
+    effect(() => {
+      const name = this.form.name().value();
+      if (!this.isSlaveMode) {
+        untracked(() => this.form.identifier().value.set(name));
+      }
+    });
+    this.onWritingRestrictedDescChanges();
   }
 
   ngOnInit() {
     this.agencyService.getOriginatingAgenciesAsOptions().subscribe((options: Option[]) => (this.originatingAgenciesOptions = { options }));
-    this.initForm();
-
-    this.form.get('thirdStep.downloadChoose').valueChanges.subscribe((val) => {
-      this.form.get('thirdStep.everyDataObjectVersion').setValue(val === 'ALL', { emitEvent: false });
-      if (val !== 'SELECTION') {
-        this.form.get('thirdStep.dataObjectVersion').setValue([], { emitEvent: false });
-      }
-    });
-    this.onWritingRestrictedDescChanges();
-    this.selectNodesControl.valueChanges.subscribe((value: { included: string[]; excluded: string[] }) => {
-      this.form.controls['rootUnits'].setValue(value.included);
-      this.form.controls['excludedRootUnits'].setValue(value.excluded);
-    });
-
-    this.form.controls['name'].valueChanges.subscribe((value) => {
-      if (!this.isSlaveMode) {
-        this.form.controls['identifier'].setValue(value);
-      }
-    });
 
     this.confirmDialogService
       .listenToEscapeKeyPress(this.dialogRef)
@@ -171,45 +209,11 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
   }
 
   onCancel(): void {
-    if (this.form.dirty) {
+    if (this.form().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
     }
-  }
-
-  private initForm(): void {
-    this.form = this.formBuilder.group({
-      identifier: [
-        null,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
-        this.accessContractCreateValidators.uniqueIdentifier(),
-      ],
-      status: [false],
-      name: [
-        null,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
-        this.accessContractCreateValidators.uniqueName(),
-      ],
-      description: [null],
-      accessLog: [false],
-      /* <- step 3 -> */
-      thirdStep: this.formBuilder.group(
-        {
-          writingPermission: [false],
-          downloadChoose: ['ALL'],
-          everyDataObjectVersion: [true],
-          dataObjectVersion: [new Array<string>()],
-          writingAuthorizedDesc: [false],
-        },
-        {
-          validators: [this.thirdStepValidator()],
-        },
-      ),
-      /* <- step 4 -> */
-      rootUnits: [[], Validators.required],
-      excludedRootUnits: [[]],
-    });
   }
 
   onSubmit(): void {
@@ -217,7 +221,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
       return;
     }
     this.isLoading.set(true);
-    const accessContract: AccessContract = this.mapToAccessContract(this.form);
+    const accessContract: AccessContract = this.mapToAccessContract();
     accessContract.status === 'ACTIVE'
       ? (accessContract.activationDate = new Date().toISOString())
       : (accessContract.deactivationDate = new Date().toISOString());
@@ -232,18 +236,8 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
   }
 
   public firstStepInvalid(): boolean {
-    return (
-      this.form.get('identifier').invalid ||
-      this.form.get('identifier').pending ||
-      this.form.get('name').invalid ||
-      this.form.get('name').pending ||
-      this.form.get('description').invalid ||
-      this.form.get('description').pending ||
-      this.form.get('status').invalid ||
-      this.form.get('status').pending ||
-      this.form.get('accessLog').invalid ||
-      this.form.get('accessLog').pending ||
-      (this.ruleFilter.value === true && (this.form.get('ruleCategoryToFilter').invalid || this.form.get('ruleCategoryToFilter').pending))
+    return [this.form.identifier, this.form.name, this.form.description, this.form.status, this.form.accessLog].some(
+      (field) => field().invalid() || field().pending(),
     );
   }
 
@@ -251,54 +245,49 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     this.secondStepData = accessContract;
   }
 
-  onWritingRestrictedDescChanges(): void {
-    this.form.get('thirdStep.writingAuthorizedDesc').valueChanges.subscribe((val) => {
-      if (val) {
-        this.form.get('thirdStep.writingPermission').setValue(true, { emitEvent: false });
+  private onWritingRestrictedDescChanges(): void {
+    effect(() => {
+      if (this.form.thirdStep.writingAuthorizedDesc().value()) {
+        untracked(() => this.form.thirdStep.writingPermission().value.set(true));
       }
     });
-    this.form.get('thirdStep.writingPermission').valueChanges.subscribe((val) => {
-      if (!val) {
-        this.form.get('thirdStep.writingAuthorizedDesc').setValue(false, { emitEvent: false });
+    effect(() => {
+      if (!this.form.thirdStep.writingPermission().value()) {
+        untracked(() => this.form.thirdStep.writingAuthorizedDesc().value.set(false));
       }
     });
   }
 
-  private thirdStepValidator(): ValidatorFn {
-    return (form: FormGroup): ValidationErrors | null => {
-      const downloadChoose = form.get('downloadChoose').value;
-      const dataObjectVersion = form.get('dataObjectVersion').value;
-      if (downloadChoose === 'SELECTION' && dataObjectVersion.length === 0) {
-        return { dataObjectVersion: true };
-      }
-      return null;
-    };
+  onDownloadChooseChange({ value }: MatButtonToggleChange): void {
+    this.form.thirdStep.everyDataObjectVersion().value.set(value === 'ALL');
+    if (value !== 'SELECTION') {
+      this.form.thirdStep.dataObjectVersion().value.set([]);
+    }
+  }
+
+  hasThirdStepErrors(): boolean {
+    return this.form.thirdStep().errors().length > 0;
   }
 
   public lastStepInvalid(): boolean {
-    return (
-      this.allNodes.invalid ||
-      this.allNodes.pending ||
-      (this.allNodes.value === false && (this.form.controls['rootUnits'].invalid || this.form.controls['rootUnits'].value.length === 0))
-    );
+    return this.allNodes() === false && this.selectNodesForm.included().value().length === 0;
   }
 
-  private mapToAccessContract(form: FormGroup): AccessContract {
+  private mapToAccessContract(): AccessContract {
+    const value = this.form().value();
     return {
-      ...form.value,
+      ...value,
+      rootUnits: this.selectNodesForm.included().value(),
+      excludedRootUnits: this.selectNodesForm.excluded().value(),
       ...this.secondStepData,
-      writingPermission: this.getControl(form, 'thirdStep.writingPermission').value,
-      downloadChoose: this.getControl(form, 'thirdStep.downloadChoose').value,
-      everyDataObjectVersion: this.getControl(form, 'thirdStep.everyDataObjectVersion').value,
-      dataObjectVersion: this.getControl(form, 'thirdStep.dataObjectVersion').value,
-      writingRestrictedDesc: !this.getControl(form, 'thirdStep.writingAuthorizedDesc').value,
-      status: this.mapStatus(this.getControl(form, 'status').value),
-      accessLog: this.mapStatus(this.getControl(form, 'accessLog').value),
-    } as AccessContract;
-  }
-
-  private getControl(form: FormGroup, name: string): AbstractControl {
-    return form.get(name);
+      writingPermission: value.thirdStep.writingPermission,
+      downloadChoose: value.thirdStep.downloadChoose,
+      everyDataObjectVersion: value.thirdStep.everyDataObjectVersion,
+      dataObjectVersion: value.thirdStep.dataObjectVersion,
+      writingRestrictedDesc: !value.thirdStep.writingAuthorizedDesc,
+      status: this.mapStatus(value.status),
+      accessLog: this.mapStatus(value.accessLog),
+    } as unknown as AccessContract;
   }
 
   private mapStatus(value: boolean): Status {

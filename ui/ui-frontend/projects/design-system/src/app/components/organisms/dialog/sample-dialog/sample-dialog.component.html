@@ -1,30 +1,30 @@
 <vitamui-dialog-header
-  [stepper]="showSteps ? stepper : undefined"
-  [subhead]="showSubhead ? 'Sample dialog' : ''"
-  [title]="showTitle ? (showSteps ? titles : titles[0]) : ''"
+  [stepper]="settings.showSteps().value() ? stepper : undefined"
+  [subhead]="settings.showSubhead().value() ? 'Sample dialog' : ''"
+  [title]="settings.showTitle().value() ? (settings.showSteps().value() ? titles : titles[0]) : ''"
 ></vitamui-dialog-header>
 <mat-dialog-content>
   <vitamui-stepper #stepper>
     <!-- Step 1 -->
     <cdk-step>
       <div class="gap-2">
-        <vitamui-slide-toggle [(ngModel)]="showSteps">Toggle stepper</vitamui-slide-toggle>
-        <vitamui-slide-toggle [(ngModel)]="showSubhead">Toggle subhead</vitamui-slide-toggle>
-        <vitamui-slide-toggle [(ngModel)]="showTitle">Toggle title</vitamui-slide-toggle>
-        <vitamui-slide-toggle [ngModel]="smallDialog" (ngModelChange)="toggleSmall($event)">Small dialog</vitamui-slide-toggle>
+        <vitamui-slide-toggle [formField]="settings.showSteps">Toggle stepper</vitamui-slide-toggle>
+        <vitamui-slide-toggle [formField]="settings.showSubhead">Toggle subhead</vitamui-slide-toggle>
+        <vitamui-slide-toggle [formField]="settings.showTitle">Toggle title</vitamui-slide-toggle>
+        <vitamui-slide-toggle [formField]="settings.smallDialog">Small dialog</vitamui-slide-toggle>
       </div>
     </cdk-step>
 
     <!-- Step 2 -->
-    @if (showSteps) {
+    @if (settings.showSteps().value()) {
       <cdk-step><vitamui-file-selector></vitamui-file-selector></cdk-step>
     }
 
     <!-- Step 3 -->
-    @if (showSteps) {
+    @if (settings.showSteps().value()) {
       <cdk-step>
         <div class="text medium bold primary">Sélectionner le périmètre des autorisations</div>
-        <mat-radio-group [(ngModel)]="radioValue">
+        <mat-radio-group [formField]="settings.radioValue">
           <mat-radio-button [value]="1">
             Accès à toutes les archives sans restriction sur les services producteurs ou les règles de gestion
           </mat-radio-button>
@@ -42,7 +42,7 @@
     }
 
     <!-- Step 4 -->
-    @if (showSteps) {
+    @if (settings.showSteps().value()) {
       <cdk-step>
         <vitamui-dialog-content-with-state state="invalid" title="In y a une erreur">
           <div class="text normal bold">Lorem ipsum dolor sit amet</div>
@@ -54,7 +54,7 @@
     }
 
     <!-- Step 5 -->
-    @if (showSteps) {
+    @if (settings.showSteps().value()) {
       <cdk-step>
         <vitamui-dialog-content-with-state state="valid" title="Tout est OK">
           <div class="text normal bold">Lorem ipsum dolor sit amet</div>

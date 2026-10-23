@@ -1,11 +1,11 @@
 <vitamui-dialog-header [title]="'CUSTOMER.OWNER.MODAL.SAFE_TITLE' | translate: { name: data?.owner?.name }"></vitamui-dialog-header>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formRoot]="form">
   <mat-dialog-content class="gap-3 align-items-stretch">
-    <vitamui-input formControlName="name" [placeholder]="'CUSTOMER.OWNER.SAFE_NAME' | translate"></vitamui-input>
+    <vitamui-input [formField]="form.name" [placeholder]="'CUSTOMER.OWNER.SAFE_NAME' | translate"></vitamui-input>
 
     <vitamui-select
-      formControlName="identifier"
+      [formField]="form.identifier"
       [placeholder]="'CUSTOMER.OWNER.TENANT_ID' | translate"
       [options]="availableTenants"
       [multiple]="false"
@@ -13,7 +13,7 @@
     ></vitamui-select>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button type="submit" class="btn primary" [disabled]="isLoading() || form.pending || form.invalid">
+    <button type="submit" class="btn primary" [disabled]="isLoading() || form().pending() || form().invalid()">
       {{ 'COMMON.SUBMIT' | translate }}
     </button>
     <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>

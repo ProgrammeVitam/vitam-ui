@@ -36,7 +36,6 @@
  */
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
@@ -70,7 +69,6 @@ describe('ProbativeValueCreateComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        ReactiveFormsModule,
         MatSelectModule,
         MatButtonToggleModule,
         MatProgressBarModule,
@@ -79,7 +77,6 @@ describe('ProbativeValueCreateComponent', () => {
         ProbativeValueCreateComponent,
       ],
       providers: [
-        FormBuilder,
         { provide: MatDialogRef, useValue: {} },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },

@@ -35,14 +35,24 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { AfterViewInit, Component, ElementRef, inject, OnInit, signal, afterNextRender, Injector, viewChildren } from '@angular/core';
-import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { ItemNode, MockSchemaService, SchemaElement, SchemaService, SelectWithTreeComponent, VitamUICommonModule } from 'vitamui-library';
+import { disabled, FieldTree, form, FormField, validate } from '@angular/forms/signals';
+import {
+  ItemNode,
+  MockSchemaService,
+  requiredValue,
+  SchemaElement,
+  SchemaService,
+  SelectWithTreeComponent,
+  VitamUICommonModule,
+} from 'vitamui-library';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 
+type SelectWithTreeValue = SchemaElement | SchemaElement[] | null;
+
 @Component({
-  imports: [ReactiveFormsModule, TranslatePipe, AsyncPipe, SelectWithTreeComponent, FormsModule, VitamUICommonModule],
+  imports: [FormField, TranslatePipe, AsyncPipe, SelectWithTreeComponent, VitamUICommonModule],
   templateUrl: './design-system-select-with-tree.component.html',
   styleUrl: './design-system-select-with-tree.component.scss',
   providers: [{ provide: SchemaService, useClass: MockSchemaService }],
@@ -56,12 +66,11 @@ export class DesignSystemSelectWithTreeComponent implements OnInit, AfterViewIni
     {
       name: string;
       multiple?: boolean;
-      entries: { type: string; states: { id: string; control: FormControl }[] }[];
+      entries: { type: string; states: { id: string; field: FieldTree<SelectWithTreeValue> }[] }[];
     }[]
   >(undefined);
 
-  enableSearch = true;
-  enableDisplaySelected = true;
+  readonly displayOptions = form(signal({ enableSearch: true, enableDisplaySelected: true }));
 
   schemaOptions$: Observable<ItemNode<SchemaElement>[]>;
 
@@ -100,51 +109,50 @@ export class DesignSystemSelectWithTreeComponent implements OnInit, AfterViewIni
     });
   }
 
-  private getEntries(selectedOptionValue: any) {
+  private getEntries(selectedOptionValue: SchemaElement | SchemaElement[]) {
     return [
       {
         type: 'empty',
         states: [
-          { id: 'Default', control: this.createControl() },
-          { id: 'Active', control: this.createControl() },
-          { id: 'Disabled', control: this.createControl({ disabled: true }) },
-          { id: 'Error', control: this.createControl({ error: true }) },
+          { id: 'Default', field: this.createField() },
+          { id: 'Active', field: this.createField() },
+          { id: 'Disabled', field: this.createField({ disabled: true }) },
+          { id: 'Error', field: this.createField({ error: true }) },
         ],
       },
       {
         type: 'full',
         states: [
-          { id: 'Default', control: this.createControl({ value: selectedOptionValue }) },
-          { id: 'Active', control: this.createControl({ value: selectedOptionValue }) },
-          { id: 'Disabled', control: this.createControl({ disabled: true, value: selectedOptionValue }) },
-          { id: 'Error', control: this.createControl({ error: true, value: selectedOptionValue }) },
+          { id: 'Default', field: this.createField({ value: selectedOptionValue }) },
+          { id: 'Active', field: this.createField({ value: selectedOptionValue }) },
+          { id: 'Disabled', field: this.createField({ disabled: true, value: selectedOptionValue }) },
+          { id: 'Error', field: this.createField({ error: true, value: selectedOptionValue }) },
         ],
       },
     ];
   }
 
-  private createControl(config?: { disabled?: boolean; error?: boolean; value?: any }): FormControl {
-    const validators = config?.error
-      ? [
-          Validators.required,
-          (control: AbstractControl): ValidationErrors => {
-            const value = control.value ? (Array.isArray(control.value) ? control.value : [control.value]) : [];
-            if (value.length && !(value as SchemaElement[]).map((v) => v.Path).some((path) => path === 'TextContent')) {
-              return { CONTAINS_TextContent: true };
-            }
-            return undefined;
-          },
-        ]
-      : config?.disabled
-        ? [Validators.required]
-        : [];
-
-    const fc = new FormControl(null, validators);
-    if (config?.disabled) fc.disable();
-    if (config?.error) fc.markAsTouched();
-    if (config?.value) fc.setValue(config.value);
-
-    return fc;
+  private createField(config?: { disabled?: boolean; error?: boolean; value?: SelectWithTreeValue }): FieldTree<SelectWithTreeValue> {
+    const field = form(
+      signal<SelectWithTreeValue>(config?.value ?? null),
+      (path) => {
+        if (config?.error || config?.disabled) {
+          requiredValue(path);
+        }
+        if (config?.error) {
+          validate(path, ({ value }) => {
+            const values = value() ? (Array.isArray(value()) ? (value() as SchemaElement[]) : [value() as SchemaElement]) : [];
+            return values.length && !values.some((v) => v.Path === 'TextContent') ? { kind: 'CONTAINS_TextContent' } : undefined;
+          });
+        }
+        if (config?.disabled) {
+          disabled(path);
+        }
+      },
+      { injector: this.injector },
+    );
+    if (config?.error) field().markAsTouched();
+    return field;
   }
 
   getSchemaElementDisplayValue = (element: SchemaElement) =>

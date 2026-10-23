@@ -34,31 +34,50 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewChecked, ChangeDetectorRef, Component, inject, OnDestroy, OnInit, output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AfterViewChecked, ChangeDetectorRef, Component, inject, Injector, OnDestroy, OnInit, output, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { form, FormField } from '@angular/forms/signals';
 import { Observable, Subscription } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { skip, tap } from 'rxjs/operators';
 import { OjectUtils, SelectComponent, VitamuiMultiInputsModule } from 'vitamui-library';
 import { AccessionRegistersService } from '../accession-register.service';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { AsyncPipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
+interface AccessionRegisterAdvancedSearchForm {
+  originatingAgencies: string[];
+  archivalAgreements: string[];
+  archivalProfiles: string[];
+  acquisitionInformations: string[];
+  elimination: string;
+  transferReply: string;
+  originatingAgencyReassignment: string;
+}
+
 @Component({
   selector: 'app-accession-register-advanced-search',
   templateUrl: './accession-register-advanced-search.component.html',
   styleUrls: ['./accession-register-advanced-search.component.scss'],
-  imports: [ReactiveFormsModule, VitamuiMultiInputsModule, SelectComponent, MatRadioGroup, MatRadioButton, AsyncPipe, TranslatePipe],
+  imports: [FormField, VitamuiMultiInputsModule, SelectComponent, MatRadioGroup, MatRadioButton, AsyncPipe, TranslatePipe],
 })
 export class AccessionRegisterAdvancedSearchComponent implements OnInit, OnDestroy, AfterViewChecked {
-  private readonly formBuilder = inject(FormBuilder);
   private readonly accessionRegistersService = inject(AccessionRegistersService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly injector = inject(Injector);
 
   readonly showAdvancedSearchPanel = output<boolean>();
 
-  advancedSearchForm: FormGroup;
-  acquisitionInformationsControl: FormControl;
+  private readonly advancedSearchModel = signal<AccessionRegisterAdvancedSearchForm>({
+    originatingAgencies: [],
+    archivalAgreements: [],
+    archivalProfiles: [],
+    acquisitionInformations: [],
+    elimination: 'all',
+    transferReply: 'all',
+    originatingAgencyReassignment: 'all',
+  });
+  readonly advancedSearchForm = form(this.advancedSearchModel);
   acquisitionInformations: string[] = [];
   isAdvancedFormChanged$: Observable<boolean>;
   globalSearchButtonEvent$: Observable<boolean>;
@@ -72,20 +91,25 @@ export class AccessionRegisterAdvancedSearchComponent implements OnInit, OnDestr
 
   ngOnInit(): void {
     this.acquisitionInformations = this.accessionRegistersService.getAcquisitionInformations();
-    this.acquisitionInformationsControl = new FormControl(this.acquisitionInformations);
-    this.initForm();
+    this.advancedSearchModel.update((values) => ({ ...values, acquisitionInformations: this.acquisitionInformations }));
     this.isAdvancedFormChanged$ = this.accessionRegistersService.isAdvancedFormChanged();
     this.globalSearchButtonEvent$ = this.accessionRegistersService.getGlobalSearchButtonEvent();
-    this.valuesChangedSub = this.advancedSearchForm.valueChanges.subscribe((values) => {
-      this.dataChanged(values);
-      this.accessionRegistersService.setAdvancedSearchData(values);
-    });
+    this.valuesChangedSub = toObservable(this.advancedSearchModel, { injector: this.injector })
+      .pipe(skip(1))
+      .subscribe((values) => {
+        this.dataChanged(values);
+        this.accessionRegistersService.setAdvancedSearchData(values);
+      });
     this.resetSub = this.accessionRegistersService
       .isGlobalResetEvent()
       .pipe(
         tap((isReset) => {
           if (isReset) {
-            this.advancedSearchForm.reset({
+            // Like reactive forms reset, the fields not provided are reset to null
+            this.advancedSearchForm().reset({
+              originatingAgencies: null,
+              archivalAgreements: null,
+              archivalProfiles: null,
               acquisitionInformations: this.acquisitionInformations,
               elimination: 'all',
               transferReply: 'all',
@@ -109,18 +133,6 @@ export class AccessionRegisterAdvancedSearchComponent implements OnInit, OnDestr
 
     this.accessionRegistersService.setAdvancedFormHaveChanged(haveChanged);
     this.accessionRegistersService.setGlobalSearchButtonEvent(false);
-  }
-
-  private initForm() {
-    this.advancedSearchForm = this.formBuilder.group({
-      originatingAgencies: [[], []],
-      archivalAgreements: [[], []],
-      archivalProfiles: [[], []],
-      acquisitionInformations: this.acquisitionInformationsControl,
-      elimination: ['all', []],
-      transferReply: ['all', []],
-      originatingAgencyReassignment: ['all', []],
-    });
   }
 
   ngOnDestroy(): void {

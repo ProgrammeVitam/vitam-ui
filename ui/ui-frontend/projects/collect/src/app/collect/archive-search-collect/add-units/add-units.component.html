@@ -22,7 +22,7 @@
             <vitamui-select
               class="w-100"
               [placeholder]="'COLLECT.MODAL.IMPORT_TYPE_PLACEHOLDER' | translate"
-              [formControl]="importTypeControl"
+              [formField]="addUnitsForm.importType"
               [options]="[
                 { key: 'DIRECTORIES_FILES', label: 'COLLECT.MODAL.IMPORT_TYPE_DIRECTORIES_FILES_V0' | translate },
                 { key: 'COMPRESSED', label: 'COLLECT.MODAL.IMPORT_TYPE_COMPRESSED' | translate },
@@ -30,7 +30,6 @@
               ]"
               [enableSearch]="false"
               (change)="resetFilesToImportList()"
-              required
             >
             </vitamui-select>
             @if (importType === ImportType.DIRECTORIES_FILES) {
@@ -39,12 +38,12 @@
                 [directoryMode]="true"
                 [maxSizeInBytes]="uploadMaxSizeInBytes"
                 [multiple]="true"
-                [formControl]="filesToUploadControl"
+                [formField]="filesToUploadForm"
               >
               </vitamui-file-selector>
             }
             @if (importType === ImportType.COMPRESSED || importType === ImportType.SIP) {
-              <vitamui-file-selector class="w-100" [extensions]="['.zip']" [formControl]="filesToUploadControl"> </vitamui-file-selector>
+              <vitamui-file-selector class="w-100" [extensions]="['.zip']" [formField]="filesToUploadForm"> </vitamui-file-selector>
             }
           </div>
         </div>
@@ -52,7 +51,7 @@
     </mat-dialog-content>
 
     <mat-dialog-actions>
-      <vitamui-next-step [disabled]="filesToUploadControl.invalid"></vitamui-next-step>
+      <vitamui-next-step [disabled]="filesToUploadForm().invalid()"></vitamui-next-step>
       <button (click)="cancel()" class="btn cancel link" type="button">
         {{ 'COMMON.UNDO' | translate }}
       </button>
@@ -65,7 +64,7 @@
       <div class="main-content">
         <div class="form-group">
           @if (projectUnits()) {
-            <vitamui-library-filing-plan [mode]="FilingPlanMode.SOLO" [formControl]="linkParentIdControl" [dataSource]="projectUnits()">
+            <vitamui-library-filing-plan [mode]="FilingPlanMode.SOLO" [formField]="addUnitsForm.linkParentId" [dataSource]="projectUnits()">
             </vitamui-library-filing-plan>
           }
         </div>

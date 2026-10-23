@@ -4,12 +4,12 @@
   [title]="['INGEST_CONTRACT.UPDATE_NODE_DIALOG.TITLE' | translate, 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL' | translate]"
 ></vitamui-dialog-header>
 
-<form [formGroup]="selectNodesForm" (ngSubmit)="updateIngestContractNodes()" (keydown.enter)="$event.preventDefault()">
+<form [formRoot]="selectNodesForm" (keydown.enter)="$event.preventDefault()">
   <vitamui-stepper #stepper>
     <cdk-step>
       <mat-dialog-content>
         <vitamui-library-filing-plan
-          [formControl]="linkParentIdControl"
+          [formField]="selectNodesForm.linkParentId"
           [tenantIdentifier]="tenantIdentifier"
           [mode]="FILING_PLAN_MODE_SOLO"
         ></vitamui-library-filing-plan>
@@ -26,7 +26,7 @@
     <cdk-step>
       <mat-dialog-content>
         <div class="d-flex align-items-center mb-3">
-          <mat-button-toggle-group [formControl]="checkParentLinkControl" class="vitamui-button-toggle-group">
+          <mat-button-toggle-group [formField]="selectNodesForm.checkParentLink" class="vitamui-button-toggle-group">
             <mat-button-toggle [value]="'AUTHORIZED'">
               {{ 'INGEST_CONTRACT.TAB.ATTACHEMENT.CONTROL.AUTHORIZED' | translate }}
             </mat-button-toggle>
@@ -47,7 +47,7 @@
         </div>
 
         <vitamui-library-filing-plan
-          [formControl]="checkParentIdControl"
+          [formField]="selectNodesForm.checkParentId"
           [tenantIdentifier]="tenantIdentifier"
           [mode]="FILING_PLAN_MODE_INC"
         ></vitamui-library-filing-plan>

@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, computed, effect, inject, Injector, OnDestroy, OnInit, signal } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, computed, effect, inject, OnDestroy, signal } from '@angular/core';
+import { applyWhen, form, FormField, FormRoot, maxLength, minLength, required } from '@angular/forms/signals';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
-import { ApplicationService, MiscValidators, Option, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { allowedIdentifier, ApplicationService, Option, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { ProfileType } from '../../models/profile-type.enum';
-import { ProfileVersionOptions } from '../../models/profile-version.enum';
+import { ProfileVersion, ProfileVersionOptions } from '../../models/profile-version.enum';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ProfileService } from '../../core/services/profile.service';
 import { Subscription } from 'rxjs';
@@ -51,10 +51,17 @@ import { PastisGenericPopupComponent } from '../../shared/pastis-generic-popup/p
 
 import { IdentifierExistsValidator } from '../../validators/IdentifierExistsValidator';
 
+interface CreateProfilNoticeForm extends Notice {
+  profileType: ProfileType;
+  profileVersion: ProfileVersion | null;
+  additionalProperties: boolean | null;
+}
+
 @Component({
   imports: [
     VitamUILibraryModule,
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     VitamUICommonModule,
     PastisGenericPopupComponent,
     TranslatePipe,
@@ -64,67 +71,88 @@ import { IdentifierExistsValidator } from '../../validators/IdentifierExistsVali
   selector: 'app-create-profil-notice',
   templateUrl: './create-profil-notice.component.html',
 })
-export class CreateProfilNoticeComponent implements OnInit, OnDestroy {
+export class CreateProfilNoticeComponent implements OnDestroy {
   private readonly profileService = inject(ProfileService);
   private readonly applicationService = inject(ApplicationService);
   private readonly translateService = inject(TranslateService);
-  private readonly fb = inject(FormBuilder);
-  private readonly injector = inject(Injector);
   private readonly dialogRef = inject<MatDialogRef<CreateProfilNoticeComponent>>(MatDialogRef);
   private readonly identifierValidator = inject(IdentifierExistsValidator);
 
-  notice: Notice;
-  noticeForm: FormGroup;
+  readonly notice: Notice = {
+    description: '',
+    name: '',
+    status: 'ACTIVE',
+    identifier: '',
+  };
   stepIndex = 0;
-  statusOptions: Option[];
-  profileType: ProfileType;
+  readonly statusOptions: Option[] = [
+    { key: 'ACTIVE', label: this.translateService.instant('PROFILE.POP_UP_CREATION_NOTICE.CHOICE.PROFIL_ACTIF') },
+    { key: 'INACTIVE', label: this.translateService.instant('PROFILE.POP_UP_CREATION_NOTICE.CHOICE.PROFIL_INACTIF') },
+  ];
   controlSchema: any;
   subscriptions = new Subscription();
 
-  profileTypeSignal = signal(ProfileType.PA);
-  externalIdentifierEnabledSignal = signal(false);
-  readonly modePUA = computed(() => this.profileTypeSignal() === ProfileType.PUA);
+  readonly externalIdentifierEnabledSignal = signal(false);
+
+  readonly noticeForm = form(
+    signal<CreateProfilNoticeForm>({
+      profileType: ProfileType.PA,
+      profileVersion: null,
+      ...this.notice,
+      additionalProperties: null,
+    }),
+    (path) => {
+      required(path.profileType);
+      required(path.profileVersion);
+      applyWhen(
+        path,
+        () => this.externalIdentifierEnabledSignal(),
+        (enabledPath) => {
+          required(enabledPath.identifier);
+          minLength(enabledPath.identifier, 2);
+          maxLength(enabledPath.identifier, 100);
+          allowedIdentifier(enabledPath.identifier);
+        },
+      );
+      this.identifierValidator.identifierExists(path.identifier, () => this.modePUA());
+      required(path.name);
+    },
+    {
+      submission: {
+        action: async () => {
+          this.validate();
+          return undefined;
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
+
+  readonly modePUA = computed(() => this.noticeForm.profileType().value() === ProfileType.PUA);
 
   readonly ProfileType = ProfileType;
   readonly ProfileVersionOptions = ProfileVersionOptions;
-  identifierControl: FormControl;
 
-  ngOnInit() {
-    this.notice = {
-      description: '',
-      name: '',
-      status: 'ACTIVE',
-      identifier: '',
-    };
-    this.statusOptions = [
-      { key: 'ACTIVE', label: this.translateService.instant('PROFILE.POP_UP_CREATION_NOTICE.CHOICE.PROFIL_ACTIF') },
-      { key: 'INACTIVE', label: this.translateService.instant('PROFILE.POP_UP_CREATION_NOTICE.CHOICE.PROFIL_INACTIF') },
-    ];
-
-    this.noticeForm = this.fb.group({
-      profileType: [ProfileType.PA, Validators.required],
-      profileVersion: [null, Validators.required],
-      identifier: [
-        this.notice.identifier,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100), MiscValidators.allowedIdentifier],
-        [this.identifierValidator.checkIdentifierExists(() => this.modePUA())],
-      ],
-      name: [this.notice.name, Validators.required],
-      status: [this.notice.status],
-      description: [this.notice.description],
-      additionalProperties: [this.controlSchema?.additionalProperties],
+  constructor() {
+    // Checks whether the external identifier is enabled for the selected profile type
+    effect((onCleanup) => {
+      const subscription = this.applicationService
+        .isApplicationExternalIdentifierEnabled(this.modePUA() ? 'ARCHIVE_UNIT_PROFILE' : 'PROFILE')
+        .subscribe((enabled) => this.externalIdentifierEnabledSignal.set(enabled));
+      onCleanup(() => subscription.unsubscribe());
     });
-
-    this.identifierControl = this.noticeForm.get('noticeDetails.identifier') as FormControl;
-
-    this.setupIdentifierValidationEffect();
-    this.handleProfileTypeChange();
   }
 
-  isStepOneValid(): any {
-    const profileType = this.noticeForm.controls['profileType'];
-    const profileVersion = this.noticeForm.controls['profileVersion'];
-    return profileType.valid && profileVersion.valid;
+  isStepOneValid(): boolean {
+    return this.noticeForm.profileType().valid() && this.noticeForm.profileVersion().valid();
+  }
+
+  setProfileType(profileType: string) {
+    this.noticeForm.profileType().value.set(profileType as ProfileType);
+    if (profileType === ProfileType.PUA) {
+      this.controlSchema = JSON.parse(this.profileService.controlSchema.getValue());
+      this.noticeForm.additionalProperties().value.set(this.controlSchema?.additionalProperties ?? null);
+    }
   }
 
   onClose() {
@@ -137,21 +165,22 @@ export class CreateProfilNoticeComponent implements OnInit, OnDestroy {
 
   validate() {
     if (!this.externalIdentifierEnabledSignal()) {
-      this.noticeForm.controls['identifier'].setValue(this.noticeForm.controls['name'].value);
+      this.noticeForm.identifier().value.set(this.noticeForm.name().value());
     }
-    if (this.noticeForm.invalid) {
+    if (this.noticeForm().invalid()) {
       return;
     }
     this.updateControlSchema();
+    const data = this.noticeForm().value();
     this.dialogRef.close({
       success: true,
       action: 'none',
-      data: this.noticeForm.getRawValue(),
+      data: { ...data, additionalProperties: data.additionalProperties ?? undefined },
     });
   }
 
   private updateControlSchema(): void {
-    const additionalProps = this.noticeForm.controls['additionalProperties'].value;
+    const additionalProps = this.noticeForm.additionalProperties().value() ?? undefined;
 
     const updatedPatternProperties = {
       ...this.controlSchema?.patternProperties,
@@ -176,51 +205,6 @@ export class CreateProfilNoticeComponent implements OnInit, OnDestroy {
   }
 
   isFormValid(): boolean {
-    return this.noticeForm.valid;
-  }
-
-  private setupIdentifierValidationEffect(): void {
-    // Track the changes in the profileType and externalIdentifierEnabled signals.
-    effect(
-      () => {
-        const isPUA = this.modePUA();
-        const isEnabled = this.externalIdentifierEnabledSignal();
-        const identifierCtrl = this.noticeForm.controls['identifier'];
-        const appType = isPUA ? 'ARCHIVE_UNIT_PROFILE' : 'PROFILE';
-
-        // check for external identifier
-        this.subscriptions.add(
-          this.applicationService.isApplicationExternalIdentifierEnabled(appType).subscribe((enabled) => {
-            this.externalIdentifierEnabledSignal.set(enabled);
-          }),
-        );
-
-        if (isEnabled) {
-          identifierCtrl.setValidators([
-            Validators.required,
-            Validators.minLength(2),
-            Validators.maxLength(100),
-            MiscValidators.allowedIdentifier,
-          ]);
-        } else {
-          identifierCtrl.clearValidators();
-        }
-
-        identifierCtrl.updateValueAndValidity();
-      },
-      { injector: this.injector },
-    );
-  }
-
-  private handleProfileTypeChange(): void {
-    this.subscriptions.add(
-      this.noticeForm.get('profileType')?.valueChanges.subscribe((value: ProfileType) => {
-        this.profileTypeSignal.set(value);
-        if (value === ProfileType.PUA) {
-          this.controlSchema = JSON.parse(this.profileService.controlSchema.getValue());
-          this.noticeForm.controls['additionalProperties'].setValue(this.controlSchema?.additionalProperties);
-        }
-      }),
-    );
+    return this.noticeForm().valid();
   }
 }

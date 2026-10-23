@@ -12,9 +12,13 @@ This is a form component that allows the user to select an option from a list of
 
 <div class="gap-2">
   <p>Toggle the options and see the result below:</p>
-  <vitamui-slide-toggle class="col" [(ngModel)]="enableSearch">Display search bar</vitamui-slide-toggle>
-  <vitamui-slide-toggle class="col" [(ngModel)]="enableSelectAll">Display "select all" option (in multiple mode) </vitamui-slide-toggle>
-  <vitamui-slide-toggle class="col" [(ngModel)]="enableDisplaySelected">Display "cart" (in multiple mode) </vitamui-slide-toggle>
+  <vitamui-slide-toggle class="col" [formField]="displayOptions.enableSearch">Display search bar</vitamui-slide-toggle>
+  <vitamui-slide-toggle class="col" [formField]="displayOptions.enableSelectAll"
+    >Display "select all" option (in multiple mode)
+  </vitamui-slide-toggle>
+  <vitamui-slide-toggle class="col" [formField]="displayOptions.enableDisplaySelected"
+    >Display "cart" (in multiple mode)
+  </vitamui-slide-toggle>
 </div>
 
 @if (multiSelectOptions$ | async; as multiSelectOptions) {
@@ -28,14 +32,14 @@ This is a form component that allows the user to select an option from a list of
               <h4>{{ state.id + ' (' + entry.type + ')' }}</h4>
               <vitamui-select
                 [attr.data-active]="state.id === 'Active'"
-                [formControl]="state.control"
+                [formField]="state.field"
                 [options]="multiSelectOptions"
                 [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
                 [searchBarPlaceHolder]="'INPUT.SEARCH_PLACEHOLDER' | translate"
                 [multiple]="config.multiple"
-                [enableSearch]="enableSearch"
-                [enableSelectAll]="enableSelectAll"
-                [enableDisplaySelected]="enableDisplaySelected"
+                [enableSearch]="displayOptions.enableSearch().value()"
+                [enableSelectAll]="displayOptions.enableSelectAll().value()"
+                [enableDisplaySelected]="displayOptions.enableDisplaySelected().value()"
                 [errorMessageMap]="{
                   pattern: 'ERRORS.CONTAINS_GB',
                 }"
@@ -50,14 +54,14 @@ This is a form component that allows the user to select an option from a list of
 
   <h3>Wrapper</h3>
   <p>The component is wrapped in another component that requires validating/cancelling the filled value before "emitting" it.</p>
-  <vitamui-form-field-value-wrapper [formControl]="wrapperControl">
+  <vitamui-form-field-value-wrapper [formField]="wrapperField">
     <vitamui-select
       [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
       [options]="multiSelectOptions"
       [enableSearch]="false"
     ></vitamui-select>
   </vitamui-form-field-value-wrapper>
-  <div><strong>Value: </strong>{{ wrapperControl.value | json }}</div>
+  <div><strong>Value: </strong>{{ wrapperField().value() | json }}</div>
 
   <h3>Loading</h3>
   <p>
@@ -68,8 +72,8 @@ This is a form component that allows the user to select an option from a list of
     [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
     [options]="loadingOptions"
     [multiple]="true"
-    [enableSearch]="enableSearch"
-    [enableSelectAll]="enableSelectAll"
-    [enableDisplaySelected]="enableDisplaySelected"
+    [enableSearch]="displayOptions.enableSearch().value()"
+    [enableSelectAll]="displayOptions.enableSelectAll().value()"
+    [enableDisplaySelected]="displayOptions.enableDisplaySelected().value()"
   ></vitamui-select>
 }

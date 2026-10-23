@@ -34,9 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, inject, viewChild, input } from '@angular/core';
+import { Component, ElementRef, forwardRef, inject, viewChild, input, signal } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { FormBuilder, FormGroup, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { form, FormField, required } from '@angular/forms/signals';
 import { MatOption, MatSelect } from '@angular/material/select';
 
 import { EditableFieldComponent } from '../editable-field.component';
@@ -50,21 +51,17 @@ export const EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR: any = {
   multi: true,
 };
 
+interface EmailForm {
+  emailFirstPart: string | null;
+  domain: string | null;
+}
+
 @Component({
   selector: 'vitamui-common-editable-email-input',
   templateUrl: './editable-email-input.component.html',
   styleUrls: ['./editable-email-input.component.scss'],
   providers: [EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR],
-  imports: [
-    CdkOverlayOrigin,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormField,
-    MatSelect,
-    MatOption,
-    MatProgressSpinner,
-    CdkConnectedOverlay,
-  ],
+  imports: [CdkOverlayOrigin, FormField, MatFormField, MatSelect, MatOption, MatProgressSpinner, CdkConnectedOverlay],
 })
 export class EditableEmailInputComponent extends EditableFieldComponent {
   private readonly document = inject<Document>(DOCUMENT);
@@ -72,23 +69,20 @@ export class EditableEmailInputComponent extends EditableFieldComponent {
   readonly select = viewChild<MatSelect>('select');
 
   constructor() {
-    const formBuilder = inject(FormBuilder);
     const elementRef = inject(ElementRef);
 
     super(elementRef);
-
-    this.formEmail = formBuilder.group({
-      emailFirstPart: null,
-      domain: [null],
-    });
-
-    this.formEmail.valueChanges.subscribe((emailData) => {
-      this.control.setValue(emailData.emailFirstPart + '@' + emailData.domain);
-      this.control.markAsDirty();
-    });
   }
 
-  formEmail: FormGroup;
+  private readonly emailModel = signal<EmailForm>({ emailFirstPart: null, domain: null });
+  readonly formEmail = form(this.emailModel, (path) => required(path.domain));
+
+  /** Called on user changes only (not when the value is written) */
+  protected onEmailChange(changes: Partial<EmailForm>) {
+    const { emailFirstPart, domain } = { ...this.emailModel(), ...changes };
+    this.control.setValue(emailFirstPart + '@' + domain);
+    this.control.markAsDirty();
+  }
 
   readonly domains = input<string[]>(undefined);
 
@@ -97,8 +91,7 @@ export class EditableEmailInputComponent extends EditableFieldComponent {
     this.originValue = value;
     if (value) {
       const splittedEmail = value.split('@');
-      this.formEmail.get('emailFirstPart').setValue(splittedEmail[0], { emitEvent: false });
-      this.formEmail.get('domain').setValue(splittedEmail[1], { emitEvent: false });
+      this.emailModel.set({ emailFirstPart: splittedEmail[0] ?? null, domain: splittedEmail[1] ?? null });
     }
   }
 

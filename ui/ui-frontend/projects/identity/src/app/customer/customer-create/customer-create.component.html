@@ -6,18 +6,18 @@
     'CUSTOMER.INFORMATIONS.MODAL.ACCESS_TITLE' | translate,
     '',
     '',
-    'CUSTOMER.OWNER.CREATE.TITLE' | translate: { name: customerInfo.name },
+    'CUSTOMER.OWNER.CREATE.TITLE' | translate: { name: customerInfo().name },
     'CUSTOMER.OWNER.MODAL.SAFE_TITLE' | translate: { name: getOwnerName() },
   ]"
 ></vitamui-dialog-header>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()" id="formCreateCustomer">
+<form [formRoot]="form" id="formCreateCustomer">
   <vitamui-stepper #stepper (selectionChange)="stepIndex = $event.selectedIndex">
     <cdk-step>
       <mat-dialog-content class="gap-3 align-items-stretch">
         <vitamui-input
           class="col-6 pl-0"
-          formControlName="code"
+          [formField]="form.code"
           [placeholder]="'CUSTOMER.INFORMATIONS.CODE' | translate"
           [errorMessageMap]="{
             pattern: 'COMMON.ERROR.WRONG_FORMAT' | translate,
@@ -27,53 +27,51 @@
         </vitamui-input>
 
         <div class="d-flex">
-          <vitamui-input class="col-6 pl-0" formControlName="name" [placeholder]="'CUSTOMER.INFORMATIONS.NAME' | translate">
+          <vitamui-input class="col-6 pl-0" [formField]="form.name" [placeholder]="'CUSTOMER.INFORMATIONS.NAME' | translate">
           </vitamui-input>
-          <vitamui-input class="col-6" formControlName="companyName" [placeholder]="'CUSTOMER.INFORMATIONS.SOCIAL_REASON' | translate">
+          <vitamui-input class="col-6" [formField]="form.companyName" [placeholder]="'CUSTOMER.INFORMATIONS.SOCIAL_REASON' | translate">
           </vitamui-input>
         </div>
 
-        <ng-container formGroupName="address">
-          <vitamui-input class="col-12 pl-0" formControlName="street" [placeholder]="'COMMON.ADRESS.STREET' | translate"> </vitamui-input>
+        <vitamui-input class="col-12 pl-0" [formField]="form.address.street" [placeholder]="'COMMON.ADRESS.STREET' | translate">
+        </vitamui-input>
 
-          <div class="d-flex">
-            <vitamui-input class="col-4 pl-0" formControlName="zipCode" [placeholder]="'COMMON.ADRESS.ZIPCODE' | translate">
-            </vitamui-input>
+        <div class="d-flex">
+          <vitamui-input class="col-4 pl-0" [formField]="form.address.zipCode" [placeholder]="'COMMON.ADRESS.ZIPCODE' | translate">
+          </vitamui-input>
 
-            <vitamui-input class="col-4" formControlName="city" [placeholder]="'COMMON.ADRESS.CITY' | translate"> </vitamui-input>
+          <vitamui-input class="col-4" [formField]="form.address.city" [placeholder]="'COMMON.ADRESS.CITY' | translate"> </vitamui-input>
 
-            <vitamui-select
-              class="col-4"
-              formControlName="country"
-              [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
-              [options]="countries"
-              [enableSearch]="false"
-            ></vitamui-select>
-          </div>
-        </ng-container>
+          <vitamui-select
+            class="col-4"
+            [formField]="form.address.country"
+            [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
+            [options]="countries"
+            [enableSearch]="false"
+          ></vitamui-select>
+        </div>
 
-        <vitamui-input class="col-12 pl-0" formControlName="internalCode" [placeholder]="'CUSTOMER.INFORMATIONS.INTERNAL_CODE' | translate">
+        <vitamui-input
+          class="col-12 pl-0"
+          [formField]="form.internalCode"
+          [placeholder]="'CUSTOMER.INFORMATIONS.INTERNAL_CODE' | translate"
+        >
         </vitamui-input>
 
         <div class="d-flex">
           <label for="alerte" class="inline-label label-alerte">
             Alerte pour les utilisateurs inactifs <span class="required-marker">*</span><br />
           </label>
-          <vitamui-slide-toggle formControlName="gdprAlert" [disabled]="gdprReadOnlyStatus"></vitamui-slide-toggle>
+          <vitamui-slide-toggle [formField]="form.gdprAlert"></vitamui-slide-toggle>
           <label for="duréealerte" class="inline-label label-alertDelay">
             Durée d'alerte sur les utilisateurs inactifs (par mois) <span class="required-marker">*</span>
           </label>
-          <vitamui-input
-            [disabled]="gdprReadOnlyStatus || !form.get('gdprAlert').value"
-            formControlName="gdprAlertDelay"
-            placeholder="Durée d'alerte"
-          >
-          </vitamui-input>
+          <vitamui-input [formField]="form.gdprAlertDelay" placeholder="Durée d'alerte"> </vitamui-input>
         </div>
 
         <vitamui-select
           class="col-12 pl-0"
-          formControlName="language"
+          [formField]="form.language"
           [placeholder]="'CUSTOMER.INFORMATIONS.DEFAULT_LANGUAGE' | translate"
           [options]="[
             { key: 'ENGLISH', label: 'COMMON.LANGUAGE.ENGLISH' | translate },
@@ -102,7 +100,7 @@
 
           <vitamui-select
             class="col"
-            formControlName="passwordRevocationDelay"
+            [formField]="form.passwordRevocationDelay"
             [placeholder]="'CUSTOMER.INFORMATIONS.PASSWORDS_DURATION' | translate"
             [options]="[
               { key: 3, label: 'CUSTOMER.INFORMATIONS.MODAL.PWD_REVOCATION_THREE' | translate },
@@ -117,7 +115,7 @@
 
         <div class="col-12 p-0 mt-3">
           <div class="text medium bold">{{ 'CUSTOMER.INFORMATIONS.VALIDATIONS' | translate }} <span class="text danger">*</span></div>
-          <mat-button-toggle-group formControlName="otp" #group="matButtonToggleGroup" class="vitamui-button-toggle-group mt-2">
+          <mat-button-toggle-group [formField]="form.otp" #group="matButtonToggleGroup" class="vitamui-button-toggle-group mt-2">
             <mat-button-toggle value="DISABLED">{{ 'CUSTOMER.INFORMATIONS.MODAL.OTP_DISABLED' | translate }} </mat-button-toggle>
             <mat-button-toggle value="OPTIONAL">{{ 'CUSTOMER.INFORMATIONS.MODAL.OTP_OPTIONAL' | translate }} </mat-button-toggle>
             <mat-button-toggle value="MANDATORY">
@@ -133,10 +131,10 @@
           <div class="mb-4 text normal bold light">{{ 'CUSTOMER.INFORMATIONS.MODAL.DOMAINS_RESTRICTION_DESC' | translate }}</div>
 
           <app-domains-input
-            formControlName="emailDomains"
+            [formField]="form.emailDomains"
             [placeholder]="'CUSTOMER.INFORMATIONS.MODAL.DOMAINS_PLACEHOLDER' | translate"
-            [selected]="form.get('defaultEmailDomain').value"
-            (selectedChange)="form.get('defaultEmailDomain').setValue($event)"
+            [selected]="form.defaultEmailDomain().value()"
+            (selectedChange)="form.defaultEmailDomain().value.set($event)"
           ></app-domains-input>
         </div>
       </mat-dialog-content>
@@ -183,19 +181,14 @@
 
     <cdk-step>
       <mat-dialog-content>
-        <app-owner-form [formControl]="$any(form.get(['owners', 0]))" [customerInfo]="customerInfo"></app-owner-form>
+        <app-owner-form [formField]="form.owners[0]" [customerInfo]="customerInfo()"></app-owner-form>
         <p class="hint">
           {{ 'CUSTOMER.OWNER.CREATE.PROOF_ELEMENTS' | translate }}
         </p>
       </mat-dialog-content>
       <mat-dialog-actions>
         <div>
-          <button
-            type="button"
-            class="btn primary"
-            cdkStepperNext
-            [disabled]="form.get(['owners', 0]).pending || form.get(['owners', 0]).invalid"
-          >
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="form.owners[0]().pending() || form.owners[0]().invalid()">
             {{ 'CUSTOMER.OWNER.MODAL.ACTION_BUTTON' | translate }}
           </button>
           <ng-container *ngTemplateOutlet="cancel"></ng-container>
@@ -207,14 +200,14 @@
     <cdk-step>
       <mat-dialog-content class="gap-3 align-items-stretch">
         <vitamui-input
-          formControlName="tenantName"
+          [formField]="form.tenantName"
           [placeholder]="'CUSTOMER.OWNER.SAFE_NAME' | translate"
           [errorMessageMap]="{ uniqueName: 'CUSTOMER.OWNER.MODAL.NAME_ALREADY_EXIST' | translate }"
         >
         </vitamui-input>
 
         <vitamui-select
-          formControlName="tenantId"
+          [formField]="form.tenantId"
           [placeholder]="'CUSTOMER.OWNER.TENANT_ID' | translate"
           [options]="tenantOptions"
           [multiple]="false"
@@ -223,7 +216,7 @@
       </mat-dialog-content>
       <mat-dialog-actions>
         <div>
-          <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isLoading()">
+          <button type="submit" class="btn primary" [disabled]="form().pending() || form().invalid() || isLoading()">
             {{ 'COMMON.SUBMIT' | translate }}
           </button>
           <ng-container *ngTemplateOutlet="cancel"></ng-container>

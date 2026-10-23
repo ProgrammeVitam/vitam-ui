@@ -8,7 +8,8 @@
       </th>
       <td *matCellDef="let element; index as i" class="pastis-metadata-table-col-large check-box" mat-cell>
         <mat-checkbox
-          [(ngModel)]="element.selected"
+          [checked]="element.selected"
+          (change)="element.selected = $event.checked"
           [disabled]="isSedaObligatory(element)"
           [ngStyle]="{ 'mat-checkbox-checkmark-path': isSedaObligatory(element) ? 'grey' : '' }"
         ></mat-checkbox>
@@ -41,7 +42,12 @@
             </div>
           }
           @case ('enumeration') {
-            <mat-select [(ngModel)]="element.valeurFixe" class="mat-select-valeur-fixe" placeholder="Choisissez une valeur">
+            <mat-select
+              [value]="element.valeurFixe"
+              (valueChange)="element.valeurFixe = $event"
+              class="mat-select-valeur-fixe"
+              placeholder="Choisissez une valeur"
+            >
               <mat-option [value]=""></mat-option>
               @for (val of element.enumeration; track val) {
                 <mat-option [value]="val"

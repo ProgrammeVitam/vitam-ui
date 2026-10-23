@@ -36,7 +36,6 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -53,7 +52,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatDialogModule,
     MatMenuModule,
     MatSidenavModule,
-    FormsModule,
     UserRoutingModule,
     TranslatePipe,
     UserComponent,

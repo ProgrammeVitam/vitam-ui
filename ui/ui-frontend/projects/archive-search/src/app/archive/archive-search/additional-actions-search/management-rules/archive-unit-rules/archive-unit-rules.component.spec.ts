@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { of } from 'rxjs';
@@ -188,7 +187,6 @@ describe('ArchiveUnitRulesComponent', () => {
     await TestBed.configureTestingModule({
       imports: [VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), ArchiveUnitRulesComponent],
       providers: [
-        FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },

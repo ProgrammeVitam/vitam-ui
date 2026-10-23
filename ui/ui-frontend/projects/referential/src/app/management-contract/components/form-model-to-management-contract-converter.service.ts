@@ -35,28 +35,51 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { ManagementContract, PersistentIdentifierPolicy, PersistentIdentifierUsage, VersionRetentionPolicy } from 'vitamui-library';
+import {
+  ManagementContract,
+  PersistentIdentifierPolicy,
+  PersistentIdentifierPolicyTypeEnum,
+  PersistentIdentifierUsage,
+  StorageStrategy,
+  VersionRetentionPolicy,
+} from 'vitamui-library';
 import { Converter } from './converter';
+import { PersistentIdentifierPoliciesForm } from './management-contract-to-form-model-converter.service';
+
+/** Value of a management contract form (all the properties are optional, as each form only edits some of them) */
+export interface ManagementContractFormValue extends PersistentIdentifierPoliciesForm {
+  tenant?: number;
+  version?: number;
+  name?: string;
+  identifier?: string;
+  description?: string;
+  status?: boolean;
+  creationDate?: string;
+  lastUpdate?: string;
+  activationDate?: string;
+  deactivationDate?: string;
+  storage?: StorageStrategy;
+  versionRetentionPolicy?: any;
+}
 
 @Injectable({
   providedIn: 'root',
 })
-export class FormGroupToManagementContractConverterService implements Converter<FormGroup, ManagementContract> {
-  convert(source: FormGroup): ManagementContract {
-    const persistentIdentifierPolicyList: PersistentIdentifierPolicy[] = source.value.persistentIdentifierPolicies
-      .filter((policyFormValue: any) => policyFormValue.policyTypeOption)
-      .map((policyFormValue: any) => {
-        const persistentIdentifierUsages: PersistentIdentifierUsage[] = policyFormValue.objectUsagePolicies.map((usageFormValue: any) => {
+export class FormModelToManagementContractConverterService implements Converter<ManagementContractFormValue, ManagementContract> {
+  convert(source: ManagementContractFormValue): ManagementContract {
+    const persistentIdentifierPolicyList: PersistentIdentifierPolicy[] = source.persistentIdentifierPolicies
+      .filter((policyFormValue) => policyFormValue.policyTypeOption)
+      .map((policyFormValue) => {
+        const persistentIdentifierUsages: PersistentIdentifierUsage[] = policyFormValue.objectUsagePolicies.map((usageFormValue) => {
           return {
             intermediaryVersion: usageFormValue.intermediaryVersion,
-            initialVersion: usageFormValue.initialVersion,
+            initialVersion: usageFormValue.initialVersion as unknown as string,
             usageName: usageFormValue.objectUsage,
           };
         });
 
         return {
-          persistentIdentifierPolicyType: policyFormValue.policyTypeOption,
+          persistentIdentifierPolicyType: policyFormValue.policyTypeOption as PersistentIdentifierPolicyTypeEnum,
           persistentIdentifierUnit: policyFormValue.shouldConcernArchiveUnits,
           persistentIdentifierAuthority: policyFormValue.authority,
           persistentIdentifierUsages: persistentIdentifierUsages,
@@ -65,18 +88,18 @@ export class FormGroupToManagementContractConverterService implements Converter<
 
     const managementContract: ManagementContract = {
       id: null,
-      tenant: source.value.tenant,
-      version: source.value.version,
-      name: source.value.name,
-      identifier: source.value.identifier,
-      description: source.value.description,
-      status: source.value.status ? 'ACTIVE' : 'INACTIVE',
-      creationDate: source.value.creationDate,
-      lastUpdate: source.value.lastUpdate,
-      activationDate: source.value.activationDate,
-      deactivationDate: source.value.deactivationDate,
-      storage: source.value.storage,
-      versionRetentionPolicy: this.extractVersionRetentionPolicy(source.value),
+      tenant: source.tenant,
+      version: source.version,
+      name: source.name,
+      identifier: source.identifier,
+      description: source.description,
+      status: source.status ? 'ACTIVE' : 'INACTIVE',
+      creationDate: source.creationDate,
+      lastUpdate: source.lastUpdate,
+      activationDate: source.activationDate,
+      deactivationDate: source.deactivationDate,
+      storage: source.storage,
+      versionRetentionPolicy: this.extractVersionRetentionPolicy(source),
       persistentIdentifierPolicyList: persistentIdentifierPolicyList,
     };
 
