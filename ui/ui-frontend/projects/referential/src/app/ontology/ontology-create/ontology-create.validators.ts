@@ -65,7 +65,7 @@ export class OntologyCreateValidators {
 
   patternID = (): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
-      const regexp = /^[_#\s]|\s/;
+      const regexp = /(^[_#])|\s/;
       return regexp.test(control.value) ? { idPattern: true } : null;
     };
   };

@@ -146,7 +146,7 @@ public class VitamQueryHelper {
 
         manageFilters(orderBy, direction, select);
         if (pageNumber != null && size != null) {
-            select.setLimitFilter(pageNumber * size, size);
+            select.setLimitFilter((long) pageNumber * size, size);
         }
 
         // Manage Query
