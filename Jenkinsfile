@@ -1,4 +1,4 @@
-def IMPORTANT_BRANCH_OR_TAG = (env.BRANCH_NAME =~ /(develop|master_.*)/).matches() || env.TAG_NAME != null
+def IMPORTANT_BRANCH_OR_TAG = (env.BRANCH_NAME =~ /(develop|develop_10\.1|master_.*)/).matches() || env.TAG_NAME != null
 
 pipeline {
     agent {
