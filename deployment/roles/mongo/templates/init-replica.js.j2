@@ -3,7 +3,7 @@
  * IMPORTANT :
  * - This script creates mongod replica set on first Vitam installation.
  * - If mongod replica set already exists, it only checks for members configuration (idempotency). Adding / removing nodes is risky and is NOT supported.
- * - No need for authentication since "security.authorization" absent / removed from server configuration before script execution.
+ * - No need for authentication since "security.transitionToAuth" is set in server configuration before script execution.
  * - Some commands fail with exception (e.g. rs.config()), while others might return an error code (e.g. rs.status()). Please handle errors carefully.
  * - Once replica set initialize, we need to wait for primary node election AND for primary node to become "Writable"
  */
