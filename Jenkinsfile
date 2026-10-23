@@ -193,6 +193,7 @@ pipeline {
             when {
                 anyOf {
                     branch "develop"
+                    branch "develop_10.1"
                     branch "master_*"
                     tag pattern: "^[1-9]+(\\.rc)?(\\.[0-9]+)?\\.[0-9]+(-.*)?", comparator: "REGEXP"
                 }
