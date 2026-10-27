@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit, input, output } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, input, output, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import {
@@ -80,6 +80,7 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
   selectedProjectId$: Subject<string>;
   projectUpdated: Subscription;
   getProjectIcon = getProjectIcon;
+  totalElements = signal(0);
   // sort columns :
   messageIdentifier: keyof Project = 'messageIdentifier';
   submissionAgencyIdentifier: keyof Project = 'submissionAgencyIdentifier';
@@ -98,6 +99,9 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
   }
 
   ngOnInit(): void {
+    this.updatedData.subscribe(() => {
+      this.totalElements.set(this.projectsService.getTotalElements ?? 0);
+    });
     this.searchProject();
 
     this.projectUpdated = this.projectsService.getUpdatedProject$().subscribe((projectUpdated) => {

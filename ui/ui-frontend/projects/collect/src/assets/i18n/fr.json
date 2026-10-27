@@ -143,12 +143,19 @@
       "POPUP_ACTIONS_TITLE": "Périmètre d’application des modifications",
       "POPUP_ACTIONS_CONTENT_MAJ": "Les modifications effectuées seront appliquées uniquement sur les fichiers nouvellement importés dans la transaction en cours et sur les nouvelles transactions"
     },
-    "SEARCH_PLACEHOLDER": "Code et intitulé du versement, service versant",
+    "SEARCH_PLACEHOLDER": "Code et intitulé du versement ou de la transaction, service versant, service producteur",
     "APP_BREADCRUMB": "Collecte et préparation des versements",
     "NB_ENTRIES": "{{nb}} projets",
     "NB_ENTRIES_TRANSACTIONS": "{{nb}} transactions",
     "SINGLE_TRANSACTION": "{{nb}} transaction",
     "PROJECT_LIST_TITLE": "Les projets de versements",
+    "PROJECTS_TAB_LABEL": "{{nb}} projets créés",
+    "FIELD_ORIGINATING_AGENCY_IDENTIFIER": "Service producteur",
+    "TRANSACTIONS_TO_PROCESS": {
+      "TAB_LABEL": "{{nb}} transactions à traiter",
+      "NB_ENTRIES": "{{nb}} transactions à traiter",
+      "SINGLE_TRANSACTION": "{{nb}} transaction à traiter"
+    },
     "INGEST_LIST_TITLE": "Versements du projet",
     "CREATE_PROJECT": "Créer un projet de versement",
     "CONFIRM_UPLOAD_FILES_TITLE": "Demande de validation",

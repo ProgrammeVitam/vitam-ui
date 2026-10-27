@@ -53,5 +53,6 @@ export interface Transaction extends Id {
   acquisitionInformation?: string;
   creationDate?: Date;
   lastUpdate?: Date;
+  automaticIngest?: boolean;
   batches?: Batch[];
 }

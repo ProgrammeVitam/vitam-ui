@@ -50,8 +50,10 @@ import { CreateProjectComponent } from './create-project/create-project.componen
 import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectsService } from './projects.service';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { NgClass } from '@angular/common';
 import { ProjectPreviewComponent } from './project-preview/project-preview.component';
+import { TransactionsToProcessListComponent } from '../transactions/transactions-to-process-list/transactions-to-process-list.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -67,6 +69,9 @@ import { TranslatePipe } from '@ngx-translate/core';
     VitamuiTitleBreadcrumbComponent,
     VitamuiBannerComponent,
     ProjectListComponent,
+    TransactionsToProcessListComponent,
+    MatTabGroup,
+    MatTab,
     TranslatePipe,
   ],
 })
@@ -77,8 +82,10 @@ export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
   projectId: string;
   isLPExtended = false;
   createDialogSub: Subscription;
+  selectedTabIndex = 1;
 
   readonly projectListComponent = viewChild(ProjectListComponent);
+  readonly transactionsToProcessListComponent = viewChild(TransactionsToProcessListComponent);
 
   constructor() {
     const projectsService = inject(ProjectsService);
@@ -131,5 +138,6 @@ export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
 
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'archivalAgreement', Direction.ASCENDANT, criteria);
     this.projectListComponent().search(pageRequest);
+    this.transactionsToProcessListComponent()?.searchByQuery(event);
   }
 }

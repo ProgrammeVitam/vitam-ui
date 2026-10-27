@@ -1,0 +1,166 @@
+<div class="row">
+  <div class="col mb-2">
+    <h5>
+      {{
+        (totalElements() <= 1 ? 'COLLECT.TRANSACTIONS_TO_PROCESS.SINGLE_TRANSACTION' : 'COLLECT.TRANSACTIONS_TO_PROCESS.NB_ENTRIES')
+          | translate: { nb: totalElements() }
+      }}
+    </h5>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <div vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+      <table>
+        <thead>
+          <tr class="vitamui-table-rows">
+            <th>
+              <!-- icon -->
+            </th>
+            <th>
+              <div class="row flex-nowrap">
+                <span class="no-wrap">{{ 'COLLECT.FIELD_MESSAGE_IDENTIFIER' | translate }}</span>
+                <vitamui-order-by-button
+                  [orderByKey]="messageIdentifier"
+                  [(direction)]="direction"
+                  [(orderBy)]="column"
+                  (directionChange)="changeDirection($event)"
+                  (orderByChange)="changeColumn($event)"
+                  (orderChange)="sortTable()"
+                ></vitamui-order-by-button>
+              </div>
+            </th>
+            <th>
+              <div class="row flex-nowrap">
+                <span class="no-wrap">{{ 'COLLECT.FIELD_ORIGINATING_AGENCY_IDENTIFIER' | translate }}</span>
+                <vitamui-order-by-button
+                  [orderByKey]="originatingAgencyIdentifier"
+                  [(direction)]="direction"
+                  [(orderBy)]="column"
+                  (directionChange)="changeDirection($event)"
+                  (orderByChange)="changeColumn($event)"
+                  (orderChange)="sortTable()"
+                ></vitamui-order-by-button>
+              </div>
+            </th>
+            <th>
+              <div class="row flex-nowrap">
+                <span class="no-wrap">{{ 'COLLECT.FIELD_LAST_MODIFY_ON' | translate }}</span>
+                <vitamui-order-by-button
+                  [orderByKey]="lastUpdate"
+                  [(direction)]="direction"
+                  [(orderBy)]="column"
+                  (directionChange)="changeDirection($event)"
+                  (orderByChange)="changeColumn($event)"
+                  (orderChange)="sortTable()"
+                ></vitamui-order-by-button>
+              </div>
+            </th>
+            <th>
+              <div class="row flex-nowrap">
+                <span class="no-wrap">{{ 'COLLECT.FIELD_STATUS_TRANSACTION' | translate }}</span>
+                <vitamui-order-by-button
+                  [orderByKey]="status"
+                  [(direction)]="direction"
+                  [(orderBy)]="column"
+                  (directionChange)="changeDirection($event)"
+                  (orderByChange)="changeColumn($event)"
+                  (orderChange)="sortTable()"
+                ></vitamui-order-by-button>
+              </div>
+            </th>
+            <th>
+              <!-- errors -->
+            </th>
+            <th>
+              <!-- actions -->
+            </th>
+          </tr>
+        </thead>
+        <tbody class="vitamui-table-body">
+          @for (transaction of dataSource(); track transaction) {
+            <tr class="vitamui-table-rows vitamui-row align-items-center" (click)="searchArchiveUnitsByTransaction(transaction)">
+              <td>
+                <i
+                  class="vitamui-icon {{ getTransactionIcon(transaction) }}"
+                  [ngClass]="
+                    transactionStatusVisualColor(transaction.status)
+                      ? 'status-badge status-badge-' + transactionStatusVisualColor(transaction.status)
+                      : ''
+                  "
+                ></i>
+              </td>
+              <td>{{ transaction.messageIdentifier }}</td>
+              <td>
+                {{ transaction.originatingAgencyIdentifier }}
+                @if (getAgencyName(transaction.originatingAgencyIdentifier)) {
+                  <span class="text small">- {{ getAgencyName(transaction.originatingAgencyIdentifier) }}</span>
+                }
+              </td>
+              <td>{{ transaction.lastUpdate | dateTime: 'dd/MM/yyyy HH:mm:ss' | empty }}</td>
+              <td>
+                <div class="text" [ngClass]="getStatusColorClass(transaction)">
+                  {{ 'COLLECT.PROJECT_TRANSACTION_PREVIEW.STATUS.' + transaction.status | translate }}
+                </div>
+              </td>
+              <td>
+                @if (hasBatchInError(transaction)) {
+                  <i class="vitamui-icon vitamui-icon-warning danger" [matTooltip]="'COLLECT.BATCH_ERROR_RECORDED' | translate"></i>
+                }
+              </td>
+              <td>
+                <div class="hgap-2 justify-content-end" (click)="stopPropagation($event)">
+                  <vitamui-menu-button
+                    [icon]="'vitamui-icon-more-horiz'"
+                    [overlayPos]="'end'"
+                    menuButtonSize="medium"
+                    [disabled]="!transactionHasActions(transaction)"
+                  >
+                    <button mat-menu-item (click)="searchArchiveUnitsByTransaction(transaction)">
+                      {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.SHOW_PROJECT_ARCHIVE_UNITS' | translate }}
+                    </button>
+                    @switch (transaction.status) {
+                      @case (TransactionStatus.OPEN) {
+                        <button mat-menu-item [disabled]="!hasCloseTransactionRole()" (click)="validateTransaction(transaction)">
+                          {{ 'COLLECT.VALIDATE_ACTION' | translate }}
+                        </button>
+                      }
+                      @case (TransactionStatus.VALIDATED) {
+                        <button mat-menu-item [disabled]="!hasSendTransactionRole()" (click)="sendTransaction(transaction)">
+                          {{ 'COLLECT.INGEST_ACTION' | translate }}
+                        </button>
+                      }
+                      @default {
+                        <button mat-menu-item [disabled]="!hasEditTransactionRole()" (click)="editTransaction(transaction)">
+                          {{ 'COLLECT.EDIT_ACTION' | translate }}
+                        </button>
+                      }
+                    }
+                    <button mat-menu-item [disabled]="!hasAbortTransactionRole()" (click)="abortTransaction(transaction)">
+                      {{ 'COLLECT.ABORT_ACTION' | translate }}
+                    </button>
+                  </vitamui-menu-button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      @if (!dataSource() || pending()) {
+        <div class="vitamui-min-content">
+          <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+        </div>
+      }
+      @if (!pending() && dataSource()?.length === 0) {
+        <div class="vitamui-min-content vitamui-table-message">{{ 'COLLECT.NO_RESULT' | translate }}</div>
+      }
+      @if (infiniteScrollDisabled() && transactionsToProcessService.canLoadMore && !pending()) {
+        <div (click)="loadMore()" class="vitamui-min-content vitamui-table-message">
+          <span class="clickable">{{ 'COLLECT.LOAD_MORE_RESULTS' | translate }}</span>
+        </div>
+      }
+    </div>
+  </div>
+</div>

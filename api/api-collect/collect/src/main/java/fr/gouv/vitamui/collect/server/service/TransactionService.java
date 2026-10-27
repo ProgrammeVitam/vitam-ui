@@ -29,10 +29,13 @@
 
 package fr.gouv.vitamui.collect.server.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import fr.gouv.vitam.collect.common.dto.CriteriaTransactionDto;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.collect.common.enums.TransactionValidationMode;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -44,10 +47,13 @@ import fr.gouv.vitam.common.model.ProcessState;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.StatusCode;
+import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.collect.common.dto.CollectOperationStatusDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.server.service.converters.TransactionConverter;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationCommonService;
@@ -66,7 +72,15 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.mapRequestToDslQuery;
 
@@ -90,8 +104,12 @@ public class TransactionService {
 
     private static final String ACTION = "$action";
 
+    public static final int MAX_RESULTS = 10000;
+    public static final String UNABLE_TO_RETRIEVE_TRANSACTIONS = "Unable to retrieve transactions";
+
     private final CollectService collectService;
     private final VitamOperationCommonService vitamOperationCommonService;
+    private final ExternalParametersService externalParametersService;
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -164,6 +182,107 @@ public class TransactionService {
         } catch (VitamClientException | InvalidParseOperationException e) {
             throw new VitamClientException("Unable to find transaction : ", e);
         }
+    }
+
+    /**
+     * Search transactions to process, for every project of the tenant.
+     */
+    public PaginatedValuesDto<CollectTransactionDto> searchTransactionsPaginated(
+        Integer page,
+        Integer size,
+        Optional<String> criteria,
+        Optional<String> orderBy,
+        Optional<DirectionDto> direction,
+        VitamContext vitamContext
+    ) {
+        try {
+            final CriteriaTransactionDto criteriaTransactionDto = new CriteriaTransactionDto();
+
+            final AccessContractModel accessContractModel = externalParametersService.retrieveAccessContract();
+            if (accessContractModel == null) {
+                return new PaginatedValuesDto<>(Collections.emptyList(), 0, 0, false);
+            }
+            final ArrayList<String> originatingAgencies = Optional.of(accessContractModel)
+                .filter(accessContract -> !accessContract.getEveryOriginatingAgency())
+                .map(accessContract -> new ArrayList<>(accessContract.getOriginatingAgencies()))
+                .orElse(null);
+            criteriaTransactionDto.setOriginatingAgencies(originatingAgencies);
+
+            if (criteria.isPresent()) {
+                final HashMap<String, Object> vitamCriteria = mapper.readValue(
+                    criteria.get(),
+                    new TypeReference<>() {}
+                );
+                criteriaTransactionDto.setQuery((String) vitamCriteria.get("query"));
+                Optional.ofNullable(vitamCriteria.get("statuses"))
+                    .map(statuses -> mapper.convertValue(statuses, new TypeReference<List<String>>() {}))
+                    .ifPresent(criteriaTransactionDto::setStatuses);
+            }
+
+            final RequestResponse<JsonNode> requestResponse = collectService.searchTransactions(
+                vitamContext,
+                criteriaTransactionDto
+            );
+
+            if (requestResponse == null || !requestResponse.isOk()) {
+                throw new VitamClientException("Error occurs when retrieving transactions!");
+            }
+            final List<JsonNode> results = ((RequestResponseOK<JsonNode>) requestResponse).getResults();
+            List<TransactionDto> transactionDtos = new ArrayList<>();
+            for (JsonNode result : results) {
+                transactionDtos.add(mapper.treeToValue(result, TransactionDto.class));
+            }
+
+            final Comparator<CollectTransactionDto> comparator = buildTransactionComparator(
+                orderBy.orElse("lastUpdate")
+            );
+            List<CollectTransactionDto> collectTransactionDtos = TransactionConverter.toVitamuiDtos(transactionDtos)
+                .stream()
+                .sorted(
+                    DirectionDto.ASC.equals(direction.orElse(DirectionDto.DESC)) ? comparator : comparator.reversed()
+                )
+                .collect(Collectors.toList());
+
+            final int totalElements = collectTransactionDtos.size();
+            final int fromIndex = Math.min(page * size, totalElements);
+            final int toIndex = Math.min(fromIndex + size, totalElements);
+            final List<CollectTransactionDto> pageValues = collectTransactionDtos.subList(fromIndex, toIndex);
+
+            return new PaginatedValuesDto<>(
+                pageValues,
+                page,
+                size,
+                toIndex < totalElements,
+                Map.of("totalResults", totalElements)
+            );
+        } catch (VitamClientException e) {
+            LOGGER.debug(UNABLE_TO_RETRIEVE_TRANSACTIONS, e);
+            throw new InternalServerException(UNABLE_TO_RETRIEVE_TRANSACTIONS, e);
+        } catch (JsonProcessingException e) {
+            LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE, e);
+            throw new InternalServerException(UNABLE_TO_PROCESS_RESPONSE, e);
+        }
+    }
+
+    private static Comparator<CollectTransactionDto> buildTransactionComparator(String orderBy) {
+        return switch (orderBy) {
+            case "messageIdentifier" -> Comparator.comparing(
+                CollectTransactionDto::getMessageIdentifier,
+                Comparator.nullsLast(Comparator.naturalOrder())
+            );
+            case "originatingAgencyIdentifier" -> Comparator.comparing(
+                CollectTransactionDto::getOriginatingAgencyIdentifier,
+                Comparator.nullsLast(Comparator.naturalOrder())
+            );
+            case "status" -> Comparator.comparing(
+                CollectTransactionDto::getStatus,
+                Comparator.nullsLast(Comparator.naturalOrder())
+            );
+            default -> Comparator.comparing(
+                CollectTransactionDto::getLastUpdate,
+                Comparator.nullsLast(Comparator.naturalOrder())
+            );
+        };
     }
 
     /**

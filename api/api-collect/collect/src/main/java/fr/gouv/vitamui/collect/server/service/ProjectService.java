@@ -210,7 +210,14 @@ public class ProjectService {
                 projectDtos.add(objectMapper.treeToValue(result, ProjectDto.class));
             }
             List<CollectProjectDto> collectProjectDtos = ProjectConverter.toVitamuiCollectProjectDtos(projectDtos);
-            return new PaginatedValuesDto<>(collectProjectDtos, 1, MAX_RESULTS, false);
+            return new PaginatedValuesDto<>(
+                collectProjectDtos,
+                1,
+                MAX_RESULTS,
+                collectProjectDtos.size(),
+                false,
+                new HashMap<>()
+            );
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_RETRIEVE_PROJECT, e);
             throw new InternalServerException(UNABLE_TO_RETRIEVE_PROJECT, e);

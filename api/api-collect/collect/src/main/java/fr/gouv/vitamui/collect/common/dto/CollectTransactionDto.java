@@ -61,5 +61,6 @@ public class CollectTransactionDto extends IdDto {
     private String lastUpdate;
     private String status;
     private String projectId;
+    private Boolean automaticIngest;
     private List<BatchDto> batches;
 }

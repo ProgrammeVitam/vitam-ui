@@ -31,10 +31,18 @@
     <div class="vitamui-content">
       <div></div>
       <div class="mt-3">
-        <app-project-list
-          [tenantIdentifier]="tenantIdentifier"
-          (previewProjectDetailsPanel)="openProjectDetailsPanel($event)"
-        ></app-project-list>
+        <mat-tab-group class="vitamui-tab-group" [(selectedIndex)]="selectedTabIndex">
+          <mat-tab [label]="'COLLECT.PROJECTS_TAB_LABEL' | translate: { nb: projectListComponent()?.totalElements() ?? 0 }">
+            <app-project-list (previewProjectDetailsPanel)="openProjectDetailsPanel($event)"></app-project-list>
+          </mat-tab>
+          <mat-tab
+            [label]="
+              'COLLECT.TRANSACTIONS_TO_PROCESS.TAB_LABEL' | translate: { nb: transactionsToProcessListComponent()?.totalElements() ?? 0 }
+            "
+          >
+            <app-transactions-to-process-list></app-transactions-to-process-list>
+          </mat-tab>
+        </mat-tab-group>
       </div>
     </div>
   </mat-sidenav-content>

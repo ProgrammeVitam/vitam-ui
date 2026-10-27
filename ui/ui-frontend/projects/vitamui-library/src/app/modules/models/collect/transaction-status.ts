@@ -46,3 +46,26 @@ export enum TransactionStatus {
   ACK_KO = 'ACK_KO',
   ABORTED = 'ABORTED',
 }
+
+export function transactionStatusVisualColor(status: TransactionStatus): 'green' | 'orange' | 'red' | undefined {
+  switch (status) {
+    case TransactionStatus.ACK_OK:
+      return 'green';
+    case TransactionStatus.ACK_WARNING:
+      return 'orange';
+    case TransactionStatus.ACK_KO:
+    case TransactionStatus.KO:
+      return 'red';
+    default:
+      return undefined;
+  }
+}
+
+// Statuses of transactions that still need to be processed by the user (see the home page "transactions to process" tab)
+export const TRANSACTION_STATUSES_TO_PROCESS: TransactionStatus[] = [
+  TransactionStatus.OPEN,
+  TransactionStatus.READY,
+  TransactionStatus.KO,
+  TransactionStatus.ACK_KO,
+  TransactionStatus.ACK_OK,
+];
