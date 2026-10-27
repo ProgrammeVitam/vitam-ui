@@ -252,6 +252,7 @@ public class TransactionService {
                 pageValues,
                 page,
                 size,
+                totalElements,
                 toIndex < totalElements,
                 Map.of("totalResults", totalElements)
             );

@@ -113,6 +113,7 @@ export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
 
     this.createDialogSub = dialogRef.afterClosed().subscribe(() => {
       this.projectListComponent().search(new PageRequest(0, DEFAULT_PAGE_SIZE, 'archivalAgreement', Direction.ASCENDANT));
+      this.transactionsToProcessListComponent()?.searchTransactions();
     });
   }
 
