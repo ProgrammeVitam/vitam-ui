@@ -57,6 +57,7 @@ import {
   PipesModule,
   SnackBarService,
   StartupService,
+  TooltipDirective,
   Transaction,
   TransactionStatus,
   TRANSACTION_STATUSES_TO_PROCESS,
@@ -78,6 +79,7 @@ import { TransactionValidationMode } from '../../models/transaction-validation-m
     MatMenuItem,
     MatProgressSpinner,
     MatTooltipModule,
+    TooltipDirective,
     PipesModule,
     TranslatePipe,
     CommonModule,
@@ -142,6 +144,11 @@ export class TransactionsToProcessListComponent extends InfiniteScrollTable<Tran
 
   getAgencyName(identifier: string): string {
     return this.agencyNames().get(identifier);
+  }
+
+  getAgencyFullLabel(transaction: Transaction): string {
+    const agencyName = this.getAgencyName(transaction.originatingAgencyIdentifier);
+    return agencyName ? `${transaction.originatingAgencyIdentifier} - ${agencyName}` : transaction.originatingAgencyIdentifier;
   }
 
   getTransactionIcon(transaction: Transaction): string {

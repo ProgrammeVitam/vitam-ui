@@ -93,10 +93,17 @@
               </td>
               <td>{{ transaction.messageIdentifier }}</td>
               <td>
-                {{ transaction.originatingAgencyIdentifier }}
-                @if (getAgencyName(transaction.originatingAgencyIdentifier)) {
-                  <span class="text small">- {{ getAgencyName(transaction.originatingAgencyIdentifier) }}</span>
-                }
+                <span
+                  class="originating-agency-ellipsis"
+                  [vitamuiTooltip]="getAgencyFullLabel(transaction)"
+                  [outline]="true"
+                  vitamuiTooltipClass="primary"
+                >
+                  {{ transaction.originatingAgencyIdentifier }}
+                  @if (getAgencyName(transaction.originatingAgencyIdentifier)) {
+                    - {{ getAgencyName(transaction.originatingAgencyIdentifier) }}
+                  }
+                </span>
               </td>
               <td>{{ transaction.lastUpdate | dateTime: 'dd/MM/yyyy HH:mm:ss' | empty }}</td>
               <td>
