@@ -6528,6 +6528,7 @@
   },
   "DISCUSSION": {
     "OPEN": "Open the discussions",
+    "UNREAD_MESSAGES": "Unread message(s)",
     "TITLE": "Discussions list",
     "CLOSED_DISCUSSIONS": "Closed discussions",
     "NEW": {

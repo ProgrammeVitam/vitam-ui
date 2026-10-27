@@ -78,11 +78,15 @@ describe('TransactionListComponent', () => {
   matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
   const TransactionsServiceStub = {
-    sendTransaction: vi.fn().mockName('TransactionsService.sendTransaction').mockReturnValue(of({})),
-    abortTransaction: vi.fn().mockName('TransactionsService.abortTransaction').mockReturnValue(of({})),
-    editTransaction: vi.fn().mockName('TransactionsService.editTransaction').mockReturnValue(of({})),
-    validateTransaction: vi.fn().mockName('TransactionsService.validateTransaction').mockReturnValue(of({})),
-    validate: vi.fn().mockName('TransactionsService.validate').mockReturnValue(of({})),
+    sendTransactionAndNotify: vi.fn().mockName('TransactionsService.sendTransactionAndNotify').mockReturnValue(of({})),
+    abortTransactionAndNotify: vi.fn().mockName('TransactionsService.abortTransactionAndNotify').mockReturnValue(of({})),
+    editTransactionAndNotify: vi.fn().mockName('TransactionsService.editTransactionAndNotify').mockReturnValue(of({})),
+    validateAndNotify: vi.fn().mockName('TransactionsService.validateAndNotify').mockReturnValue(of({})),
+    hasBatchInError: vi.fn().mockName('TransactionsService.hasBatchInError').mockReturnValue(false),
+    refreshTransactionsByProjectId: vi
+      .fn()
+      .mockName('TransactionsService.refreshTransactionsByProjectId')
+      .mockReturnValue(of([transaction])),
     search: vi
       .fn()
       .mockName('TransactionsService.search')
@@ -149,24 +153,24 @@ describe('TransactionListComponent', () => {
   it('should send Transaction', () => {
     const transactionService = TestBed.inject(TransactionsService);
     component.sendTransaction(transaction);
-    expect(transactionService.sendTransaction).toHaveBeenCalled();
+    expect(transactionService.sendTransactionAndNotify).toHaveBeenCalled();
   });
 
   it('should validate Transaction', () => {
     const transactionService = TestBed.inject(TransactionsService);
     component.validateTransaction(transaction);
-    expect(transactionService.validate).toHaveBeenCalled();
+    expect(transactionService.validateAndNotify).toHaveBeenCalled();
   });
 
   it('should abort Transaction', () => {
     const transactionService = TestBed.inject(TransactionsService);
     component.abortTransaction(transaction);
-    expect(transactionService.abortTransaction).toHaveBeenCalled();
+    expect(transactionService.abortTransactionAndNotify).toHaveBeenCalled();
   });
 
   it('should edit Transaction', () => {
     const transactionService = TestBed.inject(TransactionsService);
     component.editTransaction(transaction);
-    expect(transactionService.editTransaction).toHaveBeenCalled();
+    expect(transactionService.editTransactionAndNotify).toHaveBeenCalled();
   });
 });

@@ -38,9 +38,12 @@ import fr.gouv.vitam.common.error.VitamErrorDetails;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.server.service.ExternalParametersService;
 import fr.gouv.vitamui.collect.server.service.TransactionService;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
@@ -57,7 +60,9 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_TRANSACTION_PATH;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -117,6 +122,37 @@ class TransactionControllerTest extends ApiCollectControllerTest<IdDto> {
     @Override
     protected String getRessourcePrefix() {
         return COLLECT_TRANSACTION_PATH;
+    }
+
+    @Test
+    void when_searchTransactionsPaginated_ok() throws PreconditionFailedException {
+        Mockito.when(externalParametersService.buildVitamContextFromExternalParam()).thenReturn(new VitamContext(0));
+        PaginatedValuesDto<CollectTransactionDto> expected = new PaginatedValuesDto<>(
+            Collections.emptyList(),
+            0,
+            10,
+            false
+        );
+        Mockito.when(
+            transactionService.searchTransactionsPaginated(
+                eq(0),
+                eq(10),
+                eq(Optional.of("{\"query\":\"criteria\"}")),
+                eq(Optional.of("lastUpdate")),
+                eq(Optional.of(DirectionDto.DESC)),
+                any(VitamContext.class)
+            )
+        ).thenReturn(expected);
+
+        PaginatedValuesDto<CollectTransactionDto> result = transactionController.searchTransactionsPaginated(
+            0,
+            10,
+            Optional.of("{\"query\":\"criteria\"}"),
+            Optional.of("lastUpdate"),
+            Optional.of(DirectionDto.DESC)
+        );
+
+        org.junit.jupiter.api.Assertions.assertEquals(expected, result);
     }
 
     @Test

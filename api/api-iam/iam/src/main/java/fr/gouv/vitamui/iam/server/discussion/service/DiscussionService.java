@@ -204,6 +204,40 @@ public class DiscussionService {
             .collect(Collectors.toList());
     }
 
+    public Set<String> findEntityIdsWithUnreadDiscussions(EntityType entityType, List<String> entityIds) {
+        assertHasPermission(entityType);
+
+        if (entityIds.isEmpty()) {
+            return Set.of();
+        }
+
+        final List<Discussion> discussions =
+            discussionRepository.findByTenantAndEntitiesEntityTypeAndEntitiesEntityIdIn(
+                securityService.getTenantIdentifier(),
+                entityType,
+                entityIds
+            );
+
+        final String userId = securityService.getUser().getId();
+        final List<String> discussionIds = discussions.stream().map(Discussion::getId).collect(Collectors.toList());
+        final Map<String, DiscussionRead> readStatusMap = discussionReadRepository
+            .findByUserIdAndDiscussionIdIn(userId, discussionIds)
+            .stream()
+            .collect(Collectors.toMap(DiscussionRead::getDiscussionId, Function.identity()));
+
+        return discussions
+            .stream()
+            .filter(discussion -> {
+                final DiscussionRead read = readStatusMap.get(discussion.getId());
+                final Instant lastReadAt = read != null ? read.getLastReadAt() : null;
+                return DiscussionDto.isUnread(discussion, lastReadAt);
+            })
+            .flatMap(discussion -> discussion.getEntities().stream())
+            .filter(entity -> entityType.equals(entity.getEntityType()) && entityIds.contains(entity.getEntityId()))
+            .map(Discussion.EntityLink::getEntityId)
+            .collect(Collectors.toSet());
+    }
+
     private void assertHasPermission(EntityType entityType) {
         if (!hasPermission(entityType)) {
             throw new ForbiddenException(String.format("User is missing role %s", entityType.getRole()));

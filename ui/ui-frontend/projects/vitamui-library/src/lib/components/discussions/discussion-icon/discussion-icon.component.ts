@@ -44,7 +44,7 @@ import { DiscussionDto } from '../discussion.service';
   styleUrl: './discussion-icon.component.scss',
 })
 export class DiscussionIconComponent {
-  discussions = input.required<DiscussionDto[]>();
+  discussions = input.required<Pick<DiscussionDto, 'unread'>[]>();
 
   hasDiscussion = computed(() => this.discussions().length > 0);
   hasUnread = computed(() => this.discussions().some((d) => d.unread));

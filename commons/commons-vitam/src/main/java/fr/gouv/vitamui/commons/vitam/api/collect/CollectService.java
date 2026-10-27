@@ -31,6 +31,7 @@ package fr.gouv.vitamui.commons.vitam.api.collect;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.collect.common.dto.CriteriaProjectDto;
+import fr.gouv.vitam.collect.common.dto.CriteriaTransactionDto;
 import fr.gouv.vitam.collect.common.dto.ProjectDto;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.collect.common.dto.UploadSipResult;
@@ -231,6 +232,26 @@ public class CollectService {
         CriteriaProjectDto criteriaProjectDto
     ) throws VitamClientException {
         final RequestResponse<JsonNode> result = collectExternalClient.searchProject(vitamContext, criteriaProjectDto);
+        VitamRestUtils.checkResponse(result);
+        return result;
+    }
+
+    /**
+     * Search transactions, for every project of the tenant, according to criteria
+     *
+     * @param vitamContext
+     * @param criteriaTransactionDto
+     * @return
+     * @throws VitamClientException
+     */
+    public RequestResponse<JsonNode> searchTransactions(
+        final VitamContext vitamContext,
+        CriteriaTransactionDto criteriaTransactionDto
+    ) throws VitamClientException {
+        final RequestResponse<JsonNode> result = collectExternalClient.searchTransactions(
+            vitamContext,
+            criteriaTransactionDto
+        );
         VitamRestUtils.checkResponse(result);
         return result;
     }
