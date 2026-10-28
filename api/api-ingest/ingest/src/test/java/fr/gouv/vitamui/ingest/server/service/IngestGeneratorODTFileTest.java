@@ -40,6 +40,7 @@
 package fr.gouv.vitamui.ingest.server.service;
 
 import fr.gouv.vitam.common.PropertiesUtils;
+import fr.gouv.vitamui.commons.api.exception.IngestFileGenerationException;
 import fr.gouv.vitamui.ingest.common.dto.ArchiveUnitDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -65,5 +66,16 @@ class IngestGeneratorODTFileTest {
 
         Assertions.assertEquals(archiveUnitDtos.size(), 249);
         Assertions.assertFalse(archiveUnitDtos.stream().anyMatch(a -> a.getTitle().equals("Discours du ministre")));
+    }
+
+    @Test
+    void convertStringToXMLDocument_should_reject_doctype() {
+        String xml =
+            "<?xml version=\"1.0\"?><!DOCTYPE foo [<!ENTITY ent SYSTEM \"file:///etc/passwd\">]><foo>&ent;</foo>";
+
+        Assertions.assertThrows(
+            IngestFileGenerationException.class,
+            () -> ingestGeneratorODTFile.convertStringToXMLDocument(xml)
+        );
     }
 }
