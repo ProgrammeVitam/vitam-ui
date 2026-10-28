@@ -51,7 +51,9 @@ import {
   DEFAULT_PAGE_SIZE,
   Direction,
   DiscussionDto,
+  DiscussionEntity,
   DiscussionIconComponent,
+  DiscussionPanelComponent,
   DiscussionService,
   InfiniteScrollDirective,
   InfiniteScrollTable,
@@ -94,6 +96,7 @@ import { TransactionValidationMode } from '../../models/transaction-validation-m
     TableFilterComponent,
     TableFilterOptionComponent,
     DiscussionIconComponent,
+    DiscussionPanelComponent,
   ],
 })
 export class TransactionsToProcessListComponent extends InfiniteScrollTable<Transaction> implements OnInit {
@@ -260,6 +263,13 @@ export class TransactionsToProcessListComponent extends InfiniteScrollTable<Tran
 
   hasUnreadDiscussions(transaction: Transaction): boolean {
     return this.getUnreadDiscussions(transaction).length > 0;
+  }
+
+  getDiscussionEntities(transaction: Transaction): DiscussionEntity[] {
+    return [
+      { type: 'PROJECT', id: transaction.projectId },
+      { type: 'TRANSACTION', id: transaction.id, main: true },
+    ];
   }
 
   validateTransaction(transaction: Transaction) {
