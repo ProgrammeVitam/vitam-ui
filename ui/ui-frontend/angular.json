@@ -73,6 +73,13 @@
               "extractLicenses": false,
               "sourceMap": true,
               "baseHref": "/identity/"
+            },
+            "test": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "styles": [],
+              "assets": []
             }
           }
         },
@@ -101,7 +108,8 @@
             "setupFiles": [
               "test.ts"
             ],
-            "outputFile": "junit/identity.xml"
+            "outputFile": "junit/identity.xml",
+            "buildTarget": "identity:build:test"
           }
         },
         "lint": {
@@ -186,6 +194,13 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "test": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "styles": [],
+              "assets": []
             }
           }
         },
@@ -213,7 +228,8 @@
             "setupFiles": [
               "test.ts"
             ],
-            "outputFile": "junit/portal.xml"
+            "outputFile": "junit/portal.xml",
+            "buildTarget": "portal:build:test"
           }
         },
         "lint": {
@@ -299,6 +315,13 @@
               "extractLicenses": false,
               "sourceMap": true,
               "baseHref": "/referential/"
+            },
+            "test": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "styles": [],
+              "assets": []
             }
           }
         },
@@ -327,7 +350,8 @@
             "setupFiles": [
               "test.ts"
             ],
-            "outputFile": "junit/referential.xml"
+            "outputFile": "junit/referential.xml",
+            "buildTarget": "referential:build:test"
           }
         },
         "lint": {
@@ -450,6 +474,13 @@
               "extractLicenses": false,
               "sourceMap": true,
               "baseHref": "/design-system/"
+            },
+            "test": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "styles": [],
+              "assets": []
             }
           },
           "defaultConfiguration": ""
@@ -479,7 +510,8 @@
             "setupFiles": [
               "test.ts"
             ],
-            "outputFile": "junit/design-system.xml"
+            "outputFile": "junit/design-system.xml",
+            "buildTarget": "design-system:build:test"
           }
         },
         "lint": {
@@ -549,6 +581,13 @@
               "extractLicenses": false,
               "sourceMap": true,
               "baseHref": "/ingest/"
+            },
+            "test": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "styles": [],
+              "assets": []
             }
           }
         },
@@ -577,7 +616,8 @@
             "setupFiles": [
               "test.ts"
             ],
-            "outputFile": "junit/ingest.xml"
+            "outputFile": "junit/ingest.xml",
+            "buildTarget": "ingest:build:test"
           }
         },
         "lint": {
@@ -649,6 +689,13 @@
               "extractLicenses": false,
               "sourceMap": true,
               "baseHref": "/archive-search/"
+            },
+            "test": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "styles": [],
+              "assets": []
             }
           }
         },
@@ -677,7 +724,8 @@
             "setupFiles": [
               "test.ts"
             ],
-            "outputFile": "junit/archive-search.xml"
+            "outputFile": "junit/archive-search.xml",
+            "buildTarget": "archive-search:build:test"
           }
         },
         "lint": {
@@ -749,6 +797,13 @@
               "extractLicenses": false,
               "sourceMap": true,
               "baseHref": "/collect/"
+            },
+            "test": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "styles": [],
+              "assets": []
             }
           }
         },
@@ -777,7 +832,8 @@
             "setupFiles": [
               "test.ts"
             ],
-            "outputFile": "junit/collect.xml"
+            "outputFile": "junit/collect.xml",
+            "buildTarget": "collect:build:test"
           }
         },
         "lint": {
@@ -854,6 +910,13 @@
                   "with": "projects/pastis/src/environments/environment.standalone.ts"
                 }
               ]
+            },
+            "test": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "styles": [],
+              "assets": []
             }
           }
         },
@@ -887,7 +950,8 @@
             "setupFiles": [
               "test.ts"
             ],
-            "outputFile": "junit/pastis.xml"
+            "outputFile": "junit/pastis.xml",
+            "buildTarget": "pastis:build:test"
           }
         },
         "lint": {
