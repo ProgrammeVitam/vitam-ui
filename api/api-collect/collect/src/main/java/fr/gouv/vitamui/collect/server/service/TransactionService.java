@@ -208,6 +208,7 @@ public class TransactionService {
                 .orElse(null);
             criteriaTransactionDto.setOriginatingAgencies(originatingAgencies);
 
+            List<Boolean> automaticIngestValues = Collections.emptyList();
             if (criteria.isPresent()) {
                 final HashMap<String, Object> vitamCriteria = mapper.readValue(
                     criteria.get(),
@@ -217,6 +218,9 @@ public class TransactionService {
                 Optional.ofNullable(vitamCriteria.get("statuses"))
                     .map(statuses -> mapper.convertValue(statuses, new TypeReference<List<String>>() {}))
                     .ifPresent(criteriaTransactionDto::setStatuses);
+                automaticIngestValues = Optional.ofNullable(vitamCriteria.get("automaticIngestValues"))
+                    .map(values -> mapper.convertValue(values, new TypeReference<List<Boolean>>() {}))
+                    .orElse(Collections.emptyList());
             }
 
             final RequestResponse<JsonNode> requestResponse = collectService.searchTransactions(
@@ -236,8 +240,14 @@ public class TransactionService {
             final Comparator<CollectTransactionDto> comparator = buildTransactionComparator(
                 orderBy.orElse("lastUpdate")
             );
+            final List<Boolean> finalAutomaticIngestValues = automaticIngestValues;
             List<CollectTransactionDto> collectTransactionDtos = TransactionConverter.toVitamuiDtos(transactionDtos)
                 .stream()
+                .filter(
+                    dto ->
+                        finalAutomaticIngestValues.isEmpty() ||
+                        finalAutomaticIngestValues.contains(Boolean.TRUE.equals(dto.getAutomaticIngest()))
+                )
                 .sorted(
                     DirectionDto.ASC.equals(direction.orElse(DirectionDto.DESC)) ? comparator : comparator.reversed()
                 )

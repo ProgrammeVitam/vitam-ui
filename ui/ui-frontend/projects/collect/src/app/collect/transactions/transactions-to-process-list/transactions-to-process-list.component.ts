@@ -57,6 +57,9 @@ import {
   PipesModule,
   SnackBarService,
   StartupService,
+  TableFilterComponent,
+  TableFilterDirective,
+  TableFilterOptionComponent,
   TooltipDirective,
   Transaction,
   TransactionStatus,
@@ -84,6 +87,9 @@ import { TransactionValidationMode } from '../../models/transaction-validation-m
     TranslatePipe,
     CommonModule,
     InfiniteScrollDirective,
+    TableFilterDirective,
+    TableFilterComponent,
+    TableFilterOptionComponent,
   ],
 })
 export class TransactionsToProcessListComponent extends InfiniteScrollTable<Transaction> implements OnInit {
@@ -117,6 +123,9 @@ export class TransactionsToProcessListComponent extends InfiniteScrollTable<Tran
   status: keyof Transaction = 'status';
   column = this.lastUpdate;
   direction = Direction.DESCENDANT;
+
+  // filters :
+  automaticIngestFilter: boolean[] = [];
 
   constructor() {
     const transactionsToProcessService = inject(TransactionsToProcessService);
@@ -190,10 +199,16 @@ export class TransactionsToProcessListComponent extends InfiniteScrollTable<Tran
     this.searchTransactions();
   }
 
+  onAutomaticIngestFilterChange(values: boolean[]) {
+    this.automaticIngestFilter = values ?? [];
+    this.searchTransactions();
+  }
+
   searchTransactions() {
     const criteria = JSON.stringify({
       query: this.currentQuery || null,
       statuses: TRANSACTION_STATUSES_TO_PROCESS,
+      automaticIngestValues: this.automaticIngestFilter,
     });
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.column, this.direction, criteria);
     super.search(pageRequest);

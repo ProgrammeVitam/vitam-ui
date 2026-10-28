@@ -10,3 +10,12 @@
   white-space: nowrap !important;
   vertical-align: middle;
 }
+
+.table-filter-icon {
+  display: flex;
+  align-items: center;
+
+  i {
+    margin-right: 8px;
+  }
+}

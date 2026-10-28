@@ -16,7 +16,16 @@
         <thead>
           <tr class="vitamui-table-rows">
             <th>
-              <!-- icon -->
+              <div class="row flex-nowrap align-items-center">
+                <i class="vitamui-icon vitamui-icon-ic40-flux"></i>
+                <button
+                  class="vitamui-filter-button"
+                  [vitamuiCommonTableFilter]="automaticIngestFilterTemplate"
+                  [class.active]="automaticIngestFilter.length > 0"
+                >
+                  <i class="material-icons vitamui-row-icon">filter_list</i>
+                </button>
+              </div>
             </th>
             <th>
               <div class="row flex-nowrap">
@@ -174,3 +183,20 @@
     </div>
   </div>
 </div>
+
+<ng-template #automaticIngestFilterTemplate>
+  <vitamui-common-table-filter [filter]="automaticIngestFilter" (filterChange)="onAutomaticIngestFilterChange($event)">
+    <vitamui-common-table-filter-option [value]="false">
+      <div class="table-filter-icon">
+        <i class="vitamui-icon vitamui-icon-ic40-flux-manuel"></i>
+        <span>{{ 'COLLECT.MODAL.MANUAL_WORKFLOW' | translate }}</span>
+      </div>
+    </vitamui-common-table-filter-option>
+    <vitamui-common-table-filter-option [value]="true">
+      <div class="table-filter-icon">
+        <i class="vitamui-icon vitamui-icon-ic40-flux-industriel"></i>
+        <span>{{ 'COLLECT.MODAL.FLOW_WORKFLOW' | translate }}</span>
+      </div>
+    </vitamui-common-table-filter-option>
+  </vitamui-common-table-filter>
+</ng-template>
