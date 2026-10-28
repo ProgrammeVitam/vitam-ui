@@ -101,9 +101,11 @@
               </td>
               <td>
                 <div>{{ project.createdOn | dateTime: 'dd/MM/yyyy' | empty }}</div>
+                <span class="text normal light">{{ project.createdOn | dateTime: 'HH:mm:ss' }}</span>
               </td>
               <td>
                 <div>{{ project.lastModifyOn | dateTime: 'dd/MM/yyyy' | empty }}</div>
+                <span class="text normal light">{{ project.lastModifyOn | dateTime: 'HH:mm:ss' }}</span>
               </td>
               <td>
                 <vitamui-menu-button
