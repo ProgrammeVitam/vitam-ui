@@ -67,16 +67,15 @@
               </div>
             </th>
             <th>
-              <div class="row flex-nowrap">
+              <div class="row flex-nowrap align-items-center">
                 <span class="no-wrap">{{ 'COLLECT.FIELD_STATUS_TRANSACTION' | translate }}</span>
-                <vitamui-order-by-button
-                  [orderByKey]="status"
-                  [(direction)]="direction"
-                  [(orderBy)]="column"
-                  (directionChange)="changeDirection($event)"
-                  (orderByChange)="changeColumn($event)"
-                  (orderChange)="sortTable()"
-                ></vitamui-order-by-button>
+                <button
+                  class="vitamui-filter-button"
+                  [vitamuiCommonTableFilter]="statusFilterTemplate"
+                  [class.active]="statusFilter.length > 0"
+                >
+                  <i class="vitamui-icon vitamui-icon-filter-list"></i>
+                </button>
               </div>
             </th>
             <th>
@@ -198,5 +197,17 @@
         <span>{{ 'COLLECT.MODAL.FLOW_WORKFLOW' | translate }}</span>
       </div>
     </vitamui-common-table-filter-option>
+  </vitamui-common-table-filter>
+</ng-template>
+
+<ng-template #statusFilterTemplate>
+  <vitamui-common-table-filter [filter]="statusFilter" (filterChange)="onStatusFilterChange($event)">
+    @for (statusOption of statusFilterOptions; track statusOption) {
+      <vitamui-common-table-filter-option [value]="statusOption">
+        <div class="table-filter-icon">
+          <span>{{ 'COLLECT.PROJECT_TRANSACTION_PREVIEW.STATUS.' + statusOption | translate }}</span>
+        </div>
+      </vitamui-common-table-filter-option>
+    }
   </vitamui-common-table-filter>
 </ng-template>

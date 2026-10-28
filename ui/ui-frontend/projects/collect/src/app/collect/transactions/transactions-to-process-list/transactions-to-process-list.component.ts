@@ -126,6 +126,8 @@ export class TransactionsToProcessListComponent extends InfiniteScrollTable<Tran
 
   // filters :
   automaticIngestFilter: boolean[] = [];
+  statusFilter: TransactionStatus[] = [];
+  readonly statusFilterOptions = TRANSACTION_STATUSES_TO_PROCESS;
 
   constructor() {
     const transactionsToProcessService = inject(TransactionsToProcessService);
@@ -204,10 +206,15 @@ export class TransactionsToProcessListComponent extends InfiniteScrollTable<Tran
     this.searchTransactions();
   }
 
+  onStatusFilterChange(values: TransactionStatus[]) {
+    this.statusFilter = values ?? [];
+    this.searchTransactions();
+  }
+
   searchTransactions() {
     const criteria = JSON.stringify({
       query: this.currentQuery || null,
-      statuses: TRANSACTION_STATUSES_TO_PROCESS,
+      statuses: this.statusFilter.length > 0 ? this.statusFilter : TRANSACTION_STATUSES_TO_PROCESS,
       automaticIngestValues: this.automaticIngestFilter,
     });
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.column, this.direction, criteria);
