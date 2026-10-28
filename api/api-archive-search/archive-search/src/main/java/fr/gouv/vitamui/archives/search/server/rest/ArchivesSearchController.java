@@ -387,7 +387,7 @@ public class ArchivesSearchController {
         return archiveSearchEliminationService.startEliminationAction(query);
     }
 
-    @PostMapping(RestApi.MASS_UPDATE_UNITS_RULES)
+    @PostMapping(value = RestApi.MASS_UPDATE_UNITS_RULES, produces = MediaType.TEXT_PLAIN_VALUE)
     @Secured(ServicesData.ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT_ROLE)
     public String updateArchiveUnitsRules(final @RequestBody RuleSearchCriteriaDto ruleSearchCriteriaDto)
         throws PreconditionFailedException, VitamClientException {
