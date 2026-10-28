@@ -42,7 +42,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
-import { filter, finalize, of, switchMap } from 'rxjs';
+import { filter, finalize, of, switchMap, take } from 'rxjs';
 import {
   AgencyService,
   BatchStatus,
@@ -50,6 +50,9 @@ import {
   ConfirmDialogData,
   DEFAULT_PAGE_SIZE,
   Direction,
+  DiscussionDto,
+  DiscussionIconComponent,
+  DiscussionService,
   InfiniteScrollDirective,
   InfiniteScrollTable,
   OrderByButtonComponent,
@@ -90,6 +93,7 @@ import { TransactionValidationMode } from '../../models/transaction-validation-m
     TableFilterDirective,
     TableFilterComponent,
     TableFilterOptionComponent,
+    DiscussionIconComponent,
   ],
 })
 export class TransactionsToProcessListComponent extends InfiniteScrollTable<Transaction> implements OnInit {
@@ -97,6 +101,7 @@ export class TransactionsToProcessListComponent extends InfiniteScrollTable<Tran
   private readonly transactionsService = inject(TransactionsService);
   private readonly archiveCollectService = inject(ArchiveCollectService);
   private readonly agencyService = inject(AgencyService);
+  private readonly discussionService = inject(DiscussionService);
   private readonly startupService = inject(StartupService);
   private readonly snackBarService = inject(SnackBarService);
   private readonly dialog = inject(MatDialog);
@@ -106,6 +111,7 @@ export class TransactionsToProcessListComponent extends InfiniteScrollTable<Tran
 
   tenantIdentifier: string;
   agencyNames = signal<Map<string, string>>(new Map());
+  discussionsByTransactionId = signal<Map<string, DiscussionDto[]>>(new Map());
   totalElements = signal(0);
 
   hasAbortTransactionRole = signal(false);
@@ -145,8 +151,21 @@ export class TransactionsToProcessListComponent extends InfiniteScrollTable<Tran
     });
     this.updatedData.subscribe(() => {
       this.totalElements.set(this.transactionsToProcessService.getTotalElements ?? 0);
+      this.loadDiscussions(this.dataSource() ?? []);
     });
     this.searchTransactions();
+  }
+
+  private loadDiscussions(transactions: Transaction[]) {
+    const newTransactions = transactions.filter((transaction) => !this.discussionsByTransactionId().has(transaction.id));
+    newTransactions.forEach((transaction) => {
+      this.discussionService
+        .findDiscussions({ type: 'TRANSACTION', id: transaction.id })
+        .pipe(take(1))
+        .subscribe((discussions) => {
+          this.discussionsByTransactionId.update((map) => new Map(map).set(transaction.id, discussions));
+        });
+    });
   }
 
   override onScroll() {
@@ -233,6 +252,14 @@ export class TransactionsToProcessListComponent extends InfiniteScrollTable<Tran
 
   hasBatchInError(transaction: Transaction): boolean {
     return transaction.batches?.some((b) => b.BatchStatus === BatchStatus.KO) ?? false;
+  }
+
+  getUnreadDiscussions(transaction: Transaction): DiscussionDto[] {
+    return (this.discussionsByTransactionId().get(transaction.id) ?? []).filter((discussion) => discussion.unread);
+  }
+
+  hasUnreadDiscussions(transaction: Transaction): boolean {
+    return this.getUnreadDiscussions(transaction).length > 0;
   }
 
   validateTransaction(transaction: Transaction) {

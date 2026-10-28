@@ -35,6 +35,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import fr.gouv.vitam.collect.common.dto.BatchDto;
+import fr.gouv.vitam.collect.common.dto.BatchStatusDto;
 import fr.gouv.vitam.collect.common.dto.CriteriaTransactionDto;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.collect.common.enums.TransactionValidationMode;
@@ -106,6 +108,7 @@ public class TransactionService {
 
     public static final int MAX_RESULTS = 10000;
     public static final String UNABLE_TO_RETRIEVE_TRANSACTIONS = "Unable to retrieve transactions";
+    private static final String STATUS_ACK_OK = "ACK_OK";
 
     private final CollectService collectService;
     private final VitamOperationCommonService vitamOperationCommonService;
@@ -248,6 +251,7 @@ public class TransactionService {
                         finalAutomaticIngestValues.isEmpty() ||
                         finalAutomaticIngestValues.contains(Boolean.TRUE.equals(dto.getAutomaticIngest()))
                 )
+                .filter(dto -> !isAckOkAndPurged(dto))
                 .sorted(
                     DirectionDto.ASC.equals(direction.orElse(DirectionDto.DESC)) ? comparator : comparator.reversed()
                 )
@@ -273,6 +277,20 @@ public class TransactionService {
             LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE, e);
             throw new InternalServerException(UNABLE_TO_PROCESS_RESPONSE, e);
         }
+    }
+
+    /**
+     * A transaction is "fully purged" once Vitam has cleaned up all its ingest batches; it then has nothing
+     * left to process, so it should no longer be listed among the transactions to process (see CA01).
+     */
+    private static boolean isAckOkAndPurged(CollectTransactionDto dto) {
+        List<BatchDto> batches = dto.getBatches();
+        return (
+            STATUS_ACK_OK.equals(dto.getStatus()) &&
+            batches != null &&
+            !batches.isEmpty() &&
+            batches.stream().allMatch(batch -> BatchStatusDto.PURGED.equals(batch.getBatchStatus()))
+        );
     }
 
     private static Comparator<CollectTransactionDto> buildTransactionComparator(String orderBy) {

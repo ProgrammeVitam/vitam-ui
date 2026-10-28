@@ -79,7 +79,7 @@
               </div>
             </th>
             <th>
-              <!-- errors -->
+              <!-- errors / discussions -->
             </th>
             <th>
               <!-- actions -->
@@ -123,9 +123,14 @@
                 </div>
               </td>
               <td>
-                @if (hasBatchInError(transaction)) {
-                  <i class="vitamui-icon vitamui-icon-warning danger" [matTooltip]="'COLLECT.BATCH_ERROR_RECORDED' | translate"></i>
-                }
+                <div class="hgap-2 align-items-center">
+                  @if (hasBatchInError(transaction)) {
+                    <i class="vitamui-icon vitamui-icon-warning danger" [matTooltip]="'COLLECT.BATCH_ERROR_RECORDED' | translate"></i>
+                  }
+                  @if (hasUnreadDiscussions(transaction)) {
+                    <vitamui-discussion-icon [discussions]="getUnreadDiscussions(transaction)"></vitamui-discussion-icon>
+                  }
+                </div>
               </td>
               <td>
                 <div class="hgap-2 justify-content-end" (click)="stopPropagation($event)">

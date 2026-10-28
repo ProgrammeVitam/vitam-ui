@@ -91,7 +91,14 @@
                 <i class="vitamui-icon {{ getProjectIcon(project) }}"></i>
               </td>
               <td>{{ project.messageIdentifier }}</td>
-              <td>{{ project.submissionAgencyIdentifier }}</td>
+              <td>
+                <span class="agency-ellipsis" [vitamuiTooltip]="getAgencyFullLabel(project)" [outline]="true" vitamuiTooltipClass="primary">
+                  {{ project.submissionAgencyIdentifier }}
+                  @if (getAgencyName(project.submissionAgencyIdentifier)) {
+                    - {{ getAgencyName(project.submissionAgencyIdentifier) }}
+                  }
+                </span>
+              </td>
               <td>
                 <div>{{ project.createdOn | dateTime: 'dd/MM/yyyy' | empty }}</div>
               </td>

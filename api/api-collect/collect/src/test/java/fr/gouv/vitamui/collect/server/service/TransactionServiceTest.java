@@ -32,6 +32,8 @@ package fr.gouv.vitamui.collect.server.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitam.collect.common.dto.BatchDto;
+import fr.gouv.vitam.collect.common.dto.BatchStatusDto;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.collect.common.enums.TransactionValidationMode;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -45,9 +47,11 @@ import fr.gouv.vitam.common.model.ProcessState;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.StatusCode;
+import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.collect.common.dto.CollectOperationStatusDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.server.service.converters.TransactionConverter;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationCommonService;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import jakarta.ws.rs.core.Response;
@@ -67,11 +71,13 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -85,6 +91,9 @@ class TransactionServiceTest {
 
     @Mock
     VitamOperationCommonService vitamOperationCommonService;
+
+    @Mock
+    ExternalParametersService externalParametersService;
 
     final PodamFactory factory = new PodamFactoryImpl();
     final VitamContext vitamContext = new VitamContext(1);
@@ -435,5 +444,67 @@ class TransactionServiceTest {
             VitamClientException.class,
             () -> transactionService.getOperationStatus(operationId, vitamContext)
         );
+    }
+
+    @Test
+    void shouldExcludeOnlyFullyPurgedAckOkTransactionsWhenSearchingTransactionsToProcess()
+        throws VitamClientException, JsonProcessingException, InvalidParseOperationException {
+        // GIVEN
+        when(externalParametersService.retrieveAccessContract()).thenReturn(
+            new AccessContractModel().setEveryOriginatingAgency(true)
+        );
+
+        TransactionDto fullyPurgedAckOk = buildTransactionDto(
+            "FULLY_PURGED_ACK_OK",
+            "ACK_OK",
+            List.of(new BatchDto("batch1", BatchStatusDto.PURGED, "proc1"))
+        );
+        TransactionDto notPurgedAckOk = buildTransactionDto(
+            "NOT_PURGED_ACK_OK",
+            "ACK_OK",
+            List.of(new BatchDto("batch1", BatchStatusDto.KO, "proc1"))
+        );
+        TransactionDto ackOkWithoutBatches = buildTransactionDto("ACK_OK_WITHOUT_BATCHES", "ACK_OK", null);
+        TransactionDto openWithPurgedBatch = buildTransactionDto(
+            "OPEN_WITH_PURGED_BATCH",
+            "OPEN",
+            List.of(new BatchDto("batch1", BatchStatusDto.PURGED, "proc1"))
+        );
+
+        RequestResponseOK<JsonNode> fakeResponse = new RequestResponseOK<JsonNode>()
+            .setHttpCode(200)
+            .addAllResults(
+                List.of(
+                    JsonHandler.toJsonNode(fullyPurgedAckOk),
+                    JsonHandler.toJsonNode(notPurgedAckOk),
+                    JsonHandler.toJsonNode(ackOkWithoutBatches),
+                    JsonHandler.toJsonNode(openWithPurgedBatch)
+                )
+            );
+        when(collectService.searchTransactions(any(), any())).thenReturn(fakeResponse);
+
+        // WHEN
+        PaginatedValuesDto<CollectTransactionDto> result = transactionService.searchTransactionsPaginated(
+            0,
+            10,
+            Optional.empty(),
+            Optional.empty(),
+            Optional.empty(),
+            vitamContext
+        );
+
+        // THEN
+        assertEquals(3, result.getValues().size());
+        assertEquals(
+            List.of("NOT_PURGED_ACK_OK", "ACK_OK_WITHOUT_BATCHES", "OPEN_WITH_PURGED_BATCH"),
+            result.getValues().stream().map(CollectTransactionDto::getId).toList()
+        );
+    }
+
+    private static TransactionDto buildTransactionDto(String id, String status, List<BatchDto> batches) {
+        TransactionDto transactionDto = new TransactionDto(id);
+        transactionDto.setStatus(status);
+        transactionDto.setBatches(batches);
+        return transactionDto;
     }
 }

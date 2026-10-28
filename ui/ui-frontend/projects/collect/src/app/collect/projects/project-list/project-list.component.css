@@ -1,0 +1,8 @@
+.agency-ellipsis {
+  display: inline-block !important;
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap !important;
+  vertical-align: middle;
+}
