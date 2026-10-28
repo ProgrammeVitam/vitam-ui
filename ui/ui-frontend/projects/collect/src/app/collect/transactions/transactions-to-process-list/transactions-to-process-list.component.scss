@@ -15,6 +15,17 @@
   font-size: 20px;
 }
 
+.status-badge-green,
+.status-badge-orange,
+.status-badge-red {
+  &:after {
+    margin-left: -10px;
+    margin-top: -10px;
+    width: 10px;
+    height: 10px;
+  }
+}
+
 .table-filter-icon {
   display: flex;
   align-items: center;
