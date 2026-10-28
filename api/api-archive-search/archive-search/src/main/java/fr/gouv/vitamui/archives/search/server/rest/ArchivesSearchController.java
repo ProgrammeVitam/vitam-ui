@@ -397,7 +397,7 @@ public class ArchivesSearchController {
         return archiveSearchMgtRulesService.updateArchiveUnitsRules(ruleSearchCriteriaDto);
     }
 
-    @PostMapping(RestApi.COMPUTED_INHERITED_RULES)
+    @PostMapping(value = RestApi.COMPUTED_INHERITED_RULES, produces = MediaType.TEXT_PLAIN_VALUE)
     @Secured(ServicesData.ROLE_COMPUTED_INHERITED_RULES)
     public String computedInheritedRules(final @RequestBody SearchCriteriaDto searchCriteriaDto)
         throws PreconditionFailedException, VitamClientException {
