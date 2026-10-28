@@ -467,7 +467,7 @@ public class ArchivesSearchController {
         return persistentIdentifierResponse;
     }
 
-    @PostMapping(RestApi.REASSIGNMENT_ACTION)
+    @PostMapping(value = RestApi.REASSIGNMENT_ACTION, produces = MediaType.TEXT_PLAIN_VALUE)
     @Secured(ServicesData.ROLE_ORIGINATING_AGENCY_REASSIGNMENT)
     public String reassignOriginatingAgency(final @RequestBody ReassignRequestDto reassignRequestDto)
         throws VitamClientException {
