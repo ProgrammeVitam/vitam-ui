@@ -259,8 +259,8 @@ function main() {
         #     rm -f ${JKS_GRANTED_STORE}
         # fi
         mkdir -p ${REPERTOIRE_KEYSTORES}/client-${CLIENT_TYPE}
-        # # client-${CLIENT_TYPE} keystores generation
-        for COMPONENT in $( ls ${REPERTOIRE_CERTIFICAT}/client-${CLIENT_TYPE}/clients 2>/dev/null | grep -vF -e "README" -e "external" ); do
+        # Do not generate keystores for ui- components, we don't need them
+        for COMPONENT in $( ls ${REPERTOIRE_CERTIFICAT}/client-${CLIENT_TYPE}/clients 2>/dev/null | grep -vF -e "README" -e "external" -e "^ui-"); do
 
             # Generate the p12 keystore
             pki_logger "-------------------------------------------"

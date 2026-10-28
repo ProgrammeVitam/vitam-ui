@@ -54,8 +54,8 @@ issuerAltName                   = issuer:copy
 subjectAltName                  = ${ENV::OPENSSL_SAN}
 basicConstraints                = critical,CA:FALSE
 keyUsage                        = digitalSignature, keyEncipherment
-nsCertType                      = server, client
-extendedKeyUsage                = serverAuth, clientAuth
+nsCertType                      = server
+extendedKeyUsage                = serverAuth
 
 [ extension_client ]
 nsComment                       = "Certificat Client SSL"

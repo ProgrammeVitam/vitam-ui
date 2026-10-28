@@ -20,15 +20,14 @@ function getHostCertificatePath {
 
 # Génération du SubjectAlternate Name pour les certificats serveur.
 function getHostCertificateSan {
-    local HOSTNAME="${1}"
-    local SERVICE_HOSTNAME="${2}"
-    local SERVICE_DC_HOSTNAME="${3}"
-    local REVERSE_SAN="${4}"
+    local SERVICE_HOSTNAME="${1}"
+    local SERVICE_DC_HOSTNAME="${2}"
+    local REVERSE_SAN="${3}"
 
     if [ -n "${REVERSE_SAN}" ]; then
-        echo "DNS:${SERVICE_HOSTNAME},DNS:${HOSTNAME},DNS:${SERVICE_DC_HOSTNAME},DNS:${REVERSE_SAN}"
+        echo "DNS:${SERVICE_HOSTNAME},DNS:${SERVICE_DC_HOSTNAME},DNS:${REVERSE_SAN}"
     else
-        echo "DNS:${SERVICE_HOSTNAME},DNS:${HOSTNAME},DNS:${SERVICE_DC_HOSTNAME}"
+        echo "DNS:${SERVICE_HOSTNAME},DNS:${SERVICE_DC_HOSTNAME}"
     fi
 }
 
@@ -50,7 +49,7 @@ function generateHostCertificate {
     local REVERSE_SAN="${8}"
 
     # Correctly set Subject Alternate Name (env var is read inside the openssl configuration file)
-    export OPENSSL_SAN="$(getHostCertificateSan $HOSTNAME $SERVICE_HOSTNAME $SERVICE_DC_HOSTNAME $REVERSE_SAN)"
+    export OPENSSL_SAN="$(getHostCertificateSan $SERVICE_HOSTNAME $SERVICE_DC_HOSTNAME $REVERSE_SAN)"
     # Correctly set certificate CN (env var is read inside the openssl configuration file)
     export OPENSSL_CN="$(getHostCertificateCn $SERVICE_HOSTNAME)"
     # Correctly set certificate DIRECTORY (env var is read inside the openssl configuration file)
@@ -151,8 +150,10 @@ function generateClientCertificate {
     local CLIENT_CERTIFICATE_PATH=$(getClientCertificatePath ${CLIENT_TYPE} ${CLIENT_NAME})
     mkdir -p "${CLIENT_CERTIFICATE_PATH}"
     pki_logger "Generation de la clé..."
+    # Workaround to avoid passphrase with -nodes option problem while loading passphrase to nginx
     openssl req -newkey "${PARAM_KEY_CHIFFREMENT}" \
         -passout pass:"${MDP_KEY}" \
+        -nodes \
         -keyout "${CLIENT_CERTIFICATE_PATH}/${CLIENT_NAME}.key" \
         -out "${CLIENT_CERTIFICATE_PATH}/${CLIENT_NAME}.req" \
         -config "${REPERTOIRE_CONFIG}/crt-config" \

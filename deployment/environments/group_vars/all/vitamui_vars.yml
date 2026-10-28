@@ -71,34 +71,43 @@ vitamui:
   identity:
     vitamui_component: ui-identity
     port_service: 8002
+    secure: false
   identity_admin:
     vitamui_component: ui-identity-admin
     port_service: 8401
     package_name: vitamui-ui-identity-rsc
+    secure: false
   referential:
     vitamui_component: ui-referential
     port_service: 8005
+    secure: false
   portal:
     vitamui_component: ui-portal
     port_service: 8003
     has_tenant_list: true
     has_lang_selection: true
     has_site_selection: false
+    secure: false
   ingest:
     vitamui_component: ui-ingest
     port_service: 8008
+    secure: false
   archive_search:
     vitamui_component: ui-archive-search
     port_service: 8009
+    secure: false
   collect:
     vitamui_component: ui-collect
     port_service: 8010
+    secure: false
   pastis:
     vitamui_component: ui-pastis
     port_service: 9015
+    secure: false
   design_system:
     vitamui_component: ui-design-system
     port_service: 9016
+    secure: false
 
   # Applications
   api_gateway:
