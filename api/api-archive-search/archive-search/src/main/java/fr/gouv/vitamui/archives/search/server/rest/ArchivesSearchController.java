@@ -475,7 +475,7 @@ public class ArchivesSearchController {
         return archiveSearchService.reassignOriginatingAgency(reassignRequestDto);
     }
 
-    @PostMapping(RestApi.PRESERVATION)
+    @PostMapping(value = RestApi.PRESERVATION, produces = MediaType.TEXT_PLAIN_VALUE)
     @Secured(ServicesData.ROLE_LAUNCH_PRESERVATION)
     public String launchPreservation(final @Valid @RequestBody PreservationRequestDto preservationRequestDto)
         throws VitamClientException {
