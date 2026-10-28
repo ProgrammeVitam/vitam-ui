@@ -33,6 +33,26 @@ jobs:
       - name: Build ui-frontend apps
         working-directory: ui/ui-frontend
         run: npm run build:allModules
+  test-frontend:
+    name: Test Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: szenius/set-timezone@v2.0
+        with:
+          timezoneLinux: "Europe/Paris" # we set the timezone for Unit Tests to pass (we shouldn't need to, but it's currently required)
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "26.4.0"
+          cache: "npm"
+          cache-dependency-path: |
+            ui/ui-frontend/package-lock.json
+      - name: Install ui-frontend dependencies
+        working-directory: ui/ui-frontend
+        run: npm ci
+      - name: Build vitamui-library
+        working-directory: ui/ui-frontend
+        run: npm run build:vitamui-library
       - name: Run tests on ui-frontend apps
         working-directory: ui/ui-frontend
         run: npm run ci:test
@@ -120,7 +140,7 @@ jobs:
             **/target/test-classes/**/*
   sonarcloud:
     name: Run SonarCloud analysis
-    needs: [ build-frontend, build-backend ]
+    needs: [build-frontend, test-frontend, build-backend]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
