@@ -336,7 +336,7 @@ public class ArchivesSearchController {
         response.getOutputStream().write(resource.getContentAsByteArray());
     }
 
-    @PostMapping(RestApi.EXPORT_DIP)
+    @PostMapping(value = RestApi.EXPORT_DIP, produces = MediaType.TEXT_PLAIN_VALUE)
     @Secured(ServicesData.ROLE_EXPORT_DIP)
     public String exportDIPByCriteria(final @RequestBody ExportDipCriteriaDto exportDipCriteriaDto)
         throws PreconditionFailedException, VitamClientException {
