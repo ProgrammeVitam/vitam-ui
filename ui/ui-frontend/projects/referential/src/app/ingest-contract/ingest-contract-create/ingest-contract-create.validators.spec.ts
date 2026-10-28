@@ -109,4 +109,52 @@ describe('IngestContractCreateValidators', () => {
     expect(ingestContractServiceSpy.existsProperties).toHaveBeenCalledWith({ name: 'other' });
     expect(errorKinds(testForm.name)).toEqual(['nameExists']);
   });
+
+  it('uniqueName should not return any error when the name is free', async () => {
+    ingestContractServiceSpy.existsProperties.mockReturnValue(of(false));
+    const validators = new IngestContractCreateValidators(ingestContractServiceSpy as any);
+    const testForm = form(signal({ name: 'free' }), (path) => validators.uniqueName(path.name), { injector });
+
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    expect(ingestContractServiceSpy.existsProperties).toHaveBeenCalledWith({ name: 'free' });
+    expect(errorKinds(testForm.name)).toEqual([]);
+  });
+
+  it('uniqueIdentifier should return an identifierExists error for a trimmed existing identifier', async () => {
+    ingestContractServiceSpy.existsProperties.mockReturnValue(of(true));
+    const validators = new IngestContractCreateValidators(ingestContractServiceSpy as any);
+    const testForm = form(signal({ identifier: ' IC-0001 ' }), (path) => validators.uniqueIdentifier(path.identifier), { injector });
+
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    expect(ingestContractServiceSpy.existsProperties).toHaveBeenCalledWith({ identifier: 'IC-0001' });
+    expect(errorKinds(testForm.identifier)).toEqual(['identifierExists']);
+  });
+
+  it('uniqueNameWhileEdit should be valid without calling the service when no ingest contract is edited', async () => {
+    ingestContractServiceSpy.existsProperties.mockReturnValue(of(true));
+    const validators = new IngestContractCreateValidators(ingestContractServiceSpy as any);
+    const testForm = form(signal({ name: 'any' }), (path) => validators.uniqueNameWhileEdit(path.name, () => undefined), { injector });
+
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    expect(ingestContractServiceSpy.existsProperties).not.toHaveBeenCalled();
+    expect(errorKinds(testForm.name)).toEqual([]);
+  });
+
+  it('uniqueNameWhileEdit should read the edited ingest contract at validation time', async () => {
+    ingestContractServiceSpy.existsProperties.mockReturnValue(of(true));
+    const validators = new IngestContractCreateValidators(ingestContractServiceSpy as any);
+    let ingestContract = { name: 'before' } as IngestContract;
+    const testForm = form(signal({ name: 'after' }), (path) => validators.uniqueNameWhileEdit(path.name, () => ingestContract), {
+      injector,
+    });
+    ingestContract = { name: 'after' } as IngestContract;
+
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    expect(ingestContractServiceSpy.existsProperties).not.toHaveBeenCalled();
+    expect(errorKinds(testForm.name)).toEqual([]);
+  });
 });

@@ -37,7 +37,7 @@
 import { Injector, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { form, SchemaFn } from '@angular/forms/signals';
-import { firstValueFrom, of } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, of } from 'rxjs';
 import { RuleService } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ManagementRules, RuleAction, RuleCategoryAction } from '../models/ruleAction.interface';
@@ -127,6 +127,28 @@ describe('ManagementRulesValidatorService', () => {
     it('should not return any error when ruleId is ignored', async () => {
       expect(await validate('ruleId1', (path) => service.uniqueRuleId(path.rule, () => 'ruleId1'))).toEqual([]);
     });
+
+    it('should not return any error when ruleId is ignored with a string code', async () => {
+      expect(await validate('ruleId1', (path) => service.uniqueRuleId(path.rule, 'ruleId1'))).toEqual([]);
+    });
+
+    it('should only report the error once the debounce time has elapsed', async () => {
+      const testForm = form(signal({ rule: 'ruleId1' }), (path) => service.uniqueRuleId(path.rule), {
+        injector: TestBed.inject(Injector),
+      });
+      TestBed.tick();
+
+      await vi.advanceTimersByTimeAsync(service.debounceTime - 1);
+      expect(testForm.rule().errors()).toEqual([]);
+
+      await vi.advanceTimersByTimeAsync(1);
+      expect(
+        testForm
+          .rule()
+          .errors()
+          .map((error) => error.kind),
+      ).toEqual(['uniqueRuleId']);
+    });
   });
 
   describe('uniquePreventRuleId', () => {
@@ -154,6 +176,78 @@ describe('ManagementRulesValidatorService', () => {
     it('should not call the service when the value is empty', async () => {
       expect(await validate('', (path) => service.checkRuleIdExistence(path.rule))).toEqual([]);
       expect(ruleServiceMock.existsProperties).not.toHaveBeenCalled();
+    });
+
+    it('should not call the service when the value is the rule id to ignore', async () => {
+      ruleServiceMock.existsProperties.mockReturnValue(of(false));
+
+      expect(await validate('ruleId1', (path) => service.checkRuleIdExistence(path.rule, 'ruleId1'))).toEqual([]);
+      expect(ruleServiceMock.existsProperties).not.toHaveBeenCalled();
+    });
+  });
+});
+
+describe('ManagementRulesValidatorService rule filters', () => {
+  let service: ManagementRulesValidatorService;
+  let ruleCategory$: BehaviorSubject<string>;
+
+  const appraisalRuleCategoryAction: RuleCategoryAction = {
+    finalAction: 'keep',
+    preventInheritance: false,
+    rules: [
+      { rule: 'APP-00001', name: 'rule 1' },
+      { rule: 'APP-00003', oldRule: 'APP-00002', name: 'rule 3' },
+    ],
+    preventRulesIdToRemove: ['APP-00010'],
+  };
+  const categories: ManagementRules[] = [
+    { category: 'AppraisalRule', ruleCategoryAction: appraisalRuleCategoryAction, actionType: 'ADD_RULES' },
+    { category: 'AccessRule', ruleCategoryAction: {}, actionType: 'ADD_RULES' },
+  ];
+
+  beforeEach(() => {
+    ruleCategory$ = new BehaviorSubject('AppraisalRule');
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: ManagementRulesSharedDataService,
+          useValue: { getManagementRules: () => of(categories), getRuleCategory: () => ruleCategory$ },
+        },
+        { provide: RuleService, useValue: {} },
+      ],
+    });
+    service = TestBed.inject(ManagementRulesValidatorService);
+  });
+
+  describe('filterRuleActions', () => {
+    it('should match a rule id of the selected category on rule or oldRule', async () => {
+      expect(await firstValueFrom(service.filterRuleActions('APP-00001'))).toBe(true);
+      expect(await firstValueFrom(service.filterRuleActions('APP-00002'))).toBe(true);
+      expect(await firstValueFrom(service.filterRuleActions('APP-00099'))).toBe(false);
+    });
+
+    it('should only look at the currently selected category', async () => {
+      ruleCategory$.next('StorageRule');
+      expect(await firstValueFrom(service.filterRuleActions('APP-00001'))).toBe(false);
+    });
+
+    it('should return false when the category has no rules', async () => {
+      ruleCategory$.next('AccessRule');
+      expect(await firstValueFrom(service.filterRuleActions('APP-00001'))).toBe(false);
+    });
+  });
+
+  describe('filterPreventRulesId', () => {
+    it('should match ids listed in preventRulesIdToRemove of the selected category', async () => {
+      expect(await firstValueFrom(service.filterPreventRulesId('APP-00010'))).toBe(true);
+      expect(await firstValueFrom(service.filterPreventRulesId('APP-00001'))).toBe(false);
+    });
+
+    it('should return false when no prevent list or no category action exists', async () => {
+      ruleCategory$.next('AccessRule');
+      expect(await firstValueFrom(service.filterPreventRulesId('APP-00010'))).toBe(false);
+      ruleCategory$.next('Unknown');
+      expect(await firstValueFrom(service.filterPreventRulesId('APP-00010'))).toBe(false);
     });
   });
 });
