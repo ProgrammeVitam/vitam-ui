@@ -124,14 +124,12 @@
               </td>
               <td>
                 <div class="hgap-2 align-items-center" (click)="stopPropagation($event)">
-                  @if (hasBatchInError(transaction)) {
-                    <i class="vitamui-icon vitamui-icon-warning danger" [matTooltip]="'COLLECT.BATCH_ERROR_RECORDED' | translate"></i>
-                  }
                   @if (hasUnreadDiscussions(transaction)) {
                     <vitamui-discussion-icon
                       class="clickable"
                       [discussions]="getUnreadDiscussions(transaction)"
-                      [vitamuiTooltip]="'DISCUSSION.OPEN' | translate"
+                      [vitamuiTooltip]="'DISCUSSION.UNREAD_MESSAGES' | translate"
+                      [outline]="true"
                       vitamuiTooltipClass="secondary"
                       (click)="discussionPanel.opened.set(true); discussionPanel.expanded.set(true)"
                     ></vitamui-discussion-icon>
@@ -139,6 +137,14 @@
                       #discussionPanel
                       [discussionEntities]="getDiscussionEntities(transaction)"
                     ></vitamui-discussion-panel>
+                  }
+                  @if (hasBatchInError(transaction)) {
+                    <i
+                      class="vitamui-icon vitamui-icon-danger warning batch-error-icon"
+                      [vitamuiTooltip]="'COLLECT.BATCH_ERROR_RECORDED' | translate"
+                      [outline]="true"
+                      vitamuiTooltipClass="orange"
+                    ></i>
                   }
                 </div>
               </td>

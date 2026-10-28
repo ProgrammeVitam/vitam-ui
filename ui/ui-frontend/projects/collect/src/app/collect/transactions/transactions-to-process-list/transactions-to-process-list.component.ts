@@ -39,7 +39,6 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuItem } from '@angular/material/menu';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { filter, finalize, of, switchMap, take } from 'rxjs';
@@ -86,7 +85,6 @@ import { TransactionValidationMode } from '../../models/transaction-validation-m
     VitamuiMenuButtonComponent,
     MatMenuItem,
     MatProgressSpinner,
-    MatTooltipModule,
     TooltipDirective,
     PipesModule,
     TranslatePipe,
