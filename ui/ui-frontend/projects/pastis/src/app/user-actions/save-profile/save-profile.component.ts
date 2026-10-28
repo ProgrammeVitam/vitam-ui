@@ -364,11 +364,12 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
           .pipe(map((data: Blob) => ({ data, notice }))),
       ),
       tap((payload) => {
-        const { data, notice } = payload;
+        const { data } = payload;
         const type = this.profileService.isMode(ProfileType.PA) ? 'application/xml' : 'application/json';
         const extension = this.profileService.isMode(ProfileType.PA) ? 'rng' : 'json';
-        const normalizedNoticeName = notice?.name?.toLowerCase().replace(/ /gm, '_') || 'pastis_profile';
-        const filename = `${normalizedNoticeName}.${extension}`;
+        // Local export always uses a generic name: reusing the profile's SAE name here
+        // caused the previous profile's name to leak onto a newly created/edited one (Bug #15499).
+        const filename = `pastis_profile.${extension}`;
         const href = window.URL.createObjectURL(new Blob([data], { type }));
         const link = document.createElement('a');
         link.href = href;
