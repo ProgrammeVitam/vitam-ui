@@ -36,10 +36,19 @@
  */
 import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
+import { FieldContext, PathKind } from '@angular/forms/signals';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
+import { FieldPath, validateObservableWithParams } from '../shared/signal-forms/signal-form-validators';
 import { ProfileService } from './profile.service';
+
+export interface ProfileNameCheckParams {
+  tenantIdentifier: number;
+  level: string;
+  applicationName: string;
+  nameToIgnore?: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -62,4 +71,18 @@ export class ProfileValidators {
       );
     };
   };
+
+  /** Signal forms version of `nameExists`: the check runs again when the name or the computed parameters change. */
+  nameExistsRule<TPathKind extends PathKind = PathKind.Root>(
+    path: FieldPath<string, TPathKind>,
+    checkParams: (ctx: FieldContext<string, TPathKind>) => ProfileNameCheckParams,
+  ) {
+    validateObservableWithParams(path, {
+      debounceTime: this.debounceTime,
+      params: (ctx) => ({ ...checkParams(ctx), name: ctx.value() }),
+      stream: ({ tenantIdentifier, level, applicationName, nameToIgnore, name }) =>
+        name !== nameToIgnore ? this.rngProfileService.exists(tenantIdentifier, level, applicationName, name) : of(false),
+      onSuccess: (exists: boolean) => (exists ? { kind: 'nameExists' } : undefined),
+    });
+  }
 }

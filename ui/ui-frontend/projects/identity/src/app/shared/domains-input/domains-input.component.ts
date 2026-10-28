@@ -35,8 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ENTER } from '@angular/cdk/keycodes';
-import { Component, forwardRef, input, output, linkedSignal } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, forwardRef, input, output, linkedSignal, signal } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { form, FormField, pattern, required } from '@angular/forms/signals';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -52,7 +53,7 @@ export const DOMAINS_INPUT_ACCESSOR: any = {
   templateUrl: './domains-input.component.html',
   styleUrls: ['./domains-input.component.scss'],
   providers: [DOMAINS_INPUT_ACCESSOR],
-  imports: [ReactiveFormsModule, MatProgressSpinner, TranslatePipe],
+  imports: [FormField, MatProgressSpinner, TranslatePipe],
 })
 export class DomainsInputComponent implements ControlValueAccessor {
   readonly placeholder = input<string>(undefined);
@@ -63,15 +64,14 @@ export class DomainsInputComponent implements ControlValueAccessor {
   readonly selectedChange = output<string>();
 
   domains: string[] = [];
-  control: FormControl;
+  readonly domainForm = form(signal({ domain: '' }), (path) => {
+    required(path.domain);
+    pattern(path.domain, /^\s*([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}\s*$/);
+  });
   separatorKeysCodes = [ENTER];
 
   onChange: (_: any) => void;
   onTouched: () => void;
-
-  constructor() {
-    this.control = new FormControl(null, [Validators.required, Validators.pattern(/^\s*([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}\s*$/)], null);
-  }
 
   writeValue(domains: string[]) {
     this.domains = (domains || []).slice();
@@ -86,16 +86,18 @@ export class DomainsInputComponent implements ControlValueAccessor {
   }
 
   add(): void {
-    if (this.control.invalid || this.control.pending) {
+    const domainField = this.domainForm.domain();
+    if (domainField.invalid() || domainField.pending()) {
       return;
     }
-    const domain = this.control.value.trim();
+    const domain = domainField.value().trim();
     if (this.domains.includes(domain)) {
       return;
     }
-    this.domains.push(domain);
+    // A new array is emitted so that signal forms detect the change
+    this.domains = [...this.domains, domain];
     this.onChange(this.domains);
-    this.control.reset();
+    this.domainForm().reset({ domain: '' });
     if (!this.selectedState()) {
       this.setSelected(domain);
     }
@@ -108,7 +110,7 @@ export class DomainsInputComponent implements ControlValueAccessor {
       if (domain === this.selectedState()) {
         this.setSelected(null);
       }
-      this.domains.splice(index, 1);
+      this.domains = this.domains.filter((_, i) => i !== index);
       this.onChange(this.domains);
     }
   }
@@ -119,10 +121,18 @@ export class DomainsInputComponent implements ControlValueAccessor {
   }
 
   buttonAddDisabled(): boolean {
-    return this.control.pending || this.control.invalid || this.domainExists;
+    const domainField = this.domainForm.domain();
+    return domainField.pending() || domainField.invalid() || this.domainExists;
   }
 
   get domainExists(): boolean {
-    return this.domains.includes((this.control.value || '').trim());
+    return this.domains.includes((this.domainForm.domain().value() || '').trim());
+  }
+
+  hasError(kind: string): boolean {
+    return this.domainForm
+      .domain()
+      .errors()
+      .some((error) => error.kind === kind);
   }
 }

@@ -35,8 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Clipboard } from '@angular/cdk/clipboard';
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, inject, signal } from '@angular/core';
+import { form, FormField, FormRoot, maxLength, minLength, required } from '@angular/forms/signals';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import {
@@ -52,6 +52,14 @@ import { AdminDslService } from './admin-dsl.service';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 
+interface AdminDslForm {
+  dslQueryType: DslQueryType;
+  id: string;
+  accessContract: string;
+  dsl: string;
+  response: string;
+}
+
 @Component({
   selector: 'app-admin-dsl',
   templateUrl: './admin-dsl.component.html',
@@ -61,7 +69,8 @@ import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/mat
     MatSidenav,
     MatSidenavContent,
     VitamuiTitleBreadcrumbComponent,
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     SelectComponent,
     InputComponent,
     TranslatePipe,
@@ -73,12 +82,29 @@ export class AdminDslComponent {
   private readonly adminDslService = inject(AdminDslService);
   private readonly snackBarService = inject(SnackBarService);
   private readonly accessContractService = inject(AccessContractService);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly clipboard = inject(Clipboard);
   private readonly translateService = inject(TranslateService);
 
   tenantId: number;
-  form: FormGroup;
+  readonly form = form(
+    signal<AdminDslForm>({ dslQueryType: null, id: null, accessContract: null, dsl: null, response: null }),
+    (path) => {
+      required(path.dslQueryType);
+      required(path.id, { when: () => this.isUnitIdRequired() });
+      minLength(path.id, 36);
+      maxLength(path.id, 36);
+      required(path.accessContract);
+      required(path.dsl);
+    },
+    {
+      submission: {
+        action: async () => {
+          this.search();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
   accessContracts: Option[] = [];
   dslQueryTypeOptions = Object.values(DslQueryType).map((queryType) => ({
     key: queryType,
@@ -98,29 +124,22 @@ export class AdminDslComponent {
         });
       }
     });
-
-    this.form = this.formBuilder.group({
-      dslQueryType: [null, Validators.required],
-      id: [null, [Validators.minLength(36), Validators.maxLength(36)]],
-      accessContract: [null, Validators.required],
-      dsl: [null, Validators.required],
-      response: null,
-    });
   }
 
   search() {
     try {
+      const value = this.form().value();
       const searchObservable: Observable<any> =
-        this.form.get('dslQueryType').value === DslQueryType.ARCHIVE_UNIT
-          ? this.adminDslService.getByDsl(this.form.value.id, JSON.parse(this.form.value.dsl), this.form.value.accessContract)
-          : this.adminDslService.getUnitObjectsByDsl(this.form.value.id, JSON.parse(this.form.value.dsl), this.form.value.accessContract);
+        value.dslQueryType === DslQueryType.ARCHIVE_UNIT
+          ? this.adminDslService.getByDsl(value.id, JSON.parse(value.dsl), value.accessContract)
+          : this.adminDslService.getUnitObjectsByDsl(value.id, JSON.parse(value.dsl), value.accessContract);
 
       searchObservable.subscribe(
         (response: any) => {
           if (response.httpCode === 400) {
-            this.form.controls['response'].setValue(response.description);
+            this.form.response().value.set(response.description);
           } else {
-            this.form.controls['response'].setValue(JSON.stringify(response, null, 2));
+            this.form.response().value.set(JSON.stringify(response, null, 2));
           }
         },
         (error: any) => {
@@ -133,7 +152,7 @@ export class AdminDslComponent {
   }
 
   checkDsl() {
-    const dsl = this.form.value.dsl;
+    const dsl = this.form.dsl().value();
     try {
       return dsl.length > 1 && !!JSON.parse(dsl);
     } catch (syntaxError) {
@@ -149,13 +168,13 @@ export class AdminDslComponent {
   }
 
   clear() {
-    this.form.controls['response'].reset();
+    this.form.response().reset(null);
   }
 
   /**
    * Check if the unit id is required according to the selected dsl query type
    */
   isUnitIdRequired(): boolean {
-    return this.form.get('dslQueryType').value === DslQueryType.TECHNICAL_OBJECT_GROUP;
+    return this.form.dslQueryType().value() === DslQueryType.TECHNICAL_OBJECT_GROUP;
   }
 }

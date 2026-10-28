@@ -34,6 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { signal } from '@angular/core';
+import { form } from '@angular/forms/signals';
 import { TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { from, of } from 'rxjs';
@@ -110,56 +112,77 @@ describe('ProfileGroupValidators nameExist', () => {
   });
 });
 
-describe('ProfileGroupValidators unitExists', () => {
-  it('should return null', () => {
-    const groupServiceSpy = {
-      unitExists: vi.fn().mockName('GroupService.unitExists'),
-    };
-    groupServiceSpy.unitExists.mockReturnValue(of(false));
+describe('ProfileGroupValidators nameExistsRule', () => {
+  it('should set the nameExists error', async () => {
+    const groupServiceSpy = { exists: vi.fn().mockName('GroupService.exists').mockReturnValue(of(true)) };
     const groupValidators = createValidators(groupServiceSpy);
-    from(groupValidators.unitExists('customerId')(new FormControl('unite1'))).subscribe((result) => {
-      expect(result).toBeNull();
-    });
-    vi.advanceTimersByTime(400);
+    const groupForm = TestBed.runInInjectionContext(() =>
+      form(signal({ name: '' }), (path) => groupValidators.nameExistsRule(path.name, '42')),
+    );
+    groupForm.name().value.set('123456');
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    expect(groupServiceSpy.exists).toHaveBeenCalledWith('42', '123456');
+    expect(
+      groupForm
+        .name()
+        .errors()
+        .map((error) => error.kind),
+    ).toEqual(['nameExists']);
+  });
+});
+
+describe('ProfileGroupValidators unitExistsRule', () => {
+  const createForm = (exists: boolean, unitsToIgnore: string[] = []) => {
+    const groupServiceSpy = { unitExists: vi.fn().mockName('GroupService.unitExists').mockReturnValue(of(exists)) };
+    const groupValidators = createValidators(groupServiceSpy);
+    const unitForm = TestBed.runInInjectionContext(() =>
+      form(signal({ unit: '' }), (path) =>
+        groupValidators.unitExistsRule(
+          path.unit,
+          () => 'customerId',
+          () => unitsToIgnore,
+        ),
+      ),
+    );
+    return { unitForm, groupServiceSpy };
+  };
+
+  const setUnit = async (unitForm: ReturnType<typeof createForm>['unitForm'], unit: string) => {
+    unitForm.unit().value.set(unit);
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+  };
+
+  it('should not set an error', async () => {
+    const { unitForm, groupServiceSpy } = createForm(false);
+    await setUnit(unitForm, 'unite1');
     expect(groupServiceSpy.unitExists).toHaveBeenCalledWith('customerId', 'unite1');
+    expect(unitForm.unit().valid()).toBe(true);
   });
 
-  it('should return { unitExists: true }', () => {
-    const groupServiceSpy = {
-      unitExists: vi.fn().mockName('GroupService.unitExists'),
-    };
-    groupServiceSpy.unitExists.mockReturnValue(of(true));
-    const profileGroupValidators = createValidators(groupServiceSpy);
-    from(profileGroupValidators.unitExists('customerId')(new FormControl('unite1'))).subscribe((result) => {
-      expect(result).toEqual({ unitExists: true });
-    });
-    vi.advanceTimersByTime(400);
+  it('should set the unitExists error', async () => {
+    const { unitForm, groupServiceSpy } = createForm(true);
+    await setUnit(unitForm, 'unite1');
     expect(groupServiceSpy.unitExists).toHaveBeenCalledWith('customerId', 'unite1');
+    expect(
+      unitForm
+        .unit()
+        .errors()
+        .map((error) => error.kind),
+    ).toEqual(['unitExists']);
   });
 
-  it('should not call the service', () => {
-    const groupServiceSpy = {
-      unitExists: vi.fn().mockName('GroupService.unitExists'),
-    };
-    groupServiceSpy.unitExists.mockReturnValue(of(true));
-    const profileGroupValidators = createValidators(groupServiceSpy);
-    from(profileGroupValidators.unitExists('customerId', ['unite2'])(new FormControl('unite2'))).subscribe((result) => {
-      expect(result).toEqual(null);
-    });
-    vi.advanceTimersByTime(400);
+  it('should not call the service', async () => {
+    const { unitForm, groupServiceSpy } = createForm(true, ['unite2']);
+    await setUnit(unitForm, 'unite2');
     expect(groupServiceSpy.unitExists).not.toHaveBeenCalled();
+    expect(unitForm.unit().valid()).toBe(true);
   });
 
-  it('should call the service', () => {
-    const groupServiceSpy = {
-      unitExists: vi.fn().mockName('GroupService.unitExists'),
-    };
-    groupServiceSpy.unitExists.mockReturnValue(of(true));
-    const profileGroupValidators = createValidators(groupServiceSpy);
-    from(profileGroupValidators.unitExists('customerId')(new FormControl('unite2'))).subscribe((result) => {
-      expect(result).toEqual({ unitExists: true });
-    });
-    vi.advanceTimersByTime(400);
+  it('should call the service with the trimmed unit', async () => {
+    const { unitForm, groupServiceSpy } = createForm(true);
+    await setUnit(unitForm, ' unite2 ');
     expect(groupServiceSpy.unitExists).toHaveBeenCalledWith('customerId', 'unite2');
   });
 });

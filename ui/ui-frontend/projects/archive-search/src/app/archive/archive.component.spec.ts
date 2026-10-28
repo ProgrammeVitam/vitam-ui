@@ -36,7 +36,6 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
@@ -115,7 +114,6 @@ describe('ArchiveComponent', () => {
         ArchiveComponent,
       ],
       providers: [
-        FormBuilder,
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ArchiveApiService, useValue: archiveServiceMock },
         { provide: SecurityService, useValue: securityServiceMock },

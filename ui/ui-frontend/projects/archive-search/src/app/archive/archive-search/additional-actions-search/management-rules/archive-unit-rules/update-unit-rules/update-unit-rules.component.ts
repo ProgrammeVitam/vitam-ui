@@ -34,22 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit, signal, TemplateRef, input, output, viewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { Component, computed, inject, OnDestroy, OnInit, signal, TemplateRef, input, output, viewChild } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { disabled, form, FormField, FormRoot, required, validate, ValidationError } from '@angular/forms/signals';
 import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { cloneDeep } from 'lodash-es';
-import { finalize, merge, Observable, Subscription } from 'rxjs';
-import { debounceTime, filter, map } from 'rxjs/operators';
+import { cloneDeep, isEqual } from 'lodash-es';
+import { finalize, Observable, Subscription } from 'rxjs';
+import { debounceTime, filter, map, skip } from 'rxjs/operators';
 import {
   CriteriaDataType,
   CriteriaOperator,
   DatepickerComponent,
   DialogHeaderComponent,
   diff,
-  ManagementRuleValidators,
   Rule,
   RuleService,
+  ruleIdPattern,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
   SelectComponent,
@@ -69,22 +70,31 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 const MANAGEMENT_RULE_IDENTIFIER = 'MANAGEMENT_RULE_IDENTIFIER';
 const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
-const LocalValidators = {
-  differentRuleIds: (control: AbstractControl): ValidationErrors | null => {
-    const oldRuleId = control.get('oldRule')?.value;
-    const newRuleId = control.get('newRule')?.value;
 
-    if (oldRuleId && newRuleId && oldRuleId === newRuleId) {
-      return { sameTargetRule: { value: newRuleId } };
+interface RuleDetailsForm {
+  oldRule: string | null;
+  newRule: string | null;
+  startDate: Date | null;
+  endDate: string | null;
+  ruleUpdated: boolean;
+  startDateUpdated: boolean;
+}
+
+const RULE_DETAILS_FIELDS: (keyof RuleDetailsForm)[] = ['oldRule', 'newRule', 'startDate', 'endDate', 'ruleUpdated', 'startDateUpdated'];
+
+const LocalValidators = {
+  differentRuleIds: ({ oldRule, newRule }: RuleDetailsForm): ValidationError | undefined => {
+    if (oldRule && newRule && oldRule === newRule) {
+      return { kind: 'sameTargetRule', value: newRule } as ValidationError;
     }
 
-    return null;
+    return undefined;
   },
-  mustUpdateRuleOrStartDate: (control: AbstractControl): ValidationErrors | null => {
-    if (control.get('ruleUpdated').value && control.get('newRule').value) return null;
-    if (control.get('startDateUpdated').value && control.get('startDate').value) return null;
+  mustUpdateRuleOrStartDate: (value: RuleDetailsForm): ValidationError | undefined => {
+    if (value.ruleUpdated && value.newRule) return undefined;
+    if (value.startDateUpdated && value.startDate) return undefined;
 
-    return { mustUpdateRuleOrStartDate: true };
+    return { kind: 'mustUpdateRuleOrStartDate' };
   },
 };
 
@@ -93,7 +103,8 @@ const LocalValidators = {
   templateUrl: './update-unit-rules.component.html',
   styleUrls: ['./update-unit-rules.component.css'],
   imports: [
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     SelectComponent,
     SlideToggleComponent,
     DatepickerComponent,
@@ -111,7 +122,6 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
   private readonly ruleService = inject(RuleService);
   private readonly dialog = inject(MatDialog);
   private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly managementRulesValidatorService = inject(ManagementRulesValidatorService);
   private readonly translateService = inject(TranslateService);
   private readonly updateUnitManagementRuleService = inject(UpdateUnitManagementRuleService);
@@ -130,7 +140,46 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
 
   ruleOptions = signal<VitamuiSelectOptions>(null);
 
-  ruleDetailsForm: FormGroup;
+  // The rule update toggles are enabled once a source rule has been selected
+  private readonly updateTogglesEnabled = signal(false);
+  private readonly model = signal<RuleDetailsForm>({
+    oldRule: null,
+    newRule: null,
+    startDate: null,
+    endDate: null,
+    ruleUpdated: false,
+    startDateUpdated: false,
+  });
+  readonly ruleDetailsForm = form(
+    this.model,
+    (path) => {
+      required(path.oldRule);
+      ruleIdPattern(path.oldRule);
+      this.managementRulesValidatorService.uniqueRuleId(path.oldRule, () => this.lastRuleId);
+      this.managementRulesValidatorService.checkRuleIdExistence(path.oldRule);
+      ruleIdPattern(path.newRule);
+      this.managementRulesValidatorService.checkRuleIdExistence(path.newRule);
+      disabled(path.newRule, ({ valueOf }) => !valueOf(path.ruleUpdated));
+      disabled(path.startDate, ({ valueOf }) => !valueOf(path.startDateUpdated));
+      disabled(path.endDate);
+      disabled(path.ruleUpdated, () => !this.updateTogglesEnabled());
+      disabled(path.startDateUpdated, () => !this.updateTogglesEnabled());
+      validate(path, ({ value }) => LocalValidators.differentRuleIds(value()));
+      validate(path, ({ value }) => LocalValidators.mustUpdateRuleOrStartDate(value()));
+    },
+    {
+      submission: {
+        action: async () => {
+          this.submit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
+  // Value of the enabled fields (as the value of a reactive form)
+  private readonly enabledValue = computed(() =>
+    Object.fromEntries(RULE_DETAILS_FIELDS.filter((key) => !this.ruleDetailsForm[key]().disabled()).map((key) => [key, this.model()[key]])),
+  );
   isShowCheckButton = signal(true);
   showText = signal(false);
   isLoading = signal(false);
@@ -138,7 +187,7 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
   previousRuleDetails: {
     oldRule: string;
     newRule: string;
-    startDate: string;
+    startDate: Date | string;
     endDate: string;
     ruleUpdated: boolean;
     startDateUpdated: boolean;
@@ -169,65 +218,59 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
       startDateUpdated: false,
     };
 
-    this.ruleDetailsForm = this.formBuilder.group(
-      {
-        oldRule: [
-          null,
-          [Validators.required, ManagementRuleValidators.ruleIdPattern],
-          [
-            this.managementRulesValidatorService.uniqueRuleId(() => this.lastRuleId),
-            this.managementRulesValidatorService.checkRuleIdExistence(),
-          ],
-        ],
-        newRule: [
-          { value: null, disabled: true },
-          [ManagementRuleValidators.ruleIdPattern],
-          [this.managementRulesValidatorService.checkRuleIdExistence()],
-        ],
-        startDate: [{ value: null, disabled: true }],
-        endDate: [{ value: null, disabled: true }],
-        ruleUpdated: [{ value: false, disabled: true }],
-        startDateUpdated: [{ value: false, disabled: true }],
-      },
-      {
-        validators: [LocalValidators.differentRuleIds, LocalValidators.mustUpdateRuleOrStartDate],
-      },
-    );
+    toObservable(this.ruleDetailsForm.ruleUpdated().value)
+      .pipe(skip(1))
+      .subscribe((value) => {
+        if (!value) {
+          // TODO: The 'emit' function requires a mandatory any argument
+          this.cancelStep.emit();
+          this.model.update((model) => ({ ...model, newRule: null }));
+          this.previousRuleDetails.newRule = null;
+          this.model.update((model) => ({ ...model, endDate: null }));
+          this.newRule = null;
+        }
+      });
 
-    this.ruleDetailsForm.get('ruleUpdated').valueChanges.subscribe((value) => {
-      const newRuleControl = this.ruleDetailsForm.get('newRule');
-      !!value ? newRuleControl.enable() : newRuleControl.disable();
-      if (!value) {
-        // TODO: The 'emit' function requires a mandatory any argument
-        this.cancelStep.emit();
-        this.ruleDetailsForm.patchValue({ newRule: null });
-        this.previousRuleDetails.newRule = null;
-        this.ruleDetailsForm.patchValue({ endDate: null });
-        this.newRule = null;
-      }
-    });
+    toObservable(this.ruleDetailsForm.startDateUpdated().value)
+      .pipe(skip(1))
+      .subscribe((value) => {
+        if (!value) {
+          // TODO: The 'emit' function requires a mandatory any argument
+          this.cancelStep.emit();
+          this.model.update((model) => ({ ...model, startDate: null, endDate: null }));
+        }
+      });
 
-    this.ruleDetailsForm.get('startDateUpdated').valueChanges.subscribe((value) => {
-      const startDateControl = this.ruleDetailsForm.get('startDate');
-      !!value ? startDateControl.enable() : startDateControl.disable();
-      if (!value) {
-        // TODO: The 'emit' function requires a mandatory any argument
-        this.cancelStep.emit();
-        this.ruleDetailsForm.patchValue({ startDate: null });
-        this.ruleDetailsForm.patchValue({ endDate: null });
-      }
-    });
-
-    merge(this.ruleDetailsForm.statusChanges, this.ruleDetailsForm.valueChanges)
+    // Changes of the value or of the status of the form
+    const formChanges = computed(() => ({
+      value: this.model(),
+      enabledValue: this.enabledValue(),
+      valid: this.ruleDetailsForm().valid(),
+      pending: this.ruleDetailsForm().pending(),
+    }));
+    toObservable(formChanges)
       .pipe(
+        skip(1),
         debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
-        map(() => diff(this.ruleDetailsForm.value, this.previousRuleDetails)),
+        map(() => diff(this.enabledValue(), this.previousRuleDetails)),
         filter((formData) => this.isEmpty(formData)),
         filter((formData) => this.patchForm(formData)),
       )
       .subscribe(() => {
-        this.ruleDetailsForm.patchValue(this.previousRuleDetails, { emitEvent: false });
+        const value = this.model();
+        const patchedValue = { ...value, ...this.previousRuleDetails } as RuleDetailsForm;
+        // Only patch when needed, not to trigger a new change of the form
+        if (!isEqual(value, patchedValue)) {
+          this.model.set(patchedValue);
+        }
       });
+  }
+
+  /** Error of the form itself (not of one of its fields) */
+  formError(kind: string): (ValidationError & { value?: string }) | undefined {
+    return this.ruleDetailsForm()
+      .errors()
+      .find((error) => error.kind === kind);
   }
 
   ngOnInit() {
@@ -261,11 +304,10 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
       this.subscriptions.add(
         this.ruleService.get(formData.oldRule.trim()).subscribe((ruleResponse) => {
           this.oldRule = ruleResponse;
-          this.ruleDetailsForm.patchValue({ endDate: null });
+          this.ruleDetailsForm.endDate().value.set(null);
         }),
       );
-      this.ruleDetailsForm.controls['startDateUpdated'].enable();
-      this.ruleDetailsForm.controls['ruleUpdated'].enable();
+      this.updateTogglesEnabled.set(true);
       this.isShowCheckButton.set(true);
       return true;
     }
@@ -276,7 +318,7 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
       this.subscriptions.add(
         this.ruleService.get(formData.newRule.trim()).subscribe((ruleResponse) => {
           this.newRule = ruleResponse;
-          this.ruleDetailsForm.patchValue({ endDate: null });
+          this.ruleDetailsForm.endDate().value.set(null);
         }),
       );
       this.isShowCheckButton.set(true);
@@ -291,10 +333,10 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
     this.previousRuleDetails = {
       oldRule: data.oldRule ? data.oldRule : this.previousRuleDetails.oldRule,
       newRule: data.newRule ? data.newRule : this.previousRuleDetails.newRule,
-      startDate: this.ruleDetailsForm.get('startDate').value,
-      endDate: this.ruleDetailsForm.get('endDate').value,
-      ruleUpdated: this.ruleDetailsForm.get('ruleUpdated').value,
-      startDateUpdated: this.ruleDetailsForm.get('startDateUpdated').value,
+      startDate: this.ruleDetailsForm.startDate().value(),
+      endDate: this.ruleDetailsForm.endDate().value(),
+      ruleUpdated: this.ruleDetailsForm.ruleUpdated().value(),
+      startDateUpdated: this.ruleDetailsForm.startDateUpdated().value(),
     };
 
     return true;
@@ -305,10 +347,10 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
     this.showText.set(true);
     this.isLoading.set(true);
     const rule: RuleAction = {
-      rule: this.ruleDetailsForm.get('newRule').value,
-      startDate: this.ruleDetailsForm.get('startDate').value,
+      rule: this.ruleDetailsForm.newRule().value(),
+      startDate: this.ruleDetailsForm.startDate().value(),
       endDate: null,
-      oldRule: this.ruleDetailsForm.get('oldRule').value,
+      oldRule: this.ruleDetailsForm.oldRule().value(),
     };
 
     this.subscriptions.add(
@@ -350,7 +392,7 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
     this.addRuleToQueryAndMakeRequest();
     // TODO: The 'emit' function requires a mandatory any argument
     this.confirmStep.emit();
-    this.lastRuleId = this.ruleDetailsForm.get('oldRule').value;
+    this.lastRuleId = this.ruleDetailsForm.oldRule().value();
   }
 
   onDelete() {
@@ -362,7 +404,7 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
         .afterClosed()
         .pipe(filter((result) => !!result))
         .subscribe(() => {
-          this.delete.emit(this.ruleDetailsForm.get('oldRule').value);
+          this.delete.emit(this.ruleDetailsForm.oldRule().value());
         }),
     );
   }
@@ -372,7 +414,7 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
     if (this.oldRule && this.oldRule.ruleMeasurement) {
       const durationToAdd = this.newRule && this.newRule.ruleMeasurement ? this.newRule.ruleDuration : this.oldRule.ruleDuration;
 
-      const startDateSelected = new Date(this.ruleDetailsForm.get('startDate').value);
+      const startDateSelected = new Date(this.ruleDetailsForm.startDate().value());
       switch (this.oldRule.ruleMeasurement.toUpperCase()) {
         case 'YEAR':
           startDateSelected.setFullYear(startDateSelected.getFullYear() + Number(durationToAdd));
@@ -392,7 +434,7 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
         '/' +
         new Date(startDateSelected).getFullYear().toString();
 
-      this.ruleDetailsForm.patchValue({ endDate });
+      this.ruleDetailsForm.endDate().value.set(endDate);
     }
 
     this.isShowCheckButton.update((visible) => !visible);
@@ -420,14 +462,15 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
     };
     const criteriaWithId: SearchCriteriaEltDto = {
       criteria: MANAGEMENT_RULE_IDENTIFIER,
-      values: [{ id: this.ruleDetailsForm.get('oldRule').value, value: this.ruleDetailsForm.get('oldRule').value }],
+      values: [{ id: this.ruleDetailsForm.oldRule().value(), value: this.ruleDetailsForm.oldRule().value() }],
       category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory()),
       operator: CriteriaOperator.EQ,
       dataType: CriteriaDataType.STRING,
     };
     this.criteriaSearchDSLQuery.criteriaList.push(criteriaWithId);
     this.criteriaSearchDSLQuery.criteriaList.push(onlyManagementRules);
-    this.ruleDetailsForm.markAsUntouched();
+    // Back to untouched (and pristine)
+    this.ruleDetailsForm().reset();
     if (this.hasExactCount()) {
       this.archiveService
         .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList)

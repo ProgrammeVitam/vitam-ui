@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { of } from 'rxjs';
@@ -241,7 +240,6 @@ describe('UnlockCategoryInheritanceComponent', () => {
     await TestBed.configureTestingModule({
       imports: [VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), UnlockCategoryInheritanceComponent],
       providers: [
-        FormBuilder,
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
         { provide: UpdateUnitManagementRuleService, useValue: updateUnitManagementRuleServiceMock },

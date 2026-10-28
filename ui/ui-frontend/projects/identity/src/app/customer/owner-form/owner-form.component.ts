@@ -34,10 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, inject, OnDestroy, OnInit, input, OnChanges, SimpleChanges } from '@angular/core';
-import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
-import { merge } from 'rxjs';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { Component, effect, forwardRef, inject, input, OnChanges, OnInit, SimpleChanges, computed, signal, untracked } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { form, FormField, maxLength, minLength, pattern, required } from '@angular/forms/signals';
 import { CountryOption, CountryService, Customer, InputComponent, Option, Owner, SelectComponent, StartupService } from 'vitamui-library';
 import {
   ALPHA_NUMERIC_REGEX,
@@ -59,116 +58,145 @@ export const OWNER_FORM_VALUE_ACCESSOR: any = {
   multi: true,
 };
 
+export interface OwnerFormModel {
+  id: string;
+  customerId: string;
+  identifier: string;
+  code: string;
+  name: string;
+  companyName: string;
+  internalCode: string;
+  address: {
+    street: string;
+    zipCode: string;
+    city: string;
+    country: string;
+  };
+  readonly: boolean;
+}
+
+function toOwnerFormModel(owner: Partial<Owner>, customerId: string): OwnerFormModel {
+  if (!owner) {
+    return {
+      id: null,
+      customerId,
+      identifier: null,
+      code: null,
+      name: null,
+      companyName: null,
+      internalCode: null,
+      address: { street: null, zipCode: null, city: null, country: 'FR' },
+      readonly: false,
+    };
+  }
+  return {
+    id: owner.id ?? null,
+    customerId: owner.customerId ?? null,
+    identifier: owner.identifier ?? null,
+    code: owner.code ?? null,
+    name: owner.name ?? null,
+    companyName: owner.companyName ?? null,
+    internalCode: owner.internalCode ?? null,
+    address: {
+      street: owner.address?.street ?? null,
+      zipCode: owner.address?.zipCode ?? null,
+      city: owner.address?.city ?? null,
+      country: owner.address?.country ?? null,
+    },
+    readonly: owner.readonly ?? null,
+  };
+}
+
 @Component({
   selector: 'app-owner-form',
   templateUrl: './owner-form.component.html',
   styleUrls: ['./owner-form.component.scss'],
   providers: [OWNER_FORM_VALUE_ACCESSOR],
-  imports: [ReactiveFormsModule, InputComponent, SelectComponent, TranslatePipe],
+  imports: [FormField, InputComponent, SelectComponent, TranslatePipe],
 })
-export class OwnerFormComponent implements OnChanges, ControlValueAccessor, OnDestroy, OnInit {
-  private readonly formBuilder = inject(FormBuilder);
+export class OwnerFormComponent implements OnChanges, ControlValueAccessor, OnInit {
   private readonly ownerFormValidators = inject(OwnerFormValidators);
   private readonly countryService = inject(CountryService);
   private readonly startupService = inject(StartupService);
 
-  public form: FormGroup;
-  public maxStreetLength: number;
+  public readonly maxStreetLength: number = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
   public countries: Option[];
-
-  private sub: any;
 
   readonly customerId = input<string>();
 
-  readonly customerInfo = input<Customer>();
+  readonly customerInfo = input<Pick<Customer, 'code' | 'name' | 'companyName'>>();
 
-  constructor() {
-    this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
-    this.form = this.formBuilder.group({
-      id: null,
-      customerId: [null],
-      identifier: null,
-      code: [
-        null,
-        [
-          Validators.required,
-          Validators.pattern(ALPHA_NUMERIC_REGEX),
-          Validators.maxLength(OWNER_CODE_MAX_LENGTH),
-          Validators.minLength(OWNER_CODE_MIN_LENGTH),
-        ],
-        this.ownerFormValidators.uniqueCode(),
-      ],
-      name: [null, [Validators.required, Validators.maxLength(OWNER_NAME_MAX_LENGTH)]],
-      companyName: [null, [Validators.required, Validators.maxLength(OWNER_COMPANY_NAME_MAX_LENGTH)]],
-      internalCode: [null, [Validators.maxLength(OWNER_INTERNAL_CODE_MAX_LENGTH)]],
-      address: this.formBuilder.group({
-        street: [null, Validators.maxLength(this.maxStreetLength)],
-        zipCode: [null, Validators.maxLength(OWNER_ZIP_CODE_MAX_LENGTH)],
-        city: [null, Validators.maxLength(OWNER_CITY_MAX_LENGTH)],
-        country: 'FR',
-      }),
-      readonly: false,
-    });
-  }
+  private readonly model = signal<OwnerFormModel>(toOwnerFormModel(null, null));
+  public readonly form = form(this.model, (path) => {
+    required(path.code);
+    pattern(path.code, ALPHA_NUMERIC_REGEX);
+    maxLength(path.code, OWNER_CODE_MAX_LENGTH);
+    minLength(path.code, OWNER_CODE_MIN_LENGTH);
+    this.ownerFormValidators.uniqueCodeRule(path.code);
+    required(path.name);
+    maxLength(path.name, OWNER_NAME_MAX_LENGTH);
+    required(path.companyName);
+    maxLength(path.companyName, OWNER_COMPANY_NAME_MAX_LENGTH);
+    maxLength(path.internalCode, OWNER_INTERNAL_CODE_MAX_LENGTH);
+    maxLength(path.address.street, this.maxStreetLength);
+    maxLength(path.address.zipCode, OWNER_ZIP_CODE_MAX_LENGTH);
+    maxLength(path.address.city, OWNER_CITY_MAX_LENGTH);
+  });
+
+  // The owner is propagated to the parent only when the form is valid (null otherwise)
+  private readonly value = computed(() => (this.form().pending() || this.form().invalid() ? null : this.model()));
+  // Last value received from or sent to the parent
+  private lastValue: OwnerFormModel = null;
 
   onChange = (_: any) => {};
 
   onTouched = () => {};
 
+  constructor() {
+    effect(() => {
+      const value = this.value();
+      untracked(() => {
+        if (value !== this.lastValue) {
+          this.lastValue = value;
+          this.onChange(value);
+        }
+      });
+    });
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['customerId']) {
-      if (this.form) {
-        this.form.get('customerId').setValue(this.customerId());
-      }
+      this.model.update((owner) => ({ ...owner, customerId: this.customerId() }));
     }
     if (changes['customerInfo']) {
       const customerInfo = this.customerInfo();
-      if (customerInfo && this.form) {
-        this.form.patchValue({
+      if (customerInfo) {
+        this.model.update((owner) => ({
+          ...owner,
           code: customerInfo.code,
           name: customerInfo.name,
           companyName: customerInfo.companyName,
-        });
-        const codeControl = this.form.get('code');
-        if (codeControl?.invalid) {
-          codeControl.markAsTouched();
+        }));
+        if (this.form.code().invalid()) {
+          this.form.code().markAsTouched();
         }
       }
     }
   }
 
   ngOnInit() {
-    this.subscribeToValueChanges();
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
       this.countries = values.map((country) => ({ key: country.code, label: country.name }));
     });
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
-
   writeValue(owner: Owner) {
-    this.sub.unsubscribe();
-
-    this.form.reset(
-      owner || {
-        customerId: this.customerId(),
-        code: null,
-        name: null,
-        companyName: null,
-        internalCode: null,
-        address: {
-          street: null,
-          zipCode: null,
-          city: null,
-          country: 'FR',
-        },
-        readonly: false,
-      },
-    );
-
-    this.subscribeToValueChanges();
+    // Ignore the value we have just sent to the parent
+    if (owner === this.lastValue) {
+      return;
+    }
+    this.lastValue = owner as OwnerFormModel;
+    this.form().reset(toOwnerFormModel(owner, this.customerId()));
   }
 
   registerOnChange(fn: any): void {
@@ -177,14 +205,5 @@ export class OwnerFormComponent implements OnChanges, ControlValueAccessor, OnDe
 
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
-  }
-
-  subscribeToValueChanges() {
-    this.sub = merge(this.form.statusChanges, this.form.valueChanges)
-      .pipe(
-        map(() => (this.form.pending || this.form.invalid ? null : this.form.value)),
-        distinctUntilChanged(),
-      )
-      .subscribe((value) => this.onChange(value));
   }
 }

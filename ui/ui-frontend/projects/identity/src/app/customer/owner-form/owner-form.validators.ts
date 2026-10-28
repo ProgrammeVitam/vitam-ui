@@ -36,9 +36,12 @@
  */
 import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
+import { PathKind } from '@angular/forms/signals';
+import { validateObservable } from 'vitamui-library';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
+import { FieldPath } from '../../shared/signal-forms/signal-form-validators';
 import { OwnerService } from '../owner.service';
 
 export const OWNER_CODE_MAX_LENGTH = 20;
@@ -68,4 +71,16 @@ export class OwnerFormValidators {
       );
     };
   };
+
+  /** Signal forms version of `uniqueCode`: `codeToIgnore` is read each time the check runs. */
+  uniqueCodeRule<TPathKind extends PathKind = PathKind.Root>(
+    path: FieldPath<string, TPathKind>,
+    codeToIgnore: () => string = () => undefined,
+  ) {
+    validateObservable(path, {
+      debounceTime: this.debounceTime,
+      stream: (code: string) => (code !== codeToIgnore() ? this.ownerService.exists(code) : of(false)),
+      onSuccess: (exists: boolean) => (exists ? { kind: 'uniqueCode' } : undefined),
+    });
+  }
 }

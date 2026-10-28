@@ -36,7 +36,6 @@ import type { Mock } from 'vitest';
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
@@ -93,7 +92,6 @@ describe('IngestComponent test:', () => {
         IngestListStubComponent,
       ],
       providers: [
-        FormBuilder,
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: IngestService, useValue: ingestServiceMock },
         { provide: UploadService, useValue: uploadServiceSpy },
@@ -157,10 +155,12 @@ describe('IngestComponent test:', () => {
   it('should update filters when start date and end date change', () => {
     const startDate = new Date('2026-01-01');
     const endDate = new Date('2026-01-10');
-    component.dateRangeFilterForm.controls.startDate.setValue(startDate);
+    component.dateRangeFilterForm.startDate().value.set(startDate);
+    TestBed.tick();
     expect(component.filters.startDate).toEqual(startDate);
 
-    component.dateRangeFilterForm.controls.endDate.setValue(endDate);
+    component.dateRangeFilterForm.endDate().value.set(endDate);
+    TestBed.tick();
     expect(component.filters.endDate).toEqual(endDate);
     expect(ingestListStub.direction).toBe(Direction.DESCENDANT);
   });

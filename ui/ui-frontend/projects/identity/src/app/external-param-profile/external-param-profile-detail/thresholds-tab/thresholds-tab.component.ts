@@ -34,29 +34,33 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges, signal, input } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Component, inject, OnChanges, OnInit, SimpleChanges, signal, input } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { disabled, form, FormField } from '@angular/forms/signals';
+import { filter } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
 import { diff, ExternalParamProfile, Option, SelectComponent, SlideToggleComponent, TooltipDirective } from 'vitamui-library';
 import { ExternalParamProfileService } from '../../external-param-profile.service';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { DecimalPipe } from '@angular/common';
 
+interface ThresholdsModel {
+  usePlatformThreshold: boolean;
+  bulkOperationsThreshold: number;
+}
+
 @Component({
   selector: 'app-thresholds-tab',
   templateUrl: './thresholds-tab.component.html',
   styleUrls: ['./thresholds-tab.component.css'],
-  imports: [ReactiveFormsModule, SlideToggleComponent, SelectComponent, TooltipDirective, TranslatePipe],
+  imports: [FormField, SlideToggleComponent, SelectComponent, TooltipDirective, TranslatePipe],
 })
-export class ThresholdsTabComponent implements OnDestroy, OnInit, OnChanges {
-  private readonly formBuilder = inject(FormBuilder);
+export class ThresholdsTabComponent implements OnInit, OnChanges {
   private readonly externalParamProfileService = inject(ExternalParamProfileService);
   private readonly translateService = inject(TranslateService);
   private readonly decimalPipe = inject(DecimalPipe);
 
-  form: FormGroup;
-  previousValue: ExternalParamProfile;
+  previousValue: ThresholdsModel;
   thresholdValues: Option[] = [100, 10000, 100000, 1000000, 10000000, 100000000, 1000000000].map((thresholdValue) => ({
     key: thresholdValue,
     label: this.translateService.instant('EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_VALUES', {
@@ -69,51 +73,52 @@ export class ThresholdsTabComponent implements OnDestroy, OnInit, OnChanges {
   readonly readOnly = input<boolean>(undefined);
   readonly tenantIdentifier = input<string>(undefined);
 
-  private updateFormSub: Subscription;
+  // The profile is applied to the form only after the initialization (as when the form was created in ngOnInit)
+  private initialized = false;
+  private readonly model = signal<ThresholdsModel>({ usePlatformThreshold: true, bulkOperationsThreshold: null });
+  // Value set by resetForm: like a reset with emitEvent: false, it must not update isUpdated
+  private resetValue = this.model();
+  private readonly formReadOnly = signal(false);
+  readonly form = form(this.model, (path) => {
+    disabled(path, () => this.formReadOnly());
+  });
 
-  private static initFormActivationState(form: FormGroup, readOnly: boolean) {
-    if (readOnly) {
-      form.disable({ emitEvent: false });
-      return;
-    }
-    form.enable({ emitEvent: false });
+  constructor() {
+    toObservable(this.model)
+      .pipe(
+        filter((value) => value !== this.resetValue),
+        takeUntilDestroyed(),
+      )
+      .subscribe(() => {
+        const updatedModel: any = diff(this.model(), this.previousValue);
+        this.isUpdated.set(!isEmpty(updatedModel));
+      });
   }
 
   ngOnInit() {
-    this.initForm();
+    this.initialized = true;
     this.isUpdated.set(false);
-
-    this.updateFormSub = this.form.valueChanges.subscribe(() => {
-      const updatedModel: any = diff(this.form.value, this.previousValue);
-      this.isUpdated.set(!isEmpty(updatedModel));
-    });
-  }
-
-  ngOnDestroy() {
-    this.updateFormSub.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.hasOwnProperty('externalParamProfile') && this.form) {
-      this.resetForm(this.form, this.externalParamProfile(), this.readOnly());
-      this.previousValue = this.form.value;
+    if (changes.hasOwnProperty('externalParamProfile') && this.initialized) {
+      this.resetForm(this.externalParamProfile(), this.readOnly());
+      this.previousValue = this.model();
     }
   }
 
-  private initForm() {
-    this.form = this.formBuilder.group({
-      usePlatformThreshold: true,
-      bulkOperationsThreshold: [null, []],
-    });
-  }
-
-  private resetForm(form: FormGroup, externalParamProfile: ExternalParamProfile, readOnly: boolean) {
-    form.reset(externalParamProfile, { emitEvent: false });
-    ThresholdsTabComponent.initFormActivationState(form, readOnly);
+  private resetForm(externalParamProfile: ExternalParamProfile, readOnly: boolean) {
+    this.resetValue = {
+      usePlatformThreshold: externalParamProfile?.usePlatformThreshold ?? null,
+      bulkOperationsThreshold: externalParamProfile?.bulkOperationsThreshold ?? null,
+    };
+    this.model.set(this.resetValue);
+    this.form().reset();
+    this.formReadOnly.set(!!readOnly);
   }
 
   submitModification() {
-    let updated: any = diff(this.form.value, this.previousValue);
+    let updated: any = diff(this.model(), this.previousValue);
     if (!isEmpty(updated)) {
       updated = extend(
         {
@@ -128,7 +133,7 @@ export class ThresholdsTabComponent implements OnDestroy, OnInit, OnChanges {
       }
 
       this.externalParamProfileService.patch(updated).subscribe((externalParamProfile: ExternalParamProfile) => {
-        this.resetForm(this.form, externalParamProfile, this.readOnly());
+        this.resetForm(externalParamProfile, this.readOnly());
         this.isUpdated.set(false);
       });
     }

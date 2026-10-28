@@ -2,13 +2,12 @@
 
 <vitamui-select
   placeholder="Choix du format de date"
-  [(ngModel)]="selectedFormat"
+  [formField]="formatForm.selectedFormat"
   [options]="availableFormats"
   [enableSearch]="false"
-  (ngModelChange)="generateConfig()"
 ></vitamui-select>
 
-@for (config of configs; track config) {
+@for (config of configs(); track config) {
   <h3>{{ config.outputType }}</h3>
   <p>{{ config.description }}</p>
   @for (item of config.items; track item.pickerType) {
@@ -30,11 +29,11 @@
               <vitamui-datepicker
                 class="col-3"
                 [class.focused]="column === 'active'"
-                [formControl]="entry[1][column]"
+                [formField]="entry[1][column]"
                 [pickerType]="item.pickerType"
                 [outputType]="config.outputType"
                 label="Date"
-                [format]="formats[selectedFormat].get(item.pickerType)"
+                [format]="formats[formatForm.selectedFormat().value()].get(item.pickerType)"
               ></vitamui-datepicker>
             }
           </div>
@@ -50,18 +49,20 @@
 <div class="row">
   <vitamui-datepicker
     class="col-3"
-    [formControl]="startDate"
+    [formField]="minMaxForm.startDate"
     pickerType="day"
+    outputType="Date"
     label="Start date"
-    [max]="endDate.value"
-    [format]="formats[selectedFormat].get('day')"
+    [max]="minMaxForm.endDate().value()"
+    [format]="formats[formatForm.selectedFormat().value()].get('day')"
   ></vitamui-datepicker>
   <vitamui-datepicker
     class="col-3"
-    [formControl]="endDate"
+    [formField]="minMaxForm.endDate"
     pickerType="day"
+    outputType="Date"
     label="End date"
-    [min]="startDate.value"
-    [format]="formats[selectedFormat].get('day')"
+    [min]="minMaxForm.startDate().value()"
+    [format]="formats[formatForm.selectedFormat().value()].get('day')"
   ></vitamui-datepicker>
 </div>

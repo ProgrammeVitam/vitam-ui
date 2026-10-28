@@ -36,7 +36,6 @@
  */
 import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -76,7 +75,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     AccessionRegisterRoutingModule,
     MatButtonToggleModule,
     MatSelectModule,
-    ReactiveFormsModule,
     MatProgressBarModule,
     MatTabsModule,
     MatCheckboxModule,
@@ -93,7 +91,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     AccessionRegisterPreviewComponent,
     AccessionRegisterDetailComponent,
     AccessionRegisterOperationsListComponent,
-    FormsModule,
     RoleComponent,
     RoleToggleComponent,
     SlideToggleComponent,

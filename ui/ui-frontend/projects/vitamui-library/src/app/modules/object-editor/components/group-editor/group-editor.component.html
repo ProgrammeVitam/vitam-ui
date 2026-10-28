@@ -16,7 +16,7 @@
           (click)="stopPropagation($event)"
         >
           @for (action of actionList; track action) {
-            <button mat-menu-item (click)="action.handler()">{{ action.label | translate }}</button>
+            <button type="button" mat-menu-item (click)="action.handler()">{{ action.label | translate }}</button>
           }
         </vitamui-menu-button>
       }

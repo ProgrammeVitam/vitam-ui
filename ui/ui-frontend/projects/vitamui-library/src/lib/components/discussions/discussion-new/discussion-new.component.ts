@@ -34,31 +34,38 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, HostListener, output } from '@angular/core';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, HostListener, output, signal } from '@angular/core';
+import { form, FormField, required } from '@angular/forms/signals';
 import { InputComponent } from '../../../../lib/components/input/input.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
+interface DiscussionNewForm {
+  title: string;
+  text: string;
+}
+
 @Component({
   selector: 'vitamui-discussion-new',
-  imports: [InputComponent, ReactiveFormsModule, TranslatePipe],
+  imports: [InputComponent, FormField, TranslatePipe],
   templateUrl: './discussion-new.component.html',
   styleUrl: './discussion-new.component.scss',
 })
 export class DiscussionNewComponent {
   createDiscussion = output<{ title: string; text: string }>();
 
-  title = new FormControl('', Validators.required);
-  text = new FormControl('', Validators.required);
+  readonly discussionForm = form(signal<DiscussionNewForm>({ title: '', text: '' }), (path) => {
+    required(path.title);
+    required(path.text);
+  });
 
   isControlValid() {
-    return this.title.valid && this.text.valid;
+    return this.discussionForm().valid();
   }
 
   @HostListener('keydown.control.enter')
   @HostListener('keydown.meta.enter')
   create() {
     if (!this.isControlValid()) return;
-    this.createDiscussion.emit({ title: this.title.value, text: this.text.value });
+    this.createDiscussion.emit(this.discussionForm().value());
   }
 }

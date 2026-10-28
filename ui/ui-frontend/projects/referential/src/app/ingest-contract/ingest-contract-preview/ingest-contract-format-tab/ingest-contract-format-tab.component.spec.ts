@@ -36,7 +36,6 @@
  */
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { FileFormatService } from '../../../file-format/file-format.service';
@@ -84,7 +83,7 @@ describe('IngestContractFormatTabComponent', () => {
       getAllForTenant: () => of([]),
     };
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, VitamUICommonTestModule, IngestContractFormatTabComponent],
+      imports: [VitamUICommonTestModule, IngestContractFormatTabComponent],
       providers: [
         { provide: IngestContractService, useValue: {} },
         { provide: FileFormatService, useValue: fileFormatServiceMock },

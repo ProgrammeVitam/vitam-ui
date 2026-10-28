@@ -36,7 +36,7 @@
  */
 import { Component, forwardRef, NO_ERRORS_SCHEMA, input, output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -61,7 +61,6 @@ import { SecurityProfileCreateValidators } from './security-profile-create.valid
     },
   ],
   imports: [
-    ReactiveFormsModule,
     MatFormFieldModule,
     MatSelectModule,
     MatButtonToggleModule,
@@ -93,7 +92,6 @@ class DomainInputStubComponent implements ControlValueAccessor {
     },
   ],
   imports: [
-    ReactiveFormsModule,
     MatFormFieldModule,
     MatSelectModule,
     MatButtonToggleModule,
@@ -126,7 +124,7 @@ class Page {
   }
 
   control(name: string) {
-    return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
+    return fixture.nativeElement.querySelector('[data-control=' + name + ']');
   }
 }
 
@@ -141,20 +139,12 @@ describe('SecurityProfileCreateComponent', () => {
       create: vi.fn().mockName('SecurityProfileService.create').mockReturnValue(of({})),
     };
     const customerCreateValidatorsSpy = {
-      uniqueName: vi
-        .fn()
-        .mockName('SecurityProfileCreateValidators.uniqueName')
-        .mockReturnValue(() => of(null)),
-      uniqueIdentifier: vi
-        .fn()
-        .mockName('SecurityProfileCreateValidators.uniqueIdentifier')
-        .mockReturnValue(() => of(null)),
-      identifierToIgnore: vi.fn().mockName('SecurityProfileCreateValidators.identifierToIgnore').mockReturnValue(''),
+      uniqueName: vi.fn().mockName('SecurityProfileCreateValidators.uniqueName'),
+      uniqueIdentifier: vi.fn().mockName('SecurityProfileCreateValidators.uniqueIdentifier'),
     };
     await TestBed.configureTestingModule({
       imports: [
         SecurityProfileCreateComponent,
-        ReactiveFormsModule,
         MatFormFieldModule,
         MatSelectModule,
         MatButtonToggleModule,
@@ -176,10 +166,10 @@ describe('SecurityProfileCreateComponent', () => {
       .overrideComponent(SecurityProfileCreateComponent, {
         set: {
           template: `
-            <form [formGroup]="form">
-              <input formControlName="name" />
-              <input formControlName="fullAccess" />
-              <button type="submit" [disabled]="form.invalid"></button>
+            <form [formRoot]="form">
+              <input data-control="name" [formField]="form.name" />
+              <input data-control="fullAccess" type="checkbox" [formField]="form.fullAccess" />
+              <button type="submit" [disabled]="form().invalid()"></button>
             </form>
           `,
         },
@@ -205,7 +195,7 @@ describe('SecurityProfileCreateComponent', () => {
     });
 
     it('should have a submit button', () => {
-      component.form.setValue({
+      component.form().value.set({
         name: 'Name',
         identifier: 'identifier',
         fullAccess: false,
@@ -219,12 +209,12 @@ describe('SecurityProfileCreateComponent', () => {
 
   describe('Form', () => {
     it('should be invalid when empty', () => {
-      expect(component.form.invalid).toBeTruthy();
+      expect(component.form().invalid()).toBeTruthy();
     });
 
     it('should be valid', () => {
-      component.form.setValue(expectedSecurityProfile);
-      expect(component.form.valid).toBeTruthy();
+      component.form().value.set(expectedSecurityProfile);
+      expect(component.form().valid()).toBeTruthy();
     });
 
     describe('Validators', () => {
@@ -236,11 +226,11 @@ describe('SecurityProfileCreateComponent', () => {
         });
       });
 
-      function setControlValue(name: string | Array<string | number>, value: any) {
-        const control = component.form.get(name);
-        control.setValue(value);
+      function setControlValue(name: 'name' | 'identifier', value: string) {
+        const field = component.form[name];
+        field().value.set(value);
 
-        return control;
+        return field();
       }
     });
   });
@@ -261,7 +251,7 @@ describe('SecurityProfileCreateComponent', () => {
     it('should call create()', () => {
       const securityProfileService = TestBed.inject(SecurityProfileService);
       const matDialogRef = TestBed.inject(MatDialogRef);
-      component.form.setValue(expectedSecurityProfile);
+      component.form().value.set(expectedSecurityProfile);
       component.onSubmit();
       expect(securityProfileService.create).toHaveBeenCalledTimes(1);
       expect(matDialogRef.close).toHaveBeenCalledTimes(1);

@@ -35,11 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { applyWhen, disabled, form, FormField, FormRoot, maxLength, minLength, required } from '@angular/forms/signals';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ProfileType } from '../../models/profile-type.enum';
-import { ApplicationService, MiscValidators, Option, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { allowedIdentifier, ApplicationService, Option, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { Notice } from '../../models/notice.model';
 import { ProfileService } from '../../core/services/profile.service';
 import { Subscription } from 'rxjs';
@@ -51,22 +51,17 @@ import { Router } from '@angular/router';
 import { FileService } from '../../core/services/file.service';
 import { IdentifierExistsValidator } from '../../validators/IdentifierExistsValidator';
 
+interface SaveProfileNoticeForm extends Notice {
+  additionalProperties: boolean | null;
+}
+
 @Component({
-  imports: [
-    VitamUILibraryModule,
-    ReactiveFormsModule,
-    FormsModule,
-    VitamUICommonModule,
-    PastisGenericPopupComponent,
-    TranslatePipe,
-    MatDialogModule,
-  ],
+  imports: [VitamUILibraryModule, FormRoot, FormField, VitamUICommonModule, PastisGenericPopupComponent, TranslatePipe, MatDialogModule],
   selector: 'app-save-profile-popup',
   templateUrl: './save-profile-popup.component.html',
 })
 export class SaveProfilePopupComponent implements OnInit, OnDestroy {
   private readonly dialogRef = inject<MatDialogRef<SaveProfilePopupComponent>>(MatDialogRef);
-  private readonly fb = inject(FormBuilder);
   private readonly translateService = inject(TranslateService);
   private readonly profileService = inject(ProfileService);
   private readonly applicationService = inject(ApplicationService);
@@ -76,10 +71,9 @@ export class SaveProfilePopupComponent implements OnInit, OnDestroy {
 
   profileOptions = signal<Option[]>(undefined);
   notice: Notice;
-  selectedProfile: ProfileDescription;
+  readonly profileSelection = form(signal<ProfileDescription | null>(null));
   statusOptions: Option[];
   controlSchema: any;
-  noticeForm: FormGroup;
   stepIndex = 0;
   firstChoiceEnregistrement: string;
   secondChoiceEnregistrement: string;
@@ -89,16 +83,42 @@ export class SaveProfilePopupComponent implements OnInit, OnDestroy {
   externalIdentifierEnabled = signal(false);
 
   okLabel: string;
-  editProfile: boolean;
+  readonly editProfile = this.router.url.substring(this.router.url.lastIndexOf('/') - 4, this.router.url.lastIndexOf('/')) === 'edit';
   valueSelected = signal(false);
   gestionNotice = signal(true);
   userValidation = signal(false);
   modePUA: boolean;
   subscriptions = new Subscription();
 
-  constructor() {
-    this.editProfile = this.router.url.substring(this.router.url.lastIndexOf('/') - 4, this.router.url.lastIndexOf('/')) === 'edit';
-  }
+  readonly noticeForm = form(
+    signal<SaveProfileNoticeForm>({ identifier: '', name: '', status: 'ACTIVE', description: '', additionalProperties: null }),
+    (path) => {
+      disabled(path.identifier, () => this.editProfile);
+      applyWhen(
+        path,
+        () => this.externalIdentifierEnabled() && !this.editProfile,
+        (enabledPath) => {
+          required(enabledPath.identifier);
+          minLength(enabledPath.identifier, 2);
+          maxLength(enabledPath.identifier, 100);
+          allowedIdentifier(enabledPath.identifier);
+        },
+      );
+      if (!this.editProfile) {
+        this.identifierValidator.identifierExists(path.identifier, () => this.modePUA);
+      }
+      required(path.name);
+    },
+    {
+      submission: {
+        action: async () => {
+          this.validate();
+          return undefined;
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
 
   ngOnInit(): void {
     this.modePUA = this.profileService.profileType === ProfileType.PUA;
@@ -129,16 +149,12 @@ export class SaveProfilePopupComponent implements OnInit, OnDestroy {
 
     if (this.profileService.profileType === ProfileType.PUA) this.controlSchema = JSON.parse(this.profileService.controlSchema.getValue());
 
-    this.noticeForm = this.fb.group({
-      identifier: [
-        { value: this.notice.identifier, disabled: this.editProfile },
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100), MiscValidators.allowedIdentifier],
-        !this.editProfile ? [this.identifierValidator.checkIdentifierExists(this.modePUA)] : [],
-      ],
-      name: [this.notice.name, Validators.required],
-      status: [this.notice.status],
-      description: [this.notice.description],
-      additionalProperties: [this.controlSchema?.additionalProperties],
+    this.noticeForm().value.set({
+      identifier: this.notice.identifier ?? '',
+      name: this.notice.name ?? '',
+      status: this.notice.status ?? '',
+      description: this.notice.description ?? '',
+      additionalProperties: this.controlSchema?.additionalProperties ?? null,
     });
 
     this.setUpIdentifierValidator();
@@ -162,28 +178,29 @@ export class SaveProfilePopupComponent implements OnInit, OnDestroy {
     const action = this.gestionNotice() ? 'creation' : 'rattachement';
     if (this.gestionNotice()) {
       if (!this.externalIdentifierEnabled() && !this.editProfile) {
-        this.noticeForm.controls['identifier'].setValue(this.noticeForm.controls['name'].value);
+        this.noticeForm.identifier().value.set(this.noticeForm.name().value());
       }
-      if (this.noticeForm.invalid) {
+      if (this.noticeForm().invalid()) {
         return;
       }
 
+      const data = this.getNoticeFormValue();
       if (this.editProfile) {
-        this.fileService.noticeEditable.next(this.noticeForm.getRawValue());
+        this.fileService.noticeEditable.next(data);
         this.fileService.setNotice(true);
       }
       this.updateControlSchema();
       this.dialogRef.close({
         success: true,
         action,
-        data: this.noticeForm.getRawValue(),
+        data,
       });
       return;
     }
     this.dialogRef.close({
       success: true,
       action,
-      data: this.selectedProfile,
+      data: this.profileSelection().value(),
     });
   }
 
@@ -192,7 +209,7 @@ export class SaveProfilePopupComponent implements OnInit, OnDestroy {
   }
 
   isFormValid(): boolean {
-    return this.noticeForm.valid;
+    return this.noticeForm().valid();
   }
 
   onClose() {
@@ -207,8 +224,13 @@ export class SaveProfilePopupComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
+  private getNoticeFormValue() {
+    const value = this.noticeForm().value();
+    return { ...value, additionalProperties: value.additionalProperties ?? undefined };
+  }
+
   private updateControlSchema(): void {
-    const additionalProps = this.noticeForm.controls['additionalProperties'].value;
+    const additionalProps = this.noticeForm.additionalProperties().value() ?? undefined;
 
     const updatedPatternProperties = {
       ...this.controlSchema?.patternProperties,
@@ -250,23 +272,6 @@ export class SaveProfilePopupComponent implements OnInit, OnDestroy {
   private setUpIdentifierValidator() {
     this.applicationService
       .isApplicationExternalIdentifierEnabled(this.profileService.profileType === ProfileType.PUA ? 'ARCHIVE_UNIT_PROFILE' : 'PROFILE')
-      .subscribe((value) => {
-        const identifierCtrl = this.noticeForm.controls['identifier'];
-
-        this.externalIdentifierEnabled.set(value);
-
-        if (!this.externalIdentifierEnabled() || this.editProfile) {
-          identifierCtrl.clearValidators();
-        } else {
-          identifierCtrl.setValidators([
-            Validators.required,
-            Validators.minLength(2),
-            Validators.maxLength(100),
-            MiscValidators.allowedIdentifier,
-          ]);
-        }
-
-        identifierCtrl.updateValueAndValidity();
-      });
+      .subscribe((value) => this.externalIdentifierEnabled.set(value));
   }
 }

@@ -35,11 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { By } from '@angular/platform-browser';
 import { EMPTY, of } from 'rxjs';
-import { BytesPipe, ConfirmDialogService, LoggerModule, StartupService } from 'vitamui-library';
+import { BytesPipe, ConfirmDialogService, FileSelectorComponent, LoggerModule, StartupService } from 'vitamui-library';
 
 import { UploadComponent } from './upload.component';
 import { UploadService } from './upload.service';
@@ -58,11 +58,10 @@ describe('UploadComponent', () => {
     uploadFile: vi.fn().mockName('UploadService.uploadFile').mockReturnValue(of({})),
   };
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  const configureTestingModule = () =>
+    TestBed.configureTestingModule({
       imports: [MatProgressBarModule, LoggerModule.forRoot(), UploadComponent],
       providers: [
-        FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
@@ -71,18 +70,59 @@ describe('UploadComponent', () => {
         DecimalPipe,
         BytesPipe,
       ],
-    })
-      .overrideTemplate(UploadComponent, '<div></div>')
-      .compileComponents();
+    });
+
+  describe('without template', () => {
+    beforeEach(async () => {
+      await configureTestingModule().overrideTemplate(UploadComponent, '<div></div>').compileComponents();
+      fixture = TestBed.createComponent(UploadComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
   });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(UploadComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  describe('SIP file selection', () => {
+    beforeEach(async () => {
+      await configureTestingModule().compileComponents();
+      fixture = TestBed.createComponent(UploadComponent);
+      component = fixture.componentInstance;
+      await fixture.whenStable();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+    const selectFile = async (file: File) => {
+      const fileSelector: FileSelectorComponent = fixture.debugElement.query(By.directive(FileSelectorComponent)).componentInstance;
+      await fileSelector.handleFilesSelection([file]);
+      await fixture.whenStable();
+    };
+    const uploadButton = (): HTMLButtonElement => fixture.nativeElement.querySelector('mat-dialog-actions button.primary');
+
+    it('should disable the upload button when no file is selected', () => {
+      expect(component.sipField().invalid()).toBe(true);
+      expect(uploadButton().disabled).toBe(true);
+    });
+
+    it('should enable the upload button when a valid SIP is selected', async () => {
+      await selectFile(new File(['content'], 'sip.zip'));
+
+      expect(component.sipField().valid()).toBe(true);
+      expect(uploadButton().disabled).toBe(false);
+    });
+
+    it('should make the form invalid when the file has an invalid extension', async () => {
+      await selectFile(new File(['content'], 'sip.txt'));
+
+      expect(component.sipField().invalid()).toBe(true);
+      expect(
+        component
+          .sipField()
+          .errors()
+          .map((error) => error.kind),
+      ).toContain('invalidFiles');
+      expect(uploadButton().disabled).toBe(true);
+    });
   });
 });

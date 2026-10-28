@@ -51,7 +51,7 @@
           class="w-100"
           [placeholder]="'DISCUSSION.MESSAGE.UPDATE_PLACEHOLDER' | translate"
           [textarea]="true"
-          [formControl]="control()"
+          [formField]="textForm"
         ></vitamui-input>
         <button class="btn default secondary" (click)="updateMessage()" [disabled]="!isControlValid()">
           {{ 'COMMON.UPDATE' | translate }}

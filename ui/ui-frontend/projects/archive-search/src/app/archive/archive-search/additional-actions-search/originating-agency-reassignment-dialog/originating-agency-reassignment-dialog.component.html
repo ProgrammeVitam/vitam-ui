@@ -1,13 +1,13 @@
 <vitamui-dialog-header [title]="title | translate" [subhead]="subhead | translate: { count: itemSelected }"></vitamui-dialog-header>
 
-<form [formGroup]="form" (ngSubmit)="reassign()">
+<form [formRoot]="form">
   <mat-dialog-content class="gap-3 align-items-stretch">
     @if (reassignmentMode !== ReassignmentMode.BY_ID) {
       <p class="text bold primary m-0 mt-1">
         {{ 'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.ENTRY_OPERATION_IDS_SECTION_TITLE' | translate }}
       </p>
       <vitamui-input
-        formControlName="entryOperationIds"
+        [formField]="form.entryOperationIds"
         [placeholder]="'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.ENTRY_OPERATION_IDS_LABEL' | translate"
         [errorMessageMap]="{
           whitespaceOnly: 'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.ERRORS.WHITESPACE_ONLY',
@@ -33,7 +33,7 @@
       [enableSearch]="true"
       [enableSelectAll]="false"
       [placeholder]="'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.ORIGINATING_AGENCY' | translate"
-      formControlName="sourceOriginatingAgency"
+      [formField]="form.sourceOriginatingAgency"
       [options]="originatingAgenciesOptions()"
     ></vitamui-select>
 
@@ -45,12 +45,12 @@
       [enableSearch]="true"
       [enableSelectAll]="false"
       [placeholder]="'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.ORIGINATING_AGENCY' | translate"
-      formControlName="targetOriginatingAgency"
+      [formField]="form.targetOriginatingAgency"
       [options]="originatingAgenciesOptions()"
     ></vitamui-select>
 
     @if (reassignmentMode === ReassignmentMode.BY_ID) {
-      <vitamui-slide-toggle formControlName="propagateToObjectGroups">
+      <vitamui-slide-toggle [formField]="form.propagateToObjectGroups">
         {{ 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.PROPAGATE_TO_TECHNICAL_OBJECT_GROUPS' | translate }}
         <i
           class="vitamui-icon vitamui-icon-info-circle vitamui-row-icon secondary"
@@ -68,7 +68,7 @@
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <button type="submit" [disabled]="form.invalid" class="btn primary">
+    <button type="submit" [disabled]="form().invalid()" class="btn primary">
       {{ 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.CONFIRM' | translate }}
     </button>
     <button type="button" class="btn link cancel" (click)="onCancel()">

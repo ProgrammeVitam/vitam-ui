@@ -35,11 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, Injector, OnDestroy, OnInit, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { form, FormField, FormRoot, maxLength, minLength, required } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { skip, takeUntil } from 'rxjs/operators';
 import {
   ConfirmDialogService,
   DialogHeaderComponent,
@@ -53,11 +54,19 @@ import {
   SigningRoleType,
   SnackBarService,
   VitamuiHttpHeaders,
+  requiredValue,
 } from 'vitamui-library';
 import { ProbativeValueService } from '../probative-value.service';
 import { sizes } from '../../ontology/ontology-form-options';
 import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { TranslatePipe } from '@ngx-translate/core';
+
+interface ProbativeValueCreateForm {
+  unitId: string;
+  usage: string;
+  version: number;
+  includeDetachedSigningInformation: boolean;
+}
 
 @Component({
   selector: 'app-probative-value-create',
@@ -65,7 +74,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./probative-value-create.component.scss'],
   imports: [
     DialogHeaderComponent,
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     MatDialogContent,
     InputComponent,
     SelectComponent,
@@ -78,14 +88,32 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<ProbativeValueCreateComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly confirmDialogService = inject(ConfirmDialogService);
   private readonly probativeValueService = inject(ProbativeValueService);
   private readonly externalParameterService = inject(ExternalParametersService);
   private readonly searchUnitApiService = inject(SearchUnitApiService);
   private readonly snackBarService = inject(SnackBarService);
+  private readonly injector = inject(Injector);
 
-  public form: FormGroup;
+  public readonly form = form(
+    signal<ProbativeValueCreateForm>({ unitId: null, usage: null, version: null, includeDetachedSigningInformation: false }),
+    (path) => {
+      required(path.unitId);
+      minLength(path.unitId, 36);
+      maxLength(path.unitId, 36);
+      required(path.usage);
+      requiredValue(path.version);
+      requiredValue(path.includeDetachedSigningInformation);
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
   public isDisabledButton = signal(false);
 
   public usages: Option[] = [
@@ -111,23 +139,18 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.form = this.formBuilder.group({
-      unitId: [null, [Validators.required, Validators.minLength(36), Validators.maxLength(36)]],
-      usage: [null, Validators.required],
-      version: [null, Validators.required],
-      includeDetachedSigningInformation: [false, Validators.required],
-    });
-
     this.confirmDialogService
       .listenToEscapeKeyPress(this.dialogRef)
       .pipe(takeUntil(this.destroyer$))
       .subscribe(() => this.onCancel());
 
-    this.form.get('unitId').statusChanges.subscribe((unitId) => {
-      if (unitId === 'VALID' && this.form.get('includeDetachedSigningInformation').value) {
-        this.complianceCheck();
-      }
-    });
+    toObservable(this.form.unitId().value, { injector: this.injector })
+      .pipe(skip(1), takeUntil(this.destroyer$))
+      .subscribe(() => {
+        if (this.form.unitId().valid() && this.form.includeDetachedSigningInformation().value()) {
+          this.complianceCheck();
+        }
+      });
   }
 
   ngOnDestroy = () => {
@@ -136,7 +159,7 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
   };
 
   onCancel() {
-    if (this.form.dirty) {
+    if (this.form().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -144,14 +167,14 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.invalid) {
+    if (this.form().invalid()) {
       this.isDisabledButton.set(true);
       return;
     }
     this.isDisabledButton.set(true);
 
     this.probativeValueService
-      .create(this.createDsl(this.form.value), new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, this.accessContractId))
+      .create(this.createDsl(this.form().value()), new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, this.accessContractId))
       .subscribe(
         () => {
           this.isDisabledButton.set(false);
@@ -188,8 +211,8 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
   }
 
   public complianceCheck(): void {
-    if (this.form.get('unitId').valid) {
-      this.searchUnitApiService.getById(this.form.get('unitId').value).subscribe((unitIdStatus: SearchResponse) => {
+    if (this.form.unitId().valid()) {
+      this.searchUnitApiService.getById(this.form.unitId().value()).subscribe((unitIdStatus: SearchResponse) => {
         if (!unitIdStatus.$results[0]) {
           this.snackBarService.open({ message: 'EXCEPTIONS.HTTP_INTERCEPTOR.HTTP_STATUS_CODE_NOT_FOUND' });
         } else {

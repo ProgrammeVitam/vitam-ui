@@ -34,8 +34,32 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
+
+import { UserService } from '../user.service';
+import { UserCreateValidators } from './user-create.validators';
+
 describe('UserCreateValidators', () => {
-  it('TODO', () => {
-    // TODO: tests not yet implemented
+  const createValidators = (exists: boolean) => {
+    const userServiceSpy = { exists: vi.fn().mockName('UserService.exists').mockReturnValue(of(exists)) };
+    TestBed.configureTestingModule({ providers: [{ provide: UserService, useValue: userServiceSpy }] });
+    return { validators: TestBed.inject(UserCreateValidators), userServiceSpy };
+  };
+
+  it('emailExists should call the service', () => {
+    const { validators, userServiceSpy } = createValidators(true);
+    let result: boolean;
+    validators.emailExists('john@doe.com').subscribe((exists) => (result = exists));
+    expect(userServiceSpy.exists).toHaveBeenCalledWith('john@doe.com');
+    expect(result).toBe(true);
+  });
+
+  it('emailExists should not call the service for the email to ignore', () => {
+    const { validators, userServiceSpy } = createValidators(true);
+    let result: boolean;
+    validators.emailExists('john@doe.com', 'john@doe.com').subscribe((exists) => (result = exists));
+    expect(userServiceSpy.exists).not.toHaveBeenCalled();
+    expect(result).toBe(false);
   });
 });

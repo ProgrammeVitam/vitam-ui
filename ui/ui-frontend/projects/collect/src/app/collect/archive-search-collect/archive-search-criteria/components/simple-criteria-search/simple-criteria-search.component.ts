@@ -35,12 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, effect, inject, Injector, OnInit, signal, untracked } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { Validators } from '@angular/forms';
+import { FieldTree, form, FormField, pattern } from '@angular/forms/signals';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { debounceTime, filter, map, share } from 'rxjs/operators';
+import { debounceTime, filter, map, share, skip } from 'rxjs/operators';
 import {
   AgencyService,
   ArchiveUnitProfilesService,
@@ -93,7 +95,34 @@ type ArchiveUnitType =
   | 'ARCHIVE_UNIT_WITHOUT_OBJECTS'
   | 'ARCHIVE_UNIT_WITH_ERRORS';
 
-const COMPLEX_INPUTS = ['otherCriteriaList'];
+const GUID_PATTERN = '^[a-z0-9_, ]+';
+
+interface SimpleCriteriaSearchForm {
+  title: string;
+  description: string;
+  guid: string;
+  beginDt: Date | null;
+  endDt: Date | null;
+  // Keys (multi-select) when the referential service is available, free text otherwise
+  agencies: string[] | string | null;
+  archiveUnitProfiles: string[] | string | null;
+  otherCriteriaList: SchemaElement[];
+  // Value of each selected "other criteria", indexed by its path
+  otherCriteria: Record<string, unknown>;
+}
+
+type SimpleCriteriaKey = Exclude<keyof SimpleCriteriaSearchForm, 'otherCriteriaList'>;
+
+const SIMPLE_CRITERIA_KEYS: SimpleCriteriaKey[] = [
+  'title',
+  'description',
+  'guid',
+  'beginDt',
+  'endDt',
+  'otherCriteria',
+  'agencies',
+  'archiveUnitProfiles',
+];
 
 const keysList = [ALL_ARCHIVE_UNIT_TYPES, ERRORS];
 
@@ -102,8 +131,7 @@ const keysList = [ALL_ARCHIVE_UNIT_TYPES, ERRORS];
   templateUrl: './simple-criteria-search.component.html',
   styleUrls: ['./simple-criteria-search.component.css'],
   imports: [
-    FormsModule,
-    ReactiveFormsModule,
+    FormField,
     TooltipDirective,
     SelectComponent,
     DatepickerComponent,
@@ -125,7 +153,6 @@ const keysList = [ALL_ARCHIVE_UNIT_TYPES, ERRORS];
 })
 export class SimpleCriteriaSearchComponent implements OnInit {
   dialog = inject(MatDialog);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly archiveExchangeDataService = inject(ArchiveSharedDataService);
   private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
   private readonly translateService = inject(TranslateService);
@@ -133,8 +160,24 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   private readonly searchCriteriaService = inject(SearchCriteriaService);
   private readonly archiveHelperService = inject(ArchiveSearchHelperService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly injector = inject(Injector);
 
-  form: FormGroup;
+  private readonly model = signal<SimpleCriteriaSearchForm>({
+    title: '',
+    description: '',
+    guid: '',
+    beginDt: null,
+    endDt: null,
+    agencies: [],
+    archiveUnitProfiles: [],
+    otherCriteriaList: [],
+    otherCriteria: {},
+  });
+  readonly form = form(this.model, (path) => {
+    pattern(path.guid, new RegExp(`${GUID_PATTERN}$`));
+  });
+  // Also given to the editable input, which validates the value before confirming it
+  readonly guidValidator = Validators.pattern(GUID_PATTERN);
   criteriaSearchListToSave: SearchCriteriaEltDto[] = [];
 
   archiveUnitTypesCriteria: Map<any, boolean> = new Map<any, boolean>([
@@ -201,25 +244,13 @@ export class SimpleCriteriaSearchComponent implements OnInit {
       this.otherCriteriaOptions.set(schema);
     });
 
-    const otherCriteriaListControl = this.formBuilder.control<SchemaElement[]>([]);
-    const otherCriteriaControl = this.formBuilder.group({});
-
-    this.form = this.formBuilder.group({
-      title: ['', []],
-      description: ['', []],
-      guid: ['', [Validators.pattern('^[a-z0-9_, ]+')]],
-      beginDt: ['', []],
-      endDt: ['', []],
-      otherCriteriaList: otherCriteriaListControl,
-      otherCriteria: otherCriteriaControl,
-    });
-
-    otherCriteriaListControl.valueChanges.subscribe((schemaElements) => {
-      const currentPaths = Object.keys(otherCriteriaControl.controls);
-      const expectedPaths = schemaElements.map((element) => element.Path);
-
-      this.addMissingControls(expectedPaths, currentPaths, otherCriteriaControl);
-      this.removeObsoleteControls(expectedPaths, currentPaths, otherCriteriaControl);
+    // Keep one "other criteria" field for each selected schema element
+    effect(() => {
+      const expectedPaths = this.form
+        .otherCriteriaList()
+        .value()
+        .map((element) => element.Path);
+      untracked(() => this.syncOtherCriteriaFields(expectedPaths));
     });
 
     // Sync archive unit types with criteria
@@ -239,24 +270,70 @@ export class SimpleCriteriaSearchComponent implements OnInit {
       const isAgenciesOffline = offlineServices?.includes('agencies');
       const isPUAOffline = offlineServices?.includes('archive-unit-profiles');
 
-      this.form.addControl('agencies', this.formBuilder.control([], { updateOn: isAgenciesOffline ? 'change' : 'blur' }));
-      this.form.addControl('archiveUnitProfiles', this.formBuilder.control([], { updateOn: isPUAOffline ? 'change' : 'blur' }));
+      // The multi-selects (online referentials) only commit their value when they are closed
+      const updateOnBlurKeys: SimpleCriteriaKey[] = [
+        ...(isAgenciesOffline ? [] : ['agencies' as const]),
+        ...(isPUAOffline ? [] : ['archiveUnitProfiles' as const]),
+      ];
 
-      Object.entries(this.form.controls)
-        .filter(([key, _value]) => !COMPLEX_INPUTS.includes(key))
-        .forEach(([key, control]) => {
-          control.valueChanges
-            .pipe(
-              filter(() => control.valid),
-              debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
-              filter((value) => Boolean(value)),
-            )
-            .subscribe((value) => {
-              this.addCriteriaFromParams({ [key]: value });
-              control.reset(undefined, { emitEvent: false });
-            });
-        });
+      SIMPLE_CRITERIA_KEYS.forEach((key) => {
+        const field = this.simpleCriteriaField(key);
+        this.committedValues$(key, updateOnBlurKeys.includes(key))
+          .pipe(
+            filter(() => field().valid()),
+            debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
+            filter((value) => Boolean(value)),
+          )
+          .subscribe((value) => {
+            this.addCriteriaFromParams({ [key]: value });
+            this.resetField(key);
+          });
+      });
     });
+  }
+
+  /**
+   * Values committed by the user in the field: every value change or, for fields updated on blur,
+   * the value when the field is blurred after being changed.
+   */
+  private committedValues$(key: SimpleCriteriaKey, updateOnBlur: boolean): Observable<unknown> {
+    const field = this.simpleCriteriaField(key);
+    if (!updateOnBlur) {
+      return toObservable(field().value, { injector: this.injector }).pipe(skip(1));
+    }
+    return toObservable(field().touched, { injector: this.injector }).pipe(
+      filter(Boolean),
+      map(() => {
+        const dirty = field().dirty();
+        // Back to untouched/pristine, to detect the next blur
+        field().reset();
+        return dirty ? field().value() : null;
+      }),
+    );
+  }
+
+  private simpleCriteriaField(key: SimpleCriteriaKey): FieldTree<unknown> {
+    return this.form[key] as FieldTree<unknown>;
+  }
+
+  private resetField(key: SimpleCriteriaKey) {
+    if (key === 'otherCriteria') {
+      const otherCriteria = this.form.otherCriteria().value();
+      this.form.otherCriteria().reset(Object.fromEntries(Object.keys(otherCriteria).map((path): [string, unknown] => [path, null])));
+    } else {
+      this.simpleCriteriaField(key)().reset(null);
+    }
+  }
+
+  private syncOtherCriteriaFields(expectedPaths: string[]) {
+    const otherCriteria = this.form.otherCriteria().value();
+    const currentPaths = Object.keys(otherCriteria);
+    if (currentPaths.length === expectedPaths.length && expectedPaths.every((path) => currentPaths.includes(path))) {
+      return;
+    }
+    this.form
+      .otherCriteria()
+      .value.set(Object.fromEntries(expectedPaths.map((path) => [path, path in otherCriteria ? otherCriteria[path] : null])));
   }
 
   private addCriteriaFromParams(params: Params) {
@@ -341,46 +418,6 @@ export class SimpleCriteriaSearchComponent implements OnInit {
 
   isProvided(service: SearchProvider): Observable<boolean> {
     return this.offlineServices$.pipe(map((offlineServices) => !offlineServices?.includes(service)));
-  }
-
-  get guid() {
-    return this.form.controls['guid'];
-  }
-
-  get archiveCriteria() {
-    return this.form.controls['archiveCriteria'];
-  }
-
-  get title() {
-    return this.form.controls['title'];
-  }
-
-  get beginDt() {
-    return this.form.controls['beginDt'];
-  }
-
-  get endDt() {
-    return this.form.controls['endDt'];
-  }
-
-  get otherCriteriaList(): AbstractControl<SchemaElement[]> {
-    return this.form.controls['otherCriteriaList'];
-  }
-
-  private addMissingControls(expectedPaths: string[], currentPaths: string[], formGroup: FormGroup): void {
-    expectedPaths.forEach((path) => {
-      if (!currentPaths.includes(path)) {
-        formGroup.addControl(path, this.formBuilder.control(undefined));
-      }
-    });
-  }
-
-  private removeObsoleteControls(expectedPaths: string[], currentPaths: string[], formGroup: FormGroup): void {
-    currentPaths.forEach((path) => {
-      if (!expectedPaths.includes(path)) {
-        formGroup.removeControl(path);
-      }
-    });
   }
 
   private getTranslationKey(archiveUnitType: ArchiveUnitType): string {

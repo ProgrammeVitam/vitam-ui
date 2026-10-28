@@ -36,11 +36,12 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { InjectorModule, LoggerModule } from 'vitamui-library';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
+import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { TitleAndDescriptionCriteriaSearchCollectComponent } from './title-and-description-criteria-search-collect.component';
 
 describe('TitleAndDescriptionCriteriaSearchCollectComponent', () => {
@@ -58,7 +59,10 @@ describe('TitleAndDescriptionCriteriaSearchCollectComponent', () => {
     await TestBed.configureTestingModule({
       imports: [BrowserAnimationsModule, InjectorModule, LoggerModule.forRoot(), TitleAndDescriptionCriteriaSearchCollectComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [FormBuilder, { provide: MatDialogRef, useValue: matDialogRefSpy }, { provide: MatDialog, useValue: matDialogSpy }],
+      providers: [
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
+        { provide: MatDialog, useValue: matDialogSpy },
+      ],
     }).compileComponents();
   });
 
@@ -70,5 +74,23 @@ describe('TitleAndDescriptionCriteriaSearchCollectComponent', () => {
 
   it('component should be created', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should add a title or description criteria and reset the field after the debounce time', async () => {
+    vi.useFakeTimers();
+    try {
+      const addCriteriaSpy = vi.spyOn(TestBed.inject(ArchiveSharedDataService), 'addSimpleSearchCriteriaSubject');
+
+      component.quickSearchCriteriaForm.archiveCriteria().value.set(' my title ');
+      TestBed.tick();
+      await vi.advanceTimersByTimeAsync(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME);
+
+      expect(addCriteriaSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ keyElt: 'TITLE_OR_DESCRIPTION', valueElt: { id: 'titleOrDescription', value: 'my title' } }),
+      );
+      expect(component.quickSearchCriteriaForm.archiveCriteria().value()).toEqual('');
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });

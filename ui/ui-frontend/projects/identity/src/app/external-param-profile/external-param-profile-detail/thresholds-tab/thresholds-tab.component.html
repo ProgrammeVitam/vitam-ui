@@ -1,15 +1,15 @@
 <div>
-  <form [formGroup]="form" class="gap-5">
+  <form class="gap-5" novalidate (submit)="$event.preventDefault()">
     <div class="gap-3 w-100 align-items-stretch">
-      <vitamui-slide-toggle formControlName="usePlatformThreshold">
+      <vitamui-slide-toggle [formField]="form.usePlatformThreshold">
         {{ 'EXTERNAL_PARAM_PROFILE.USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE' | translate }}
       </vitamui-slide-toggle>
 
-      @if (!form.get('usePlatformThreshold').value) {
+      @if (!form.usePlatformThreshold().value()) {
         <div class="select-threshold">
           <vitamui-select
             class="w-100"
-            formControlName="bulkOperationsThreshold"
+            [formField]="form.bulkOperationsThreshold"
             [placeholder]="'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_TITLE_SIDE_PANEL' | translate"
             [options]="thresholdValues"
             [multiple]="false"
@@ -28,7 +28,7 @@
       type="submit"
       class="btn primary mr-4"
       (click)="submitModification()"
-      [disabled]="!isUpdated() || form.get('bulkOperationsThreshold').invalid"
+      [disabled]="!isUpdated() || form.bulkOperationsThreshold().invalid()"
     >
       {{ 'COMMON.SAVE' | translate }}
     </button>

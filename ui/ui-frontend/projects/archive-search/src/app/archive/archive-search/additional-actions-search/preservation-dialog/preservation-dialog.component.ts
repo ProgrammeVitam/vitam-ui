@@ -35,12 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, computed, inject } from '@angular/core';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, computed, inject, signal } from '@angular/core';
+import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { disabled, form, FormField, FormRoot, required } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { catchError, of } from 'rxjs';
+import { catchError, of, skip } from 'rxjs';
 import {
   ActionType,
   ConfirmDialogService,
@@ -56,14 +56,20 @@ import {
 import { ArchiveService } from '../../../archive.service';
 import { PreservationUsageList, PreservationVersion } from '../../../models/preservation-request.interface';
 
+interface PreservationForm {
+  sourceUsage: string | null;
+  version: PreservationVersion | null;
+  scenarioIdentifier: string | null;
+  targetUsage: string | null;
+}
+
 @Component({
   selector: 'app-preservation-dialog',
   templateUrl: './preservation-dialog.component.html',
   styleUrls: ['./preservation-dialog.component.scss'],
-  imports: [TranslatePipe, MatDialogModule, DialogHeaderComponent, VitamUICommonModule, FormsModule, ReactiveFormsModule, SelectComponent],
+  imports: [TranslatePipe, MatDialogModule, DialogHeaderComponent, VitamUICommonModule, FormRoot, FormField, SelectComponent],
 })
 export class PreservationDialogComponent {
-  private readonly fb = inject(FormBuilder);
   private readonly dialogRef = inject<MatDialogRef<PreservationDialogComponent>>(MatDialogRef);
   private readonly confirmDialogService = inject(ConfirmDialogService);
   private readonly preservationScenariosService = inject(PreservationScenariosService);
@@ -73,12 +79,30 @@ export class PreservationDialogComponent {
 
   itemSelected = this.data.itemSelected;
 
-  preservationForm = this.fb.group({
-    sourceUsage: [null, [Validators.required]],
-    version: [null, [Validators.required]],
-    scenarioIdentifier: [null, [Validators.required]],
-    targetUsage: [null],
-  });
+  private readonly scenarios = toSignal(this.preservationScenariosService.list(), { initialValue: [] as PreservationScenario[] });
+
+  readonly preservationForm = form(
+    signal<PreservationForm>({ sourceUsage: null, version: null, scenarioIdentifier: null, targetUsage: null }),
+    (path) => {
+      required(path.sourceUsage);
+      required(path.version);
+      required(path.scenarioIdentifier);
+      // The target usage is enabled (and required) for scenarios generating a new usage, once a scenario is selected
+      disabled(path.targetUsage, ({ valueOf }) => {
+        const scenarioIdentifier = valueOf(path.scenarioIdentifier);
+        return scenarioIdentifier !== null && !this.hasGenerateAction(scenarioIdentifier);
+      });
+      required(path.targetUsage, { when: ({ valueOf }) => this.hasGenerateAction(valueOf(path.scenarioIdentifier)) });
+    },
+    {
+      submission: {
+        action: async () => {
+          this.launch();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
 
   usageOptions: VitamuiSelectOptions = {
     options: PreservationUsageList.map((usage) => ({
@@ -94,7 +118,6 @@ export class PreservationDialogComponent {
     ] as Option[],
   };
 
-  private readonly scenarios = toSignal(this.preservationScenariosService.list(), { initialValue: [] as PreservationScenario[] });
   scenarioOptions = computed<VitamuiSelectOptions>(() => ({
     options: this.scenarios().map((scenario) => ({ key: scenario.Identifier, label: `${scenario.Identifier} - ${scenario.Name}` })),
   }));
@@ -107,9 +130,8 @@ export class PreservationDialogComponent {
   );
 
   constructor() {
-    this.preservationForm
-      .get('scenarioIdentifier')
-      .valueChanges.pipe(takeUntilDestroyed())
+    toObservable(this.preservationForm.scenarioIdentifier().value)
+      .pipe(skip(1), takeUntilDestroyed())
       .subscribe((scenarioIdentifier) => this.onScenarioChange(scenarioIdentifier));
 
     this.confirmDialogService
@@ -118,24 +140,19 @@ export class PreservationDialogComponent {
       .subscribe(() => this.onCancel());
   }
 
-  private onScenarioChange(scenarioIdentifier: string): void {
+  private hasGenerateAction(scenarioIdentifier: string): boolean {
     const scenario = this.scenarios().find((s) => s.Identifier === scenarioIdentifier);
-    const targetUsageControl = this.preservationForm.get('targetUsage');
-    const hasGenerateAction = !!scenario?.ActionList?.includes(ActionType.GENERATE);
+    return !!scenario?.ActionList?.includes(ActionType.GENERATE);
+  }
 
-    if (hasGenerateAction) {
-      targetUsageControl.enable();
-      targetUsageControl.setValidators([Validators.required]);
-    } else {
-      targetUsageControl.reset();
-      targetUsageControl.disable();
-      targetUsageControl.clearValidators();
+  private onScenarioChange(scenarioIdentifier: string): void {
+    if (!this.hasGenerateAction(scenarioIdentifier)) {
+      this.preservationForm.targetUsage().reset(null);
     }
-    targetUsageControl.updateValueAndValidity();
   }
 
   onCancel(): void {
-    if (this.preservationForm.dirty) {
+    if (this.preservationForm().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -143,10 +160,10 @@ export class PreservationDialogComponent {
   }
 
   launch(): void {
-    if (this.preservationForm.invalid) {
+    if (this.preservationForm().invalid()) {
       return;
     }
 
-    this.dialogRef.close({ ...this.preservationForm.getRawValue() });
+    this.dialogRef.close({ ...this.preservationForm().value() });
   }
 }

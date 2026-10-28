@@ -37,7 +37,7 @@
 
 import { Component, forwardRef, NO_ERRORS_SCHEMA, input, output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -71,7 +71,6 @@ import { CustomerCreateValidators } from './customer-create.validators';
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatSelectModule,
-    ReactiveFormsModule,
     VitamUICommonTestModule,
   ],
 })
@@ -105,7 +104,6 @@ class DomainInputStubComponent implements ControlValueAccessor {
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatSelectModule,
-    ReactiveFormsModule,
     VitamUICommonTestModule,
   ],
 })
@@ -135,7 +133,6 @@ class OwnerFormStubComponent implements ControlValueAccessor {
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatSelectModule,
-    ReactiveFormsModule,
     VitamUICommonTestModule,
   ],
 })
@@ -199,7 +196,7 @@ class Page {
   }
 
   control(name: string) {
-    return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
+    return fixture.nativeElement.querySelector('[data-field="' + name + '"]');
   }
 }
 
@@ -215,20 +212,14 @@ describe('CustomerCreateComponent', () => {
       getMyCustomer: vi.fn().mockName('CustomerService.getMyCustomer').mockReturnValue(of({})),
     };
     const customerCreateValidatorsSpy = {
-      uniqueCode: vi
-        .fn()
-        .mockName('CustomerCreateValidators.uniqueCode')
-        .mockReturnValue(() => of(null)),
+      uniqueCodeRule: vi.fn().mockName('CustomerCreateValidators.uniqueCodeRule'),
       uniqueDomain: vi.fn().mockName('CustomerCreateValidators.uniqueDomain').mockReturnValue(of(null)),
     };
     const ownerServiceSpy = {
       create: vi.fn().mockName('OwnerService.create').mockReturnValue(of({})),
     };
     const ownerFormValidatorsSpy = {
-      uniqueCode: vi
-        .fn()
-        .mockName('OwnerFormValidators.uniqueCode')
-        .mockReturnValue(() => of(null)),
+      uniqueCodeRule: vi.fn().mockName('OwnerFormValidators.uniqueCodeRule'),
     };
     const tenantServiceSpy = {
       getTenantsByCustomerIds: vi.fn().mockName('TenantService.getTenantsByCustomerIds').mockReturnValue(of([])),
@@ -238,10 +229,7 @@ describe('CustomerCreateComponent', () => {
         .mockReturnValue(of([2, 3, 4])),
     };
     const tenantFormValidatorsSpy = {
-      uniqueName: vi
-        .fn()
-        .mockName('TenantFormValidators.uniqueName')
-        .mockReturnValue(() => of(null)),
+      uniqueNameRule: vi.fn().mockName('TenantFormValidators.uniqueNameRule'),
     };
     await TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
@@ -252,7 +240,6 @@ describe('CustomerCreateComponent', () => {
         MatProgressBarModule,
         MatProgressSpinnerModule,
         MatSelectModule,
-        ReactiveFormsModule,
         VitamUICommonTestModule,
         CustomerCreateComponent,
         OwnerFormStubComponent,
@@ -278,34 +265,23 @@ describe('CustomerCreateComponent', () => {
       .overrideComponent(CustomerCreateComponent, {
         set: {
           template: `
-            <form [formGroup]="form">
-              <input formControlName="code" />
-              <input formControlName="name" />
-              <input formControlName="companyName" />
-              <ng-container formGroupName="address">
-                <input formControlName="street" />
-                <input formControlName="zipCode" />
-                <input formControlName="city" />
-                <input formControlName="country" />
-              </ng-container>
-              <input formControlName="internalCode" />
-              <input formControlName="gdprAlert" />
-              <input formControlName="gdprAlertDelay" />
-              <input formControlName="language" />
-              <input formControlName="passwordRevocationDelay" />
-              <input formControlName="otp" />
-              <input formControlName="emailDomains" />
-              <input formControlName="defaultEmailDomain" />
-              <input formControlName="hasCustomGraphicIdentity" />
-              <input formControlName="themeColors" />
-              <input formControlName="portalTitles" />
-              <input formControlName="portalMessages" />
-              <ng-container formArrayName="owners">
-                <input [formControlName]="0" />
-              </ng-container>
-              <input formControlName="tenantName" />
-              <input formControlName="tenantId" />
-              <button type="submit" [disabled]="form.invalid"></button>
+            <form [formRoot]="form">
+              <input data-field="code" [formField]="form.code" />
+              <input data-field="name" [formField]="form.name" />
+              <input data-field="companyName" [formField]="form.companyName" />
+              <input data-field="street" [formField]="form.address.street" />
+              <input data-field="zipCode" [formField]="form.address.zipCode" />
+              <input data-field="city" [formField]="form.address.city" />
+              <input data-field="country" [formField]="form.address.country" />
+              <input data-field="internalCode" [formField]="form.internalCode" />
+              <input data-field="language" [formField]="form.language" />
+              <input data-field="passwordRevocationDelay" type="number" [formField]="form.passwordRevocationDelay" />
+              <input data-field="otp" [formField]="form.otp" />
+              <input data-field="emailDomains" />
+              <input data-field="defaultEmailDomain" [formField]="form.defaultEmailDomain" />
+              <input data-field="tenantName" [formField]="form.tenantName" />
+              <input data-field="tenantId" [formField]="form.tenantId" />
+              <button type="submit" [disabled]="form().invalid()"></button>
             </form>
           `,
         },
@@ -342,62 +318,62 @@ describe('CustomerCreateComponent', () => {
 
   describe('Form', () => {
     it('should be invalid when empty', () => {
-      expect(component.form.invalid).toBeTruthy();
+      expect(component.form().invalid()).toBeTruthy();
     });
 
     it('should be valid', () => {
-      component.form.setValue(expectedCustomer);
-      expect(component.form.valid).toBeTruthy();
+      component.form().value.set(expectedCustomer as any);
+      expect(component.form().valid()).toBeTruthy();
     });
 
     describe('Validators', () => {
       describe('code', () => {
         it('should check the code format', () => {
-          expect(setControlValue('code', '').invalid).toBeTruthy();
-          expect(setControlValue('code', 'A1A1AazZ').valid).toBeTruthy();
-          expect(setControlValue('code', 'A1A1AazZ_').invalid).toBeTruthy();
-          expect(setControlValue('code', '12345678901234567890123455').invalid).toBeTruthy();
-          expect(setControlValue('code', '000000000').valid).toBeTruthy();
-          expect(setControlValue('code', '999999').valid).toBeTruthy();
+          expect(setControlValue('code', '').invalid()).toBeTruthy();
+          expect(setControlValue('code', 'A1A1AazZ').valid()).toBeTruthy();
+          expect(setControlValue('code', 'A1A1AazZ_').invalid()).toBeTruthy();
+          expect(setControlValue('code', '12345678901234567890123455').invalid()).toBeTruthy();
+          expect(setControlValue('code', '000000000').valid()).toBeTruthy();
+          expect(setControlValue('code', '999999').valid()).toBeTruthy();
         });
       });
 
       describe('fields', () => {
         it('should be required', () => {
-          expect(setControlValue('name', '').invalid).toBeTruthy();
-          expect(setControlValue('name', 'n').valid).toBeTruthy();
+          expect(setControlValue('name', '').invalid()).toBeTruthy();
+          expect(setControlValue('name', 'n').valid()).toBeTruthy();
 
-          expect(setControlValue('companyName', '').invalid).toBeTruthy();
-          expect(setControlValue('companyName', 't').valid).toBeTruthy();
+          expect(setControlValue('companyName', '').invalid()).toBeTruthy();
+          expect(setControlValue('companyName', 't').valid()).toBeTruthy();
 
-          expect(setControlValue('address.street', '').invalid).toBeTruthy();
-          expect(setControlValue('address.street', 't').valid).toBeTruthy();
+          expect(setControlValue('address.street', '').invalid()).toBeTruthy();
+          expect(setControlValue('address.street', 't').valid()).toBeTruthy();
 
-          expect(setControlValue('address.zipCode', '').invalid).toBeTruthy();
-          expect(setControlValue('address.zipCode', 't').valid).toBeTruthy();
+          expect(setControlValue('address.zipCode', '').invalid()).toBeTruthy();
+          expect(setControlValue('address.zipCode', 't').valid()).toBeTruthy();
 
-          expect(setControlValue('address.city', '').invalid).toBeTruthy();
-          expect(setControlValue('address.city', 't').valid).toBeTruthy();
+          expect(setControlValue('address.city', '').invalid()).toBeTruthy();
+          expect(setControlValue('address.city', 't').valid()).toBeTruthy();
 
-          expect(setControlValue('address.country', '').invalid).toBeTruthy();
-          expect(setControlValue('address.country', 't').valid).toBeTruthy();
+          expect(setControlValue('address.country', '').invalid()).toBeTruthy();
+          expect(setControlValue('address.country', 't').valid()).toBeTruthy();
 
-          expect(setControlValue('language', '').invalid).toBeTruthy();
-          expect(setControlValue('language', 't').valid).toBeTruthy();
+          expect(setControlValue('language', '').invalid()).toBeTruthy();
+          expect(setControlValue('language', 't').valid()).toBeTruthy();
 
-          expect(setControlValue('emailDomains', '').invalid).toBeTruthy();
-          expect(setControlValue('emailDomains', 't').valid).toBeTruthy();
+          expect(setControlValue('emailDomains', '').invalid()).toBeTruthy();
+          expect(setControlValue('emailDomains', 't').valid()).toBeTruthy();
 
-          expect(setControlValue('defaultEmailDomain', '').invalid).toBeTruthy();
-          expect(setControlValue('defaultEmailDomain', 't').valid).toBeTruthy();
+          expect(setControlValue('defaultEmailDomain', '').invalid()).toBeTruthy();
+          expect(setControlValue('defaultEmailDomain', 't').valid()).toBeTruthy();
         });
       });
 
-      function setControlValue(name: string | Array<string | number>, value: any) {
-        const control = component.form.get(name);
-        control.setValue(value);
+      function setControlValue(name: string, value: any) {
+        const field = name.split('.').reduce((tree: any, key) => tree[key], component.form);
+        field().value.set(value);
 
-        return control;
+        return field();
       }
     });
   });

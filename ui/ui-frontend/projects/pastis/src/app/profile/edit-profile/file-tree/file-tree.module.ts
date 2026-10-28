@@ -73,7 +73,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { UserActionsModule } from '../../../user-actions/user-actions.module';
 
@@ -116,9 +115,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
   imports: [
     CommonModule,
     CoreModule,
-    FormsModule,
     MatTableModule,
-    ReactiveFormsModule,
     UserActionsModule,
     VitamUICommonModule,
     VitamUILibraryModule,

@@ -34,9 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, viewChildren } from '@angular/core';
-
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AfterViewInit, Component, signal, viewChildren } from '@angular/core';
+import { form, FormField } from '@angular/forms/signals';
 import { InputComponent, TooltipDirective } from 'vitamui-library';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
@@ -44,14 +43,14 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   selector: 'design-system-tooltip',
   templateUrl: './tooltip.component.html',
   styleUrls: ['./tooltip.component.scss'],
-  imports: [ReactiveFormsModule, TooltipDirective, MatTooltipModule, FormsModule, InputComponent],
+  imports: [FormField, TooltipDirective, MatTooltipModule, InputComponent],
 })
 export class TooltipComponent implements AfterViewInit {
   outlineValues = [true, false] as const;
   colors = ['primary', 'secondary', 'red', 'orange'] as const;
   positions = ['TOP', 'BOTTOM', 'LEFT', 'RIGHT'] as const;
   disabled = false;
-  tooltipText = '';
+  readonly tooltipForm = form(signal<{ text: string }>({ text: '' }));
 
   readonly tooltips = viewChildren(TooltipDirective);
 

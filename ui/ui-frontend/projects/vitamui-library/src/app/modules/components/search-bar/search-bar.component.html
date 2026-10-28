@@ -1,8 +1,8 @@
 <div class="search">
   <input
     #searchInput
-    [(ngModel)]="searchValue"
-    (ngModelChange)="searchChanged.emit(searchValue())"
+    [value]="searchValue() ?? ''"
+    (input)="onInput($any($event.target).value)"
     [name]="name()"
     type="text"
     [placeholder]="placeholder()"

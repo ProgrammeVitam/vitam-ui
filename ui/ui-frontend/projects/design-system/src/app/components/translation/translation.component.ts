@@ -35,18 +35,24 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { form, FormField, maxLength, required } from '@angular/forms/signals';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { InputComponent } from 'vitamui-library';
 import { I18nPluralPipe } from '@angular/common';
 
 const TRANSLATE_GET_PATH = 'TRANSLATION.TRANSLATE_GET';
 
+interface TranslationForm {
+  firstInput: string;
+  secondInput: string;
+  nbApples: string;
+}
+
 @Component({
   selector: 'design-system-translation',
   templateUrl: './translation.component.html',
   styleUrls: ['./translation.component.scss'],
-  imports: [InputComponent, ReactiveFormsModule, I18nPluralPipe, TranslatePipe],
+  imports: [InputComponent, FormField, I18nPluralPipe, TranslatePipe],
 })
 export class TranslationComponent implements OnInit {
   private readonly translateService = inject(TranslateService);
@@ -58,9 +64,14 @@ export class TranslationComponent implements OnInit {
     other: 'TRANSLATION.TRANSLATE_NUMBER.PLURAL',
   };
 
-  public firstInput = new FormControl('Test1', [Validators.maxLength(10), Validators.required]);
-  public secondInput = new FormControl('Test2', [Validators.maxLength(10), Validators.required]);
-  public nbApples = new FormControl('0', [Validators.maxLength(3), Validators.required]);
+  readonly translationForm = form(signal<TranslationForm>({ firstInput: 'Test1', secondInput: 'Test2', nbApples: '0' }), (path) => {
+    maxLength(path.firstInput, 10);
+    required(path.firstInput);
+    maxLength(path.secondInput, 10);
+    required(path.secondInput);
+    maxLength(path.nbApples, 3);
+    required(path.nbApples);
+  });
 
   public myInstantText: string;
   public readonly myGetTexts = signal<string[]>(undefined);

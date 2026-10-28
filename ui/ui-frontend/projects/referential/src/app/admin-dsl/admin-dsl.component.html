@@ -7,10 +7,10 @@
         <h5>{{ 'DSL.HOME.TITLE' | translate }}</h5>
       </vitamui-title-breadcrumb>
 
-      <form [formGroup]="form" (ngSubmit)="search()" class="d-flex align-item-center justify-content-between">
+      <form [formRoot]="form" class="d-flex align-item-center justify-content-between">
         <vitamui-select
           class="w-100"
-          formControlName="dslQueryType"
+          [formField]="form.dslQueryType"
           [placeholder]="'DSL.HOME.SEARCH_CATEGORY' | translate"
           [options]="dslQueryTypeOptions"
           [multiple]="false"
@@ -19,12 +19,11 @@
 
         <vitamui-input
           class="w-100 mx-3"
-          formControlName="id"
+          [formField]="form.id"
           [placeholder]="'DSL.HOME.IDENTIFIER' | translate"
-          [required]="isUnitIdRequired()"
           [errorMessageMap]="{
-            minlength: 'DSL.HOME.IDENTIFIER_LENGTH_ERROR' | translate: { length: form.get('id')?.errors?.['minlength']?.requiredLength },
-            maxlength: 'DSL.HOME.IDENTIFIER_LENGTH_ERROR' | translate: { length: form.get('id')?.errors?.['maxlength']?.requiredLength },
+            minlength: 'DSL.HOME.IDENTIFIER_LENGTH_ERROR' | translate: { length: 36 },
+            maxlength: 'DSL.HOME.IDENTIFIER_LENGTH_ERROR' | translate: { length: 36 },
             unknownUnit: 'DSL.HOME.UNKNOWN_UNIT' | translate,
           }"
         >
@@ -32,7 +31,7 @@
 
         <vitamui-select
           class="w-100"
-          formControlName="accessContract"
+          [formField]="form.accessContract"
           [placeholder]="'DSL.HOME.ACCESS_CONTRACT' | translate"
           [options]="accessContracts"
           [multiple]="false"
@@ -42,26 +41,26 @@
     </div>
 
     <div class="vitamui-content">
-      <form [formGroup]="form" class="request">
+      <div class="request">
         <vitamui-input
           [textarea]="true"
           [placeholder]="'DSL.HOME.REQUEST' | translate"
           class="w-100 mr-3"
-          formControlName="dsl"
+          [formField]="form.dsl"
         ></vitamui-input>
 
         <vitamui-input
           [textarea]="true"
           [placeholder]="'DSL.HOME.REQUEST_RESULT' | translate"
           class="w-100"
-          formControlName="response"
+          [formField]="form.response"
           #responseText
         ></vitamui-input>
-      </form>
+      </div>
 
       <div class="actions">
         <div>
-          <button class="btn primary mr-3" (click)="search()" [disabled]="form.pending || form.invalid">
+          <button class="btn primary mr-3" (click)="search()" [disabled]="form().pending() || form().invalid()">
             {{ 'COMMON.SEARCH' | translate }}
           </button>
           <button class="btn secondary" (click)="checkDsl()">{{ 'DSL.HOME.VALIDATE_JSON' | translate }}</button>

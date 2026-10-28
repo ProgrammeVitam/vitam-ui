@@ -66,7 +66,6 @@ import { CommonModule, NgClass } from '@angular/common';
 import { ArchiveUnitInformationTabComponent } from './archive-unit-information-tab/archive-unit-information-tab.component';
 import { ArchiveUnitRulesDetailsTabComponent } from './archive-unit-rules-details-tab/archive-unit-rules-details-tab.component';
 import { CollectObjectGroupDetailsTabComponent } from './collect-object-group-details-tab/collect-object-group-details-tab.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
@@ -88,7 +87,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     TranslatePipe,
     CommonModule,
     MatProgressSpinnerModule,
-    ReactiveFormsModule,
     VitamuiSidenavHeaderComponent,
   ],
 })

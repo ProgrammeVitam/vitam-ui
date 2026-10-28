@@ -36,7 +36,7 @@
  */
 
 import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { form, FormField, FormRoot, required } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -53,6 +53,13 @@ import {
 import { ReassignmentMode } from '../../../models/reassign-request.interface';
 import { EntryOperationValidatorService } from './entry-operation-validator.service';
 
+interface ReassignmentForm {
+  entryOperationIds: string;
+  propagateToObjectGroups: boolean;
+  sourceOriginatingAgency: string | null;
+  targetOriginatingAgency: string | null;
+}
+
 @Component({
   selector: 'app-originating-agency-reassignment-dialog',
   templateUrl: './originating-agency-reassignment-dialog.component.html',
@@ -62,14 +69,13 @@ import { EntryOperationValidatorService } from './entry-operation-validator.serv
     MatDialogModule,
     DialogHeaderComponent,
     VitamUICommonModule,
-    FormsModule,
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     MatRadioModule,
     SelectComponent,
   ],
 })
 export class OriginatingAgencyReassignmentDialogComponent implements OnInit, OnDestroy {
-  private readonly fb = inject(FormBuilder);
   private readonly dialogRef = inject<MatDialogRef<OriginatingAgencyReassignmentDialogComponent>>(MatDialogRef);
   dialog = inject(MatDialog);
   private readonly confirmDialogService = inject(ConfirmDialogService);
@@ -82,7 +88,31 @@ export class OriginatingAgencyReassignmentDialogComponent implements OnInit, OnD
     accessContract?: string;
   }>(MAT_DIALOG_DATA);
 
-  form: FormGroup;
+  readonly form = form(
+    signal<ReassignmentForm>({
+      entryOperationIds: '',
+      propagateToObjectGroups: true,
+      sourceOriginatingAgency: null,
+      targetOriginatingAgency: null,
+    }),
+    (path) => {
+      required(path.sourceOriginatingAgency);
+      required(path.targetOriginatingAgency);
+      // Validators of entryOperationIds depend on the mode
+      if (this.data.reassignmentMode === ReassignmentMode.BY_OPI) {
+        required(path.entryOperationIds);
+        this.entryOperationValidator.validateEntryOperationIds(path.entryOperationIds);
+      }
+    },
+    {
+      submission: {
+        action: async () => {
+          this.reassign();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
   originatingAgenciesOptions = signal<VitamuiSelectOptions>({ options: [] });
   itemSelected: number;
   reassignmentMode: ReassignmentMode;
@@ -91,21 +121,6 @@ export class OriginatingAgencyReassignmentDialogComponent implements OnInit, OnD
   ngOnInit(): void {
     this.itemSelected = this.data.itemSelected;
     this.reassignmentMode = this.data.reassignmentMode;
-
-    this.form = this.fb.group({
-      entryOperationIds: [''],
-      propagateToObjectGroups: [true],
-      sourceOriginatingAgency: [null, [Validators.required]],
-      targetOriginatingAgency: [null, [Validators.required]],
-    });
-
-    // Configure validators for entryOperationIds based on mode
-    const entryOperationControl = this.form.get('entryOperationIds');
-    if (this.reassignmentMode === ReassignmentMode.BY_OPI) {
-      entryOperationControl?.setValidators([Validators.required]);
-      entryOperationControl?.setAsyncValidators([this.entryOperationValidator.validateEntryOperationIds()]);
-      entryOperationControl?.updateValueAndValidity();
-    }
 
     this.agencyService
       .getOriginatingAgenciesAsOptions()
@@ -123,7 +138,7 @@ export class OriginatingAgencyReassignmentDialogComponent implements OnInit, OnD
   }
 
   onCancel(): void {
-    if (this.form.dirty) {
+    if (this.form().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -131,11 +146,11 @@ export class OriginatingAgencyReassignmentDialogComponent implements OnInit, OnD
   }
 
   reassign(): void {
-    if (this.form.invalid) {
+    if (this.form().invalid()) {
       return;
     }
 
-    this.dialogRef.close({ ...this.form.getRawValue() });
+    this.dialogRef.close({ ...this.form().value() });
   }
 
   get title(): string {

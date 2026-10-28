@@ -3,32 +3,32 @@
   [subhead]="stepper.selectedIndex > 0 ? ('GROUP.INFORMATIONS.MODAL.TITLE' | translate) : ''"
   [title]="[
     'GROUP.INFORMATIONS.MODAL.TITLE' | translate,
-    'GROUP.INFORMATIONS.MODAL.PROVISIONNING_GROUP' | translate: { name: form.get('name').value },
+    'GROUP.INFORMATIONS.MODAL.PROVISIONNING_GROUP' | translate: { name: form.name().value() },
     'GROUP.INFORMATIONS.MODAL.UNITS_INFORMATION' | translate,
   ]"
 ></vitamui-dialog-header>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
+<form [formRoot]="form" (keydown.enter)="$event.preventDefault()">
   <vitamui-stepper #stepper>
     <cdk-step>
       <mat-dialog-content class="gap-3 align-items-stretch">
-        <vitamui-slide-toggle formControlName="enabled">
-          @if (!form?.get('enabled').value) {
+        <vitamui-slide-toggle [formField]="form.enabled">
+          @if (!form.enabled().value()) {
             <span>{{ 'GROUP.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
           }
-          @if (form?.get('enabled').value) {
+          @if (form.enabled().value()) {
             <span>{{ 'GROUP.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
           }
         </vitamui-slide-toggle>
 
         <vitamui-input
-          formControlName="name"
+          [formField]="form.name"
           [placeholder]="'GROUP.INFORMATIONS.NAME' | translate"
           [errorMessageMap]="{ nameExists: 'GROUP.INFORMATIONS.MODAL.EXISTING_NAME' | translate }"
         >
         </vitamui-input>
 
-        <vitamui-input formControlName="description" [placeholder]="'GROUP.INFORMATIONS.DESCRIPTION' | translate"> </vitamui-input>
+        <vitamui-input [formField]="form.description" [placeholder]="'GROUP.INFORMATIONS.DESCRIPTION' | translate"> </vitamui-input>
 
         <div class="d-flex">
           <div class="mr-4 p-2">
@@ -37,12 +37,12 @@
           </div>
 
           <div class="col-3 p-0">
-            <vitamui-common-level-input [prefix]="authService.user.level" formControlName="level">
-              @if (form.get('level')?.touched) {
-                @if (form?.get('level')?.hasError('required')) {
+            <vitamui-common-level-input [prefix]="authService.user.level" [formField]="form.level">
+              @if (form.level().touched()) {
+                @if (hasError(form.level, 'required')) {
                   <div>{{ 'COMMON.ERROR.REQUIRED' | translate }}</div>
                 }
-                @if (form?.get('level')?.touched && form?.get('level')?.hasError('pattern')) {
+                @if (form.level().touched() && hasError(form.level, 'pattern')) {
                   <div>{{ 'GROUP.INFORMATIONS.MODAL.WRONG_FORMAT' | translate }}</div>
                 }
               }
@@ -58,11 +58,11 @@
 
     <cdk-step>
       <mat-dialog-content>
-        @if (form.get('level').value) {
-          <div class="text medium bold mb-4">{{ 'GROUP.INFORMATIONS.LEVEL' | translate }} : {{ form.get('level').value }}</div>
+        @if (form.level().value()) {
+          <div class="text medium bold mb-4">{{ 'GROUP.INFORMATIONS.LEVEL' | translate }} : {{ form.level().value() }}</div>
         }
 
-        <app-profiles-form formControlName="profileIds" [level]="form.get('level').value"></app-profiles-form>
+        <app-profiles-form [formField]="form.profileIds" [level]="form.level().value()"></app-profiles-form>
       </mat-dialog-content>
       <mat-dialog-actions>
         <div>
@@ -75,7 +75,7 @@
 
     <cdk-step>
       <mat-dialog-content>
-        <app-units-form [customer]="authService.user.customerId" formControlName="units"></app-units-form>
+        <app-units-form [customer]="authService.user.customerId" [formField]="form.units"></app-units-form>
       </mat-dialog-content>
       <mat-dialog-actions>
         <div>

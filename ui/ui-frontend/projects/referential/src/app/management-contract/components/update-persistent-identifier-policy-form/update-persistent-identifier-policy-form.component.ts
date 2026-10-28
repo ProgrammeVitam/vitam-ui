@@ -34,15 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnChanges, SimpleChanges, signal, input, output } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import {
-  ManagementContractValidationErrors,
-  ManagementContractValidators,
-} from 'projects/referential/src/app/management-contract/validators/management-contract-validators';
+import { Component, computed, inject, input, linkedSignal, output } from '@angular/core';
+import { FieldTree, FormField, ValidationError } from '@angular/forms/signals';
 import { InputComponent, Option, SelectComponent, TooltipDirective } from 'vitamui-library';
+import { ManagementContractValidationErrors } from '../../validators/management-contract-validators';
+import { PersistentIdentifierPolicyForm } from '../management-contract-to-form-model-converter.service';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 import { NgClass, NgStyle } from '@angular/common';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 
@@ -51,7 +49,7 @@ import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
   templateUrl: './update-persistent-identifier-policy-form.component.html',
   styleUrls: ['./update-persistent-identifier-policy-form.component.scss'],
   imports: [
-    ReactiveFormsModule,
+    FormField,
     InputComponent,
     MatCheckbox,
     NgClass,
@@ -63,11 +61,10 @@ import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
     TranslatePipe,
   ],
 })
-export class UpdatePersistentIdentifierPolicyFormComponent implements OnChanges {
-  private readonly formBuilder = inject(FormBuilder);
+export class UpdatePersistentIdentifierPolicyFormComponent {
   private readonly translateService = inject(TranslateService);
 
-  readonly form = input<FormGroup>(undefined);
+  readonly form = input.required<FieldTree<PersistentIdentifierPolicyForm>>();
   readonly objectUsagePolicyAdded = output<void>();
   readonly objectUsagePolicyRemoved = output<void>();
 
@@ -77,7 +74,7 @@ export class UpdatePersistentIdentifierPolicyFormComponent implements OnChanges 
     ),
   };
 
-  objectUsageOptions: Option[] = [
+  private readonly allObjectUsageOptions: Option[] = [
     {
       key: 'BinaryMaster',
       label: this.translateService.instant('CONTRACT_MANAGEMENT.FORM_UPDATE.OBJECT_USAGE_OPTION.BINARYMASTER.LABEL'),
@@ -105,47 +102,17 @@ export class UpdatePersistentIdentifierPolicyFormComponent implements OnChanges 
     },
   ];
 
-  objectUsagePoliciesToggle = signal(false);
-  addButtonDisabled = false;
-  isExistingTypeOption = signal(false);
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['form']) {
-      this.updateAddButtonState();
-      const form = this.form();
-      this.isExistingTypeOption.set(form.get('policyTypeOption').value !== '');
-      this.objectUsagePoliciesToggle.set(form.get('shouldConcernObjects').value);
-
-      form.get('shouldConcernObjects').valueChanges.subscribe((shouldConcernObjects) => {
-        this.objectUsagePoliciesToggle.set(shouldConcernObjects);
-
-        const formArray = this.form().get('objectUsagePolicies') as FormArray;
-        if (!shouldConcernObjects) {
-          while (formArray.length !== 0) {
-            formArray.removeAt(0);
-          }
-        }
-
-        if (formArray.length === 0 && shouldConcernObjects) {
-          this.addObjectUsagePolicy();
-        }
-      });
-
-      form.get('objectUsagePolicies').valueChanges.subscribe((objectUsagePolicies) => {
-        this.objectUsageOptions.forEach(
-          (objectUsageOption) => (objectUsageOption.disabled = this.isObjectUsageOptionDisabled(objectUsageOption.key)),
-        );
-
-        this.form()
-          .get('shouldConcernObjects')
-          .setValue(objectUsagePolicies.length > 0);
-      });
-
-      form.get('policyTypeOption').valueChanges.subscribe((policyTypeOption: string) => {
-        this.isExistingTypeOption.set(policyTypeOption !== '');
-      });
-    }
-  }
+  // The options already used by an object usage policy are disabled
+  readonly objectUsageOptions = computed<Option[]>(() => {
+    const objectUsagePolicies = this.form().objectUsagePolicies().value();
+    return this.allObjectUsageOptions.map((objectUsageOption) => ({
+      ...objectUsageOption,
+      disabled: objectUsagePolicies.some((objectUsagePolicy) => objectUsagePolicy.objectUsage === objectUsageOption.key),
+    }));
+  });
+  readonly objectUsagePoliciesToggle = linkedSignal(() => this.form().shouldConcernObjects().value());
+  readonly addButtonDisabled = computed(() => this.form().objectUsagePolicies().value().length >= this.allObjectUsageOptions.length);
+  readonly isExistingTypeOption = computed(() => this.form().policyTypeOption().value() !== '');
 
   toggle($event: Event): void {
     const element = $event.target as any;
@@ -155,52 +122,56 @@ export class UpdatePersistentIdentifierPolicyFormComponent implements OnChanges 
     }
   }
 
+  onShouldConcernObjectsChange({ checked }: MatCheckboxChange): void {
+    if (!checked) {
+      this.form().objectUsagePolicies().value.set([]);
+    } else if (this.form().objectUsagePolicies().value().length === 0) {
+      this.addObjectUsagePolicy();
+    }
+  }
+
   removeObjectUsagePolicy(index: number): void {
-    this.objectUsagePolicies.removeAt(index);
+    this.form()
+      .objectUsagePolicies()
+      .value.update((objectUsagePolicies) => objectUsagePolicies.filter((_objectUsagePolicy, i) => i !== index));
+    this.updateShouldConcernObjects();
     this.objectUsagePolicyRemoved.emit();
-    this.updateAddButtonState();
   }
 
   addObjectUsagePolicy(): void {
     const objectUsageOption = this.findAvailableObjectUsageOption();
     if (!objectUsageOption) {
-      this.updateAddButtonState();
       return;
     }
 
-    const objectUsagePolicy: FormGroup = this.formBuilder.group(
-      {
-        objectUsage: [objectUsageOption.key, Validators.required],
-        initialVersion: [true, Validators.required],
-        intermediaryVersion: ['ALL', Validators.required],
-      },
-      { validators: [ManagementContractValidators.objectUsagePolicyValidator] },
-    );
-
-    this.objectUsagePolicies.push(objectUsagePolicy);
+    this.form()
+      .objectUsagePolicies()
+      .value.update((objectUsagePolicies) => [
+        ...objectUsagePolicies,
+        { objectUsage: objectUsageOption.key, initialVersion: true, intermediaryVersion: 'ALL' },
+      ]);
+    this.updateShouldConcernObjects();
     this.objectUsagePolicyAdded.emit();
-    this.updateAddButtonState();
+  }
+
+  hasError(field: () => { errors: () => readonly ValidationError[] }, kind: string): boolean {
+    return field()
+      .errors()
+      .some((error) => error.kind === kind);
+  }
+
+  private updateShouldConcernObjects(): void {
+    this.form()
+      .shouldConcernObjects()
+      .value.set(this.form().objectUsagePolicies().value().length > 0);
   }
 
   private findAvailableObjectUsageOption(): Option {
-    return this.objectUsageOptions.find((objectUsageOption) => {
-      return this.getObjectUsagePolicies().every((objectUsagePolicy) => objectUsagePolicy.value.objectUsage !== objectUsageOption.key);
+    return this.allObjectUsageOptions.find((objectUsageOption) => {
+      return this.form()
+        .objectUsagePolicies()
+        .value()
+        .every((objectUsagePolicy) => objectUsagePolicy.objectUsage !== objectUsageOption.key);
     });
-  }
-
-  getObjectUsagePolicies(): AbstractControl[] {
-    return this.objectUsagePolicies.controls;
-  }
-
-  private isObjectUsageOptionDisabled(optionValue: string): boolean {
-    return this.getObjectUsagePolicies().some((policy: FormGroup) => policy.get('objectUsage').value === optionValue);
-  }
-
-  protected get objectUsagePolicies(): FormArray {
-    return this.form().get('objectUsagePolicies') as FormArray;
-  }
-
-  private updateAddButtonState(): void {
-    this.addButtonDisabled = this.objectUsagePolicies.length >= this.objectUsageOptions.length;
   }
 }

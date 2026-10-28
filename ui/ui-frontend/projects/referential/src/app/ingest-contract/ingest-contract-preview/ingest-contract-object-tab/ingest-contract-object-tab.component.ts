@@ -35,29 +35,51 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, signal, output, input, model, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { disabled, form, FormField, FormRoot } from '@angular/forms/signals';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { diff, IngestContract, Option, SelectComponent, SlideToggleComponent } from 'vitamui-library';
+import { diff, IngestContract, Option, requiredValue, SelectComponent, SlideToggleComponent } from 'vitamui-library';
 
 import { IngestContractService } from '../../ingest-contract.service';
 import { TranslatePipe } from '@ngx-translate/core';
+
+interface IngestContractObjectForm {
+  masterMandatory: boolean;
+  everyDataObjectVersion: boolean;
+  dataObjectVersion: string[];
+}
 
 @Component({
   selector: 'app-ingest-contract-object-tab',
   templateUrl: './ingest-contract-object-tab.component.html',
   styleUrls: ['./ingest-contract-object-tab.component.scss'],
-  imports: [ReactiveFormsModule, SlideToggleComponent, SelectComponent, TranslatePipe],
+  imports: [FormRoot, FormField, SlideToggleComponent, SelectComponent, TranslatePipe],
 })
 export class IngestContractObjectTabComponent implements OnChanges {
-  private readonly formBuilder = inject(FormBuilder);
   private readonly ingestContractService = inject(IngestContractService);
 
   readonly updated = output<boolean>();
   readonly isFormValid = output<boolean>();
 
-  form: FormGroup;
+  readonly readOnly = input<boolean>(undefined);
+
+  readonly form = form(
+    signal<IngestContractObjectForm>({ masterMandatory: true, everyDataObjectVersion: true, dataObjectVersion: [] }),
+    (path) => {
+      requiredValue(path.everyDataObjectVersion);
+      requiredValue(path.dataObjectVersion, { when: ({ valueOf }) => !valueOf(path.everyDataObjectVersion) });
+      disabled(path, () => !!this.readOnly());
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
   submited = signal(false);
 
   // FIXME: Get list from common var ?
@@ -81,38 +103,7 @@ export class IngestContractObjectTabComponent implements OnChanges {
 
   readonly isTabActive = input<boolean>(undefined);
 
-  readonly readOnly = input<boolean>(undefined);
-
-  constructor() {
-    this.form = this.formBuilder.group({
-      masterMandatory: [true],
-      everyDataObjectVersion: [true, Validators.required],
-      dataObjectVersion: [[]],
-    });
-
-    this.form.controls['everyDataObjectVersion'].valueChanges.subscribe((value: boolean) => {
-      if (value) {
-        this.form.controls['dataObjectVersion'].setValidators([]);
-        this.form.controls['dataObjectVersion'].setValue([]);
-        this.form.controls['dataObjectVersion'].updateValueAndValidity();
-      } else {
-        this.form.controls['dataObjectVersion'].setValidators(Validators.required);
-        this.form.controls['dataObjectVersion'].markAllAsTouched();
-        this.form.controls['dataObjectVersion'].updateValueAndValidity();
-      }
-    });
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['readOnly']) {
-      const readOnly = this.readOnly();
-      if (readOnly && this.form.enabled) {
-        this.form.disable({ emitEvent: false });
-      } else if (this.form.disabled) {
-        this.form.enable({ emitEvent: false });
-        this.form.get('identifier').disable({ emitEvent: false });
-      }
-    }
     if (changes['ingestContract']) {
       this.setIngestContract(this.ingestContract());
     }
@@ -124,14 +115,23 @@ export class IngestContractObjectTabComponent implements OnChanges {
     }
   }
 
+  onEveryDataObjectVersionChange(everyDataObjectVersion: boolean) {
+    this.form.everyDataObjectVersion().value.set(everyDataObjectVersion);
+    if (everyDataObjectVersion) {
+      this.form.dataObjectVersion().value.set([]);
+    } else {
+      this.form.dataObjectVersion().markAsTouched();
+    }
+  }
+
   unchanged(): boolean {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
+    const unchanged = JSON.stringify(diff(this.form().value(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
   }
 
   prepareSubmit(): Observable<IngestContract> {
-    return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
+    return of(diff(this.form().value(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.ingestContract().id, identifier: this.ingestContract().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) =>
@@ -157,8 +157,8 @@ export class IngestContractObjectTabComponent implements OnChanges {
 
   isInvalid(): boolean {
     const isInvalid =
-      this.form.get('everyDataObjectVersion').value === false &&
-      (this.form.get('dataObjectVersion').invalid || this.form.get('dataObjectVersion').pending);
+      this.form.everyDataObjectVersion().value() === false &&
+      (this.form.dataObjectVersion().invalid() || this.form.dataObjectVersion().pending());
     this.isFormValid.emit(!isInvalid);
     return isInvalid;
   }
@@ -173,6 +173,10 @@ export class IngestContractObjectTabComponent implements OnChanges {
   }
 
   resetForm(ingestContract: IngestContract) {
-    this.form.reset(ingestContract, { emitEvent: false });
+    this.form().reset({
+      masterMandatory: ingestContract.masterMandatory ?? null,
+      everyDataObjectVersion: ingestContract.everyDataObjectVersion ?? null,
+      dataObjectVersion: ingestContract.dataObjectVersion ?? null,
+    } as IngestContractObjectForm);
   }
 }

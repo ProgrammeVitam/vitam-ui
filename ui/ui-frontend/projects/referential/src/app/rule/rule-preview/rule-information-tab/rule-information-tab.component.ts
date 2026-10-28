@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, OnInit, signal, output, input, model, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { disabled, form, FormField, FormRoot, maxLength, minLength, pattern, required } from '@angular/forms/signals';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, mergeMap, switchMap } from 'rxjs/operators';
@@ -47,25 +47,59 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 const RULES_APP = 'RULES_APP';
 
+interface RuleInformationForm {
+  ruleType: string;
+  ruleValue: string;
+  ruleDescription: string;
+  ruleDuration: string;
+  ruleMeasurement: string;
+}
+
 @Component({
   selector: 'app-rule-information-tab',
   templateUrl: './rule-information-tab.component.html',
   styleUrls: ['./rule-information-tab.component.scss'],
-  imports: [ReactiveFormsModule, SelectComponent, InputComponent, AsyncPipe, TranslatePipe],
+  imports: [FormRoot, FormField, SelectComponent, InputComponent, AsyncPipe, TranslatePipe],
 })
 export class RuleInformationTabComponent implements OnChanges, OnInit {
   private readonly route = inject(ActivatedRoute);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly securityService = inject(SecurityService);
   private readonly ruleService = inject(RuleService);
 
   readonly updated = output<boolean>();
 
-  form: FormGroup;
+  private readonly formModel = signal<RuleInformationForm>({
+    ruleType: null,
+    ruleValue: null,
+    ruleDescription: null,
+    ruleDuration: null,
+    ruleMeasurement: null,
+  });
+  readonly form = form(
+    this.formModel,
+    (path) => {
+      disabled(path, () => !!this.readOnly());
+      required(path.ruleType);
+      required(path.ruleValue);
+      minLength(path.ruleValue, 2);
+      maxLength(path.ruleValue, 100);
+      required(path.ruleDescription);
+      required(path.ruleDuration);
+      maxLength(path.ruleDuration, 3);
+      pattern(path.ruleDuration, /^[0-9]*$/);
+      required(path.ruleMeasurement);
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
 
   submited = signal(false);
-
-  ruleFilter = new FormControl();
 
   ruleTypes = RULE_TYPES;
   ruleMeasurements = RULE_MEASUREMENTS;
@@ -81,28 +115,9 @@ export class RuleInformationTabComponent implements OnChanges, OnInit {
 
   readonly readOnly = input<boolean>(undefined);
 
-  constructor() {
-    this.form = this.formBuilder.group({
-      ruleType: [null, Validators.required],
-      ruleValue: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-      ruleDescription: [null, Validators.required],
-      ruleDuration: [null, [Validators.required, Validators.maxLength(3), Validators.pattern('[0-9]*')]],
-      ruleMeasurement: [null, Validators.required],
-    });
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['rule']) {
       this.setRule(this.rule());
-    }
-    if (changes['readOnly']) {
-      const readOnly = this.readOnly();
-      if (readOnly && this.form.enabled) {
-        this.form.disable({ emitEvent: false });
-      } else if (this.form.disabled) {
-        this.form.enable({ emitEvent: false });
-        this.form.get('identifier').disable({ emitEvent: false });
-      }
     }
   }
 
@@ -116,31 +131,31 @@ export class RuleInformationTabComponent implements OnChanges, OnInit {
   }
 
   unchanged(): boolean {
-    if (this.previousValue().ruleDescription === undefined && this.form.getRawValue().ruleDescription != null) {
+    if (this.previousValue().ruleDescription === undefined && this.formModel().ruleDescription != null) {
       this.previousValue().ruleDescription = '';
     }
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
+    const unchanged = JSON.stringify(diff(this.formModel(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
   }
 
   isInvalid(): boolean {
     return (
-      this.form.get('ruleType').invalid ||
-      this.form.get('ruleType').pending ||
-      this.form.get('ruleValue').invalid ||
-      this.form.get('ruleValue').pending ||
-      this.form.get('ruleDescription').invalid ||
-      this.form.get('ruleDescription').pending ||
-      this.form.get('ruleDuration').invalid ||
-      this.form.get('ruleDuration').pending ||
-      this.form.get('ruleMeasurement').invalid ||
-      this.form.get('ruleMeasurement').pending
+      this.form.ruleType().invalid() ||
+      this.form.ruleType().pending() ||
+      this.form.ruleValue().invalid() ||
+      this.form.ruleValue().pending() ||
+      this.form.ruleDescription().invalid() ||
+      this.form.ruleDescription().pending() ||
+      this.form.ruleDuration().invalid() ||
+      this.form.ruleDuration().pending() ||
+      this.form.ruleMeasurement().invalid() ||
+      this.form.ruleMeasurement().pending()
     );
   }
 
   prepareSubmit(): Observable<Boolean> {
-    return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
+    return of(diff(this.formModel(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().ruleId, ruleId: this.previousValue().ruleId }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) => this.ruleService.patch(formData).pipe(catchError(() => of(null)))),
@@ -173,7 +188,14 @@ export class RuleInformationTabComponent implements OnChanges, OnInit {
   }
 
   resetForm(rule: Rule) {
-    this.form.reset(rule, { emitEvent: false });
-    this.form.markAllAsTouched({ emitEvent: false });
+    // Like reactive forms reset, the missing values are reset to null
+    this.form().reset({
+      ruleType: rule?.ruleType ?? null,
+      ruleValue: rule?.ruleValue ?? null,
+      ruleDescription: rule?.ruleDescription ?? null,
+      ruleDuration: rule?.ruleDuration ?? null,
+      ruleMeasurement: rule?.ruleMeasurement ?? null,
+    });
+    (Object.keys(this.formModel()) as (keyof RuleInformationForm)[]).forEach((key) => this.form[key]().markAsTouched());
   }
 }

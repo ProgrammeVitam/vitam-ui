@@ -34,36 +34,89 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, computed, inject, Injector, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { form, FormField, FormRoot, maxLength, minLength, required } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, setTypeDetailAndStringSize, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { skip } from 'rxjs/operators';
+import {
+  ConfirmDialogService,
+  getTypeDetailAndStringSize,
+  Ontology,
+  requiredValue,
+  VitamUICommonModule,
+  VitamUILibraryModule,
+} from 'vitamui-library';
 import { OntologyService } from '../ontology.service';
 import { OntologyCreateValidators } from './ontology-create.validators';
 import { collections, sizes, types } from '../ontology-form-options';
 import { TranslatePipe } from '@ngx-translate/core';
 
+interface OntologyCreateForm {
+  identifier: string;
+  shortName: string;
+  type: string;
+  typeDetail: string;
+  stringSize: string;
+  collections: string[];
+  description: string;
+  origin: string;
+}
+
 @Component({
   selector: 'app-ontology-create',
   templateUrl: './ontology-create.component.html',
   styleUrls: ['./ontology-create.component.scss'],
-  imports: [MatDialogModule, ReactiveFormsModule, VitamUICommonModule, VitamUILibraryModule, TranslatePipe],
+  imports: [MatDialogModule, FormRoot, FormField, VitamUICommonModule, VitamUILibraryModule, TranslatePipe],
 })
 export class OntologyCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<OntologyCreateComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly confirmDialogService = inject(ConfirmDialogService);
   private readonly ontologyService = inject(OntologyService);
   private readonly ontologyCreateValidator = inject(OntologyCreateValidators);
+  private readonly injector = inject(Injector);
 
-  form: FormGroup;
+  private readonly formModel = signal<OntologyCreateForm>({
+    identifier: null,
+    shortName: null,
+    type: null,
+    typeDetail: null,
+    stringSize: null,
+    collections: null,
+    description: null,
+    origin: 'INTERNAL',
+  });
+  readonly sizeFieldVisible = computed(() => ['TEXT', 'GEO_POINT', 'KEYWORD'].includes(this.formModel().type));
+  readonly form = form(
+    this.formModel,
+    (path) => {
+      required(path.identifier);
+      minLength(path.identifier, 2);
+      maxLength(path.identifier, 100);
+      this.ontologyCreateValidator.patternID(path.identifier);
+      this.ontologyCreateValidator.uniqueID(path.identifier);
+      required(path.shortName);
+      minLength(path.shortName, 2);
+      maxLength(path.shortName, 100);
+      required(path.type);
+      required(path.stringSize, { when: () => this.sizeFieldVisible() });
+      requiredValue(path.collections);
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
   isDisabledButton = signal(false);
-  sizeFieldVisible = false;
   types = types;
   collections = collections;
   sizes = sizes;
@@ -73,27 +126,14 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
   readonly fileSearch = viewChild<any>('fileSearch');
 
   ngOnInit() {
-    this.form = this.formBuilder.group({
-      identifier: [
-        null,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100), this.ontologyCreateValidator.patternID()],
-        this.ontologyCreateValidator.uniqueID(),
-      ],
-      shortName: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-      type: [null, Validators.required],
-      typeDetail: [null],
-      stringSize: [null],
-      collections: [null, Validators.required],
-      description: [null],
-      origin: ['INTERNAL'],
-    });
-
-    this.form.get('type').valueChanges.subscribe((key) => {
-      this.sizeFieldVisible = ['TEXT', 'GEO_POINT', 'KEYWORD'].includes(key);
-      if (this.sizeFieldVisible) this.form.get('stringSize').addValidators(Validators.required);
-      else this.form.get('stringSize').removeValidators(Validators.required);
-      setTypeDetailAndStringSize(key, this.form);
-    });
+    toObservable(this.form.type().value, { injector: this.injector })
+      .pipe(skip(1))
+      .subscribe((key) => {
+        const typeDetailAndStringSize = getTypeDetailAndStringSize(key);
+        if (typeDetailAndStringSize) {
+          this.formModel.update((value) => ({ ...value, ...typeDetailAndStringSize }));
+        }
+      });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
@@ -103,7 +143,7 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    if (this.form.dirty) {
+    if (this.form().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -111,12 +151,12 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.invalid) {
+    if (this.form().invalid()) {
       this.isDisabledButton.set(true);
       return;
     }
     this.isDisabledButton.set(true);
-    this.ontologyService.create(this.form.value).subscribe(
+    this.ontologyService.create(this.form().value() as Ontology).subscribe(
       () => {
         this.isDisabledButton.set(false);
         this.dialogRef.close({ success: true, action: 'none' });

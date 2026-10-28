@@ -53,26 +53,22 @@ import {
   FormFieldValueWrapperComponent,
   Option,
   SelectComponent,
+  requiredValue,
   SlideToggleComponent,
   VitamuiSelectOptions,
 } from 'vitamui-library';
-import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { disabled, FieldTree, form, FormField, patternError, validate } from '@angular/forms/signals';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { extend } from 'underscore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+type SelectValue = string | string[] | null;
+
+const GB_PATTERN = /^.*GB.*$/;
+
 @Component({
-  imports: [
-    AsyncPipe,
-    FormFieldValueWrapperComponent,
-    FormsModule,
-    JsonPipe,
-    ReactiveFormsModule,
-    SelectComponent,
-    SlideToggleComponent,
-    TranslatePipe,
-  ],
+  imports: [AsyncPipe, FormFieldValueWrapperComponent, FormField, JsonPipe, SelectComponent, SlideToggleComponent, TranslatePipe],
   templateUrl: './design-system-select.component.html',
   styleUrl: './design-system-select.component.scss',
 })
@@ -85,17 +81,15 @@ export class DesignSystemSelectComponent implements OnInit, AfterViewInit {
     {
       name: string;
       multiple?: boolean;
-      entries: { type: string; states: { id: string; control: FormControl }[] }[];
+      entries: { type: string; states: { id: string; field: FieldTree<SelectValue> }[] }[];
     }[]
   >(undefined);
 
-  enableSearch = false;
-  enableSelectAll = false;
-  enableDisplaySelected = false;
+  readonly displayOptions = form(signal({ enableSearch: false, enableSelectAll: false, enableDisplaySelected: false }));
 
   multiSelectOptions$: Observable<VitamuiSelectOptions>;
 
-  wrapperControl = new FormControl('FR');
+  readonly wrapperField = form(signal<string | null>('FR'));
 
   loadingOptions = resource<VitamuiSelectOptions | any[], unknown>({
     loader: () =>
@@ -147,33 +141,41 @@ export class DesignSystemSelectComponent implements OnInit, AfterViewInit {
       {
         type: 'empty',
         states: [
-          { id: 'Default', control: this.createControl() },
-          { id: 'Active', control: this.createControl() },
-          { id: 'Disabled', control: this.createControl({ disabled: true }) },
-          { id: 'Error', control: this.createControl({ error: true }) },
+          { id: 'Default', field: this.createField() },
+          { id: 'Active', field: this.createField() },
+          { id: 'Disabled', field: this.createField({ disabled: true }) },
+          { id: 'Error', field: this.createField({ error: true }) },
         ],
       },
       {
         type: 'full',
         states: [
-          { id: 'Default', control: this.createControl({ value: selectedOptionValue }) },
-          { id: 'Active', control: this.createControl({ value: selectedOptionValue }) },
-          { id: 'Disabled', control: this.createControl({ disabled: true, value: selectedOptionValue }) },
-          { id: 'Error', control: this.createControl({ error: true, value: selectedOptionValue }) },
+          { id: 'Default', field: this.createField({ value: selectedOptionValue }) },
+          { id: 'Active', field: this.createField({ value: selectedOptionValue }) },
+          { id: 'Disabled', field: this.createField({ disabled: true, value: selectedOptionValue }) },
+          { id: 'Error', field: this.createField({ error: true, value: selectedOptionValue }) },
         ],
       },
     ];
   }
 
-  private createControl(config?: { disabled?: boolean; error?: boolean; value?: any }): FormControl {
-    const validators = config?.error || config?.disabled ? [Validators.required, Validators.pattern('.*GB.*')] : [];
-
-    const fc = new FormControl(null, validators);
-    if (config?.disabled) fc.disable();
-    if (config?.error) fc.markAsTouched();
-    if (config?.value) fc.setValue(config.value);
-
-    return fc;
+  private createField(config?: { disabled?: boolean; error?: boolean; value?: SelectValue }): FieldTree<SelectValue> {
+    const field = form(
+      signal<SelectValue>(config?.value ?? null),
+      (path) => {
+        if (config?.error || config?.disabled) {
+          requiredValue(path);
+          // Same as Validators.pattern('.*GB.*'), which also applies to the comma-separated values of a multiple select
+          validate(path, ({ value }) => (value()?.length && !GB_PATTERN.test(String(value())) ? patternError(GB_PATTERN) : undefined));
+        }
+        if (config?.disabled) {
+          disabled(path);
+        }
+      },
+      { injector: this.injector },
+    );
+    if (config?.error) field().markAsTouched();
+    return field;
   }
 
   private initMultiselectOptions(): void {

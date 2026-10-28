@@ -1,7 +1,7 @@
-<form [formGroup]="form" class="side-form gap-5" (ngSubmit)="onSubmit()">
+<form [formRoot]="form" class="side-form gap-5">
   <div class="gap-3">
     <div class="text medium bold primary">{{ 'INGEST_CONTRACT.MODAL_CREATE.SIGNING_POLICY.TITLE' | translate }}</div>
-    <mat-button-toggle-group formControlName="signedDocument" #group="matButtonToggleGroup" class="vitamui-button-toggle-group">
+    <mat-button-toggle-group [formField]="form.signedDocument" #group="matButtonToggleGroup" class="vitamui-button-toggle-group">
       <mat-button-toggle
         value="{{ SignedDocumentPolicyEnum.ALLOWED }}"
         (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.ALLOWED)"
@@ -28,13 +28,13 @@
   <div class="gap-3">
     <div class="text medium bold primary">{{ 'INGEST_CONTRACT.MODAL_CREATE.SIGNING_POLICY.ELEMENTS_TO_CHECK' | translate }}</div>
     <div class="gap-2 ml-4">
-      <mat-checkbox formControlName="declaredSignature">
+      <mat-checkbox [formField]="form.declaredSignature">
         {{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.SIGNATURE' | translate }}
       </mat-checkbox>
-      <mat-checkbox formControlName="declaredTimestamp">
+      <mat-checkbox [formField]="form.declaredTimestamp">
         {{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.TIMESTAMP' | translate }}
       </mat-checkbox>
-      <mat-checkbox formControlName="declaredAdditionalProof">
+      <mat-checkbox [formField]="form.declaredAdditionalProof">
         {{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.ADDITIONAL_EVIDENCES' | translate }}
       </mat-checkbox>
     </div>

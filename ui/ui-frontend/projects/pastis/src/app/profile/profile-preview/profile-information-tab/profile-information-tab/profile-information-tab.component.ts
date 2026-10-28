@@ -34,28 +34,37 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, input, OnChanges, signal, output, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, effect, inject, input, OnChanges, signal, output, SimpleChanges, untracked } from '@angular/core';
+import { disabled, form, FormField, FormRoot, maxLength, minLength, required } from '@angular/forms/signals';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ProfileService } from '../../../../core/services/profile.service';
 import { ProfileType } from '../../../../models/profile-type.enum';
-import { InputComponent, MiscValidators, SlideToggleComponent, SnackBarService } from 'vitamui-library';
+import { allowedIdentifier, InputComponent, SlideToggleComponent, SnackBarService } from 'vitamui-library';
 import type { Profile } from '../../../../models/profile';
 import type { ArchivalProfileUnit } from '../../../../models/archival-profile-unit';
 import type { ProfileDescription } from '../../../../models/profile-description.model';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';
 
+interface ProfileInformationForm {
+  identifier: string | null;
+  id: string | null;
+  type: ProfileType | null;
+  description: string | null;
+  name: string | null;
+  creationDate: string | null;
+  status: string | null;
+}
+
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'profile-information-tab',
   templateUrl: './profile-information-tab.component.html',
   styleUrls: ['./profile-information-tab.component.scss'],
-  imports: [FormsModule, ReactiveFormsModule, SlideToggleComponent, InputComponent, MatProgressSpinner, TranslatePipe],
+  imports: [FormRoot, FormField, SlideToggleComponent, InputComponent, MatProgressSpinner, TranslatePipe],
 })
 export class ProfileInformationTabComponent implements OnChanges {
-  private readonly formBuilder = inject(FormBuilder);
   private readonly profileService = inject(ProfileService);
   private readonly snackBarService = inject(SnackBarService);
 
@@ -63,19 +72,46 @@ export class ProfileInformationTabComponent implements OnChanges {
 
   readonly readOnly = input<boolean>();
 
-  constructor() {
-    this.form = this.formBuilder.group({
-      identifier: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(10), MiscValidators.allowedIdentifier]],
-      id: [null, Validators.required],
-      type: [null],
-      description: [null],
-      name: [null, Validators.required],
-      creationDate: [null],
-      status: [null, Validators.required],
-    });
+  // The identifier stays disabled once the form has been read only
+  private readonly identifierDisabled = signal(false);
 
-    this.statusProfile.valueChanges.subscribe((value) => {
-      this.form.controls['status'].setValue(value === false ? 'INACTIVE' : 'ACTIVE');
+  readonly form = form(
+    signal<ProfileInformationForm>({
+      identifier: null,
+      id: null,
+      type: null,
+      description: null,
+      name: null,
+      creationDate: null,
+      status: null,
+    }),
+    (path) => {
+      disabled(path, () => !!this.readOnly());
+      disabled(path.identifier, () => this.identifierDisabled());
+      required(path.identifier);
+      minLength(path.identifier, 2);
+      maxLength(path.identifier, 10);
+      allowedIdentifier(path.identifier);
+      required(path.id);
+      required(path.name);
+      required(path.status);
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+          return undefined;
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
+
+  constructor() {
+    effect(() => {
+      if (this.readOnly()) {
+        untracked(() => this.identifierDisabled.set(true));
+      }
     });
   }
 
@@ -83,20 +119,10 @@ export class ProfileInformationTabComponent implements OnChanges {
     if (changes['inputProfile']) {
       this.setInputProfile(this.inputProfile());
     }
-    if (changes['readOnly']) {
-      const readOnly = this.readOnly();
-      if (readOnly && this.form.enabled) {
-        this.form.disable({ emitEvent: false });
-      } else if (this.form.disabled) {
-        this.form.enable({ emitEvent: false });
-        this.form.get('identifier').disable({ emitEvent: false });
-      }
-    }
   }
 
   private setInputProfile(profileDescription: ProfileDescription) {
     this._inputProfile = profileDescription;
-    this.statusProfile.setValue(this._inputProfile.status !== 'INACTIVE');
     this.resetForm(this._inputProfile);
     this.updated.emit(false);
   }
@@ -104,9 +130,6 @@ export class ProfileInformationTabComponent implements OnChanges {
   readonly updated = output<boolean>();
 
   readonly closed = output<boolean>();
-  form: FormGroup;
-
-  statusProfile = new FormControl();
 
   submited = signal(false);
 
@@ -114,7 +137,7 @@ export class ProfileInformationTabComponent implements OnChanges {
   pending = signal(false);
 
   updateProfile(inputProfile: ProfileDescription): Observable<Profile | ArchivalProfileUnit | ProfileDescription> {
-    const profileDescription = { ...inputProfile, ...this.form.value };
+    const profileDescription = { ...inputProfile, ...this.formValue() };
     if (inputProfile.type === ProfileType.PA) {
       return this.profileService.updateProfilePa(profileDescription as Profile).pipe(catchError(() => of(null)));
     } else {
@@ -123,16 +146,21 @@ export class ProfileInformationTabComponent implements OnChanges {
   }
 
   canSubmit() {
-    return this.form.valid && !this.submited() && this.formHasChanged();
+    return !this.form().disabled() && this.form().valid() && !this.submited() && this.formHasChanged();
+  }
+
+  setStatus(active: boolean) {
+    this.form.status().value.set(active === false ? 'INACTIVE' : 'ACTIVE');
   }
 
   formHasChanged() {
-    for (const k of Object.keys(this.form.value)) {
-      const key = k as keyof ProfileDescription;
-      if (!this.form.value[key] && !this._inputProfile[key]) {
+    const formValue = this.formValue();
+    for (const k of Object.keys(formValue)) {
+      const key = k as keyof ProfileInformationForm;
+      if (!formValue[key] && !this._inputProfile[key]) {
         continue;
       }
-      if (this.form.value[key] !== this._inputProfile[key]) {
+      if (formValue[key] !== this._inputProfile[key]) {
         this.updated.emit(true);
         return true;
       }
@@ -161,7 +189,21 @@ export class ProfileInformationTabComponent implements OnChanges {
   }
 
   resetForm(profileDescription: ProfileDescription) {
-    this.form.reset(profileDescription, { emitEvent: false });
+    this.form().reset({
+      identifier: profileDescription?.identifier ?? null,
+      id: profileDescription?.id ?? null,
+      type: profileDescription?.type ?? null,
+      description: profileDescription?.description ?? null,
+      name: profileDescription?.name ?? null,
+      creationDate: profileDescription?.creationDate ?? null,
+      status: profileDescription?.status ?? null,
+    });
+  }
+
+  /** Value of the form without the disabled identifier, like the reactive forms `value` (unless the whole form is disabled). */
+  private formValue(): Partial<ProfileInformationForm> {
+    const { identifier, ...value } = this.form().value();
+    return this.form.identifier().disabled() && !this.form().disabled() ? value : { identifier, ...value };
   }
 
   isProfilAttached(inputProfile: ProfileDescription): boolean {

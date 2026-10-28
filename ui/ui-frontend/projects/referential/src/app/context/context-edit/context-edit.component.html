@@ -3,9 +3,9 @@
   [title]="'CONTEXTS_APP.EDIT_DIALOG.PERMISSIONS.SUBTITLE' | translate"
 ></vitamui-dialog-header>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formRoot]="form">
   <mat-dialog-content>
-    <app-context-edit-permission formControlName="permissions" (changeOrganisations)="onChangeOrganisations($event)">
+    <app-context-edit-permission [formField]="form.permissions" (changeOrganisations)="onChangeOrganisations($event)">
     </app-context-edit-permission>
     @if (isPermissionsOnMultipleOrganisations) {
       <div>
@@ -13,12 +13,12 @@
       </div>
     }
     <ng-container>
-      @if (!!form.get('permissions')?.errors?.['permissionsTenant']) {
+      @if (hasPermissionsError('permissionsTenant')) {
         <span class="error-message">
           {{ 'CONTEXTS_APP.EDIT_DIALOG.PERMISSIONS.TENANT_ERROR' | translate }}
         </span>
       }
-      @if (!!form.get('permissions')?.errors?.['noPermissions']) {
+      @if (hasPermissionsError('noPermissions')) {
         <span class="error-message">
           {{ 'CONTEXTS_APP.EDIT_DIALOG.PERMISSIONS.PERMISSION_ERROR' | translate }}
         </span>

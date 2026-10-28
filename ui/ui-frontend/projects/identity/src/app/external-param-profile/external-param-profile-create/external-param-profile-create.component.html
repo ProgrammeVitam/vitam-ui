@@ -7,19 +7,16 @@
   ]"
 ></vitamui-dialog-header>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formRoot]="form">
   <vitamui-stepper #stepper>
     <cdk-step>
       <mat-dialog-content class="gap-3 align-items-stretch">
-        <vitamui-slide-toggle formControlName="enabled">
-          {{
-            (form.controls['enabled'].value ? 'EXTERNAL_PARAM_PROFILE.ACTIVE_PROFILE' : 'EXTERNAL_PARAM_PROFILE.INACTIVE_PROFILE')
-              | translate
-          }}
+        <vitamui-slide-toggle [formField]="form.enabled">
+          {{ (form.enabled().value() ? 'EXTERNAL_PARAM_PROFILE.ACTIVE_PROFILE' : 'EXTERNAL_PARAM_PROFILE.INACTIVE_PROFILE') | translate }}
         </vitamui-slide-toggle>
 
         <vitamui-input
-          formControlName="name"
+          [formField]="form.name"
           [placeholder]="'EXTERNAL_PARAM_PROFILE.EXTERNAL_PARAM_PROFILE_NAME_POPUP' | translate"
           [errorMessageMap]="{
             nameExists: 'COMMON.ERROR.NAME_ALREADY_EXISTS' | translate,
@@ -27,11 +24,11 @@
         >
         </vitamui-input>
 
-        <vitamui-input formControlName="description" [placeholder]="'EXTERNAL_PARAM_PROFILE.DESCRIPTION_ADMIN_PROFILE' | translate">
+        <vitamui-input [formField]="form.description" [placeholder]="'EXTERNAL_PARAM_PROFILE.DESCRIPTION_ADMIN_PROFILE' | translate">
         </vitamui-input>
 
         <vitamui-select
-          formControlName="accessContract"
+          [formField]="form.accessContract"
           [placeholder]="'EXTERNAL_PARAM_PROFILE.SELECT_ACCESS_CONTRACT' | translate"
           [options]="activeAccessContractsIdentifiers$ | async"
           [multiple]="false"
@@ -49,15 +46,15 @@
 
     <cdk-step>
       <mat-dialog-content class="gap-3 align-items-stretch">
-        <vitamui-slide-toggle formControlName="usePlatformThreshold">
+        <vitamui-slide-toggle [formField]="form.usePlatformThreshold">
           {{ 'EXTERNAL_PARAM_PROFILE.USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE' | translate }}
         </vitamui-slide-toggle>
 
-        @if (!form.controls['usePlatformThreshold'].value) {
+        @if (!form.usePlatformThreshold().value()) {
           <div class="select-threshold">
             <vitamui-select
               class="w-100"
-              formControlName="bulkOperationsThreshold"
+              [formField]="form.bulkOperationsThreshold"
               [placeholder]="'EXTERNAL_PARAM_PROFILE.USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE' | translate"
               [options]="thresholdOptions"
               [multiple]="false"

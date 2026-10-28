@@ -36,7 +36,6 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -55,12 +54,10 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatButtonToggleModule,
     MatMenuModule,
     MatProgressBarModule,
-    ReactiveFormsModule,
     MatSidenavModule,
     ProfileRoutingModule,
     TranslatePipe,
     ProfileComponent,
-    FormsModule,
     LevelInputComponent,
   ],
 })

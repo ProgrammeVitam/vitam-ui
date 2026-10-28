@@ -36,9 +36,12 @@
  */
 import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
+import { PathKind } from '@angular/forms/signals';
+import { validateObservable } from 'vitamui-library';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
+import { FieldPath } from '../shared/signal-forms/signal-form-validators';
 import { GroupService } from './group.service';
 
 @Injectable({
@@ -59,18 +62,30 @@ export class GroupValidators {
     };
   };
 
-  unitExists = (customerId: string, unitToIgnore: string[] = []): AsyncValidatorFn => {
-    return (control: AbstractControl) => {
-      return timer(this.debounceTime).pipe(
-        switchMap(() => {
-          if (!control.value?.trim()) {
-            return of(false);
-          }
-          return !unitToIgnore.includes(control.value) ? this.groupService.unitExists(customerId, control.value.trim()) : of(false);
-        }),
-        take(1),
-        map((exists: boolean) => (exists ? { unitExists: true } : null)),
-      );
-    };
-  };
+  /** Signal forms version of `nameExists`. */
+  nameExistsRule<TPathKind extends PathKind = PathKind.Root>(path: FieldPath<string, TPathKind>, customerId: string) {
+    validateObservable(path, {
+      debounceTime: this.debounceTime,
+      stream: (name: string) => this.groupService.exists(customerId, name),
+      onSuccess: (exists: boolean) => (exists ? { kind: 'nameExists' } : undefined),
+    });
+  }
+
+  /** Checks that the unit does not exist yet (`unitsToIgnore` is read each time the check runs). */
+  unitExistsRule<TPathKind extends PathKind = PathKind.Root>(
+    path: FieldPath<string, TPathKind>,
+    customerId: () => string,
+    unitsToIgnore: () => string[] = () => [],
+  ) {
+    validateObservable(path, {
+      debounceTime: this.debounceTime,
+      stream: (unit: string) => {
+        if (!unit?.trim()) {
+          return of(false);
+        }
+        return !unitsToIgnore().includes(unit) ? this.groupService.unitExists(customerId(), unit.trim()) : of(false);
+      },
+      onSuccess: (exists: boolean) => (exists ? { kind: 'unitExists' } : undefined),
+    });
+  }
 }

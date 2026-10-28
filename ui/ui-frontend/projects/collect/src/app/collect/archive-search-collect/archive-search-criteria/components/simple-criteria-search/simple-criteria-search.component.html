@@ -1,14 +1,14 @@
 <div class="container">
-  <form [formGroup]="form" class="p-4">
+  <div class="p-4">
     <div class="hgap-4 align-items-start pb-4">
       <vitamui-common-editable-input
-        formControlName="title"
+        [formField]="form.title"
         label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.TITLE' | translate }}"
         class="w-100"
       >
       </vitamui-common-editable-input>
       <vitamui-common-editable-input
-        formControlName="description"
+        [formField]="form.description"
         label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.DESCRIPTION' | translate }}"
         class="w-100"
       >
@@ -16,8 +16,8 @@
     </div>
     <div class="hgap-4 align-items-start pb-4">
       <vitamui-common-editable-input
-        formControlName="guid"
-        [validator]="guid?.validator"
+        [formField]="form.guid"
+        [validator]="guidValidator"
         label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.UAID' | translate }}"
         class="w-100"
       >
@@ -35,7 +35,7 @@
         <vitamui-select
           [multiple]="true"
           [enableSelectAll]="false"
-          formControlName="agencies"
+          [formField]="form.agencies"
           [options]="selectOptions().agency"
           [placeholder]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.SP' | translate"
           [searchBarPlaceHolder]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.SP_PLACEHOLDER' | translate"
@@ -44,7 +44,7 @@
         </vitamui-select>
       } @else {
         <vitamui-common-editable-input
-          formControlName="agencies"
+          [formField]="form.agencies"
           label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.SP' | translate }}"
           class="w-100"
         >
@@ -54,7 +54,7 @@
         <vitamui-select
           [multiple]="true"
           [enableSelectAll]="false"
-          formControlName="archiveUnitProfiles"
+          [formField]="form.archiveUnitProfiles"
           [options]="selectOptions().archiveUnitProfile"
           [placeholder]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.AUP' | translate"
           [searchBarPlaceHolder]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.AUP_PLACEHOLDER' | translate"
@@ -63,7 +63,7 @@
         </vitamui-select>
       } @else {
         <vitamui-common-editable-input
-          formControlName="archiveUnitProfiles"
+          [formField]="form.archiveUnitProfiles"
           label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.AUP' | translate }}"
           class="w-100"
         >
@@ -76,14 +76,14 @@
     <div class="hgap-4 align-items-start pb-4">
       <vitamui-datepicker
         [label]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.START_DATE_SEARCH' | translate"
-        formControlName="beginDt"
+        [formField]="form.beginDt"
         outputType="Date"
         format="yyyy-MM-dd"
         class="w-100"
       ></vitamui-datepicker>
       <vitamui-datepicker
         [label]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_SEARCH' | translate"
-        formControlName="endDt"
+        [formField]="form.endDt"
         outputType="Date"
         format="yyyy-MM-dd"
         class="w-100"
@@ -126,7 +126,7 @@
     @if (otherCriteriaOptions()) {
       <div class="hgap-4 align-items-start align-items-start pb-4">
         <vitamui-select-with-tree
-          formControlName="otherCriteriaList"
+          [formField]="form.otherCriteriaList"
           [multiple]="true"
           [options]="otherCriteriaOptions()"
           [getDisplayValue]="getOtherCriteriaDisplayValue"
@@ -135,15 +135,18 @@
           class="w-100"
         >
         </vitamui-select-with-tree>
-        <div class="gap-4 w-100" formArrayName="otherCriteria">
-          @for (otherCriteria of otherCriteriaList.value; track otherCriteria.ApiPath) {
-            @if (['TEXT', 'KEYWORD', 'BOOLEAN', 'LONG'].includes(otherCriteria.Type)) {
-              <vitamui-common-editable-input [label]="getCriteriaName(otherCriteria)" [formControlName]="otherCriteria.Path" class="w-100">
+        <div class="gap-4 w-100">
+          @for (otherCriteria of form.otherCriteriaList().value(); track otherCriteria.ApiPath) {
+            @let otherCriteriaField = form.otherCriteria[otherCriteria.Path];
+            @if (!otherCriteriaField) {
+              <!-- The field is created right after the selection of the criteria -->
+            } @else if (['TEXT', 'KEYWORD', 'BOOLEAN', 'LONG'].includes(otherCriteria.Type)) {
+              <vitamui-common-editable-input [label]="getCriteriaName(otherCriteria)" [formField]="otherCriteriaField" class="w-100">
               </vitamui-common-editable-input>
             } @else if (['DATE'].includes(otherCriteria.Type)) {
               <vitamui-datepicker
                 [label]="getCriteriaName(otherCriteria)"
-                [formControlName]="otherCriteria.Path"
+                [formField]="otherCriteriaField"
                 outputType="Date"
                 format="yyyy-MM-dd"
                 class="w-100"
@@ -155,5 +158,5 @@
         </div>
       </div>
     }
-  </form>
+  </div>
 </div>

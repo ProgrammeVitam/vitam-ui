@@ -36,7 +36,6 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -58,15 +57,7 @@ describe('LogbookOperationComponent', () => {
     };
     matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
     await TestBed.configureTestingModule({
-      imports: [
-        InjectorModule,
-        LoggerModule.forRoot(),
-        MatMenuModule,
-        DatepickerComponent,
-        ReactiveFormsModule,
-        SearchBarComponent,
-        LogbookOperationComponent,
-      ],
+      imports: [InjectorModule, LoggerModule.forRoot(), MatMenuModule, DatepickerComponent, SearchBarComponent, LogbookOperationComponent],
       providers: [
         provideNativeDateAdapter(),
         DatePipe,

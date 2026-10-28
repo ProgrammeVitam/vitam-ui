@@ -1,22 +1,22 @@
-<form [formGroup]="form" class="gap-3" (ngSubmit)="onSubmit()">
-  <vitamui-slide-toggle class="w-100" formControlName="status"
+<form [formRoot]="form" class="gap-3">
+  <vitamui-slide-toggle class="w-100" [formField]="form.status"
     >{{ 'CONTRACT_MANAGEMENT.PREVIEW.INFORMATION.CONTRACT_ACTIVE_STATUS' | translate }}
   </vitamui-slide-toggle>
 
   <vitamui-input
     class="w-100"
-    formControlName="identifier"
+    [formField]="form.identifier"
     [placeholder]="'CONTRACT_MANAGEMENT.PREVIEW.INFORMATION.IDENTIFIER' | translate"
   >
   </vitamui-input>
 
-  <vitamui-input class="w-100" formControlName="name" [placeholder]="'CONTRACT_MANAGEMENT.PREVIEW.INFORMATION.NAME' | translate">
+  <vitamui-input class="w-100" [formField]="form.name" [placeholder]="'CONTRACT_MANAGEMENT.PREVIEW.INFORMATION.NAME' | translate">
   </vitamui-input>
 
   <vitamui-input
     [textarea]="true"
     class="w-100"
-    formControlName="description"
+    [formField]="form.description"
     [placeholder]="'CONTRACT_MANAGEMENT.PREVIEW.INFORMATION.DESCRIPTION' | translate"
   >
   </vitamui-input>
@@ -43,7 +43,7 @@
     </div>
   } @else {
     <div class="form-group bottom">
-      <button type="submit" class="btn secondary" [disabled]="form.invalid || unchanged() || submitting">
+      <button type="submit" class="btn secondary" [disabled]="form().invalid() || unchanged() || submitting">
         {{ 'CONTRACT_MANAGEMENT.PREVIEW.INFORMATION.SAVE' | translate }}
       </button>
     </div>

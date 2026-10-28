@@ -12,8 +12,10 @@ configured:
 
 <div class="gap-2">
   <p>Toggle the options and see the result below:</p>
-  <vitamui-slide-toggle class="col" [(ngModel)]="enableSearch">Display search bar</vitamui-slide-toggle>
-  <vitamui-slide-toggle class="col" [(ngModel)]="enableDisplaySelected">Display "cart" (in multiple mode) </vitamui-slide-toggle>
+  <vitamui-slide-toggle class="col" [formField]="displayOptions.enableSearch">Display search bar</vitamui-slide-toggle>
+  <vitamui-slide-toggle class="col" [formField]="displayOptions.enableDisplaySelected"
+    >Display "cart" (in multiple mode)
+  </vitamui-slide-toggle>
 </div>
 
 @if (schemaOptions$ | async; as schemaOptions) {
@@ -27,13 +29,13 @@ configured:
               <h4>{{ state.id + ' (' + entry.type + ')' }}</h4>
               <vitamui-select-with-tree
                 [attr.data-active]="state.id === 'Active'"
-                [formControl]="state.control"
+                [formField]="state.field"
                 [options]="schemaOptions"
                 [placeholder]="'INPUT.SELECT_WITH_TREE.PLACEHOLDER' | translate"
                 [searchBarPlaceHolder]="'INPUT.SELECT_WITH_TREE.SEARCH_BAR_PLACEHOLDER' | translate"
                 [multiple]="config.multiple"
-                [enableSearch]="enableSearch"
-                [enableDisplaySelected]="enableDisplaySelected"
+                [enableSearch]="displayOptions.enableSearch().value()"
+                [enableDisplaySelected]="displayOptions.enableDisplaySelected().value()"
                 [getDisplayValue]="getSchemaElementDisplayValue"
                 [errorMessageMap]="{
                   pattern: 'ERRORS.CONTAINS_TextContent',

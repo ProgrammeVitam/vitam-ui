@@ -34,13 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { FileSelectorComponent, PipesModule, VitamUILibraryModule } from 'vitamui-library';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { map, startWith, switchMap } from 'rxjs/operators';
-import { AsyncPipe } from '@angular/common';
-import { BehaviorSubject } from 'rxjs';
+import { form, FormField } from '@angular/forms/signals';
 
 export interface LoadProfileConfig {
   title: string;
@@ -58,14 +55,11 @@ export interface LoadProfileConfig {
   selector: 'app-load-profile',
   templateUrl: './load-profile.component.html',
   styleUrl: './load-profile.component.scss',
-  imports: [FileSelectorComponent, PipesModule, MatDialogModule, VitamUILibraryModule, AsyncPipe, ReactiveFormsModule],
+  imports: [FileSelectorComponent, PipesModule, MatDialogModule, VitamUILibraryModule, FormField],
 })
 export class LoadProfileComponent {
   config = inject<LoadProfileConfig>(MAT_DIALOG_DATA);
 
-  protected files = new FormControl([]);
-  protected isEmpty$ = new BehaviorSubject(true).pipe(
-    switchMap(() => this.files.valueChanges.pipe(startWith(this.files.value))),
-    map((files: File[] | FileList) => files?.length === 0),
-  );
+  protected readonly files = form(signal<File[]>([]));
+  protected readonly isEmpty = computed(() => this.files().value()?.length === 0);
 }

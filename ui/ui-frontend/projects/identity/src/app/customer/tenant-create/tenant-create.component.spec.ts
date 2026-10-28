@@ -40,7 +40,6 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
@@ -66,21 +65,11 @@ describe('TenantCreateComponent', () => {
         .mockReturnValue(of([2, 3, 4])),
     };
     const tenantFormValidatorsSpy = {
-      uniqueName: vi
-        .fn()
-        .mockName('TenantFormValidators.uniqueName')
-        .mockReturnValue(() => of(null)),
+      uniqueNameRule: vi.fn().mockName('TenantFormValidators.uniqueNameRule'),
     };
 
     await TestBed.configureTestingModule({
-      imports: [
-        MatSelectModule,
-        MatOptionModule,
-        MatProgressBarModule,
-        ReactiveFormsModule,
-        VitamUICommonTestModule,
-        TenantCreateComponent,
-      ],
+      imports: [MatSelectModule, MatOptionModule, MatProgressBarModule, VitamUICommonTestModule, TenantCreateComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -96,10 +85,8 @@ describe('TenantCreateComponent', () => {
       .overrideComponent(TenantCreateComponent, {
         set: {
           template: `
-            <form [formGroup]="form">
-              <input formControlName="name" />
-              <input formControlName="identifier" />
-              <input formControlName="enabled" />
+            <form [formRoot]="form">
+              <input [formField]="form.name" />
             </form>
           `,
         },
@@ -132,7 +119,7 @@ describe('TenantCreateComponent', () => {
       identifier: 2,
     };
     const tenantServiceSpy = TestBed.inject(TenantService);
-    component.form.setValue(tenant);
+    component.form().value.set(tenant);
 
     component.onSubmit();
     expect(tenantServiceSpy.create).toHaveBeenCalledWith(
@@ -149,7 +136,7 @@ describe('TenantCreateComponent', () => {
 
   it('should not call create()', () => {
     const tenantServiceSpy = TestBed.inject(TenantService);
-    component.form.get('name').setValue(null);
+    component.form.name().value.set(null);
     component.onSubmit();
     expect(tenantServiceSpy.create).not.toHaveBeenCalled();
   });

@@ -36,13 +36,12 @@
  */
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
 
 import { SearchBarComponent } from './search-bar.component';
 
 @Component({
   template: ` <vitamui-common-search-bar name="searchTest"></vitamui-common-search-bar>`,
-  imports: [FormsModule, SearchBarComponent],
+  imports: [SearchBarComponent],
   schemas: [NO_ERRORS_SCHEMA],
 })
 export class TestHostComponent {}
@@ -81,5 +80,22 @@ describe('SearchBarComponent', () => {
     expect(searchBar.searchValue()).toBeNull();
     expect(clearSpy).toHaveBeenCalled();
     expect(searchSpy).toHaveBeenCalledWith(null);
+  });
+
+  it('should update the search value and emit searchChanged when typing', async () => {
+    const searchBar = fixture.debugElement.children[0].componentInstance as SearchBarComponent;
+    const searchChangedSpy = vi.fn();
+    searchBar.searchChanged.subscribe(searchChangedSpy);
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+
+    input.value = 'abc';
+    input.dispatchEvent(new Event('input'));
+
+    expect(searchBar.searchValue()).toEqual('abc');
+    expect(searchChangedSpy).toHaveBeenCalledWith('abc');
+
+    searchBar.reset();
+    await fixture.whenStable();
+    expect(input.value).toEqual('');
   });
 });

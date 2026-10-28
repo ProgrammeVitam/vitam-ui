@@ -35,10 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable, inject } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
-import { of, timer } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
-import { RuleService } from 'vitamui-library';
+import { SchemaPath } from '@angular/forms/signals';
+import { Observable, of } from 'rxjs';
+import { RuleService, validateObservable } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
@@ -50,24 +49,16 @@ export class RuleCreateValidators {
     this.ruleService = ruleService;
   }
 
-  private readonly debounceTime = 400;
-
-  uniqueRuleId = (ruleIdToIgnore?: string): AsyncValidatorFn => {
-    return this.uniqueFields('ruleId', 'ruleIdExists', ruleIdToIgnore);
+  /** Adds a `ruleIdExists` error when a rule with the same identifier already exists (except `ruleIdToIgnore`). */
+  uniqueRuleId = (path: SchemaPath<string>, ruleIdToIgnore: () => string = () => undefined): void => {
+    validateObservable(path, {
+      stream: (value: string) => this.ruleIdExists(value, ruleIdToIgnore()),
+      onSuccess: (exists: boolean) => (exists ? { kind: 'ruleIdExists' } : undefined),
+    });
   };
 
-  private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
-    return (control: AbstractControl) => {
-      const properties: any = {};
-      properties[field] = control.value;
-      const existField: any = {};
-      existField[existTag] = true;
-
-      return timer(this.debounceTime).pipe(
-        switchMap(() => (control.value !== valueToIgnore ? this.ruleService.existsProperties(properties) : of(false))),
-        take(1),
-        map((exists: boolean) => (exists ? existField : null)),
-      );
-    };
+  /** Checks if a rule with the given identifier exists (`false` without calling the backend if the value is `ruleIdToIgnore`). */
+  ruleIdExists(ruleId: string, ruleIdToIgnore?: string): Observable<boolean> {
+    return ruleId !== ruleIdToIgnore ? this.ruleService.existsProperties({ ruleId }) : of(false);
   }
 }

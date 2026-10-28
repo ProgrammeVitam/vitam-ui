@@ -35,70 +35,63 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { FormControl } from '@angular/forms';
-import { from, of } from 'rxjs';
+import { Injector, signal } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { form } from '@angular/forms/signals';
+import { of } from 'rxjs';
 import { RuleCreateValidators } from './rule-create.validators';
 
 describe('Rule Create Validators', () => {
+  let ruleServiceSpy: { existsProperties: ReturnType<typeof vi.fn> };
+  let ruleCreateValidators: RuleCreateValidators;
+
+  beforeEach(() => {
+    vi.useFakeTimers();
+    ruleServiceSpy = {
+      existsProperties: vi.fn().mockName('RuleService.existsProperties'),
+    };
+    ruleCreateValidators = new RuleCreateValidators(ruleServiceSpy as any);
+  });
+
   afterEach(() => {
     vi.useRealTimers();
   });
 
+  async function validate(ruleId: string, ruleIdToIgnore?: string) {
+    const testForm = form(signal({ ruleId }), (path) => ruleCreateValidators.uniqueRuleId(path.ruleId, () => ruleIdToIgnore), {
+      injector: TestBed.inject(Injector),
+    });
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    return testForm
+      .ruleId()
+      .errors()
+      .map((error) => error.kind);
+  }
+
   describe('uniqueRuleId', () => {
-    it('should return null', async () => {
-      vi.useFakeTimers();
-      const customerServiceSpy = {
-        existsProperties: vi.fn().mockName('RuleService.existsProperties'),
-      };
-      customerServiceSpy.existsProperties.mockReturnValue(of(false));
-      const ruleCreateValidators = new RuleCreateValidators(customerServiceSpy as any);
-      from(ruleCreateValidators.uniqueRuleId()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toBeNull();
-      });
-      await vi.advanceTimersByTimeAsync(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ ruleId: '123456' });
+    it('should not return any error', async () => {
+      ruleServiceSpy.existsProperties.mockReturnValue(of(false));
+      expect(await validate('123456')).toEqual([]);
+      expect(ruleServiceSpy.existsProperties).toHaveBeenCalledWith({ ruleId: '123456' });
     });
 
-    it('should return { ruleIdExists: true }', async () => {
-      vi.useFakeTimers();
-      const customerServiceSpy = {
-        existsProperties: vi.fn().mockName('RuleService.existsProperties'),
-      };
-      customerServiceSpy.existsProperties.mockReturnValue(of(true));
-      const ruleCreateValidators = new RuleCreateValidators(customerServiceSpy as any);
-      from(ruleCreateValidators.uniqueRuleId()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toEqual({ ruleIdExists: true });
-      });
-      await vi.advanceTimersByTimeAsync(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ ruleId: '123456' });
+    it('should return ruleIdExists', async () => {
+      ruleServiceSpy.existsProperties.mockReturnValue(of(true));
+      expect(await validate('123456')).toEqual(['ruleIdExists']);
+      expect(ruleServiceSpy.existsProperties).toHaveBeenCalledWith({ ruleId: '123456' });
     });
 
     it('should not call the service', async () => {
-      vi.useFakeTimers();
-      const ruleServiceSpy = {
-        existsProperties: vi.fn().mockName('RuleService.existsProperties'),
-      };
       ruleServiceSpy.existsProperties.mockReturnValue(of(true));
-      const ruleCreateValidators = new RuleCreateValidators(ruleServiceSpy as any);
-      from(ruleCreateValidators.uniqueRuleId('123456')(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toEqual(null);
-      });
-      await vi.advanceTimersByTimeAsync(400);
+      expect(await validate('123456', '123456')).toEqual([]);
       expect(ruleServiceSpy.existsProperties).not.toHaveBeenCalled();
     });
 
     it('should call the service', async () => {
-      vi.useFakeTimers();
-      const customerServiceSpy = {
-        existsProperties: vi.fn().mockName('RuleService.existsProperties'),
-      };
-      customerServiceSpy.existsProperties.mockReturnValue(of(true));
-      const ruleCreateValidators = new RuleCreateValidators(customerServiceSpy as any);
-      from(ruleCreateValidators.uniqueRuleId('123456')(new FormControl('111111'))).subscribe((result) => {
-        expect(result).toEqual({ ruleIdExists: true });
-      });
-      await vi.advanceTimersByTimeAsync(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ ruleId: '111111' });
+      ruleServiceSpy.existsProperties.mockReturnValue(of(true));
+      expect(await validate('111111', '123456')).toEqual(['ruleIdExists']);
+      expect(ruleServiceSpy.existsProperties).toHaveBeenCalledWith({ ruleId: '111111' });
     });
   });
 });

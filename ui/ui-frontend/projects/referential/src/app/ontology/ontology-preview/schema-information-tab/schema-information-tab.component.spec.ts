@@ -43,7 +43,6 @@ import { of } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('SchemaInformationTabComponent', () => {
@@ -79,8 +78,8 @@ describe('SchemaInformationTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatFormFieldModule, MatInputModule, MatSelectModule, ReactiveFormsModule, VitamUICommonTestModule, VitamUILibraryModule],
-      providers: [FormBuilder, { provide: SchemaService, useValue: schemaServiceMock }],
+      imports: [MatFormFieldModule, MatInputModule, MatSelectModule, VitamUICommonTestModule, VitamUILibraryModule],
+      providers: [{ provide: SchemaService, useValue: schemaServiceMock }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
@@ -95,10 +94,10 @@ describe('SchemaInformationTabComponent', () => {
   });
 
   it('should patch the form with inputSchema values', () => {
-    expect(component.form.get('Path')?.value).toEqual('document_title');
-    expect(component.form.get('ApiPath')?.value).toEqual('metadata.document_title');
-    expect(component.form.get('ShortName')?.value).toEqual('Name');
-    expect(component.form.get('Origin')?.value).toEqual('EXTERNAL');
+    expect(component.form.Path().value()).toEqual('document_title');
+    expect(component.form.ApiPath().value()).toEqual('metadata.document_title');
+    expect(component.form.ShortName().value()).toEqual('Name');
+    expect(component.form.Origin().value()).toEqual('EXTERNAL');
   });
 
   it('should set isExternal to true when Origin is EXTERNAL', () => {

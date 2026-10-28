@@ -36,7 +36,6 @@
  */
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
@@ -56,8 +55,8 @@ describe('AdminDslComponent', () => {
     id: 'id',
     accessContract: 'AC-000001',
     dslQueryType: DslQueryType.ARCHIVE_UNIT,
-    dsl: {},
-    response: {},
+    dsl: '{}',
+    response: '{}',
   };
 
   beforeEach(async () => {
@@ -78,17 +77,8 @@ describe('AdminDslComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [
-        InjectorModule,
-        LoggerModule.forRoot(),
-        MatSelectModule,
-        ReactiveFormsModule,
-        VitamUICommonTestModule,
-        VitamUILibraryModule,
-        AdminDslComponent,
-      ],
+      imports: [InjectorModule, LoggerModule.forRoot(), MatSelectModule, VitamUICommonTestModule, VitamUILibraryModule, AdminDslComponent],
       providers: [
-        FormBuilder,
         { provide: Router, useValue: {} },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: AdminDslService, useValue: adminDslServiceMock },
@@ -102,7 +92,7 @@ describe('AdminDslComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AdminDslComponent);
     component = fixture.componentInstance;
-    component.form.setValue(adminDslValue);
+    component.form().value.set(adminDslValue);
     fixture.detectChanges();
   });
 

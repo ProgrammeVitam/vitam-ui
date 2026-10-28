@@ -4,7 +4,7 @@
       <vitamui-input
         (keydown.enter)="add()"
         class="col-12 p-0"
-        [formControl]="unitControl"
+        [formField]="unitForm.unit"
         [placeholder]="'GROUP.UNITS_FORM.INPUT_PLACEHOLDER' | translate"
         [errorMessageMap]="{
           unitExists: 'GROUP.UNITS_FORM.UNIT_ALREADY_EXIST' | translate,
@@ -17,7 +17,7 @@
 
   <div>
     <div class="d-flex flex-column align-items-center justify-content-center">
-      <button type="button" class="btn primary" (click)="add()" [disabled]="!unitControl?.value?.trim() || unitControl.invalid">
+      <button type="button" class="btn primary" (click)="add()" [disabled]="!unitForm.unit().value()?.trim() || unitForm.unit().invalid()">
         {{ 'COMMON.ADD' | translate }}
       </button>
     </div>
@@ -26,12 +26,12 @@
 
 <div class="vitamui-table mt-2">
   <div class="vitamui-table-body">
-    @for (unit of units; track unit) {
+    @for (unit of units(); track unit) {
       <div class="vitamui-table-rows">
         <div class="vitamui-row d-flex align-items-center">
           <div class="col-11" vitamuiCommonEllipsis>{{ unit }}</div>
           <div class="d-flex justify-content-end" class="col-1">
-            <button class="btn link" (click)="remove(unit)">
+            <button type="button" class="btn link" (click)="remove(unit)">
               <i class="material-icons">clear</i>
             </button>
           </div>

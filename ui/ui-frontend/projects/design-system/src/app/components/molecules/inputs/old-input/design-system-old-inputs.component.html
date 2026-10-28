@@ -1,4 +1,4 @@
-<app-pattern [formControl]="patternControl" [options]="patternOptions"></app-pattern>
+<app-pattern [formField]="fields.pattern" [options]="patternOptions"></app-pattern>
 
 <h2>OLD</h2>
 <div>
@@ -6,21 +6,21 @@
   <div class="d-flex flex-column">
     <div class="row m-0">
       <div class="col-8">
-        <vitamui-common-editable-input [formControl]="streetEmpty" [label]="'Editable input'"></vitamui-common-editable-input>
+        <vitamui-common-editable-input [formField]="fields.streetEmpty" [label]="'Editable input'"></vitamui-common-editable-input>
       </div>
-      <vitamui-common-editable-input [disabled]="true" [formControl]="streetDisable" [label]="'Editable input disabled'">
+      <vitamui-common-editable-input [formField]="disabledFields.streetDisabled" [label]="'Editable input disabled'">
       </vitamui-common-editable-input>
     </div>
   </div>
   <h3>Email</h3>
   <div class="d-flex flex-column">
     <div class="row m-0 pl-3 mt-4">
-      <vitamui-input class="field-email" [formControl]="emailFirstPart" placeholder="Adresse e-mail"></vitamui-input>
+      <vitamui-input class="field-email" [formField]="fields.emailFirstPart" placeholder="Adresse e-mail"></vitamui-input>
 
       <span class="d-flex mx-2 mt-1 layer text-center">&#64;</span>
 
       <mat-form-field class="field-domain vitamui-mat-select">
-        <mat-select [formControl]="domain" panelClass="vitamui-mat-select">
+        <mat-select [formField]="fields.domain" panelClass="vitamui-mat-select">
           <mat-option value="test.fr">test.fr</mat-option>
           <mat-option value="test2.com">test2.com</mat-option>
         </mat-select>
@@ -33,16 +33,15 @@
     <div class="row m-0">
       <div class="col-8">
         <vitamui-common-editable-email-input
-          [formControl]="email"
+          [formField]="fields.email"
           [label]="'Editable email'"
           [domains]="['test.fr', 'test.com', 'test.de']"
         ></vitamui-common-editable-email-input>
       </div>
       <vitamui-common-editable-email-input
-        [formControl]="email"
+        [formField]="disabledFields.email"
         [label]="'Editable email disabled'"
         [domains]="['test.fr', 'test.com', 'test.de']"
-        [disabled]="true"
       ></vitamui-common-editable-email-input>
     </div>
   </div>
@@ -50,7 +49,7 @@
   <h3>Editable patterns</h3>
   <div class="d-flex flex-column">
     <div class="row m-0 pl-3 pr-3 mt-4">
-      <vitamui-editable-patterns [formControl]="editablePatterns" label="Editable patterns" [options]="editablePatternsOptions">
+      <vitamui-editable-patterns [formField]="fields.editablePatterns" label="Editable patterns" [options]="editablePatternsOptions">
       </vitamui-editable-patterns>
     </div>
   </div>
@@ -61,7 +60,7 @@
       <div class="row m-0 mt-4">
         <div class="col-8">
           <mat-form-field class="mr-3 field-domain vitamui-mat-select">
-            <mat-select [formControl]="country" panelClass="vitamui-mat-select">
+            <mat-select [formField]="fields.country" panelClass="vitamui-mat-select">
               @for (country of countries; track country) {
                 <mat-option [value]="country.key">
                   {{ country.label }}
@@ -75,7 +74,7 @@
           </mat-form-field>
         </div>
         <mat-form-field class="mr-3 field-domain vitamui-mat-select">
-          <mat-select [formControl]="country" [disabled]="true" panelClass="vitamui-mat-select">
+          <mat-select [formField]="disabledFields.country" panelClass="vitamui-mat-select">
             @for (country of countries; track country) {
               <mat-option [value]="country.key">
                 {{ country.label }}
@@ -94,9 +93,9 @@
     <div class="d-flex flex-column">
       <div class="row m-0 mt-4">
         <div class="col-8">
-          <vitamui-common-editable-textarea [formControl]="textarea" [label]="'Editable textarea'"></vitamui-common-editable-textarea>
+          <vitamui-common-editable-textarea [formField]="fields.textarea" [label]="'Editable textarea'"></vitamui-common-editable-textarea>
         </div>
-        <vitamui-common-editable-textarea [formControl]="textarea" [label]="'Editable textarea disabled'" [disabled]="true">
+        <vitamui-common-editable-textarea [formField]="disabledFields.textarea" [label]="'Editable textarea disabled'">
         </vitamui-common-editable-textarea>
       </div>
     </div>
@@ -110,7 +109,7 @@
         <div class="col-8">
           <vitamui-common-editable-level-input [label]="'Editable level input'"></vitamui-common-editable-level-input>
         </div>
-        <vitamui-common-editable-level-input [formControl]="level" [label]="'Editable level input disabled'" [disabled]="true">
+        <vitamui-common-editable-level-input [formField]="disabledFields.level" [label]="'Editable level input disabled'">
         </vitamui-common-editable-level-input>
       </div>
     </div>
@@ -126,7 +125,7 @@
     <h3>Toggle Group</h3>
     <div class="d-flex flex-column">
       <div class="row m-0 mt-4 pl-3">
-        <mat-button-toggle-group [formControl]="control" class="vitamui-button-toggle-group mr-4">
+        <mat-button-toggle-group [formField]="fields.toggleGroup" class="vitamui-button-toggle-group mr-4">
           <mat-button-toggle [value]="'FIRST'">
             <span>First</span>
           </mat-button-toggle>
@@ -138,7 +137,7 @@
           </mat-button-toggle>
         </mat-button-toggle-group>
 
-        <mat-button-toggle-group [formControl]="control" class="vitamui-button-toggle-group disabled" [disabled]="true">
+        <mat-button-toggle-group [formField]="disabledFields.toggleGroup" class="vitamui-button-toggle-group disabled">
           <mat-button-toggle [value]="'FIRST'">
             <span>First</span>
           </mat-button-toggle>
@@ -152,14 +151,14 @@
       </div>
       <div class="row m-0">
         <div class="col-8 mt-4">
-          <vitamui-common-editable-toggle-group [formControl]="toggle" [label]="'Editable toggle Group'">
+          <vitamui-common-editable-toggle-group [formField]="fields.toggle" [label]="'Editable toggle Group'">
             <vitamui-common-editable-button-toggle value="Value 1" content="Label 1"></vitamui-common-editable-button-toggle>
             <vitamui-common-editable-button-toggle value="Value 2" content="Label 2"></vitamui-common-editable-button-toggle>
             <vitamui-common-editable-button-toggle value="Value 3" content="Label 3"></vitamui-common-editable-button-toggle>
           </vitamui-common-editable-toggle-group>
         </div>
         <div class="mt-4">
-          <vitamui-common-editable-toggle-group [formControl]="toggle" [label]="'Editable toggle Group disabled'" [disabled]="true">
+          <vitamui-common-editable-toggle-group [formField]="disabledFields.toggle" [label]="'Editable toggle Group disabled'">
             <vitamui-common-editable-button-toggle value="Value 1" content="Label 1"></vitamui-common-editable-button-toggle>
             <vitamui-common-editable-button-toggle value="Value 2" content="Label 2"></vitamui-common-editable-button-toggle>
             <vitamui-common-editable-button-toggle value="Value 3" content="Label 3"></vitamui-common-editable-button-toggle>
@@ -171,10 +170,10 @@
     <h3>File</h3>
     <div class="row m-0">
       <div class="col-8 mt-4">
-        <vitamui-common-editable-file [formControl]="file" [label]="'Editable file upload'"></vitamui-common-editable-file>
+        <vitamui-common-editable-file [formField]="fields.file" [label]="'Editable file upload'"></vitamui-common-editable-file>
       </div>
       <div class="mt-4">
-        <vitamui-common-editable-file [formControl]="file" [label]="'Editable file upload disabled'" [disabled]="true">
+        <vitamui-common-editable-file [formField]="disabledFields.file" [label]="'Editable file upload disabled'">
         </vitamui-common-editable-file>
       </div>
     </div>

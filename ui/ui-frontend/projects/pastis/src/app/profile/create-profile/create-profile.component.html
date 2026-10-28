@@ -1,12 +1,12 @@
 <vitamui-dialog-header [subhead]="data.subTitleDialog" [title]="data.titleDialog"></vitamui-dialog-header>
 
 <mat-dialog-content>
-  <div [formGroup]="form" class="gap-5">
+  <div class="gap-5">
     <app-pastis-generic-popup
       [firstChoice]="ProfileType.PA"
       [secondChoice]="ProfileType.PUA"
       [title]="'PROFILE.POP_UP_CREATION.CHOICE.TITLE' | translate"
-      (changeStatusEvent)="form.controls['profileType'].setValue($event)"
+      (changeStatusEvent)="setProfileType($event)"
     >
       <i
         class="vitamui-icon vitamui-icon-info vitamui-grey-700 clickable"
@@ -23,7 +23,7 @@
 
     <div>
       <div class="text bold caption primary">{{ 'PROFILE.CREATE_PROFILE.INFORMATION.SEDA_VERSION' | translate }}</div>
-      <mat-radio-group class="hgap-2" formControlName="profileVersion">
+      <mat-radio-group class="hgap-2" [formField]="form.profileVersion">
         @for (profileVersionOption of ProfileVersionOptions; track profileVersionOption) {
           <mat-radio-button [value]="profileVersionOption.version">{{ profileVersionOption.label }}</mat-radio-button>
         }
@@ -33,6 +33,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button type="submit" class="btn primary" (click)="submit()" [disabled]="form.invalid">{{ data.okLabel }}</button>
+  <button type="submit" class="btn primary" (click)="submit()" [disabled]="form().invalid()">{{ data.okLabel }}</button>
   <button type="button" class="btn cancel link" (click)="dialogRef.close()">{{ data.cancelLabel }}</button>
 </mat-dialog-actions>

@@ -3,14 +3,14 @@
   [title]="'PROBATIVE_VALUE.CREATE_DIALOG.SUBTITLE' | translate"
 ></vitamui-dialog-header>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
+<form [formRoot]="form" (keydown.enter)="$event.preventDefault()">
   <mat-dialog-content class="gap-3">
-    <vitamui-input formControlName="unitId" class="w-100" [placeholder]="'PROBATIVE_VALUE.CREATE_DIALOG.UNIT_ID' | translate">
+    <vitamui-input [formField]="form.unitId" class="w-100" [placeholder]="'PROBATIVE_VALUE.CREATE_DIALOG.UNIT_ID' | translate">
     </vitamui-input>
 
     <vitamui-select
       class="w-100 d-block"
-      formControlName="usage"
+      [formField]="form.usage"
       [placeholder]="'PROBATIVE_VALUE.CREATE_DIALOG.USAGE' | translate"
       [options]="usages"
       [multiple]="false"
@@ -18,7 +18,7 @@
     ></vitamui-select>
 
     <vitamui-input
-      formControlName="version"
+      [formField]="form.version"
       [placeholder]="'PROBATIVE_VALUE.CREATE_DIALOG.VERSION' | translate"
       type="number"
       class="w-100"
@@ -27,7 +27,7 @@
 
     <div class="d-flex align-items-center">
       <div class="text-medium-normal mr-2">{{ 'PROBATIVE_VALUE.HOME.ELECTRONICALLY_SIGNED_DOCUMENT' | translate }} :</div>
-      <mat-button-toggle-group formControlName="includeDetachedSigningInformation" class="vitamui-button-toggle-group">
+      <mat-button-toggle-group [formField]="form.includeDetachedSigningInformation" class="vitamui-button-toggle-group">
         <mat-button-toggle [value]="true" (click)="complianceCheck()">
           {{ 'COMMON.COMMON_YES' | translate }}
         </mat-button-toggle>
@@ -45,7 +45,7 @@
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <button type="submit" class="btn primary" [disabled]="form.invalid || isDisabledButton()">
+    <button type="submit" class="btn primary" [disabled]="form().invalid() || isDisabledButton()">
       {{ 'PROBATIVE_VALUE.CREATE_DIALOG.SUBMIT' | translate }}
     </button>
     <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>

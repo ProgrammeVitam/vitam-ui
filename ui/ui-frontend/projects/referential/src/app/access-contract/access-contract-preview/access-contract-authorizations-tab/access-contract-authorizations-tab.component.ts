@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ChangeDetectorRef, Component, inject, OnInit, output, input, OnChanges, SimpleChanges } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import {
   AccessContract,
   AccessContractDisplay,
@@ -67,7 +66,6 @@ export class AccessContractAuthorizationsTabComponent implements OnChanges, OnIn
   readonly updated = output<boolean>();
   readonly isFormValid = output<boolean>();
 
-  public form: FormGroup;
   public isLoading = false;
   public originatingAgenciesOptions: VitamuiSelectOptions;
   public _accessContract: AccessContractDisplay;

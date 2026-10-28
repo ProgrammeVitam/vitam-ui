@@ -1,19 +1,19 @@
-<form [formGroup]="form" class="py-8 px-6 gap-4 align-items-stretch">
+<div class="py-8 px-6 gap-4 align-items-stretch">
   <div class="row">
     <div class="col-2">
       <label>{{ 'ACCOUNT.LASTNAME' | translate }}</label>
-      <span>{{ form?.get('lastname')?.value }}</span>
+      <span>{{ form.lastname().value() }}</span>
     </div>
     <div class="col-2">
       <label>{{ 'ACCOUNT.FIRSTNAME' | translate }}</label>
-      <span>{{ form?.get('firstname')?.value }}</span>
+      <span>{{ form.firstname().value() }}</span>
     </div>
   </div>
 
   <div class="row">
     <div class="col-3">
       <label>{{ 'ACCOUNT.MAIL' | translate }}</label>
-      <span>{{ form?.get('email')?.value }}</span>
+      <span>{{ form.email().value() }}</span>
     </div>
   </div>
 
@@ -26,35 +26,35 @@
 
   <div class="row">
     <div class="col-3">
-      <vitamui-slide-toggle class="fields-padding" formControlName="otp">{{ 'ACCOUNT.OTP_AUTH' | translate }} </vitamui-slide-toggle>
+      <vitamui-slide-toggle class="fields-padding" [formField]="form.otp">{{ 'ACCOUNT.OTP_AUTH' | translate }} </vitamui-slide-toggle>
     </div>
   </div>
 
   <div class="row">
     <div class="col-2">
       <label>{{ 'ACCOUNT.PHONE.MOBILE' | translate }}</label>
-      <span>{{ form?.get('mobile')?.value }}</span>
+      <span>{{ form.mobile().value() }}</span>
     </div>
 
     <div class="col-2">
       <label>{{ 'ACCOUNT.PHONE.FIX' | translate }}</label>
-      <span>{{ form?.get('phone')?.value }}</span>
+      <span>{{ form.phone().value() }}</span>
     </div>
   </div>
 
   <div class="row">
     <div class="col-4">
       <label>{{ 'ACCOUNT.DELIVERY_ADRESS' | translate }}</label>
-      @if (form.get('address').value?.street) {
+      @if (form.address().value()?.street) {
         <span
-          >{{ form.get('address').value?.street }}
-          @if (form.get('address').value?.city && form.get('address').value?.zipCode) {
+          >{{ form.address().value()?.street }}
+          @if (form.address().value()?.city && form.address().value()?.zipCode) {
             <span>,</span>
           }
         </span>
       }
-      @if (form.get('address').value?.city && form.get('address').value?.zipCode) {
-        <span> {{ form.get('address').value?.zipCode }}, {{ form.get('address').value?.city }} </span>
+      @if (form.address().value()?.city && form.address().value()?.zipCode) {
+        <span> {{ form.address().value()?.zipCode }}, {{ form.address().value()?.city }} </span>
       }
     </div>
   </div>
@@ -62,15 +62,15 @@
   <div class="row">
     <div class="col-3">
       <label>{{ 'ACCOUNT.LEVEL' | translate }}</label>
-      <span>{{ form?.get('level')?.value }}</span>
+      <span>{{ form.level().value() }}</span>
     </div>
   </div>
 
   <div class="row">
     <div class="col-4">
       <label>{{ 'ACCOUNT.GROUP' | translate }}</label>
-      <span>{{ form.get('profileGroup').value?.name }}</span>
-      <span>{{ form.get('profileGroup').value?.description }}</span>
+      <span>{{ form.profileGroup().value()?.name }}</span>
+      <span>{{ form.profileGroup().value()?.description }}</span>
     </div>
   </div>
-</form>
+</div>

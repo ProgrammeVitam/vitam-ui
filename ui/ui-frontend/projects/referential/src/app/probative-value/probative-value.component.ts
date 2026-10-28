@@ -34,8 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, viewChild } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, OnDestroy, signal, viewChild } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { form, FormField } from '@angular/forms/signals';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -52,6 +53,12 @@ import { DateTime } from 'luxon';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { ProbativeValuePreviewComponent } from './probative-value-preview/probative-value-preview.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { skip } from 'rxjs/operators';
+
+interface DateRangeFilterForm {
+  startDate: Date;
+  endDate: Date;
+}
 
 @Component({
   selector: 'app-probative-value',
@@ -64,7 +71,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatSidenavContent,
     VitamuiTitleBreadcrumbComponent,
     VitamuiBannerComponent,
-    ReactiveFormsModule,
+    FormField,
     DatepickerComponent,
     ProbativeValueListComponent,
     TranslatePipe,
@@ -74,10 +81,9 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnDes
   dialog = inject(MatDialog);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  private readonly formBuilder = inject(FormBuilder);
 
   search: string;
-  dateRangeFilterForm: FormGroup;
+  readonly dateRangeFilterForm = form(signal<DateRangeFilterForm>({ startDate: null, endDate: null }));
   filters: any = {};
 
   accessContract: string;
@@ -88,18 +94,17 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnDes
   constructor() {
     super();
 
-    this.dateRangeFilterForm = this.formBuilder.group({
-      startDate: null,
-      endDate: null,
-    });
+    toObservable(this.dateRangeFilterForm.startDate().value)
+      .pipe(skip(1))
+      .subscribe((value) => {
+        this.filters = { ...this.filters, startDate: value ? DateTime.fromJSDate(value).startOf('day').toISO() : null };
+      });
 
-    this.dateRangeFilterForm.controls['startDate'].valueChanges.subscribe((value) => {
-      this.filters = { ...this.filters, startDate: value ? DateTime.fromJSDate(value).startOf('day').toISO() : null };
-    });
-
-    this.dateRangeFilterForm.controls['endDate'].valueChanges.subscribe((value: Date) => {
-      this.filters = { ...this.filters, endDate: value ? DateTime.fromJSDate(value).endOf('day').toISO() : null };
-    });
+    toObservable(this.dateRangeFilterForm.endDate().value)
+      .pipe(skip(1))
+      .subscribe((value: Date) => {
+        this.filters = { ...this.filters, endDate: value ? DateTime.fromJSDate(value).endOf('day').toISO() : null };
+      });
   }
 
   openCreateProbativeValueDialog() {

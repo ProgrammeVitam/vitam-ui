@@ -37,7 +37,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { SecurityService, AgencyService } from 'vitamui-library';
@@ -55,7 +54,6 @@ describe('AgencyInformationTabComponent', () => {
     await TestBed.configureTestingModule({
       imports: [],
       providers: [
-        FormBuilder,
         { provide: AgencyService, useValue: {} },
         { provide: SecurityService, useValue: securityServiceMock },
         {

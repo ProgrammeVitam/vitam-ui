@@ -34,51 +34,55 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, signal, untracked } from '@angular/core';
+import { applyEach, debounce, form, FormField } from '@angular/forms/signals';
 import { SnackBarService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const INFINITE_DURATION = 0;
+
+interface SnackbarButtonForm {
+  label: string;
+  url: string;
+  outline: boolean;
+}
+
+interface SnackbarForm {
+  icon: string | null;
+  message: string;
+  buttons: SnackbarButtonForm[];
+}
 
 @Component({
   templateUrl: './snackbar.component.html',
   styleUrls: ['./snackbar.component.scss'],
-  imports: [VitamUICommonModule, VitamUILibraryModule, FormsModule, ReactiveFormsModule],
+  imports: [VitamUICommonModule, VitamUILibraryModule, FormField],
 })
-export class SnackbarComponent implements OnInit {
+export class SnackbarComponent {
   private readonly snackBarService = inject(SnackBarService);
-  private readonly fb = inject(FormBuilder);
 
-  form: FormGroup;
   iconOptions: string[] = ['vitamui-icon-user', 'vitamui-icon-agent', 'vitamui-icon-contrat', 'vitamui-icon-link'];
 
-  buttons: FormArray = this.fb.array([]);
+  readonly form = form(signal<SnackbarForm>({ icon: null, message: 'Some message', buttons: [] }), (path) => {
+    debounce(path.message, 'blur');
+    applyEach(path.buttons, (button) => {
+      debounce(button.label, 'blur');
+      debounce(button.url, 'blur');
+    });
+  });
 
   constructor() {
-    const fb = this.fb;
-
-    this.form = fb.group({
-      icon: [],
-      message: ['Some message', { updateOn: 'blur' }],
-      buttons: this.buttons,
+    // (Re)opens the snackbar with the current configuration, initially and on each change
+    effect(() => {
+      const value = this.form().value();
+      untracked(() => this.snackBarService.open({ ...value, duration: INFINITE_DURATION }));
     });
-
-    this.form.valueChanges.subscribe(() => this.openSnackbar());
-  }
-
-  ngOnInit() {
-    this.openSnackbar();
-  }
-
-  private openSnackbar() {
-    this.snackBarService.open({ ...this.form.value, duration: INFINITE_DURATION });
   }
 
   addButton() {
-    this.buttons.push(this.fb.group({ label: ['Click me!', { updateOn: 'blur' }], url: ['', { updateOn: 'blur' }], outline: [false] }));
+    this.form.buttons().value.update((buttons) => [...buttons, { label: 'Click me!', url: '', outline: false }]);
   }
 
   removeButton(i: number) {
-    this.buttons.removeAt(i);
+    this.form.buttons().value.update((buttons) => buttons.filter((_, index) => index !== i));
   }
 }

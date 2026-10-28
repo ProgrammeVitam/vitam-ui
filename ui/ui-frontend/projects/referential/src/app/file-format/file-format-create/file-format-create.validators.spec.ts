@@ -35,128 +35,89 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { FormControl } from '@angular/forms';
-import { from, of } from 'rxjs';
+import { Injector, signal } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { form } from '@angular/forms/signals';
+import { of } from 'rxjs';
 import { FileFormatCreateValidators } from './file-format-create.validators';
 
 describe('FileFormat Create Validators', () => {
+  let fileFormatServiceSpy: { existsProperties: ReturnType<typeof vi.fn> };
+  let fileFormatCreateValidators: FileFormatCreateValidators;
+
+  beforeEach(() => {
+    vi.useFakeTimers();
+    fileFormatServiceSpy = {
+      existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
+    };
+    fileFormatCreateValidators = new FileFormatCreateValidators(fileFormatServiceSpy as any);
+  });
+
   afterEach(() => {
     vi.useRealTimers();
   });
 
+  async function validate(validator: 'uniqueName' | 'uniquePuid', value: string, valueToIgnore?: string) {
+    const testForm = form(signal({ value }), (path) => fileFormatCreateValidators[validator](path.value, () => valueToIgnore), {
+      injector: TestBed.inject(Injector),
+    });
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    return testForm
+      .value()
+      .errors()
+      .map((error) => error.kind);
+  }
+
   describe('uniqueName', () => {
-    it('should return null', async () => {
-      vi.useFakeTimers();
-      const customerServiceSpy = {
-        existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
-      };
-      customerServiceSpy.existsProperties.mockReturnValue(of(false));
-      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy as any);
-      from(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toBeNull();
-      });
-      await vi.advanceTimersByTimeAsync(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
+    it('should not return any error', async () => {
+      fileFormatServiceSpy.existsProperties.mockReturnValue(of(false));
+      expect(await validate('uniqueName', '123456')).toEqual([]);
+      expect(fileFormatServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
     });
 
-    it('should return { uniqueCode: true }', async () => {
-      vi.useFakeTimers();
-      const customerServiceSpy = {
-        existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
-      };
-      customerServiceSpy.existsProperties.mockReturnValue(of(true));
-      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy as any);
-      from(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toEqual({ nameExists: true });
-      });
-      await vi.advanceTimersByTimeAsync(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
+    it('should return nameExists', async () => {
+      fileFormatServiceSpy.existsProperties.mockReturnValue(of(true));
+      expect(await validate('uniqueName', '123456')).toEqual(['nameExists']);
+      expect(fileFormatServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
     });
 
     it('should not call the service', async () => {
-      vi.useFakeTimers();
-      const fileFormatServiceSpy = {
-        existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
-      };
       fileFormatServiceSpy.existsProperties.mockReturnValue(of(true));
-      const customerCreateValidators = new FileFormatCreateValidators(fileFormatServiceSpy as any);
-      from(customerCreateValidators.uniqueName('123456')(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toEqual(null);
-      });
-      await vi.advanceTimersByTimeAsync(400);
+      expect(await validate('uniqueName', '123456', '123456')).toEqual([]);
       expect(fileFormatServiceSpy.existsProperties).not.toHaveBeenCalled();
     });
 
     it('should call the service', async () => {
-      vi.useFakeTimers();
-      const customerServiceSpy = {
-        existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
-      };
-      customerServiceSpy.existsProperties.mockReturnValue(of(true));
-      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy as any);
-      from(customerCreateValidators.uniqueName('123456')(new FormControl('111111'))).subscribe((result) => {
-        expect(result).toEqual({ nameExists: true });
-      });
-      await vi.advanceTimersByTimeAsync(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '111111' });
+      fileFormatServiceSpy.existsProperties.mockReturnValue(of(true));
+      expect(await validate('uniqueName', '111111', '123456')).toEqual(['nameExists']);
+      expect(fileFormatServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '111111' });
     });
   });
 
   describe('uniquePuid', () => {
-    it('should return null', async () => {
-      vi.useFakeTimers();
-      const customerServiceSpy = {
-        existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
-      };
-      customerServiceSpy.existsProperties.mockReturnValue(of(false));
-      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy as any);
-      from(customerCreateValidators.uniquePuid()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toBeNull();
-      });
-      await vi.advanceTimersByTimeAsync(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ puid: '123456' });
+    it('should not return any error', async () => {
+      fileFormatServiceSpy.existsProperties.mockReturnValue(of(false));
+      expect(await validate('uniquePuid', '123456')).toEqual([]);
+      expect(fileFormatServiceSpy.existsProperties).toHaveBeenCalledWith({ puid: '123456' });
     });
 
-    it('should return { uniqueCode: true }', async () => {
-      vi.useFakeTimers();
-      const customerServiceSpy = {
-        existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
-      };
-      customerServiceSpy.existsProperties.mockReturnValue(of(true));
-      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy as any);
-      from(customerCreateValidators.uniquePuid()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toEqual({ puidExists: true });
-      });
-      await vi.advanceTimersByTimeAsync(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ puid: '123456' });
+    it('should return puidExists', async () => {
+      fileFormatServiceSpy.existsProperties.mockReturnValue(of(true));
+      expect(await validate('uniquePuid', '123456')).toEqual(['puidExists']);
+      expect(fileFormatServiceSpy.existsProperties).toHaveBeenCalledWith({ puid: '123456' });
     });
 
     it('should not call the service', async () => {
-      vi.useFakeTimers();
-      const fileFormatServiceSpy = {
-        existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
-      };
       fileFormatServiceSpy.existsProperties.mockReturnValue(of(true));
-      const customerCreateValidators = new FileFormatCreateValidators(fileFormatServiceSpy as any);
-      from(customerCreateValidators.uniquePuid('123456')(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toEqual(null);
-      });
-      await vi.advanceTimersByTimeAsync(400);
+      expect(await validate('uniquePuid', '123456', '123456')).toEqual([]);
       expect(fileFormatServiceSpy.existsProperties).not.toHaveBeenCalled();
     });
 
     it('should call the service', async () => {
-      vi.useFakeTimers();
-      const customerServiceSpy = {
-        existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
-      };
-      customerServiceSpy.existsProperties.mockReturnValue(of(true));
-      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy as any);
-      from(customerCreateValidators.uniquePuid('123456')(new FormControl('111111'))).subscribe((result) => {
-        expect(result).toEqual({ puidExists: true });
-      });
-      await vi.advanceTimersByTimeAsync(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ puid: '111111' });
+      fileFormatServiceSpy.existsProperties.mockReturnValue(of(true));
+      expect(await validate('uniquePuid', '111111', '123456')).toEqual(['puidExists']);
+      expect(fileFormatServiceSpy.existsProperties).toHaveBeenCalledWith({ puid: '111111' });
     });
   });
 });
