@@ -37,7 +37,7 @@ jobs:
     name: Test Frontend
     runs-on: ubuntu-latest
     steps:
-      - uses: szenius/set-timezone@v2.0
+      - uses: szenius/set-timezone@1f9716b0f7120e344f0c62bb7b1ee98819aefd42 # v2.0
         with:
           timezoneLinux: "Europe/Paris" # we set the timezone for Unit Tests to pass (we shouldn't need to, but it's currently required)
       - uses: actions/checkout@v4
@@ -49,7 +49,7 @@ jobs:
             ui/ui-frontend/package-lock.json
       - name: Install ui-frontend dependencies
         working-directory: ui/ui-frontend
-        run: npm ci
+        run: npm ci --ignore-scripts
       - name: Build vitamui-library
         working-directory: ui/ui-frontend
         run: npm run build:vitamui-library
