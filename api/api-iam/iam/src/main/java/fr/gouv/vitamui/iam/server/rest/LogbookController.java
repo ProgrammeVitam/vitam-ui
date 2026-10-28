@@ -294,7 +294,10 @@ public class LogbookController {
     }
 
     @Operation(operationId = "logbooks_prepareSignedDownloadReport", summary = "Prepare a signed report download URL")
-    @PostMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_REPORT_PATH + "/signed-url")
+    @PostMapping(
+        value = CommonConstants.LOGBOOK_DOWNLOAD_REPORT_PATH + "/signed-url",
+        produces = MediaType.TEXT_PLAIN_VALUE
+    )
     @Secured(ServicesData.ROLE_LOGBOOKS)
     @ResponseStatus(HttpStatus.OK)
     public String prepareSignedDownloadReport(
@@ -326,7 +329,10 @@ public class LogbookController {
     }
 
     @Operation(operationId = "logbooks_prepareSignedDownloadAtr", summary = "Prepare a signed ATR download URL")
-    @PostMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_ATR_PATH + "/signed-url")
+    @PostMapping(
+        value = CommonConstants.LOGBOOK_DOWNLOAD_ATR_PATH + "/signed-url",
+        produces = MediaType.TEXT_PLAIN_VALUE
+    )
     @Secured(ServicesData.ROLE_LOGBOOKS)
     @ResponseStatus(HttpStatus.OK)
     public String prepareSignedDownloadAtr(
@@ -352,7 +358,10 @@ public class LogbookController {
         operationId = "logbooks_prepareSignedDownloadManifest",
         summary = "Prepare a signed manifest download URL"
     )
-    @PostMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_MANIFEST_PATH + "/signed-url")
+    @PostMapping(
+        value = CommonConstants.LOGBOOK_DOWNLOAD_MANIFEST_PATH + "/signed-url",
+        produces = MediaType.TEXT_PLAIN_VALUE
+    )
     @Secured(ServicesData.ROLE_LOGBOOKS)
     @ResponseStatus(HttpStatus.OK)
     public String prepareSignedDownloadManifest(
