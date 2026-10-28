@@ -238,8 +238,12 @@
         />
       </ng-container>
       <ng-container buttons>
-        <button class="btn btn-circle large tertiary" [disabled]="!(totalResults() > 0 && selectedItemCount > 0)">
-          <i class="vitamui-icon vitamui-icon-import-csv" (click)="exportArchiveUnitsToCsvFile()"></i>
+        <button
+          class="btn btn-circle large tertiary"
+          [disabled]="!(totalResults() > 0 && selectedItemCount > 0)"
+          (click)="exportArchiveUnitsToCsvFile()"
+        >
+          <i class="vitamui-icon vitamui-icon-import-csv"></i>
         </button>
         <vitamui-menu-button menuButtonSize="medium" class="ml-2" [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
           <button mat-menu-item (click)="launchExportDipModal()" [disabled]="selectedItemCount === 0 || !hasDipExportRole()">
