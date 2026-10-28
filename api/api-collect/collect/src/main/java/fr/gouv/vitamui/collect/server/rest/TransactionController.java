@@ -218,11 +218,16 @@ public class TransactionController {
     }
 
     @Secured(ServicesData.ROLE_COLLECT_RECLASSIFICATION)
-    @PostMapping(CommonConstants.TRANSACTION_PATH_ID + "/reclassification")
+    @PostMapping(
+        value = CommonConstants.TRANSACTION_PATH_ID + "/reclassification",
+        produces = MediaType.TEXT_PLAIN_VALUE
+    )
     public String reclassification(
         final @PathVariable("transactionId") String transactionId,
         @RequestBody final ReclassificationCriteriaDto reclassificationCriteriaDto
     ) throws PreconditionFailedException, VitamClientException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, transactionId);
+        SanityChecker.checkSecureParameter(transactionId);
         ParameterChecker.checkParameter(MANDATORY_QUERY, reclassificationCriteriaDto);
         SanityChecker.sanitizeCriteria(reclassificationCriteriaDto);
         LOGGER.debug("Reclassification query {}", reclassificationCriteriaDto);
