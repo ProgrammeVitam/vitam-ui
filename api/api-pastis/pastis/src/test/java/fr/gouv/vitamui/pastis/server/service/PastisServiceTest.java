@@ -29,12 +29,16 @@
 
 package fr.gouv.vitamui.pastis.server.service;
 
+import fr.gouv.vitamui.commons.api.exception.InvalidFileSanitizeException;
+import fr.gouv.vitamui.pastis.common.dto.profiles.Notice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileType;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileVersion;
 import fr.gouv.vitamui.pastis.common.exception.TechnicalException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ClassPathResource;
@@ -53,5 +57,13 @@ class PastisServiceTest {
             TechnicalException.class,
             () -> pastisService.createProfileByType(resource, ProfileType.PA, ProfileVersion.VERSION_2_1)
         );
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "../application.yml", "../../META-INF/MANIFEST.MF", "/etc/passwd", "sub/../../file.rng" })
+    void loadProfile_with_invalid_path_should_fail(String path) {
+        Notice notice = new Notice();
+        notice.setPath(path);
+        Assertions.assertThrows(InvalidFileSanitizeException.class, () -> pastisService.loadProfile(notice));
     }
 }

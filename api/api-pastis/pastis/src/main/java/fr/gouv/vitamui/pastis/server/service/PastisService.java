@@ -44,6 +44,7 @@ import fr.gouv.vitam.access.external.common.exception.AccessExternalClientExcept
 import fr.gouv.vitam.access.external.common.exception.AccessExternalNotFoundException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.vitam.api.administration.VitamProfileCommonService;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
@@ -291,6 +292,8 @@ public class PastisService {
             JSONObject profileJson = new JSONObject(s);
 
             if (fileType.equals(ProfileType.PA)) {
+                // Only accept a plain file name inside rngLocation
+                SafeFileChecker.checkSafeFilePath(notice.getPath());
                 InputStream inputStream = getClass()
                     .getClassLoader()
                     .getResourceAsStream(rngLocation + notice.getPath());
