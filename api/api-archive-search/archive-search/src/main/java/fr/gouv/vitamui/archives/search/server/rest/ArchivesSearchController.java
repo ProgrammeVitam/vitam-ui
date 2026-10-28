@@ -346,7 +346,7 @@ public class ArchivesSearchController {
         return exportDipService.requestToExportDIP(exportDipCriteriaDto);
     }
 
-    @PostMapping(RestApi.TRANSFER_REQUEST)
+    @PostMapping(value = RestApi.TRANSFER_REQUEST, produces = MediaType.TEXT_PLAIN_VALUE)
     @Secured(ServicesData.ROLE_TRANSFER_REQUEST)
     public String transferRequest(final @RequestBody TransferRequestDto transferRequestDto)
         throws PreconditionFailedException, VitamClientException {
