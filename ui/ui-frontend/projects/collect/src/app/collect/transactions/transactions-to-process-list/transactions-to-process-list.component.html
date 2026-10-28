@@ -105,7 +105,10 @@
                   }
                 </span>
               </td>
-              <td>{{ transaction.lastUpdate | dateTime: 'dd/MM/yyyy HH:mm:ss' | empty }}</td>
+              <td>
+                <div>{{ transaction.lastUpdate | dateTime: 'dd/MM/yyyy' | empty }}</div>
+                <span class="text normal light">{{ transaction.lastUpdate | dateTime: 'HH:mm:ss' }}</span>
+              </td>
               <td>
                 <div class="text" [ngClass]="getStatusColorClass(transaction)">
                   {{ 'COLLECT.PROJECT_TRANSACTION_PREVIEW.STATUS.' + transaction.status | translate }}
