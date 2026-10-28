@@ -110,7 +110,7 @@ public class VitamQueryHelper {
                 select.addOrderByAscFilter(orderBy.get());
             }
         }
-        select.setLimitFilter(pageNumber * size, size);
+        select.setLimitFilter((long) pageNumber * size, size);
 
         // Manage Query
         if (!searchCriteriaMap.isEmpty()) {
@@ -148,11 +148,13 @@ public class VitamQueryHelper {
                         break;
                     case EV_TYPE:
                         // Special case EvType can be String or String[]
-                        if (entry.getValue() instanceof String) {
-                            final String evType = (String) entry.getValue();
+                        if (entry.getValue() instanceof String evType) {
                             query.add(eq(searchKey, evType));
-                            break;
+                        } else {
+                            final List<String> evTypes = (ArrayList<String>) entry.getValue();
+                            query.add(in(searchKey, evTypes.toArray(new String[] {})));
                         }
+                        break;
                     case STATUS:
                         // in list of string operation
                         final List<String> stringValues = (ArrayList<String>) entry.getValue();

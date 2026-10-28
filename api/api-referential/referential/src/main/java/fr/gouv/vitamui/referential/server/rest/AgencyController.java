@@ -274,10 +274,8 @@ public class AgencyController {
     @Secured(ServicesData.ROLE_IMPORT_AGENCIES)
     @PostMapping(CommonConstants.PATH_IMPORT)
     public JsonNode importAgencies(@RequestParam(required = false) String fileName, @RequestParam MultipartFile file) {
-        if (file != null) {
-            SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
-            SanityChecker.isValidFileName(file.getOriginalFilename());
-        }
+        SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+        SanityChecker.isValidFileName(file.getOriginalFilename());
 
         if (Objects.isNull(fileName)) {
             fileName = file.getOriginalFilename();

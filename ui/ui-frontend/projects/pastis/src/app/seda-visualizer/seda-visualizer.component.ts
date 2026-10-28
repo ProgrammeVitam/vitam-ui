@@ -257,7 +257,6 @@ export class SedaVisualizerComponent implements OnInit {
         .text((d: any) => {
           if (d.data.Element === 'Simple') return 'S';
           if (d.data.Element === 'Complex') return 'C';
-          if (d.data.Element === 'Attribute') 'A';
 
           return 'A';
         });

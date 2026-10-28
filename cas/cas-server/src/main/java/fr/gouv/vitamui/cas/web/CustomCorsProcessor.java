@@ -115,7 +115,7 @@ public class CustomCorsProcessor extends DefaultCorsProcessor {
             return false;
         }
 
-        HttpMethod requestMethod = getMethodToUse(serverRequest, preFlightRequest);
+        HttpMethod requestMethod = resolveMethodToUse(serverRequest, preFlightRequest);
         List<HttpMethod> allowMethods = checkMethods(config, requestMethod);
         if (allowMethods == null) {
             LOGGER.debug("Reject: HTTP '" + requestMethod + "' is not allowed");
@@ -123,7 +123,7 @@ public class CustomCorsProcessor extends DefaultCorsProcessor {
             return false;
         }
 
-        List<String> requestHeaders = getHeadersToUse(serverRequest, preFlightRequest);
+        List<String> requestHeaders = resolveHeadersToUse(serverRequest, preFlightRequest);
         List<String> allowHeaders = checkHeaders(config, requestHeaders);
         if (preFlightRequest && allowHeaders == null) {
             LOGGER.debug("Reject: headers '" + requestHeaders + "' are not allowed");
@@ -173,11 +173,11 @@ public class CustomCorsProcessor extends DefaultCorsProcessor {
         }
     }
 
-    private HttpMethod getMethodToUse(ServerHttpRequest request, boolean isPreFlight) {
+    private HttpMethod resolveMethodToUse(ServerHttpRequest request, boolean isPreFlight) {
         return (isPreFlight ? request.getHeaders().getAccessControlRequestMethod() : request.getMethod());
     }
 
-    private List<String> getHeadersToUse(ServerHttpRequest request, boolean isPreFlight) {
+    private List<String> resolveHeadersToUse(ServerHttpRequest request, boolean isPreFlight) {
         HttpHeaders headers = request.getHeaders();
         return (isPreFlight ? headers.getAccessControlRequestHeaders() : new ArrayList<>(headers.keySet()));
     }

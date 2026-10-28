@@ -206,10 +206,8 @@ public class OntologyController {
     @Secured(ServicesData.ROLE_IMPORT_ONTOLOGIES)
     @PostMapping(CommonConstants.PATH_IMPORT)
     public JsonNode importFileFormats(@RequestParam MultipartFile file) {
-        if (file != null) {
-            SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
-            SanityChecker.isValidFileName(file.getOriginalFilename());
-        }
+        SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+        SanityChecker.isValidFileName(file.getOriginalFilename());
 
         LOGGER.debug("Import ontology file {}", file.getOriginalFilename());
         return ontologyService.importOntologies(file.getOriginalFilename(), file);

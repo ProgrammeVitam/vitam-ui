@@ -70,7 +70,7 @@ export class LayoutService {
   private readonly getLastRow = (rows: any[]) => rows[this.getLastRowIndex(rows)];
 
   private getLayout(displayObject: DisplayObject): Layout {
-    const { columns, size } = displayObject.displayRule?.ui?.layout;
+    const { columns, size } = displayObject.displayRule?.ui?.layout ?? ({} as Partial<Layout>);
 
     if (columns === undefined) {
       this.logger.info(this, `No columns found in display rule, default one (${this.DEFAULT_COLUMNS}) will be applied`);

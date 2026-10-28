@@ -53,6 +53,8 @@ public class CustomMultipartFile implements MultipartFile {
 
     @Override
     public void transferTo(File dest) throws IOException, IllegalStateException {
-        new FileOutputStream(dest).write(this.fileByte);
+        try (FileOutputStream outputStream = new FileOutputStream(dest)) {
+            outputStream.write(this.fileByte);
+        }
     }
 }

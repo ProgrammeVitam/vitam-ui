@@ -131,8 +131,8 @@ export class AccessContractNodesTabComponent implements OnChanges {
             this.excludedRootUnitsTitles.push(result.Title);
           }
         });
-        this.rootUnitsTitles.sort();
-        this.excludedRootUnitsTitles.sort();
+        this.rootUnitsTitles.sort((a, b) => a.localeCompare(b));
+        this.excludedRootUnitsTitles.sort((a, b) => a.localeCompare(b));
         this.cdr.markForCheck();
       }
     });
