@@ -10,11 +10,12 @@ PORT="${MCP_GATEWAY_PORT:-8811}"
 # Secrets are read from the "env" block of the Claude Code local settings (git-ignored),
 # which also provides them to .mcp.json and to the MCP servers started by Claude Code
 setting() {
-  [ -f "$SETTINGS" ] && python3 -c 'import json, sys; print(json.load(open(sys.argv[1])).get("env", {}).get(sys.argv[2], ""))' "$SETTINGS" "$1"
+  local name="$1"
+  [[ -f "$SETTINGS" ]] && python3 -c 'import json, sys; print(json.load(open(sys.argv[1])).get("env", {}).get(sys.argv[2], ""))' "$SETTINGS" "$name"
 }
 SONARQUBE_TOKEN="$(setting SONARQUBE_TOKEN)"
 MCP_GATEWAY_AUTH_TOKEN="$(setting MCP_GATEWAY_AUTH_TOKEN)"
-if [ -z "$SONARQUBE_TOKEN" ] || [ -z "$MCP_GATEWAY_AUTH_TOKEN" ]; then
+if [[ -z "$SONARQUBE_TOKEN" || -z "$MCP_GATEWAY_AUTH_TOKEN" ]]; then
   echo "Set SONARQUBE_TOKEN and MCP_GATEWAY_AUTH_TOKEN in the \"env\" block of $SETTINGS (see README.md)," >&2
   echo "for instance MCP_GATEWAY_AUTH_TOKEN=$(openssl rand -hex 24), then run this script again." >&2
   exit 1
