@@ -417,7 +417,7 @@ public class ArchivesSearchController {
         return archiveSearchService.selectUnitWithInheritedRules(query);
     }
 
-    @PostMapping(RestApi.RECLASSIFICATION)
+    @PostMapping(value = RestApi.RECLASSIFICATION, produces = MediaType.TEXT_PLAIN_VALUE)
     @Secured(ServicesData.ROLE_RECLASSIFICATION)
     public String reclassification(@RequestBody final ReclassificationCriteriaDto reclassificationCriteriaDto)
         throws PreconditionFailedException, VitamClientException {
