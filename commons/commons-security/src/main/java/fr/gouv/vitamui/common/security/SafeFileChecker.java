@@ -59,7 +59,7 @@ public class SafeFileChecker {
     public static void checkSafeFilePath(String path) {
         try {
             checkNullParameter(path);
-            doCanonicalPathCheck(path);
+            doPlainFileNameCheck(path);
         } catch (Exception ex) {
             throw new InvalidFileSanitizeException("Security check error : Invalid name (%s)".formatted(path));
         }
@@ -93,17 +93,22 @@ public class SafeFileChecker {
     }
 
     /**
-     * check recursive/out of submitted root path to avoid Path Traversal attack
+     * check that the submitted path is a plain file name, to avoid Path Traversal attack.
+     * The check is done on the string only, without resolving it against the file system.
      *
      * @param path
      * @throws IOException
      */
-    private static void doCanonicalPathCheck(String path) throws IOException {
-        String canonicalPath = new File(path).getCanonicalFile().getName();
-
-        if (!path.equals(canonicalPath)) {
-            LOGGER.error("Invalid path {} did not match canonical : {}", path, canonicalPath);
-            throw new IOException("Invalid path (%s) did not match canonical : %s".formatted(path, canonicalPath));
+    private static void doPlainFileNameCheck(String path) throws IOException {
+        if (
+            path.indexOf('/') >= 0 ||
+            path.indexOf('\\') >= 0 ||
+            path.indexOf('\0') >= 0 ||
+            ".".equals(path) ||
+            "..".equals(path)
+        ) {
+            LOGGER.error("Invalid path {} is not a plain file name", path);
+            throw new IOException("Invalid path (%s) is not a plain file name".formatted(path));
         }
     }
 
