@@ -45,28 +45,12 @@ public class SafeFileCheckerTest {
 
     private final String VALID_ROOT_PATH = "mydirectory";
     private final String INVALID_ROOT_PATH = "my|filena?me?query=<code>danger</code>.json";
-    private final String VALID_SUBPATH = "good_json_sanity.json";
     private final String INVALID_PATH = "file#..$$/text";
 
-    private static final List<String> validPaths = new ArrayList<>();
-    private static final List<String> invalidPaths = new ArrayList<>();
     private static final List<String> validFilenames = new ArrayList<>();
 
     @BeforeAll
     public static void setUpBeforeClass() {
-        validPaths.add("/directory/subdirectory");
-        validPaths.add("/directory");
-        validPaths.add("/dir.ectory/subdirectory");
-        validPaths.add("/dir_ect_ory/sub.dir.ectory");
-        validPaths.add("/dir-ectory/subdirectory");
-        validPaths.add("/dir-ectory");
-
-        invalidPaths.add("filename\0.json");
-        invalidPaths.add("my&Dir");
-        invalidPaths.add("%2e%2e%2f..\\/etc/password");
-        invalidPaths.add("/mydir/./app-_directory");
-        invalidPaths.add("../../etc/password");
-
         validFilenames.add("my|filena?me<.json");
         validFilenames.add(".file");
     }
@@ -101,33 +85,6 @@ public class SafeFileCheckerTest {
     void checkNotPlainFileNames() {
         for (String path : List.of(".", "..", "dir/file.json", "dir\\file.json", "/file.json", "file\0.json")) {
             assertThatThrownBy(() -> SafeFileChecker.checkSafeFilePath(path)).isInstanceOf(
-                InvalidFileSanitizeException.class
-            );
-        }
-    }
-
-    @Test
-    void checkValidRootPaths() {
-        for (String rootPath : validPaths) {
-            assertThatCode(() -> SafeFileChecker.checkSafeFilePath(rootPath, VALID_SUBPATH)).isInstanceOf(
-                InvalidFileSanitizeException.class
-            );
-        }
-    }
-
-    @Test
-    void checkInvalidRootPaths() {
-        for (String rootPath : invalidPaths) {
-            assertThatCode(() -> SafeFileChecker.checkSafeFilePath(rootPath, VALID_SUBPATH)).isInstanceOf(
-                InvalidFileSanitizeException.class
-            );
-        }
-    }
-
-    @Test
-    void checkInvalidSubPaths() {
-        for (String subPath : validFilenames) {
-            assertThatCode(() -> SafeFileChecker.checkSafeFilePath(VALID_ROOT_PATH, subPath)).isInstanceOf(
                 InvalidFileSanitizeException.class
             );
         }

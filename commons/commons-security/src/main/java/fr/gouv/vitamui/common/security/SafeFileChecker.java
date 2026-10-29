@@ -26,7 +26,6 @@
  */
 package fr.gouv.vitamui.common.security;
 
-import com.google.common.base.Joiner;
 import fr.gouv.vitamui.commons.api.exception.InvalidFileSanitizeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,10 +50,10 @@ public class SafeFileChecker {
     }
 
     /**
-     * do an ESAPI path sanityCheck and prevent a path traversal attack
+     * Check that the submitted value is a plain file name, without any directory part
      *
-     * @param path full path representing a FileSystem resource
-     * @throws IOException thrown when any check fails with UnChecked or Runtime exception
+     * @param path file name, for example the original name of an uploaded file
+     * @throws InvalidFileSanitizeException when the value is null, empty or not a plain file name
      */
     public static void checkSafeFilePath(String path) {
         try {
@@ -62,27 +61,6 @@ public class SafeFileChecker {
             doPlainFileNameCheck(path);
         } catch (Exception ex) {
             throw new InvalidFileSanitizeException("Security check error : Invalid name (%s)".formatted(path));
-        }
-    }
-
-    /**
-     * do an ESAPI path sanityCheck and prevent a path traversal attack
-     *
-     * @param rootPath first or initial part(s) of a path representing a FileSystem resource
-     * @param subPaths sub (additional) parts after root part(s) to be joined to rootPath parameter
-     *                 using File.separator FileSystem String
-     * @throws IOException thrown when any check fails with UnChecked or Runtime exception
-     */
-    public static void checkSafeFilePath(String rootPath, String... subPaths) throws InvalidFileSanitizeException {
-        try {
-            checkNullParameter(rootPath);
-            String finalPath = rootPath;
-            if (subPaths != null && subPaths.length > 0) {
-                finalPath = finalPath + File.separator + Joiner.on(File.separator).join(subPaths);
-            }
-            checkSafeFilePath(finalPath);
-        } catch (Exception e) {
-            throw new InvalidFileSanitizeException(e.getMessage());
         }
     }
 
