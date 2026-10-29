@@ -1,9 +1,18 @@
 ---
 
-- name: Install common mongodb packages
+- name: Install mongosh package
   package:
     name:
       - mongodb-mongosh
+    state: latest
+  register: result
+  retries: "{{ packages_install_retries_number }}"
+  until: result is succeeded
+  delay: "{{ packages_install_retries_delay }}"
+
+- name: Install mongodb database tools
+  package:
+    name:
       - mongodb-database-tools
     state: present
   register: result
