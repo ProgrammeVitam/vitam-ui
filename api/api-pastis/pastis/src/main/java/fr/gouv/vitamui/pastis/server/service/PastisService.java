@@ -108,13 +108,13 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -295,9 +295,7 @@ public class PastisService {
             if (fileType.equals(ProfileType.PA)) {
                 // Only accept a plain file name inside rngLocation
                 SafeFileChecker.checkSafeFilePath(notice.getPath());
-                String rngFileName = Path.of(notice.getPath()).getFileName().toString();
-                InputStream inputStream = getClass().getClassLoader().getResourceAsStream(rngLocation + rngFileName);
-                InputSource inputSource = new InputSource(inputStream);
+                InputSource inputSource = new InputSource(findRngResource(notice.getPath()).getInputStream());
                 XMLReader xmlReader = createXmlReader(handler);
                 xmlReader.parse(inputSource);
                 profileResponse.setProfile(getJson.getJsonParsedTree(handler.getElementRNGRoot()));
@@ -456,6 +454,18 @@ public class PastisService {
         }
 
         return profileResponse;
+    }
+
+    private Resource findRngResource(String fileName) throws IOException {
+        Resource[] resources = ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources(
+            "classpath*:" + rngLocation + "*.*"
+        );
+        for (Resource resource : resources) {
+            if (fileName.equals(resource.getFilename())) {
+                return resource;
+            }
+        }
+        throw new FileNotFoundException("No profile file named " + fileName + " in " + rngLocation);
     }
 
     public List<Notice> getFiles() throws TechnicalException {
