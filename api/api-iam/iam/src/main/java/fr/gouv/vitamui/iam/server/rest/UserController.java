@@ -131,7 +131,7 @@ public class UserController implements CrudController<UserDto> {
 
     @Operation(operationId = "users_prepareSignedExportUsers", summary = "Prepare signed export users to xlsx file")
     @Secured(ServicesData.ROLE_GET_USERS)
-    @GetMapping(CommonConstants.PATH_EXPORT + "/signed-url")
+    @GetMapping(value = CommonConstants.PATH_EXPORT + "/signed-url", produces = MediaType.TEXT_PLAIN_VALUE)
     public String prepareSignedExportUsers(@RequestParam(required = false) final Optional<String> criteria) {
         LOGGER.debug("Prepare signed export all users to xlsx file");
 

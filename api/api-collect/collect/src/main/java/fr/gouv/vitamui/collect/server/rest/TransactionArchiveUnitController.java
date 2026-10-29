@@ -157,7 +157,10 @@ public class TransactionArchiveUnitController {
         );
     }
 
-    @PostMapping("/{transactionId}" + ARCHIVE_UNITS + EXPORT_CSV_SEARCH_PATH + "/signed-url")
+    @PostMapping(
+        value = "/{transactionId}" + ARCHIVE_UNITS + EXPORT_CSV_SEARCH_PATH + "/signed-url",
+        produces = MediaType.TEXT_PLAIN_VALUE
+    )
     @Secured(ServicesData.COLLECT_GET_ARCHIVE_SEARCH_ROLE)
     public String prepareSignedExportCsvArchiveUnitsByCriteria(
         final @PathVariable("transactionId") String transactionId,

@@ -214,7 +214,7 @@ public class AccessContractController {
     }
 
     @Operation(summary = "Prepare signed access contracts export URL")
-    @PostMapping(path = RestApi.EXPORT_CSV + "/signed-url")
+    @PostMapping(path = RestApi.EXPORT_CSV + "/signed-url", produces = MediaType.TEXT_PLAIN_VALUE)
     @Secured(ServicesData.ROLE_GET_ACCESS_CONTRACTS)
     public String prepareSignedExportAccessContracts(
         @RequestHeader(CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId
