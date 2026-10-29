@@ -98,6 +98,15 @@ public class SafeFileCheckerTest {
     }
 
     @Test
+    void checkNotPlainFileNames() {
+        for (String path : List.of(".", "..", "dir/file.json", "dir\\file.json", "/file.json", "file\0.json")) {
+            assertThatThrownBy(() -> SafeFileChecker.checkSafeFilePath(path)).isInstanceOf(
+                InvalidFileSanitizeException.class
+            );
+        }
+    }
+
+    @Test
     void checkValidRootPaths() {
         for (String rootPath : validPaths) {
             assertThatCode(() -> SafeFileChecker.checkSafeFilePath(rootPath, VALID_SUBPATH)).isInstanceOf(
