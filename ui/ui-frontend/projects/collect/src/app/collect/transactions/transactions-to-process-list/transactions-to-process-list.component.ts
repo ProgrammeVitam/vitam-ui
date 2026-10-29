@@ -67,7 +67,6 @@ import {
   TooltipDirective,
   Transaction,
   TransactionStatus,
-  TRANSACTION_STATUSES_TO_PROCESS,
   transactionStatusVisualColor,
   VitamuiMenuButtonComponent,
 } from 'vitamui-library';
@@ -134,7 +133,7 @@ export class TransactionsToProcessListComponent extends InfiniteScrollTable<Tran
   // filters :
   automaticIngestFilter: boolean[] = [];
   statusFilter: TransactionStatus[] = [];
-  readonly statusFilterOptions = TRANSACTION_STATUSES_TO_PROCESS;
+  readonly statusFilterOptions = Object.values(TransactionStatus);
 
   constructor() {
     const transactionsToProcessService = inject(TransactionsToProcessService);
@@ -234,7 +233,7 @@ export class TransactionsToProcessListComponent extends InfiniteScrollTable<Tran
   searchTransactions() {
     const criteria = JSON.stringify({
       query: this.currentQuery || null,
-      statuses: this.statusFilter.length > 0 ? this.statusFilter : TRANSACTION_STATUSES_TO_PROCESS,
+      statuses: this.statusFilter.length > 0 ? this.statusFilter : this.statusFilterOptions,
       automaticIngestValues: this.automaticIngestFilter,
     });
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.column, this.direction, criteria);

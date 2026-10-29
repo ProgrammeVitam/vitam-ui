@@ -60,12 +60,3 @@ export function transactionStatusVisualColor(status: TransactionStatus): 'green'
       return undefined;
   }
 }
-
-// Statuses of transactions that still need to be processed by the user (see the home page "transactions to process" tab)
-export const TRANSACTION_STATUSES_TO_PROCESS: TransactionStatus[] = [
-  TransactionStatus.OPEN,
-  TransactionStatus.READY,
-  TransactionStatus.KO,
-  TransactionStatus.ACK_KO,
-  TransactionStatus.ACK_OK,
-];
