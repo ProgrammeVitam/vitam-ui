@@ -31,6 +31,7 @@ package fr.gouv.vitamui.pastis.server.service;
 
 import fr.gouv.vitamui.commons.api.exception.InvalidFileSanitizeException;
 import fr.gouv.vitamui.pastis.common.dto.profiles.Notice;
+import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileResponse;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileType;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileVersion;
 import fr.gouv.vitamui.pastis.common.exception.TechnicalException;
@@ -43,6 +44,7 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
 class PastisServiceTest {
@@ -65,5 +67,22 @@ class PastisServiceTest {
         Notice notice = new Notice();
         notice.setPath(path);
         Assertions.assertThrows(InvalidFileSanitizeException.class, () -> pastisService.loadProfile(notice));
+    }
+
+    @Test
+    void loadProfile_should_load_rng_from_profile_directory() throws Exception {
+        ReflectionTestUtils.setField(pastisService, "rngLocation", "rng/");
+        Notice notice = new Notice();
+        notice.setPath("PA_Exemple.rng");
+        ProfileResponse profileResponse = pastisService.loadProfile(notice);
+        Assertions.assertNotNull(profileResponse.getProfile());
+    }
+
+    @Test
+    void loadProfile_with_unknown_file_should_fail() {
+        ReflectionTestUtils.setField(pastisService, "rngLocation", "rng/");
+        Notice notice = new Notice();
+        notice.setPath("unknown.rng");
+        Assertions.assertThrows(TechnicalException.class, () -> pastisService.loadProfile(notice));
     }
 }
