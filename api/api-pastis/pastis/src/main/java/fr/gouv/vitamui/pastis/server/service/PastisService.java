@@ -295,9 +295,10 @@ public class PastisService {
             if (fileType.equals(ProfileType.PA)) {
                 // Only accept a plain file name inside rngLocation
                 SafeFileChecker.checkSafeFilePath(notice.getPath());
-                InputSource inputSource = new InputSource(findRngResource(notice.getPath()).getInputStream());
                 XMLReader xmlReader = createXmlReader(handler);
-                xmlReader.parse(inputSource);
+                try (InputStream rngStream = findRngResource(notice.getPath()).getInputStream()) {
+                    xmlReader.parse(new InputSource(rngStream));
+                }
                 profileResponse.setProfile(getJson.getJsonParsedTree(handler.getElementRNGRoot()));
                 LOGGER.info("Starting editing Archive Profile with id : {}", notice.getId());
             } else if (fileType.equals(ProfileType.PUA)) {
