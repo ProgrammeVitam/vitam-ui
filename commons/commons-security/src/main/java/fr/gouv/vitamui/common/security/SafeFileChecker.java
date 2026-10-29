@@ -107,7 +107,7 @@ public class SafeFileChecker {
             ".".equals(path) ||
             "..".equals(path)
         ) {
-            LOGGER.error("Invalid path {} is not a plain file name", path);
+            LOGGER.error("Invalid path: not a plain file name");
             throw new IOException("Invalid path (%s) is not a plain file name".formatted(path));
         }
     }
