@@ -303,9 +303,11 @@ export class TransactionsToProcessListComponent extends InfiniteScrollTable<Tran
       .subscribe({
         next: (next) => {
           transaction.status = next.status;
+          this.searchTransactions();
         },
         error: () => {
           transaction.status = TransactionStatus.KO;
+          this.searchTransactions();
         },
       });
   }
@@ -318,9 +320,11 @@ export class TransactionsToProcessListComponent extends InfiniteScrollTable<Tran
           message: 'COLLECT.INGEST_TRANSACTION_LAUNCHED',
           duration: 10_000,
         });
+        this.searchTransactions();
       },
       () => {
         transaction.status = TransactionStatus.KO;
+        this.searchTransactions();
       },
     );
   }
@@ -333,9 +337,11 @@ export class TransactionsToProcessListComponent extends InfiniteScrollTable<Tran
           message: 'COLLECT.TRANSACTION_REOPENED',
           duration: 10_000,
         });
+        this.searchTransactions();
       },
       () => {
         transaction.status = TransactionStatus.KO;
+        this.searchTransactions();
       },
     );
   }
@@ -348,9 +354,11 @@ export class TransactionsToProcessListComponent extends InfiniteScrollTable<Tran
           message: 'COLLECT.TRANSACTION_ABORTED',
           duration: 10_000,
         });
+        this.searchTransactions();
       },
       () => {
         transaction.status = TransactionStatus.KO;
+        this.searchTransactions();
       },
     );
   }
