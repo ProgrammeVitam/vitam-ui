@@ -151,7 +151,7 @@ public class AccessionRegisterController {
         return accessionRegisterService.exportCsvArchiveUnitsByCriteria(query);
     }
 
-    @PostMapping(RestApi.DETAILS_EXPORT_CSV + "/signed-url")
+    @PostMapping(value = RestApi.DETAILS_EXPORT_CSV + "/signed-url", produces = MediaType.TEXT_PLAIN_VALUE)
     @Secured(ServicesData.ROLE_GET_ACCESSION_REGISTER_DETAIL)
     public String prepareSignedExportCsvArchiveUnitsByCriteria(
         @RequestHeader(CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,

@@ -187,7 +187,10 @@ public class ArchivesSearchController {
         return archiveSearchService.downloadObjectFromUnit(id, usage, version);
     }
 
-    @GetMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID + "/signed-url")
+    @GetMapping(
+        value = RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID + "/signed-url",
+        produces = MediaType.TEXT_PLAIN_VALUE
+    )
     @Secured(ServicesData.ARCHIVE_SEARCH_ROLE_GET_ARCHIVE_BINARY)
     public String prepareSignedDownloadObjectFromUnit(
         final @PathVariable("id") String id,
@@ -284,7 +287,7 @@ public class ArchivesSearchController {
         return archiveSearchUnitExportCsvService.exportToCsvSearchArchiveUnitsByCriteria(query);
     }
 
-    @PostMapping(RestApi.EXPORT_CSV_SEARCH_PATH + "/signed-url")
+    @PostMapping(value = RestApi.EXPORT_CSV_SEARCH_PATH + "/signed-url", produces = MediaType.TEXT_PLAIN_VALUE)
     @Secured(ServicesData.ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE)
     public String prepareSignedExportCsvArchiveUnitsByCriteria(final @RequestBody SearchCriteriaDto query)
         throws PreconditionFailedException, VitamClientException {
@@ -429,7 +432,11 @@ public class ArchivesSearchController {
 
     @Operation(summary = "Upload an ATR file for the transfer acknowledgment")
     @Secured(ServicesData.ROLE_TRANSFER_ACKNOWLEDGMENT)
-    @PostMapping(value = RestApi.TRANSFER_ACKNOWLEDGMENT, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @PostMapping(
+        value = RestApi.TRANSFER_ACKNOWLEDGMENT,
+        consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE,
+        produces = MediaType.TEXT_PLAIN_VALUE
+    )
     public String transferAcknowledgment(InputStream inputStream)
         throws PreconditionFailedException, VitamClientException {
         LOGGER.debug("[EXTERNAL] : Transfer Acknowledgment Operation");

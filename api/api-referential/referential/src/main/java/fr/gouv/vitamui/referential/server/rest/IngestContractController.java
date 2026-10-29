@@ -247,7 +247,7 @@ public class IngestContractController {
     }
 
     @Operation(summary = "Prepare signed ingest contracts export URL")
-    @PostMapping(path = RestApi.EXPORT_CSV + "/signed-url")
+    @PostMapping(path = RestApi.EXPORT_CSV + "/signed-url", produces = MediaType.TEXT_PLAIN_VALUE)
     @Secured(ServicesData.ROLE_GET_INGEST_CONTRACTS)
     public String prepareSignedExportIngestContracts(
         @RequestHeader(CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId

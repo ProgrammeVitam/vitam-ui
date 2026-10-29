@@ -115,7 +115,10 @@ public class ProjectObjectGroupController {
         );
     }
 
-    @PostMapping(DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID + "/signed-url")
+    @PostMapping(
+        value = DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID + "/signed-url",
+        produces = MediaType.TEXT_PLAIN_VALUE
+    )
     @Secured(ServicesData.COLLECT_ROLE_GET_ARCHIVE_BINARY)
     public String prepareSignedDownloadObjectFromUnit(
         final @PathVariable("id") String id,

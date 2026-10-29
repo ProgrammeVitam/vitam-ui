@@ -254,7 +254,10 @@ public class TransactionController {
 
     @Operation(summary = "Prepare signed URL to download SIP transaction as a zip file")
     @Secured(ServicesData.ROLE_DOWNLOAD_SIP_TRANSACTIONS)
-    @PostMapping(CommonConstants.PATH_ID + DOWNLOAD_SIP_PATH + "/signed-url")
+    @PostMapping(
+        value = CommonConstants.PATH_ID + DOWNLOAD_SIP_PATH + "/signed-url",
+        produces = MediaType.TEXT_PLAIN_VALUE
+    )
     public String prepareSignedDownloadSipTransaction(final @PathVariable("id") String id)
         throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
