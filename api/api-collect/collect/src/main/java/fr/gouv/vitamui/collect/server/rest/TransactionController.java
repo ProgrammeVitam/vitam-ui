@@ -218,11 +218,16 @@ public class TransactionController {
     }
 
     @Secured(ServicesData.ROLE_COLLECT_RECLASSIFICATION)
-    @PostMapping(CommonConstants.TRANSACTION_PATH_ID + "/reclassification")
+    @PostMapping(
+        value = CommonConstants.TRANSACTION_PATH_ID + "/reclassification",
+        produces = MediaType.TEXT_PLAIN_VALUE
+    )
     public String reclassification(
         final @PathVariable("transactionId") String transactionId,
         @RequestBody final ReclassificationCriteriaDto reclassificationCriteriaDto
     ) throws PreconditionFailedException, VitamClientException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, transactionId);
+        SanityChecker.checkSecureParameter(transactionId);
         ParameterChecker.checkParameter(MANDATORY_QUERY, reclassificationCriteriaDto);
         SanityChecker.sanitizeCriteria(reclassificationCriteriaDto);
         LOGGER.debug("Reclassification query {}", reclassificationCriteriaDto);
@@ -249,7 +254,10 @@ public class TransactionController {
 
     @Operation(summary = "Prepare signed URL to download SIP transaction as a zip file")
     @Secured(ServicesData.ROLE_DOWNLOAD_SIP_TRANSACTIONS)
-    @PostMapping(CommonConstants.PATH_ID + DOWNLOAD_SIP_PATH + "/signed-url")
+    @PostMapping(
+        value = CommonConstants.PATH_ID + DOWNLOAD_SIP_PATH + "/signed-url",
+        produces = MediaType.TEXT_PLAIN_VALUE
+    )
     public String prepareSignedDownloadSipTransaction(final @PathVariable("id") String id)
         throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);

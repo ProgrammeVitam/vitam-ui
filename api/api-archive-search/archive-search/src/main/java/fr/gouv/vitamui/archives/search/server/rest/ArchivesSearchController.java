@@ -187,7 +187,10 @@ public class ArchivesSearchController {
         return archiveSearchService.downloadObjectFromUnit(id, usage, version);
     }
 
-    @GetMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID + "/signed-url")
+    @GetMapping(
+        value = RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID + "/signed-url",
+        produces = MediaType.TEXT_PLAIN_VALUE
+    )
     @Secured(ServicesData.ARCHIVE_SEARCH_ROLE_GET_ARCHIVE_BINARY)
     public String prepareSignedDownloadObjectFromUnit(
         final @PathVariable("id") String id,
@@ -284,7 +287,7 @@ public class ArchivesSearchController {
         return archiveSearchUnitExportCsvService.exportToCsvSearchArchiveUnitsByCriteria(query);
     }
 
-    @PostMapping(RestApi.EXPORT_CSV_SEARCH_PATH + "/signed-url")
+    @PostMapping(value = RestApi.EXPORT_CSV_SEARCH_PATH + "/signed-url", produces = MediaType.TEXT_PLAIN_VALUE)
     @Secured(ServicesData.ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE)
     public String prepareSignedExportCsvArchiveUnitsByCriteria(final @RequestBody SearchCriteriaDto query)
         throws PreconditionFailedException, VitamClientException {
@@ -336,7 +339,7 @@ public class ArchivesSearchController {
         response.getOutputStream().write(resource.getContentAsByteArray());
     }
 
-    @PostMapping(RestApi.EXPORT_DIP)
+    @PostMapping(value = RestApi.EXPORT_DIP, produces = MediaType.TEXT_PLAIN_VALUE)
     @Secured(ServicesData.ROLE_EXPORT_DIP)
     public String exportDIPByCriteria(final @RequestBody ExportDipCriteriaDto exportDipCriteriaDto)
         throws PreconditionFailedException, VitamClientException {
@@ -346,7 +349,7 @@ public class ArchivesSearchController {
         return exportDipService.requestToExportDIP(exportDipCriteriaDto);
     }
 
-    @PostMapping(RestApi.TRANSFER_REQUEST)
+    @PostMapping(value = RestApi.TRANSFER_REQUEST, produces = MediaType.TEXT_PLAIN_VALUE)
     @Secured(ServicesData.ROLE_TRANSFER_REQUEST)
     public String transferRequest(final @RequestBody TransferRequestDto transferRequestDto)
         throws PreconditionFailedException, VitamClientException {
@@ -387,7 +390,7 @@ public class ArchivesSearchController {
         return archiveSearchEliminationService.startEliminationAction(query);
     }
 
-    @PostMapping(RestApi.MASS_UPDATE_UNITS_RULES)
+    @PostMapping(value = RestApi.MASS_UPDATE_UNITS_RULES, produces = MediaType.TEXT_PLAIN_VALUE)
     @Secured(ServicesData.ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT_ROLE)
     public String updateArchiveUnitsRules(final @RequestBody RuleSearchCriteriaDto ruleSearchCriteriaDto)
         throws PreconditionFailedException, VitamClientException {
@@ -397,7 +400,7 @@ public class ArchivesSearchController {
         return archiveSearchMgtRulesService.updateArchiveUnitsRules(ruleSearchCriteriaDto);
     }
 
-    @PostMapping(RestApi.COMPUTED_INHERITED_RULES)
+    @PostMapping(value = RestApi.COMPUTED_INHERITED_RULES, produces = MediaType.TEXT_PLAIN_VALUE)
     @Secured(ServicesData.ROLE_COMPUTED_INHERITED_RULES)
     public String computedInheritedRules(final @RequestBody SearchCriteriaDto searchCriteriaDto)
         throws PreconditionFailedException, VitamClientException {
@@ -417,7 +420,7 @@ public class ArchivesSearchController {
         return archiveSearchService.selectUnitWithInheritedRules(query);
     }
 
-    @PostMapping(RestApi.RECLASSIFICATION)
+    @PostMapping(value = RestApi.RECLASSIFICATION, produces = MediaType.TEXT_PLAIN_VALUE)
     @Secured(ServicesData.ROLE_RECLASSIFICATION)
     public String reclassification(@RequestBody final ReclassificationCriteriaDto reclassificationCriteriaDto)
         throws PreconditionFailedException, VitamClientException {
@@ -429,7 +432,11 @@ public class ArchivesSearchController {
 
     @Operation(summary = "Upload an ATR file for the transfer acknowledgment")
     @Secured(ServicesData.ROLE_TRANSFER_ACKNOWLEDGMENT)
-    @PostMapping(value = RestApi.TRANSFER_ACKNOWLEDGMENT, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @PostMapping(
+        value = RestApi.TRANSFER_ACKNOWLEDGMENT,
+        consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE,
+        produces = MediaType.TEXT_PLAIN_VALUE
+    )
     public String transferAcknowledgment(InputStream inputStream)
         throws PreconditionFailedException, VitamClientException {
         LOGGER.debug("[EXTERNAL] : Transfer Acknowledgment Operation");
@@ -467,7 +474,7 @@ public class ArchivesSearchController {
         return persistentIdentifierResponse;
     }
 
-    @PostMapping(RestApi.REASSIGNMENT_ACTION)
+    @PostMapping(value = RestApi.REASSIGNMENT_ACTION, produces = MediaType.TEXT_PLAIN_VALUE)
     @Secured(ServicesData.ROLE_ORIGINATING_AGENCY_REASSIGNMENT)
     public String reassignOriginatingAgency(final @RequestBody ReassignRequestDto reassignRequestDto)
         throws VitamClientException {
@@ -475,7 +482,7 @@ public class ArchivesSearchController {
         return archiveSearchService.reassignOriginatingAgency(reassignRequestDto);
     }
 
-    @PostMapping(RestApi.PRESERVATION)
+    @PostMapping(value = RestApi.PRESERVATION, produces = MediaType.TEXT_PLAIN_VALUE)
     @Secured(ServicesData.ROLE_LAUNCH_PRESERVATION)
     public String launchPreservation(final @Valid @RequestBody PreservationRequestDto preservationRequestDto)
         throws VitamClientException {

@@ -44,6 +44,7 @@ import fr.gouv.vitam.access.external.common.exception.AccessExternalClientExcept
 import fr.gouv.vitam.access.external.common.exception.AccessExternalNotFoundException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.vitam.api.administration.VitamProfileCommonService;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
@@ -107,6 +108,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -291,12 +293,12 @@ public class PastisService {
             JSONObject profileJson = new JSONObject(s);
 
             if (fileType.equals(ProfileType.PA)) {
-                InputStream inputStream = getClass()
-                    .getClassLoader()
-                    .getResourceAsStream(rngLocation + notice.getPath());
-                InputSource inputSource = new InputSource(inputStream);
+                // Only accept a plain file name inside rngLocation
+                SafeFileChecker.checkSafeFilePath(notice.getPath());
                 XMLReader xmlReader = createXmlReader(handler);
-                xmlReader.parse(inputSource);
+                try (InputStream rngStream = findRngResource(notice.getPath()).getInputStream()) {
+                    xmlReader.parse(new InputSource(rngStream));
+                }
                 profileResponse.setProfile(getJson.getJsonParsedTree(handler.getElementRNGRoot()));
                 LOGGER.info("Starting editing Archive Profile with id : {}", notice.getId());
             } else if (fileType.equals(ProfileType.PUA)) {
@@ -453,6 +455,18 @@ public class PastisService {
         }
 
         return profileResponse;
+    }
+
+    private Resource findRngResource(String fileName) throws IOException {
+        Resource[] resources = ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources(
+            "classpath*:" + rngLocation + "*.*"
+        );
+        for (Resource resource : resources) {
+            if (fileName.equals(resource.getFilename())) {
+                return resource;
+            }
+        }
+        throw new FileNotFoundException("No profile file named " + fileName + " in " + rngLocation);
     }
 
     public List<Notice> getFiles() throws TechnicalException {

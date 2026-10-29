@@ -166,7 +166,10 @@ public class ProfileController {
         return profileService.download(id);
     }
 
-    @GetMapping(RestApi.DOWNLOAD_PROFILE + CommonConstants.PATH_ID + "/signed-url")
+    @GetMapping(
+        value = RestApi.DOWNLOAD_PROFILE + CommonConstants.PATH_ID + "/signed-url",
+        produces = MediaType.TEXT_PLAIN_VALUE
+    )
     @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
     public String prepareSignedDownload(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {

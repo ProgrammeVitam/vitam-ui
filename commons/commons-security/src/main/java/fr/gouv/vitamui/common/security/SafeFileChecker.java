@@ -26,7 +26,6 @@
  */
 package fr.gouv.vitamui.common.security;
 
-import com.google.common.base.Joiner;
 import fr.gouv.vitamui.commons.api.exception.InvalidFileSanitizeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,38 +50,17 @@ public class SafeFileChecker {
     }
 
     /**
-     * do an ESAPI path sanityCheck and prevent a path traversal attack
+     * Check that the submitted value is a plain file name, without any directory part
      *
-     * @param path full path representing a FileSystem resource
-     * @throws IOException thrown when any check fails with UnChecked or Runtime exception
+     * @param path file name, for example the original name of an uploaded file
+     * @throws InvalidFileSanitizeException when the value is null, empty or not a plain file name
      */
     public static void checkSafeFilePath(String path) {
         try {
             checkNullParameter(path);
-            doCanonicalPathCheck(path);
+            doPlainFileNameCheck(path);
         } catch (Exception ex) {
             throw new InvalidFileSanitizeException("Security check error : Invalid name (%s)".formatted(path));
-        }
-    }
-
-    /**
-     * do an ESAPI path sanityCheck and prevent a path traversal attack
-     *
-     * @param rootPath first or initial part(s) of a path representing a FileSystem resource
-     * @param subPaths sub (additional) parts after root part(s) to be joined to rootPath parameter
-     *                 using File.separator FileSystem String
-     * @throws IOException thrown when any check fails with UnChecked or Runtime exception
-     */
-    public static void checkSafeFilePath(String rootPath, String... subPaths) throws InvalidFileSanitizeException {
-        try {
-            checkNullParameter(rootPath);
-            String finalPath = rootPath;
-            if (subPaths != null && subPaths.length > 0) {
-                finalPath = finalPath + File.separator + Joiner.on(File.separator).join(subPaths);
-            }
-            checkSafeFilePath(finalPath);
-        } catch (Exception e) {
-            throw new InvalidFileSanitizeException(e.getMessage());
         }
     }
 
@@ -93,17 +71,22 @@ public class SafeFileChecker {
     }
 
     /**
-     * check recursive/out of submitted root path to avoid Path Traversal attack
+     * check that the submitted path is a plain file name, to avoid Path Traversal attack.
+     * The check is done on the string only, without resolving it against the file system.
      *
      * @param path
      * @throws IOException
      */
-    private static void doCanonicalPathCheck(String path) throws IOException {
-        String canonicalPath = new File(path).getCanonicalFile().getName();
-
-        if (!path.equals(canonicalPath)) {
-            LOGGER.error("Invalid path {} did not match canonical : {}", path, canonicalPath);
-            throw new IOException("Invalid path (%s) did not match canonical : %s".formatted(path, canonicalPath));
+    private static void doPlainFileNameCheck(String path) throws IOException {
+        if (
+            path.indexOf('/') >= 0 ||
+            path.indexOf('\\') >= 0 ||
+            path.indexOf('\0') >= 0 ||
+            ".".equals(path) ||
+            "..".equals(path)
+        ) {
+            LOGGER.error("Invalid path: not a plain file name");
+            throw new IOException("Invalid path (%s) is not a plain file name".formatted(path));
         }
     }
 
