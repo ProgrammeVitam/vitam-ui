@@ -114,6 +114,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -294,9 +295,8 @@ public class PastisService {
             if (fileType.equals(ProfileType.PA)) {
                 // Only accept a plain file name inside rngLocation
                 SafeFileChecker.checkSafeFilePath(notice.getPath());
-                InputStream inputStream = getClass()
-                    .getClassLoader()
-                    .getResourceAsStream(rngLocation + notice.getPath());
+                String rngFileName = Path.of(notice.getPath()).getFileName().toString();
+                InputStream inputStream = getClass().getClassLoader().getResourceAsStream(rngLocation + rngFileName);
                 InputSource inputSource = new InputSource(inputStream);
                 XMLReader xmlReader = createXmlReader(handler);
                 xmlReader.parse(inputSource);
