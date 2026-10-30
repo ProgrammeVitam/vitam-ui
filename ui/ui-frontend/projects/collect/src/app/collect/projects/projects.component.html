@@ -33,7 +33,10 @@
       <div class="mt-3">
         <mat-tab-group class="vitamui-tab-group" [(selectedIndex)]="selectedTabIndex">
           <mat-tab [label]="'COLLECT.PROJECTS_TAB_LABEL' | translate: { nb: projectListComponent()?.totalElements() ?? 0 }">
-            <app-project-list (previewProjectDetailsPanel)="openProjectDetailsPanel($event)"></app-project-list>
+            <app-project-list
+              [tenantIdentifier]="tenantIdentifier"
+              (previewProjectDetailsPanel)="openProjectDetailsPanel($event)"
+            ></app-project-list>
           </mat-tab>
           <mat-tab
             [label]="

@@ -207,7 +207,7 @@ export class TransactionsToProcessListComponent extends InfiniteScrollTable<Tran
   }
 
   sortTable() {
-    const direction: number = this.direction === Direction.ASCENDANT ? -1 : 1;
+    const direction: number = this.direction === Direction.ASCENDANT ? 1 : -1;
     this.dataSource.update((transactions) =>
       [...(transactions ?? [])].sort((a, b) => {
         return a[this.column] === b[this.column] ? 0 : a[this.column] > b[this.column] ? direction : -direction;

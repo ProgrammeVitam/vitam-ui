@@ -198,6 +198,9 @@ public class TransactionService {
         Optional<DirectionDto> direction,
         VitamContext vitamContext
     ) {
+        if (page == null || page < 0 || size == null || size <= 0) {
+            throw new BadRequestException("Invalid page or size parameter");
+        }
         try {
             final CriteriaTransactionDto criteriaTransactionDto = new CriteriaTransactionDto();
 
@@ -206,7 +209,7 @@ public class TransactionService {
                 return new PaginatedValuesDto<>(Collections.emptyList(), 0, 0, false);
             }
             final ArrayList<String> originatingAgencies = Optional.of(accessContractModel)
-                .filter(accessContract -> !accessContract.getEveryOriginatingAgency())
+                .filter(accessContract -> !Boolean.TRUE.equals(accessContract.getEveryOriginatingAgency()))
                 .map(accessContract -> new ArrayList<>(accessContract.getOriginatingAgencies()))
                 .orElse(null);
             criteriaTransactionDto.setOriginatingAgencies(originatingAgencies);
@@ -255,6 +258,7 @@ public class TransactionService {
                 .sorted(
                     DirectionDto.ASC.equals(direction.orElse(DirectionDto.DESC)) ? comparator : comparator.reversed()
                 )
+                .limit(MAX_RESULTS)
                 .collect(Collectors.toList());
 
             final int totalElements = collectTransactionDtos.size();
