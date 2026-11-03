@@ -234,6 +234,11 @@
     "DATA": "Data",
     "TEMPLATE": "Template",
     "SCHEMA": "Schema",
+    "MODE": {
+      "data-driven": "the displayed structure follows the data structure, the template is ignored",
+      "template-driven": "only the fields mapped by the template are displayed, following its structure",
+      "mixed-driven": "mapped fields follow the template, then unmapped fields follow the data structure (here status and address)"
+    },
     "LABEL": {
       "IDENTIFICATION": "Identification",
       "IDENTIFIER": "Identifier",

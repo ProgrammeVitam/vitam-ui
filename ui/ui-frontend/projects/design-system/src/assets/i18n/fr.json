@@ -234,6 +234,11 @@
     "DATA": "Données",
     "TEMPLATE": "Template",
     "SCHEMA": "Schéma",
+    "MODE": {
+      "data-driven": "la structure affichée suit celle des données, le template est ignoré",
+      "template-driven": "seuls les champs mappés par le template sont affichés, selon sa structure",
+      "mixed-driven": "les champs mappés suivent le template, puis les champs non mappés suivent la structure des données (ici status et address)"
+    },
     "LABEL": {
       "IDENTIFICATION": "Identification",
       "IDENTIFIER": "Identifiant",

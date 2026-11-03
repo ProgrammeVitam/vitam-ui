@@ -430,6 +430,7 @@ export * from './app/modules/subrogation/subrogation.module';
 export * from './app/modules/object-viewer/services/type.service';
 export * from './app/modules/object-viewer/models/display-object.model';
 export * from './app/modules/object-viewer/models/display-rule.model';
+export * from './app/modules/object-viewer/models/display-object.enum';
 export * from './app/modules/object-editor/pattern.validator';
 export * from './app/modules/object-editor/models/edit-object.model';
 export * from './app/modules/object-editor/services/edit-object.service';
