@@ -74,13 +74,13 @@ public class OwnerServiceIntegrationTest extends AbstractLogbookIntegrationTest 
     @Mock
     private HttpContext httpContext;
 
-    @MockitoBean
+    @Mock
     private SequenceGeneratorService sequenceGeneratorService;
 
     @MockitoBean
     private TenantRepository tenantRepository;
 
-    @MockitoBean
+    @Mock
     private LogbookService logbookService;
 
     @BeforeEach

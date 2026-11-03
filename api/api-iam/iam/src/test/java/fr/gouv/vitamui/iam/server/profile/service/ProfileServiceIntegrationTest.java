@@ -38,6 +38,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -87,25 +88,25 @@ public class ProfileServiceIntegrationTest extends AbstractLogbookIntegrationTes
     @Autowired
     private ProfileConverter profileConverter;
 
-    @MockitoBean
+    @Mock
     private GroupRepository groupRepository;
 
-    @MockitoBean
+    @Mock
     private UserRepository userRepository;
 
-    @MockitoBean
+    @Mock
     private SequenceGeneratorService sequenceGeneratorService;
 
-    @MockitoBean
+    @Mock
     private CustomerRepository customerRepository;
 
     @MockitoBean
     private TenantRepository tenantRepository;
 
-    @MockitoBean
+    @Mock
     private HttpContext httpContext;
 
-    @MockitoBean
+    @Mock
     private CustomSequenceRepository sequenceRepository;
 
     private static final Integer TENANT_IDENTIFIER = 10;

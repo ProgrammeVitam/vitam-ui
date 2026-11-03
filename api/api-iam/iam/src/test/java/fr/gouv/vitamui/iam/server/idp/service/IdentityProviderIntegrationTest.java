@@ -55,13 +55,13 @@ public class IdentityProviderIntegrationTest extends AbstractLogbookIntegrationT
     @MockitoBean
     private TenantRepository tenantRepository;
 
-    @MockitoBean
+    @Mock
     private SequenceGeneratorService sequenceGeneratorService;
 
     @Mock
     private HttpContext httpContext;
 
-    @MockitoBean
+    @Mock
     private SpMetadataGenerator spMetadataGenerator;
 
     @Autowired
@@ -69,10 +69,10 @@ public class IdentityProviderIntegrationTest extends AbstractLogbookIntegrationT
 
     private IdentityProviderService service;
 
-    @MockitoBean
+    @Mock
     private ConnectionHistoryService connectionHistoryService;
 
-    @MockitoBean
+    @Mock
     private UserRepository userRepository;
 
     @BeforeEach

@@ -63,7 +63,7 @@ public class CustomerServiceIntegrationTest extends AbstractLogbookIntegrationTe
 
     private CustomerService service;
 
-    @MockitoBean
+    @Mock
     private InitCustomerService initCustomerService;
 
     @Autowired
@@ -93,7 +93,7 @@ public class CustomerServiceIntegrationTest extends AbstractLogbookIntegrationTe
     @MockitoBean
     private TenantRepository tenantRepository;
 
-    @MockitoBean
+    @Mock
     private LogbookService logbookService;
 
     @BeforeEach

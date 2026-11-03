@@ -26,6 +26,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,13 +59,13 @@ public class SubrogationServiceIntegrationTest extends AbstractLogbookIntegratio
     @Autowired
     private SubrogationRepository repository;
 
-    @MockitoBean
+    @Mock
     private GroupRepository groupRepository;
 
     @MockitoBean
     private UserRepository userRepository;
 
-    @MockitoBean
+    @Mock
     private SequenceGeneratorService sequenceGeneratorService;
 
     private final CustomerRepository customerRepository = mock(CustomerRepository.class);
@@ -74,13 +75,13 @@ public class SubrogationServiceIntegrationTest extends AbstractLogbookIntegratio
     @Autowired
     private IamLogbookService iamLogbookService;
 
-    @MockitoBean
+    @Mock
     private UserService userService;
 
-    @MockitoBean
+    @Mock
     private GroupService groupService;
 
-    @MockitoBean
+    @Mock
     private ProfileRepository profilRepository;
 
     @Autowired

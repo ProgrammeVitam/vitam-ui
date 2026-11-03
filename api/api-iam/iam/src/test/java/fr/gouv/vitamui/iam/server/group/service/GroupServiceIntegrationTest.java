@@ -82,7 +82,7 @@ public class GroupServiceIntegrationTest extends AbstractLogbookIntegrationTest 
     @Autowired
     private CustomSequenceRepository sequenceRepository;
 
-    @MockitoBean
+    @Mock
     private UserRepository userRepository;
 
     @Mock
