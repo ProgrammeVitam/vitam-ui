@@ -232,6 +232,7 @@
     "VIEWER": "Consultation",
     "EDITOR": "Édition",
     "DATA": "Données",
+    "PROJECTED_DATA": "Données projetées (valeur du formulaire)",
     "TEMPLATE": "Template",
     "SCHEMA": "Schéma",
     "MODE": {

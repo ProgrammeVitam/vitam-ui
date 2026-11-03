@@ -16,6 +16,12 @@
       <div class="mt-3">
         <vitamui-common-object-viewer [data]="data()" [template]="template" [mode]="mode()"></vitamui-common-object-viewer>
       </div>
+
+      <h3>{{ 'OBJECT_VIEWER.DATA' | translate }}</h3>
+      <pre>{{ data() | json }}</pre>
+
+      <h3>{{ 'OBJECT_VIEWER.TEMPLATE' | translate }}</h3>
+      <pre>{{ template | json }}</pre>
     </div>
   </mat-tab>
 
@@ -25,15 +31,15 @@
       <div class="mt-3">
         <vitamui-common-object-editor [editObject]="editObject"></vitamui-common-object-editor>
       </div>
+
+      <h3>{{ 'OBJECT_VIEWER.PROJECTED_DATA' | translate }}</h3>
+      <pre>{{ projectedData() | json }}</pre>
+
+      <h3>{{ 'OBJECT_VIEWER.TEMPLATE' | translate }}</h3>
+      <pre>{{ template | json }}</pre>
+
+      <h3>{{ 'OBJECT_VIEWER.SCHEMA' | translate }}</h3>
+      <pre>{{ schema | json }}</pre>
     </div>
   </mat-tab>
 </mat-tab-group>
-
-<h3>{{ 'OBJECT_VIEWER.DATA' | translate }}</h3>
-<pre>{{ data() | json }}</pre>
-
-<h3>{{ 'OBJECT_VIEWER.TEMPLATE' | translate }}</h3>
-<pre>{{ template | json }}</pre>
-
-<h3>{{ 'OBJECT_VIEWER.SCHEMA' | translate }}</h3>
-<pre>{{ schema | json }}</pre>
