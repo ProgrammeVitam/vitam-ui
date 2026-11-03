@@ -47,6 +47,7 @@
       "TITLE": "Organismes",
       "dialog.TITLE": "Dialog",
       "discussion.TITLE": "Discussion",
+      "object-viewer.TITLE": "Object viewer / editor",
       "snackbar.TITLE": "Snackbar",
       "table.TITLE": "Tableau",
       "tab-group.TITLE": "Tab group"
@@ -225,5 +226,24 @@
     "INVALID_FILE_NAME": "Nom du fichier invalide. Nom attendu : \"{{expectedFileName}}\"",
     "INVALID_CSV": "Fichier CSV invalide",
     "INVALID_CSV_DETAIL": "Détail des erreurs identifiées : <ul>{{detail}}</ul>"
+  },
+  "OBJECT_VIEWER": {
+    "INTRO": "Le viewer affiche des données selon un template (DisplayRule[]). L'éditeur génère un formulaire (EditObject) à partir des données projetées, du template et d'un schéma. Les modifications faites dans l'éditeur sont répercutées dans le viewer.",
+    "VIEWER": "Consultation",
+    "EDITOR": "Édition",
+    "DATA": "Données",
+    "TEMPLATE": "Template",
+    "SCHEMA": "Schéma",
+    "LABEL": {
+      "IDENTIFICATION": "Identification",
+      "IDENTIFIER": "Identifiant",
+      "NAME": "Nom",
+      "OTHER_NAMES": "Autres noms",
+      "LANGUAGES": "Langues",
+      "DESCRIPTION": "Description",
+      "FROM_DATE": "Date de début",
+      "TO_DATE": "Date de fin",
+      "MAX_LENGTH_10": "10 caractères maximum"
+    }
   }
 }

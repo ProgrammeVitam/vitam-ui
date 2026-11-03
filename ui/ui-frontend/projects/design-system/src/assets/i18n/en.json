@@ -47,6 +47,7 @@
       "TITLE": "Organisms",
       "dialog.TITLE": "Dialog",
       "discussion.TITLE": "Discussion",
+      "object-viewer.TITLE": "Object viewer / editor",
       "snackbar.TITLE": "Snackbar",
       "table.TITLE": "Table",
       "tab-group.TITLE": "Tab group"
@@ -225,5 +226,24 @@
     "INVALID_FILE_NAME": "Invalid file name. Expected name: \"{{expectedFileName}}\"",
     "INVALID_CSV": "Invalid CSV file",
     "INVALID_CSV_DETAIL": "Identified errors detail: <ul>{{detail}}</ul>"
+  },
+  "OBJECT_VIEWER": {
+    "INTRO": "The viewer displays data according to a template (DisplayRule[]). The editor builds a form (EditObject) from the projected data, the template and a schema. Changes made in the editor are reflected in the viewer.",
+    "VIEWER": "View",
+    "EDITOR": "Edit",
+    "DATA": "Data",
+    "TEMPLATE": "Template",
+    "SCHEMA": "Schema",
+    "LABEL": {
+      "IDENTIFICATION": "Identification",
+      "IDENTIFIER": "Identifier",
+      "NAME": "Name",
+      "OTHER_NAMES": "Other names",
+      "LANGUAGES": "Languages",
+      "DESCRIPTION": "Description",
+      "FROM_DATE": "Start date",
+      "TO_DATE": "End date",
+      "MAX_LENGTH_10": "10 characters maximum"
+    }
   }
 }
