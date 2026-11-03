@@ -1123,10 +1123,10 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
             .setAccessContract(securityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
             .setApplicationSessionId(securityService.getApplicationId());
 
-        final Optional<User> user = getRepository().findById(id);
-        user.orElseThrow(() -> new NotFoundException("No user found with id : %s".formatted(id)));
+        // getOne applies the same customer/level restrictions as an ordinary read.
+        final UserDto user = getOne(id);
         return logbookService.findEventsByIdentifierAndCollectionNames(
-            user.get().getIdentifier(),
+            user.getIdentifier(),
             MongoDbCollections.USERS,
             vitamContext,
             USER_OPERATIONS_EVENT_TYPES.stream().map(Enum::name).collect(Collectors.toList())

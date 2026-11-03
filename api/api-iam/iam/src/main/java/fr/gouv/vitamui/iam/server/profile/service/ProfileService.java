@@ -535,16 +535,16 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
             id,
             vitamContext.getApplicationSessionId()
         );
-        final Optional<Profile> profile = getRepository().findById(id);
-        profile.orElseThrow(() -> new NotFoundException("No user found with id : %s".formatted(id)));
+        // getOne applies the same customer/tenant/level restrictions as an ordinary read.
+        final ProfileDto profile = getOne(id);
         LOGGER.debug(
             "findHistoryById : events.obId {}, events.obIdReq {}, VitamContext {}",
-            profile.get().getIdentifier(),
+            profile.getIdentifier(),
             MongoDbCollections.PROFILES,
             vitamContext
         );
         return logbookService.findEventsByIdentifierAndCollectionNames(
-            profile.get().getIdentifier(),
+            profile.getIdentifier(),
             MongoDbCollections.PROFILES,
             vitamContext,
             List.of(EventType.EXT_VITAMUI_CREATE_PROFILE.name(), EventType.EXT_VITAMUI_UPDATE_PROFILE.name())

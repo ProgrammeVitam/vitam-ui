@@ -2,6 +2,7 @@ package fr.gouv.vitamui.iam.server.group.service;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.group.dao.GroupRepository;
@@ -22,15 +23,16 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
- * {@code GroupService.getLevels} and {@code ProfileService.getLevels} build their criteria like the
- * ordinary reads, so the returned levels are restricted to the caller's customer.
+ * Levels and history of groups and profiles are restricted to the caller's customer, like the ordinary
+ * reads.
  */
 @SpringBootTest
 @ActiveProfiles("test")
 @Import(VitamClientTestConfig.class)
-class GroupAndProfileLevelsScopeTest extends AbstractLogbookIntegrationTest {
+class GroupAndProfileCustomerScopeTest extends AbstractLogbookIntegrationTest {
 
     private static final String CUSTOMER_A = "customerA-caller";
     private static final String CUSTOMER_B = "customerB-other";
@@ -48,9 +50,11 @@ class GroupAndProfileLevelsScopeTest extends AbstractLogbookIntegrationTest {
 
     private ProfileService profileService;
 
+    private SecurityService securityServiceMock;
+
     @BeforeEach
     void setUp() {
-        final SecurityService securityServiceMock = Mockito.mock(SecurityService.class);
+        securityServiceMock = Mockito.mock(SecurityService.class);
         groupService = new GroupService(
             null,
             groupRepository,
@@ -86,6 +90,10 @@ class GroupAndProfileLevelsScopeTest extends AbstractLogbookIntegrationTest {
         Mockito.lenient()
             .when(securityServiceMock.hasRole(ServicesData.ROLE_GET_PROFILES_ALL_TENANTS))
             .thenReturn(false);
+        Mockito.lenient()
+            .when(securityServiceMock.getTenant(Mockito.any()))
+            .thenReturn(IamServerUtilsTest.buildTenantDto());
+        Mockito.lenient().when(securityServiceMock.getApplicationId()).thenReturn("app");
 
         groupRepository.save(IamServerUtilsTest.buildGroup("groupA", "1", "Group A", CUSTOMER_A, LEVEL_A));
         groupRepository.save(IamServerUtilsTest.buildGroup("groupB", "2", "Group B", CUSTOMER_B, LEVEL_B));
@@ -133,5 +141,15 @@ class GroupAndProfileLevelsScopeTest extends AbstractLogbookIntegrationTest {
 
         assertThat(levels).contains(LEVEL_A);
         assertThat(levels).doesNotContain(LEVEL_B);
+    }
+
+    @Test
+    void history_of_another_customers_group_is_not_found() {
+        assertThatThrownBy(() -> groupService.findHistoryById("groupB")).isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void history_of_another_customers_profile_is_not_found() {
+        assertThatThrownBy(() -> profileService.findHistoryById("profileB")).isInstanceOf(NotFoundException.class);
     }
 }

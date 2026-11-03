@@ -648,10 +648,10 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
             .setAccessContract(securityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
             .setApplicationSessionId(securityService.getApplicationId());
 
-        final Optional<Group> group = getRepository().findById(id);
-        group.orElseThrow(() -> new NotFoundException("No group found with id : %s".formatted(id)));
+        // getOne applies the same customer/level restrictions as an ordinary read.
+        final GroupDto group = getOne(id);
         return logbookService.findEventsByIdentifierAndCollectionNames(
-            group.get().getIdentifier(),
+            group.getIdentifier(),
             MongoDbCollections.GROUPS,
             vitamContext,
             List.of(EXT_VITAMUI_CREATE_GROUP.name(), EXT_VITAMUI_UPDATE_GROUP.name())
