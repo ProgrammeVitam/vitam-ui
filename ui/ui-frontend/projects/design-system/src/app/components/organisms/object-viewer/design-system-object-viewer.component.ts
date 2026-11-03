@@ -34,16 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { JsonPipe } from '@angular/common';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { map } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
-import { EditObject, EditObjectService, ObjectEditorModule, ObjectViewerModule, TemplateService } from 'vitamui-library';
+import { EditObject, EditObjectService, Mode, ObjectEditorModule, ObjectViewerModule, TemplateService } from 'vitamui-library';
 import { sampleData, sampleSchema, sampleTemplate } from './object-viewer.sample';
 
 @Component({
-  imports: [ObjectViewerModule, ObjectEditorModule, JsonPipe, TranslatePipe],
+  imports: [ObjectViewerModule, ObjectEditorModule, JsonPipe, TranslatePipe, MatRadioGroup, MatRadioButton],
   templateUrl: './design-system-object-viewer.component.html',
   styles: `
     pre {
@@ -59,6 +60,9 @@ export class DesignSystemObjectViewerComponent {
   protected readonly template = sampleTemplate;
   protected readonly schema = sampleSchema;
 
+  protected readonly modes = Object.values(Mode);
+  protected readonly mode = signal<Mode>(Mode.TEMPLATE_DRIVEN);
+
   protected readonly editObject: EditObject = this.editObjectService.editObject(
     '',
     this.templateService.toProjected(sampleData, sampleTemplate),
@@ -66,9 +70,14 @@ export class DesignSystemObjectViewerComponent {
     this.editObjectService.createTemplateSchema(sampleTemplate, sampleSchema),
   );
 
-  /** Edited data, mapped back to the original structure, so that the viewer reflects the editor changes. */
+  /**
+   * Edited data, mapped back to the original structure, so that the viewer reflects the editor changes.
+   * Merged into the original data to keep the fields not mapped by the template.
+   */
   protected readonly data = toSignal(
-    this.editObject.control.valueChanges.pipe(map((value) => this.templateService.toOriginal(value, sampleTemplate))),
+    this.editObject.control.valueChanges.pipe(
+      map((value) => ({ ...sampleData, ...this.templateService.toOriginal(value, sampleTemplate) })),
+    ),
     { initialValue: sampleData },
   );
 }

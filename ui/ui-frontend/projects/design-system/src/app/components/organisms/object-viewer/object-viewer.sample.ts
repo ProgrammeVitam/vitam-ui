@@ -40,7 +40,10 @@ type ComponentType = DisplayRule['ui']['component'];
 
 const LABEL = 'OBJECT_VIEWER.LABEL';
 
-/** Original data, as returned by an API. */
+/**
+ * Original data, as returned by an API.
+ * `status` and `address` are not mapped by the template: they are only displayed in data-driven and mixed-driven modes.
+ */
 export const sampleData = {
   identifier: 'FRAD075',
   name: 'Archives de Paris',
@@ -49,6 +52,12 @@ export const sampleData = {
   description: 'Service chargé de la collecte, de la conservation et de la communication des archives de Paris.',
   fromDate: '1860-01-01',
   toDate: '2024-12-31',
+  status: 'ACTIVE',
+  address: {
+    street: '18 boulevard Sérurier',
+    zipCode: '75019',
+    city: 'Paris',
+  },
 };
 
 /** A virtual group (Path: null) only exists in the projected structure, to organize fields. */
