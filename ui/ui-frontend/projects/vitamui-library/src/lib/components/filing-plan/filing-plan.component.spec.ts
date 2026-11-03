@@ -166,6 +166,23 @@ describe('FilingPlanComponent', () => {
         fixture.componentRef.setInput('mode', FilingPlanMode.BOTH);
       });
 
+      it('should keep non-root included and excluded nodes when the tree is loaded after the value', () => {
+        // Given: a saved value with a non-root included node and an excluded child, written before the tree is loaded
+        component.nestedDataSource.data = [];
+        component.writeValue({ included: ['rootId', 'rootChild-2'], excluded: ['rootChild-1'] });
+
+        // When: the tree is loaded
+        component.setNodes(nodes);
+
+        // Then: the excluded child and its descendants stay unchecked
+        expect(nodes[0].checked).toBeTruthy();
+        expect(nodes[0].children[0].checked).toBeFalsy();
+        expect(nodes[0].children[1].checked).toBeTruthy();
+        expect(nodes[0].children[0].children[0].checked).toBeFalsy();
+        expect(nodes[0].children[0].children[1].checked).toBeFalsy();
+        expect(component.selectedNodes).toEqual({ included: ['rootId', 'rootChild-2'], excluded: ['rootChild-1'] });
+      });
+
       it('should check all nodes when select root node', () => {
         // When: Check root node + emit update
         nodes[0].checked = true;
