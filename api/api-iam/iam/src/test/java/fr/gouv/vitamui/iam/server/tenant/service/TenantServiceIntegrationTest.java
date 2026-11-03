@@ -57,7 +57,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.HashMap;
 import java.util.List;
@@ -122,37 +121,37 @@ public class TenantServiceIntegrationTest extends AbstractLogbookIntegrationTest
     @Mock
     private CustomerRepository customerRepository;
 
-    @MockitoBean
+    @Mock
     private GroupRepository groupRepository;
 
-    @MockitoBean
+    @Mock
     private ProfileRepository profileRepository;
 
     @Mock
     private UserService userService;
 
-    @MockitoBean
+    @Mock
     private OwnerRepository ownerRepository;
 
-    @MockitoBean
+    @Mock
     private UserRepository userRepository;
 
-    @MockitoBean
+    @Mock
     private InitVitamTenantService initVitamTenantService;
 
-    @MockitoBean
+    @Mock
     private LogbookService logbookService;
 
-    @MockitoBean
+    @Mock
     private CustomerInitConfig customerInitConfig;
 
-    @MockitoBean
+    @Mock
     private ExternalParametersRepository externalParametersRepository;
 
-    @MockitoBean
+    @Mock
     private ExternalParametersService externalParametersService;
 
-    @MockitoBean
+    @Mock
     private ConfigurationService configurationService;
 
     @BeforeEach
