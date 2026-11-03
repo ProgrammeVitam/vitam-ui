@@ -157,6 +157,7 @@ public class ProfileController {
     }
 
     @GetMapping(RestApi.DOWNLOAD_PROFILE + CommonConstants.PATH_ID)
+    @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
     public ResponseEntity<Resource> download(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException, AccessExternalNotFoundException, AccessExternalClientException {
         ParameterChecker.checkParameter("Event Identifier is mandatory : ", id);
