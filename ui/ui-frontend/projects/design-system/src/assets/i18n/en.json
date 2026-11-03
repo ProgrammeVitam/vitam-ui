@@ -232,7 +232,9 @@
     "VIEWER": "View",
     "EDITOR": "Edit",
     "DATA": "Data",
+    "ORIGINAL_DATA": "Original data (toProjected input)",
     "PROJECTED_DATA": "Projected data (form value)",
+    "RECONSTITUTED_DATA": "Reconstituted data (toOriginal output, to send on save)",
     "TEMPLATE": "Template",
     "SCHEMA": "Schema",
     "MODE": {

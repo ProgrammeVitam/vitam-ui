@@ -57,6 +57,7 @@ export class DesignSystemObjectViewerComponent {
   private readonly editObjectService = inject(EditObjectService);
   private readonly templateService = inject(TemplateService);
 
+  protected readonly originalData = sampleData;
   protected readonly template = sampleTemplate;
   protected readonly schema = sampleSchema;
 

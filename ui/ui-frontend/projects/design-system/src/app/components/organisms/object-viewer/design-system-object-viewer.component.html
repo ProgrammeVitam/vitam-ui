@@ -32,8 +32,14 @@
         <vitamui-common-object-editor [editObject]="editObject"></vitamui-common-object-editor>
       </div>
 
+      <h3>{{ 'OBJECT_VIEWER.ORIGINAL_DATA' | translate }}</h3>
+      <pre>{{ originalData | json }}</pre>
+
       <h3>{{ 'OBJECT_VIEWER.PROJECTED_DATA' | translate }}</h3>
       <pre>{{ projectedData() | json }}</pre>
+
+      <h3>{{ 'OBJECT_VIEWER.RECONSTITUTED_DATA' | translate }}</h3>
+      <pre>{{ data() | json }}</pre>
 
       <h3>{{ 'OBJECT_VIEWER.TEMPLATE' | translate }}</h3>
       <pre>{{ template | json }}</pre>
