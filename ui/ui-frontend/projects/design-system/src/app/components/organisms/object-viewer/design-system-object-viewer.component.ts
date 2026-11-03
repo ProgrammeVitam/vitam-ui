@@ -42,9 +42,20 @@ import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { TranslatePipe } from '@ngx-translate/core';
 import { EditObject, EditObjectService, Mode, ObjectEditorModule, ObjectViewerModule, TemplateService } from 'vitamui-library';
 import { sampleData, sampleSchema, sampleTemplate } from './object-viewer.sample';
+import { ObjectViewerPlaygroundComponent } from './object-viewer-playground.component';
 
 @Component({
-  imports: [ObjectViewerModule, ObjectEditorModule, JsonPipe, TranslatePipe, MatRadioGroup, MatRadioButton, MatTabGroup, MatTab],
+  imports: [
+    ObjectViewerModule,
+    ObjectEditorModule,
+    JsonPipe,
+    TranslatePipe,
+    MatRadioGroup,
+    MatRadioButton,
+    MatTabGroup,
+    MatTab,
+    ObjectViewerPlaygroundComponent,
+  ],
   templateUrl: './design-system-object-viewer.component.html',
   styles: `
     pre {
