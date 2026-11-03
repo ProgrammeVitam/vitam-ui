@@ -177,6 +177,10 @@ npm run test:identity -- --watch
 - Every commit message must include a **Tuleap ticket number** matching `#[0-9]{4,5}` (e.g. `#12345`). This is enforced on pull requests by `.github/workflows/commit-message-check.yml`.
 - Recommended format: `Story #XXXXX: <imperative description>` (e.g. `Story #12345: Clean code - foo bar`).
 
+## Pull Requests
+
+- Every pull request must have a **milestone**: the current iteration (`IT NNN`), i.e. the open milestone with the nearest due date. List them with `gh api repos/ProgrammeVitam/vitam-ui/milestones --jq '.[] | "\(.title)\t\(.due_on)"'` and pass `--milestone "IT NNN"` to `gh pr create`.
+
 ## Maven Profiles
 
 - `dev` - Full build with frontend, dev optimizations
