@@ -11,7 +11,7 @@ install_mode: legacy
 # vitam_repositories:
 #   - key: repo1 # Mandatory: Only on CentOS/AlmaLinux/RockyLinux
 #     value: http://path_to_repo1 # Mandatory: Path to the repository
-#     gpgcheck: 1 # Optionnal: Default to 0 (equivalent as [trusted=yes] on Debian)
+#     gpgcheck: 1 # Optionnal: Default to 0 (equivalent as [trusted=yes] on Debian). Enabling it is recommended to verify package signatures
 #     gpgkey: path_to_custom_key # Optionnal: Only if gpgcheck is enabled; Default to official Vitam GPG Key
 #     subtree: "./" # Optionnal: Only on Debian; Default to ./
 #     proxy: http://proxy_url # Optionnal: Only on CentOS/AlmaLinux/RockyLinux; Default to _none_
@@ -21,5 +21,6 @@ install_mode: legacy
 #   registry_url:
 #   username:
 #   password:
+#   tls_verify: true # Optionnal: Set to false only if the registry is not served over HTTPS with a trusted certificate (registry then declared in docker "insecure-registries")
 # Add vitamui_container_version for specific container version deployment (default: latest)
 vitamui_container_version: '10.0.0-SNAPSHOT'
