@@ -9,7 +9,7 @@
 }
 
 @if (display === 'ACCORDION') {
-  <vitamui-common-accordion [opened]="displayObject().open">
+  <vitamui-common-accordion [(opened)]="opened">
     <span class="title">{{ displayObject().displayRule.ui.label | translate | empty }}</span>
     @if (favoriteEntry) {
       <div class="title-extra v-col align-items-center favorite-entry">{{ favoritePath | translate }}: {{ favoriteEntry[1] | empty }}</div>
