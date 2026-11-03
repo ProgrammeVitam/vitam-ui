@@ -64,7 +64,7 @@ public class SSLConfiguration {
     @Valid
     private CertificateStoreConfiguration truststore;
 
-    private boolean hostnameVerification;
+    private boolean hostnameVerification = true;
 
     @Getter
     @Setter
