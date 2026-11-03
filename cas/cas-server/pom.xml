@@ -29,7 +29,8 @@
         <slf4j.version>2.0.9</slf4j.version>
         <logback.version>1.4.14</logback.version>
         <logstash.logback.encoder.version>8.0</logstash.logback.encoder.version>
-        <jackson.version>2.16.1</jackson.version>
+        <jackson.version>2.22.4</jackson.version>
+        <bouncycastle.version>1.86</bouncycastle.version>
         <lombok.version>1.18.36</lombok.version>
         <jakarta.mail.version>2.0.1</jakarta.mail.version>
         <groovy.version>4.0.17</groovy.version>
@@ -74,6 +75,33 @@
                 <scope>import</scope>
             </dependency>
 
+            <!--
+                Jackson and Bouncy Castle are declared before the CAS BOM so these versions win over the ones it
+                manages (security fixes). Their jars are excluded from the overlay below to avoid duplicates.
+            -->
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk18on</artifactId>
+                <version>${bouncycastle.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcpkix-jdk18on</artifactId>
+                <version>${bouncycastle.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcutil-jdk18on</artifactId>
+                <version>${bouncycastle.version}</version>
+            </dependency>
+
             <!-- CAS BOM -->
             <dependency>
                 <groupId>org.apereo.cas</groupId>
@@ -95,13 +123,6 @@
                 <groupId>org.apache.groovy</groupId>
                 <artifactId>groovy-bom</artifactId>
                 <version>${groovy.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson</groupId>
-                <artifactId>jackson-bom</artifactId>
-                <version>${jackson.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -837,6 +858,9 @@
                             <artifactId>cas-server-webapp-tomcat</artifactId>
                             <excludes>
                                 <exclude>WEB-INF/classes/services/*.json</exclude>
+                                <exclude>WEB-INF/lib/bcpkix-jdk18on-*.jar</exclude>
+                                <exclude>WEB-INF/lib/bcprov-jdk18on-*.jar</exclude>
+                                <exclude>WEB-INF/lib/bcutil-jdk18on-*.jar</exclude>
                                 <exclude>WEB-INF/lib/cas-server-core-logging-api-*.jar</exclude>
                                 <exclude>WEB-INF/lib/commons-io-*.jar</exclude>
                                 <exclude>WEB-INF/lib/jackson-*.jar</exclude>
