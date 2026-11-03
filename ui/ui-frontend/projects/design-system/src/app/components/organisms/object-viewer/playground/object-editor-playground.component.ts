@@ -37,7 +37,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { JsonPipe } from '@angular/common';
-import { map, of, startWith, switchMap } from 'rxjs';
+import { of, startWith, switchMap } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DisplayRule, EditObject, EditObjectService, ObjectEditorModule, ProfiledSchemaElement, TemplateService } from 'vitamui-library';
 import { sampleData, sampleSchema, sampleTemplate } from '../object-viewer.sample';
@@ -51,14 +51,20 @@ import { JsonInputsComponent } from './json-inputs.component';
     <design-system-json-inputs [inputs]="[data, template, schema]" />
 
     <h3 class="mt-3">{{ 'OBJECT_VIEWER.EDITOR' | translate }}</h3>
+    <code>&lt;vitamui-common-object-editor [editObject]="editObject"&gt;</code>
     @if (editor().error; as error) {
       <p class="text-danger">{{ error }}</p>
     }
     @if (editor().value; as editObject) {
-      <vitamui-common-object-editor [editObject]="editObject"></vitamui-common-object-editor>
+      <div class="mt-3">
+        <vitamui-common-object-editor [editObject]="editObject"></vitamui-common-object-editor>
+      </div>
+
+      <h3>{{ 'OBJECT_VIEWER.PROJECTED_DATA' | translate }}</h3>
+      <pre>{{ projectedData() | json }}</pre>
 
       <h3>{{ 'OBJECT_VIEWER.RECONSTITUTED_DATA' | translate }}</h3>
-      <pre>{{ editedData() | json }}</pre>
+      <pre>{{ reconstitutedData() | json }}</pre>
     }
   `,
   styles: `
@@ -98,13 +104,23 @@ export class ObjectEditorPlaygroundComponent {
     }
   });
 
-  /** Editor value, mapped back to the original structure. */
-  protected readonly editedData = toSignal(
+  /** Form value, in the projected structure defined by the template. */
+  protected readonly projectedData = toSignal(
     toObservable(this.editor).pipe(
       switchMap(({ value: editObject }) =>
         editObject ? editObject.control.valueChanges.pipe(startWith(editObject.control.value)) : of(undefined),
       ),
-      map((value) => (value === undefined ? undefined : this.templateService.toOriginal(value, this.template.parsed().value))),
     ),
   );
+
+  /**
+   * Form value, mapped back to the original structure: this is what would be sent on save.
+   * Merged into the original data to keep the fields not mapped by the template.
+   */
+  protected readonly reconstitutedData = computed(() => {
+    const projectedData = this.projectedData();
+    if (projectedData === undefined) return undefined;
+
+    return { ...(this.data.parsed().value as object), ...this.templateService.toOriginal(projectedData, this.template.parsed().value) };
+  });
 }

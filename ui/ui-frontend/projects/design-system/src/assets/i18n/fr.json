@@ -228,20 +228,17 @@
     "INVALID_CSV_DETAIL": "Détail des erreurs identifiées : <ul>{{detail}}</ul>"
   },
   "OBJECT_VIEWER": {
-    "INTRO": "Le viewer affiche des données selon un template (DisplayRule[]). L'éditeur génère un formulaire (EditObject) à partir des données projetées, du template et d'un schéma. Les modifications faites dans l'éditeur sont répercutées dans le viewer.",
+    "INTRO": "Le viewer affiche des données selon un template (DisplayRule[]). L'éditeur génère un formulaire (EditObject) à partir des données projetées par le template et d'un schéma.",
     "VIEWER": "Consultation",
     "EDITOR": "Édition",
     "DATA": "Données",
     "EXPAND_ALL": "Tout déplier",
     "COLLAPSE_ALL": "Tout replier",
-    "ORIGINAL_DATA": "Données d'origine (entrée de toProjected)",
     "PROJECTED_DATA": "Données projetées (valeur du formulaire)",
     "RECONSTITUTED_DATA": "Données reconstituées (sortie de toOriginal, à envoyer à l'enregistrement)",
     "TEMPLATE": "Template",
     "SCHEMA": "Schéma",
     "PLAYGROUND": {
-      "VIEWER": "Playground consultation",
-      "EDITOR": "Playground édition",
       "INTRO": "Modifiez les entrées (JSON) : le composant est recalculé à chaque saisie.",
       "RESET": "Réinitialiser",
       "INVALID_JSON": "JSON invalide"
