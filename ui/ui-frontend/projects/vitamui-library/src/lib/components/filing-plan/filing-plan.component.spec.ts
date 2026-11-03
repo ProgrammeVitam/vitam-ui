@@ -167,6 +167,28 @@ describe('FilingPlanComponent', () => {
         component.mode = FilingPlanMode.BOTH;
       });
 
+      it('should keep nested exclusions when the tree is loaded after the value', () => {
+        // Given: a value with a nested exclusion, written before the tree is loaded
+        component.writeValue({ included: ['rootId'], excluded: ['rootChild-1'] });
+
+        // When: the tree is loaded, then another child is unselected
+        component.setNodes(nodes);
+        nodes[0].children[1].checked = false;
+        component.emitVitamId(nodes[0].children[1]);
+
+        // Then: the previous exclusion is kept
+        expect(component.selectedNodes.included).toEqual(['rootId']);
+        expect(component.selectedNodes.excluded).toEqual(['rootChild-1', 'rootChild-2']);
+      });
+
+      it('should drop selected nodes that are not in the tree anymore', () => {
+        component.writeValue({ included: ['rootId', 'unknown-1'], excluded: ['leaf-2', 'unknown-2'] });
+
+        component.setNodes(nodes);
+
+        expect(component.selectedNodes).toEqual({ included: ['rootId'], excluded: ['leaf-2'] });
+      });
+
       it('should check all nodes when select root node', () => {
         // When: Check root node + emit update
         nodes[0].checked = true;
