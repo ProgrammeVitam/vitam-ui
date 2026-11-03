@@ -29,26 +29,26 @@
                     <rng:zeroOrMore>
                         <rng:element name="BinaryDataObject">
                             <rng:attribute name="id">
-<rng:data type="ID"/>
+                                <rng:data type="ID"/>
                             </rng:attribute>
                             <rng:optional>
-<rng:element name="DataObjectVersion">
-    <xsd:annotation>
-        <xsd:documentation>BinaryMaster par défaut</xsd:documentation>
-    </xsd:annotation>
-    <rng:data type="token"/>
-</rng:element>
+                                <rng:element name="DataObjectVersion">
+                                    <xsd:annotation>
+                                        <xsd:documentation>BinaryMaster par défaut</xsd:documentation>
+                                    </xsd:annotation>
+                                    <rng:data type="token"/>
+                                </rng:element>
                             </rng:optional>
                             <rng:optional>
-<rng:element name="Uri">
-    <rng:data type="anyURI"/>
-</rng:element>
+                                <rng:element name="Uri">
+                                    <rng:data type="anyURI"/>
+                                </rng:element>
                             </rng:optional>
                             <rng:element name="MessageDigest">
-<rng:data type="base64Binary"/>
-<rng:attribute name="algorithm">
-    <rng:data type="token"/>
-</rng:attribute>
+                                <rng:data type="base64Binary"/>
+                                <rng:attribute name="algorithm">
+                                    <rng:data type="token"/>
+                                </rng:attribute>
                             </rng:element>
                         </rng:element>
                     </rng:zeroOrMore>
@@ -57,19 +57,19 @@
                     <rng:zeroOrMore>
                         <rng:element name="ArchiveUnit">
                             <rng:attribute name="id">
-<rng:data type="ID"/>
+                                <rng:data type="ID"/>
                             </rng:attribute>
                             <rng:element name="Content">
-<rng:optional>
-    <rng:element name="DescriptionLevel">
-        <rng:data type="token"/>
-    </rng:element>
-</rng:optional>
-<rng:optional>
-    <rng:element name="Title">
-        <rng:data type="string"/>
-    </rng:element>
-</rng:optional>
+                                <rng:optional>
+                                    <rng:element name="DescriptionLevel">
+                                        <rng:data type="token"/>
+                                    </rng:element>
+                                </rng:optional>
+                                <rng:optional>
+                                    <rng:element name="Title">
+                                        <rng:data type="string"/>
+                                    </rng:element>
+                                </rng:optional>
                             </rng:element>
                         </rng:element>
                     </rng:zeroOrMore>
