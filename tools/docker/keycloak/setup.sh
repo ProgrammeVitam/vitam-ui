@@ -282,8 +282,9 @@ curl -sf "${KEYCLOAK_BASE_URL}/realms/${KEYCLOAK_REALM}/protocol/saml/descriptor
 
 echo "==> Rendering ${MONGO_SCRIPT}"
 SP_KEYSTORE_BASE64="$(base64 -w0 "$KEYSTORE_FILE")"
-IDP_METADATA_XML="$(cat "$IDP_METADATA_FILE")"
-export SP_KEYSTORE_BASE64 IDP_METADATA_XML
+# Base64 keeps the XML out of the javascript syntax of the rendered script
+IDP_METADATA_BASE64="$(base64 -w0 "$IDP_METADATA_FILE")"
+export SP_KEYSTORE_BASE64 IDP_METADATA_BASE64
 
 # Restricted variable list: the template is javascript, an unrestricted envsubst
 # would eat every mongo operator ($set, $inc...).
@@ -293,7 +294,7 @@ envsubst '
   ${OIDC_USER_EMAIL} ${SAML_USER_EMAIL}
   ${OIDC_CLIENT_ID} ${OIDC_CLIENT_SECRET}
   ${KEYCLOAK_BASE_URL} ${KEYCLOAK_REALM}
-  ${SP_KEYSTORE_BASE64} ${SP_KEYSTORE_PASSWORD} ${IDP_METADATA_XML}
+  ${SP_KEYSTORE_BASE64} ${SP_KEYSTORE_PASSWORD} ${IDP_METADATA_BASE64}
   ${VITAMUI_REFERENCE_USER_EMAIL} ${VITAMUI_CUSTOMER_ID} ${VITAMUI_GROUP_ID}
   ${MONGO_DB}
 ' <provision/vitamui-providers.js.tpl >"$MONGO_SCRIPT"
