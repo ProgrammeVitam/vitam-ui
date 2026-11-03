@@ -240,7 +240,9 @@
     "TEMPLATE": "Template",
     "SCHEMA": "Schéma",
     "PLAYGROUND": {
-      "INTRO": "Modifiez les données, le template et le schéma (JSON) : le viewer et l'éditeur sont recalculés à chaque saisie.",
+      "VIEWER": "Playground consultation",
+      "EDITOR": "Playground édition",
+      "INTRO": "Modifiez les entrées (JSON) : le composant est recalculé à chaque saisie.",
       "RESET": "Réinitialiser",
       "INVALID_JSON": "JSON invalide"
     },

@@ -42,7 +42,8 @@ import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { TranslatePipe } from '@ngx-translate/core';
 import { EditObject, EditObjectService, Mode, ObjectEditorModule, ObjectViewerModule, TemplateService } from 'vitamui-library';
 import { sampleData, sampleSchema, sampleTemplate } from './object-viewer.sample';
-import { ObjectViewerPlaygroundComponent } from './object-viewer-playground.component';
+import { ObjectViewerPlaygroundComponent } from './playground/object-viewer-playground.component';
+import { ObjectEditorPlaygroundComponent } from './playground/object-editor-playground.component';
 
 @Component({
   imports: [
@@ -55,6 +56,7 @@ import { ObjectViewerPlaygroundComponent } from './object-viewer-playground.comp
     MatTabGroup,
     MatTab,
     ObjectViewerPlaygroundComponent,
+    ObjectEditorPlaygroundComponent,
   ],
   templateUrl: './design-system-object-viewer.component.html',
   styles: `
