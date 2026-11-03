@@ -76,8 +76,25 @@ class CasServiceDelegatedIdentityTest {
         );
     }
 
+    @Test
+    void refusesWhenTheProviderIsDisabled() {
+        givenProvider("email", "sub", false);
+        final DelegatedIdpContextDto delegatedIdp = context(
+            Map.of("email", List.of(EMAIL), "sub", List.of("technical-42"))
+        );
+
+        assertThatThrownBy(() -> casService.resolveDelegatedIdentity(delegatedIdp, EMAIL)).isInstanceOf(
+            InvalidAuthenticationException.class
+        );
+    }
+
     private void givenProvider(final String mailAttribute, final String identifierAttribute) {
+        givenProvider(mailAttribute, identifierAttribute, true);
+    }
+
+    private void givenProvider(final String mailAttribute, final String identifierAttribute, final boolean enabled) {
         final IdentityProviderDto provider = new IdentityProviderDto();
+        provider.setEnabled(enabled);
         provider.setId(PROVIDER_ID);
         provider.setTechnicalName("keycloak-oidc");
         provider.setMailAttribute(mailAttribute);
