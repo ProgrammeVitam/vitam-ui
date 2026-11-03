@@ -5,6 +5,7 @@ import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.domain.configuration.VitamConfigurationDto;
@@ -166,6 +167,8 @@ public final class TenantCrudControllerTest implements CrudControllerTest {
         );
 
         when(customerService.getMany(tenantDto.getCustomerId())).thenReturn(Arrays.asList(new CustomerDto()));
+        // Tenants are administrated here by an instance administrator, allowed on every customer.
+        when(securityService.hasRole(ServicesData.ROLE_UPDATE_TENANTS_ALL_CUSTOMERS)).thenReturn(true);
 
         when(sequenceGeneratorService.getNextSequenceId(anyString(), anyInt())).thenReturn(1);
 
