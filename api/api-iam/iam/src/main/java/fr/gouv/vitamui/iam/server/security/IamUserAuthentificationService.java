@@ -38,6 +38,7 @@ package fr.gouv.vitamui.iam.server.security;
 
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.security.service.UserAuthenticationService;
@@ -152,6 +153,7 @@ public class IamUserAuthentificationService implements UserAuthenticationService
 
     private AuthUserDto getUserByToken(final Token token) {
         final UserDto userDto = userService.findUserById(token.getRefId());
+        rejectIneligibleAccount(userDto);
         final AuthUserDto authUserDto = userService.loadGroupAndProfiles(userDto);
         if (token.isSurrogation()) {
             final String surrogateEmail = userDto.getEmail();
@@ -172,5 +174,17 @@ public class IamUserAuthentificationService implements UserAuthenticationService
         userService.addTenantsByAppInformation(authUserDto);
         authUserDto.setAuthToken(token.getRefId());
         return authUserDto;
+    }
+
+    /**
+     * Refuse to build an authenticated identity for an account that is no longer eligible. Disabling
+     * or logically removing an account must stop its outstanding tokens from being accepted, even
+     * though those tokens are not deleted eagerly.
+     */
+    private void rejectIneligibleAccount(final UserDto userDto) {
+        final UserStatusEnum status = userDto.getStatus();
+        if (status == UserStatusEnum.DISABLED || status == UserStatusEnum.REMOVED) {
+            throw new BadCredentialsException("Account is not eligible for authentication: status=" + status);
+        }
     }
 }
