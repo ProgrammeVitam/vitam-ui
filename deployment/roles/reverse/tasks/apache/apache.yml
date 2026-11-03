@@ -111,6 +111,14 @@
   with_fileglob:
     - "{{ inventory_dir }}/certs/vitamui-services/ca/*.crt"
 
+- name: Copy the CA bundle used to verify the backend certificates
+  copy:
+    content: "{% for ca in query('fileglob', inventory_dir + '/certs/vitamui-services/ca/*.crt') | sort %}{{ lookup('file', ca) }}\n{% endfor %}"
+    dest: "/etc/{{ apache_service }}/ca/{{ vitamui_site_name }}-bundle.crt"
+    owner: "{{ apache_user }}"
+    mode: 0400
+  when: vitamui_proxy_ssl_verify | default(true) | bool
+
 - name: copy httpd configuration template
   template:
     src: "apache/httpd_config"

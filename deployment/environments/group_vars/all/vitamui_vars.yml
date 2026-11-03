@@ -7,6 +7,11 @@ deployment_mode: prod
 
 single_vm_hostnames: [ "localhost" ]
 
+# When the reverse proxy and the UI frontends forward requests over HTTPS (CAS server, API gateway),
+# verify the backend certificate chain against the CA certificates of {{ inventory_dir }}/certs/vitamui-services/ca/.
+# Set to false only if the backend certificates are not issued by one of these CA.
+vitamui_proxy_ssl_verify: true
+
 pki_dir: "{{ inventory_dir }}/certs"
 
 ################################################################################

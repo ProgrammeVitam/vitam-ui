@@ -40,6 +40,12 @@ server {
     {% if vitamui.api_gateway.secure | default(secure) | bool %}
     set $api_gateway_dns "vitamui-{{ vitamui.api_gateway.vitamui_component }}.service.{{ consul_domain }}";
     proxy_pass https://$api_gateway_dns:{{ vitamui.api_gateway.port_service }};
+    {% if vitamui_proxy_ssl_verify | default(true) | bool %}
+    proxy_ssl_verify on;
+    proxy_ssl_verify_depth 3;
+    proxy_ssl_trusted_certificate {{ nginx_ssl_dir }}/vitamui-ca.crt;
+    proxy_ssl_server_name on;
+    {% endif %}
     {% else %}
     proxy_pass http://API-GATEWAY;
     {% endif %}
