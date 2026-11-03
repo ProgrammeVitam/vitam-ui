@@ -117,6 +117,8 @@ import org.springframework.webflow.definition.registry.FlowDefinitionRegistry;
 import org.springframework.webflow.engine.builder.support.FlowBuilderServices;
 import org.springframework.webflow.execution.Action;
 
+import java.time.Duration;
+
 /**
  * Webflow customizations.
  */
@@ -437,8 +439,12 @@ public class WebflowConfig {
     }
 
     @Bean
-    public Action checkMfaTokenAction(final TicketRegistry ticketRegistry) {
-        return new CheckMfaTokenAction(ticketRegistry);
+    public Action checkMfaTokenAction(
+        final TicketRegistry ticketRegistry,
+        @Value("${vitamui.mfa.max-failed-attempts:5}") final int maxFailedAttempts,
+        @Value("${vitamui.mfa.failed-attempts-retention:PT15M}") final Duration failedAttemptsRetention
+    ) {
+        return new CheckMfaTokenAction(ticketRegistry, maxFailedAttempts, failedAttemptsRetention);
     }
 
     @Bean
