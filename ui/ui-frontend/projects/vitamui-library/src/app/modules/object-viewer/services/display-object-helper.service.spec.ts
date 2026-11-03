@@ -480,4 +480,56 @@ describe('DisplayObjectHelperService', () => {
       });
     });
   });
+
+  describe('mixedDrivenDisplayObject', () => {
+    const rule = (path: string, uiPath: string): DisplayRule => ({
+      Path: path,
+      ui: { Path: uiPath, component: 'textfield', layout: { columns: 1, size: 'medium' }, open: true, display: true, label: uiPath },
+    });
+
+    it('should display fields mapped by the template only once, followed by the unmapped fields', () => {
+      const data = { identifier: 'FRAD075', name: 'Archives de Paris', status: 'ACTIVE', address: { city: 'Paris' } };
+      const template = [
+        rule('', ''),
+        rule(null, 'Identification'),
+        rule('identifier', 'Identification.Identifier'),
+        rule('name', 'Identification.Name'),
+      ];
+
+      const displayObject = service.mixedDrivenDisplayObject(data, template);
+
+      expect(displayObject.value).toEqual({
+        Identification: { Identifier: 'FRAD075', Name: 'Archives de Paris' },
+        status: 'ACTIVE',
+        address: { city: 'Paris' },
+      });
+      expect(Object.keys(displayObject.value)).toEqual(['Identification', 'status', 'address']);
+    });
+
+    it('should keep the unmapped fields of a group whose other fields are mapped', () => {
+      const data = { address: { street: '18 boulevard Sérurier', city: 'Paris' }, contact: { email: 'contact@example.org' } };
+      const template = [rule('', ''), rule('address.city', 'City'), rule('contact.email', 'Email')];
+
+      const displayObject = service.mixedDrivenDisplayObject(data, template);
+
+      expect(displayObject.value).toEqual({
+        City: 'Paris',
+        Email: 'contact@example.org',
+        address: { street: '18 boulevard Sérurier' },
+      });
+    });
+
+    it('should display the data as is when the template does not rename the mapped fields', () => {
+      const data = { identifier: 'FRAD075', status: 'ACTIVE' };
+      const template = [rule('', ''), rule('identifier', 'identifier')];
+
+      const displayObject = service.mixedDrivenDisplayObject(data, template);
+
+      expect(displayObject.value).toEqual(data);
+    });
+
+    it('should not fail when data is null', () => {
+      expect(() => service.mixedDrivenDisplayObject(null, [rule('', ''), rule('identifier', 'Identifier')])).not.toThrow();
+    });
+  });
 });

@@ -119,7 +119,11 @@ export class DisplayObjectHelperService {
   }
 
   public mixedDrivenDisplayObject(data: any, template: DisplayRule[], configuration = { displayEmptyValues: true }): DisplayObject {
-    const dataDisplayObject = this.dataDrivenDisplayObject(data, configuration);
+    // Fields mapped by the template are displayed by the template only, the data structure is used for the other ones.
+    const unmappedData = (template || [])
+      .filter((displayRule) => displayRule.Path)
+      .reduce((acc, displayRule) => this.omitPath(acc, displayRule.Path.split('.')), data);
+    const dataDisplayObject = this.dataDrivenDisplayObject(unmappedData, configuration);
     const templateDisplayObject = this.templateDrivenDisplayObject(data, template, configuration);
     const dataDisplayObjectValue = dataDisplayObject?.value || {};
     const templateDisplayObjectValue = templateDisplayObject?.value || {};
@@ -148,6 +152,21 @@ export class DisplayObjectHelperService {
     }
 
     return template;
+  }
+
+  /** Returns a copy of data without the given path, keeping keys order and removing the groups left empty. */
+  private omitPath(data: any, [key, ...subPath]: string[]): any {
+    if (!data || !this.typeService.isGroup(data) || !(key in data)) return data;
+
+    return Object.entries(data).reduce((acc, [currentKey, value]) => {
+      if (currentKey !== key) return { ...acc, [currentKey]: value };
+      if (!subPath.length) return acc;
+
+      const subData = this.omitPath(value, subPath);
+      const isEmptyGroup = this.typeService.isGroup(subData) && Object.keys(subData).length === 0;
+
+      return isEmptyGroup ? acc : { ...acc, [currentKey]: subData };
+    }, {});
   }
 
   private mapValueToUiPath(data: any, displayRule: DisplayRule) {
