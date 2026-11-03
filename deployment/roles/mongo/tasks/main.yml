@@ -40,7 +40,7 @@
     state: directory
     owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ '0777' if install_mode == 'container' else vitam_defaults.folder.folder_permission }}"
+    mode: "{{ vitam_defaults.folder.folder_permission }}"
   with_items:
     - app
     - bin
@@ -59,7 +59,7 @@
     state: directory
     owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ '0777' if install_mode == 'container' else vitam_defaults.folder.folder_permission }}"
+    mode: "{{ vitam_defaults.folder.folder_permission }}"
   register: mongod_db_directory
   tags: update_mongodb_configuration
 
