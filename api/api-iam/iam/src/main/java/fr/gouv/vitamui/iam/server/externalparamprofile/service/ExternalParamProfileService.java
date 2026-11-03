@@ -126,10 +126,11 @@ public class ExternalParamProfileService {
         final DirectionDto direction
     ) {
         final Integer tenantIdentifier = securityService.getTenantIdentifier();
-        QueryDto queryDto = QueryDto.fromJson(criteria);
-        queryDto.addQuery(
-            QueryDto.andQuery().addCriterion("tenantIdentifier", tenantIdentifier, CriterionOperator.EQUALS)
-        );
+        // The tenant restriction is the root AND query, so the operator of the requested criteria
+        // only applies inside it.
+        final QueryDto queryDto = QueryDto.andQuery()
+            .addCriterion("tenantIdentifier", tenantIdentifier, CriterionOperator.EQUALS);
+        queryDto.addQuery(QueryDto.fromJson(criteria));
         return externalParamProfileRepository.getAllPaginated(page, size, queryDto.toJson(), orderBy, direction);
     }
 
@@ -187,10 +188,14 @@ public class ExternalParamProfileService {
 
     public ExternalParamProfileDto getOne(final String id) {
         LOGGER.debug("get one with id : {}", id);
+        // Same customer/tenant/level restrictions as an ordinary profile read.
+        profileService.getOne(id);
         return externalParamProfileRepository.findByIdProfile(id);
     }
 
     public List<HistoryEventDto> findHistoryById(final String id) throws VitamClientException {
+        // Same customer/tenant/level restrictions as an ordinary profile read.
+        profileService.getOne(id);
         final Integer tenantIdentifier = securityService.getTenantIdentifier();
         final VitamContext vitamContext = new VitamContext(tenantIdentifier)
             .setAccessContract(securityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
