@@ -38,13 +38,14 @@ import { Component, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { JsonPipe } from '@angular/common';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { map } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
 import { EditObject, EditObjectService, Mode, ObjectEditorModule, ObjectViewerModule, TemplateService } from 'vitamui-library';
 import { sampleData, sampleSchema, sampleTemplate } from './object-viewer.sample';
 
 @Component({
-  imports: [ObjectViewerModule, ObjectEditorModule, JsonPipe, TranslatePipe, MatRadioGroup, MatRadioButton],
+  imports: [ObjectViewerModule, ObjectEditorModule, JsonPipe, TranslatePipe, MatRadioGroup, MatRadioButton, MatTabGroup, MatTab],
   templateUrl: './design-system-object-viewer.component.html',
   styles: `
     pre {
