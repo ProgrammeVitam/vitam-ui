@@ -90,6 +90,7 @@ jobs:
           -Dspotless.check.skip
           -Ddependency-check.skip
           --batch-mode --errors -U
+          --threads 1C
           --projects '!cots/vitamui-mongo-express'
           verify
         env:
