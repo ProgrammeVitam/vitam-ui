@@ -228,20 +228,17 @@
     "INVALID_CSV_DETAIL": "Identified errors detail: <ul>{{detail}}</ul>"
   },
   "OBJECT_VIEWER": {
-    "INTRO": "The viewer displays data according to a template (DisplayRule[]). The editor builds a form (EditObject) from the projected data, the template and a schema. Changes made in the editor are reflected in the viewer.",
+    "INTRO": "The viewer displays data according to a template (DisplayRule[]). The editor builds a form (EditObject) from the data projected by the template and a schema.",
     "VIEWER": "View",
     "EDITOR": "Edit",
     "DATA": "Data",
     "EXPAND_ALL": "Expand all",
     "COLLAPSE_ALL": "Collapse all",
-    "ORIGINAL_DATA": "Original data (toProjected input)",
     "PROJECTED_DATA": "Projected data (form value)",
     "RECONSTITUTED_DATA": "Reconstituted data (toOriginal output, to send on save)",
     "TEMPLATE": "Template",
     "SCHEMA": "Schema",
     "PLAYGROUND": {
-      "VIEWER": "View playground",
-      "EDITOR": "Edit playground",
       "INTRO": "Edit the inputs (JSON): the component is recomputed on each input.",
       "RESET": "Reset",
       "INVALID_JSON": "Invalid JSON"

@@ -34,62 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, computed, inject, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { JsonPipe } from '@angular/common';
-import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
+import { Component } from '@angular/core';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { TranslatePipe } from '@ngx-translate/core';
-import { EditObject, EditObjectService, Mode, ObjectEditorModule, ObjectViewerModule, TemplateService } from 'vitamui-library';
-import { sampleData, sampleSchema, sampleTemplate } from './object-viewer.sample';
-import { ObjectViewerPlaygroundComponent } from './playground/object-viewer-playground.component';
 import { ObjectEditorPlaygroundComponent } from './playground/object-editor-playground.component';
+import { ObjectViewerPlaygroundComponent } from './playground/object-viewer-playground.component';
 
 @Component({
-  imports: [
-    ObjectViewerModule,
-    ObjectEditorModule,
-    JsonPipe,
-    TranslatePipe,
-    MatRadioGroup,
-    MatRadioButton,
-    MatTabGroup,
-    MatTab,
-    ObjectViewerPlaygroundComponent,
-    ObjectEditorPlaygroundComponent,
-  ],
+  imports: [TranslatePipe, MatTabGroup, MatTab, ObjectViewerPlaygroundComponent, ObjectEditorPlaygroundComponent],
   templateUrl: './design-system-object-viewer.component.html',
-  styles: `
-    pre {
-      background: var(--vitamui-grey-100);
-      padding: 1rem;
-    }
-  `,
 })
-export class DesignSystemObjectViewerComponent {
-  private readonly editObjectService = inject(EditObjectService);
-  private readonly templateService = inject(TemplateService);
-
-  protected readonly originalData = sampleData;
-  protected readonly template = sampleTemplate;
-  protected readonly schema = sampleSchema;
-
-  protected readonly modes = Object.values(Mode);
-  protected readonly mode = signal<Mode>(Mode.TEMPLATE_DRIVEN);
-
-  protected readonly editObject: EditObject = this.editObjectService.editObject(
-    '',
-    this.templateService.toProjected(sampleData, sampleTemplate),
-    sampleTemplate,
-    this.editObjectService.createTemplateSchema(sampleTemplate, sampleSchema),
-  );
-
-  /** Form value, in the projected structure defined by the template. */
-  protected readonly projectedData = toSignal(this.editObject.control.valueChanges, { initialValue: this.editObject.control.value });
-
-  /**
-   * Edited data, mapped back to the original structure, so that the viewer reflects the editor changes.
-   * Merged into the original data to keep the fields not mapped by the template.
-   */
-  protected readonly data = computed(() => ({ ...sampleData, ...this.templateService.toOriginal(this.projectedData(), sampleTemplate) }));
-}
+export class DesignSystemObjectViewerComponent {}

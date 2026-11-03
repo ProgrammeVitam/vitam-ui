@@ -49,9 +49,12 @@ import { JsonInputsComponent } from './json-inputs.component';
     <design-system-json-inputs [inputs]="[data, template]" (inputsReset)="mode.set(Mode.TEMPLATE_DRIVEN)" />
 
     <h3 class="mt-3">{{ 'OBJECT_VIEWER.VIEWER' | translate }}</h3>
-    <mat-radio-group class="d-flex flex-column" [value]="mode()" (change)="mode.set($event.value)">
+    <code>&lt;vitamui-common-object-viewer [data]="data" [template]="template" [mode]="mode"&gt;</code>
+    <mat-radio-group class="d-flex flex-column mt-3" [value]="mode()" (change)="mode.set($event.value)">
       @for (m of modes; track m) {
-        <mat-radio-button [value]="m">{{ m }}</mat-radio-button>
+        <mat-radio-button [value]="m">
+          <strong>{{ m }}</strong> : {{ 'OBJECT_VIEWER.MODE.' + m | translate }}
+        </mat-radio-button>
       }
     </mat-radio-group>
     @if (data.parsed().value && template.parsed().value) {
