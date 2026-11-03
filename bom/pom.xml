@@ -16,7 +16,7 @@
         <antisamy.version>1.7.8</antisamy.version>
         <apache.commons.codec.version>1.22.0</apache.commons.codec.version>
         <apache.pdfbox.version>2.0.31</apache.pdfbox.version>
-        <bouncycastle.version>1.85.2</bouncycastle.version>
+        <bouncycastle.version>1.86</bouncycastle.version>
         <cas.version>7.3.8</cas.version>
         <commons.beanutils.version>1.11.0</commons.beanutils.version>
         <commons.collections4.version>4.5.0</commons.collections4.version>
@@ -33,7 +33,7 @@
         <gson.version>2.14.0</gson.version>
         <hibernate.validatior.version>8.0.3.Final</hibernate.validatior.version>
         <istack-commons-runtime.version>4.2.0</istack-commons-runtime.version>
-        <jackson2.version>2.22.2</jackson2.version>
+        <jackson2.version>2.22.4</jackson2.version>
         <jackson2-annotation.version>2.22</jackson2-annotation.version>
         <jackson3.version>3.1.5</jackson3.version>
         <jaeger.tracing.version>3.3.1</jaeger.tracing.version>
