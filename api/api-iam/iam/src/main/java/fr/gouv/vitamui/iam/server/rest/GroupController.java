@@ -273,7 +273,7 @@ public class GroupController implements CrudController<GroupDto> {
         return groupService.exportProfileGroups(Optional.empty());
     }
 
-    @GetMapping(CommonConstants.PATH_EXPORT + "/signed-url")
+    @GetMapping(value = CommonConstants.PATH_EXPORT + "/signed-url", produces = MediaType.TEXT_PLAIN_VALUE)
     @Operation(
         operationId = "groups_prepareSignedExportProfileGroups",
         summary = "Prepare signed export all profile groups to xlsx file"

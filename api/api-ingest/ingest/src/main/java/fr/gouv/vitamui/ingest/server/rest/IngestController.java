@@ -163,7 +163,10 @@ public class IngestController {
     }
 
     @Secured(ServicesData.ROLE_LOGBOOKS)
-    @PostMapping(RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID + "/signed-url")
+    @PostMapping(
+        value = RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID + "/signed-url",
+        produces = MediaType.TEXT_PLAIN_VALUE
+    )
     public String prepareSignedGenerateODTReport(final @PathVariable("id") String id)
         throws PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter :", id);
