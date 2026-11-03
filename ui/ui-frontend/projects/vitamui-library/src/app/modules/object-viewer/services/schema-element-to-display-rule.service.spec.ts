@@ -128,6 +128,25 @@ describe('SchemaElementToDisplayRuleService', () => {
       ).toEqual('textfield-short-mono');
     });
 
+    it.each([
+      ['ONE', 'select-mono'],
+      ['ONE_REQUIRED', 'select-mono'],
+      ['MANY', 'select-multi'],
+      ['MANY_REQUIRED', 'select-multi'],
+    ] as const)('should map a STRING controlled by a select with cardinality %s to %s', (cardinality, expected) => {
+      expect(
+        service.mapSchemaElementToComponent(element({ Cardinality: cardinality, Control: { Type: 'SELECT', Values: ['A', 'B'] } })),
+      ).toEqual(expected);
+    });
+
+    it('should map a special "_." STRING controlled by a select to a select rather than an attribute', () => {
+      expect(
+        service.mapSchemaElementToComponent(
+          element({ Path: 'Title_.fr', Cardinality: 'MANY', StringSize: 'SHORT', Control: { Type: 'SELECT', Values: ['A'] } }),
+        ),
+      ).toEqual('select-multi');
+    });
+
     it('should map DATETIME elements to a datetime picker', () => {
       expect(service.mapSchemaElementToComponent(element({ DataType: 'DATETIME' }))).toEqual('datepicker-datetime');
     });

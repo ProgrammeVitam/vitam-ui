@@ -224,6 +224,9 @@ export class SchemaElementToDisplayRuleService {
 
         const control = (schemaElement as ProfiledSchemaElement).Control;
 
+        if (isSelect && isUnique) return 'select-mono';
+        if (isSelect && isMultiple) return 'select-multi';
+
         if (control) {
           if (
             control.Type === 'REGEX' &&
@@ -239,9 +242,6 @@ export class SchemaElementToDisplayRuleService {
             return defaultComponent;
           }
         }
-
-        if (isSelect && isUnique) return 'select-mono';
-        if (isSelect && isMultiple) return 'select-multi';
 
         if (isSpecial) {
           if (isUnique && schemaElement.StringSize === 'SHORT') {
