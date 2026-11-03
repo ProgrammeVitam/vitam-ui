@@ -53,9 +53,15 @@
     </div>
   </mat-tab>
 
-  <mat-tab label="Playground">
+  <mat-tab [label]="'OBJECT_VIEWER.PLAYGROUND.VIEWER' | translate">
     <div class="mt-4 p-2">
-      <design-system-object-viewer-playground></design-system-object-viewer-playground>
+      <design-system-object-viewer-playground />
+    </div>
+  </mat-tab>
+
+  <mat-tab [label]="'OBJECT_VIEWER.PLAYGROUND.EDITOR' | translate">
+    <div class="mt-4 p-2">
+      <design-system-object-editor-playground />
     </div>
   </mat-tab>
 </mat-tab-group>

@@ -240,7 +240,9 @@
     "TEMPLATE": "Template",
     "SCHEMA": "Schema",
     "PLAYGROUND": {
-      "INTRO": "Edit the data, the template and the schema (JSON): the viewer and the editor are recomputed on each input.",
+      "VIEWER": "View playground",
+      "EDITOR": "Edit playground",
+      "INTRO": "Edit the inputs (JSON): the component is recomputed on each input.",
       "RESET": "Reset",
       "INVALID_JSON": "Invalid JSON"
     },
