@@ -180,9 +180,8 @@ class ProfileControllerTest {
 
     @Test
     void download_should_require_archive_profile_read_role() throws NoSuchMethodException {
-        final Secured secured = ProfileController.class.getMethod("download", String.class).getAnnotation(
-            Secured.class
-        );
+        final Secured secured =
+            ProfileController.class.getMethod("download", String.class).getAnnotation(Secured.class);
 
         assertThat(secured).isNotNull();
         assertThat(secured.value()).containsExactly(ServicesData.ROLE_GET_ARCHIVE_PROFILES);

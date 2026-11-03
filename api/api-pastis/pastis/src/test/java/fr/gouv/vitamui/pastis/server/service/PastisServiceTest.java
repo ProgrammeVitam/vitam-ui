@@ -59,10 +59,8 @@ class PastisServiceTest {
 
     @Test
     void getArchiveProfile_should_fail_when_root_element_has_no_name() throws Exception {
-        final ElementProperties profile = new ObjectMapper().readValue(
-            new ClassPathResource("rng/ProfileJson.json").getInputStream(),
-            ElementProperties.class
-        );
+        final ElementProperties profile = new ObjectMapper()
+            .readValue(new ClassPathResource("rng/ProfileJson.json").getInputStream(), ElementProperties.class);
         Assertions.assertFalse(pastisService.getArchiveProfile(profile, ProfileVersion.VERSION_2_1).isEmpty());
 
         final ElementProperties namelessProfile = new ElementProperties();
