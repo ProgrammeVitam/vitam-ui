@@ -2,30 +2,32 @@
 
 <p>{{ 'OBJECT_VIEWER.INTRO' | translate }}</p>
 
-<div class="row">
-  <div class="col-md-6">
-    <h3>{{ 'OBJECT_VIEWER.VIEWER' | translate }}</h3>
-    <code>&lt;vitamui-common-object-viewer [data]="data" [template]="template" [mode]="mode"&gt;</code>
-    <mat-radio-group class="d-flex flex-column mt-3" [value]="mode()" (change)="mode.set($event.value)">
-      @for (m of modes; track m) {
-        <mat-radio-button [value]="m">
-          <strong>{{ m }}</strong> : {{ 'OBJECT_VIEWER.MODE.' + m | translate }}
-        </mat-radio-button>
-      }
-    </mat-radio-group>
-    <div class="mt-3">
-      <vitamui-common-object-viewer [data]="data()" [template]="template" [mode]="mode()"></vitamui-common-object-viewer>
+<mat-tab-group class="vitamui-tab-group">
+  <mat-tab [label]="'OBJECT_VIEWER.VIEWER' | translate">
+    <div class="mt-4">
+      <code>&lt;vitamui-common-object-viewer [data]="data" [template]="template" [mode]="mode"&gt;</code>
+      <mat-radio-group class="d-flex flex-column mt-3" [value]="mode()" (change)="mode.set($event.value)">
+        @for (m of modes; track m) {
+          <mat-radio-button [value]="m">
+            <strong>{{ m }}</strong> : {{ 'OBJECT_VIEWER.MODE.' + m | translate }}
+          </mat-radio-button>
+        }
+      </mat-radio-group>
+      <div class="mt-3">
+        <vitamui-common-object-viewer [data]="data()" [template]="template" [mode]="mode()"></vitamui-common-object-viewer>
+      </div>
     </div>
-  </div>
+  </mat-tab>
 
-  <div class="col-md-6">
-    <h3>{{ 'OBJECT_VIEWER.EDITOR' | translate }}</h3>
-    <code>&lt;vitamui-common-object-editor [editObject]="editObject"&gt;</code>
-    <div class="mt-3">
-      <vitamui-common-object-editor [editObject]="editObject"></vitamui-common-object-editor>
+  <mat-tab [label]="'OBJECT_VIEWER.EDITOR' | translate">
+    <div class="mt-4">
+      <code>&lt;vitamui-common-object-editor [editObject]="editObject"&gt;</code>
+      <div class="mt-3">
+        <vitamui-common-object-editor [editObject]="editObject"></vitamui-common-object-editor>
+      </div>
     </div>
-  </div>
-</div>
+  </mat-tab>
+</mat-tab-group>
 
 <h3>{{ 'OBJECT_VIEWER.DATA' | translate }}</h3>
 <pre>{{ data() | json }}</pre>
