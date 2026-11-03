@@ -43,7 +43,8 @@ RUN yum install -y \
 ENV JAVA_HOME /usr/lib/jvm/java
 
 # Install & configure maven
-RUN curl -k https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.6.3/apache-maven-3.6.3-bin.tar.gz --output /tmp/maven.tgz \
+RUN curl -fsSL https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.6.3/apache-maven-3.6.3-bin.tar.gz --output /tmp/maven.tgz \
+    && echo "c35a1803a6e70a126e80b2b3ae33eed961f83ed74d18fcd16909b2d44d7dada3203f1ffe726c17ef8dcca2dcaa9fca676987befeadc9b9f759967a8cb77181c0  /tmp/maven.tgz" | sha512sum -c - \
     && tar xvzf /tmp/maven.tgz --directory /opt \
     && rm -f /tmp/maven.tgz \
     && ln -s /opt/apache-maven-3.6.3 /opt/maven \
