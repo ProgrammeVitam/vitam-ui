@@ -179,6 +179,7 @@ npm run test:identity -- --watch
 
 ## Pull Requests
 
+- The pull request description must be written in **French** (the title follows the commit message convention).
 - Every pull request must have a **milestone**: the current iteration (`IT NNN`), i.e. the open milestone with the nearest due date. List them with `gh api repos/ProgrammeVitam/vitam-ui/milestones --jq '.[] | "\(.title)\t\(.due_on)"'` and pass `--milestone "IT NNN"` to `gh pr create`.
 
 ## Maven Profiles
