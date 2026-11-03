@@ -206,7 +206,7 @@ public class IngestController {
         response.getOutputStream().write(odtReport);
     }
 
-    @Secured(ServicesData.ROLE_CREATE_INGEST)
+    @Secured({ ServicesData.ROLE_CREATE_INGEST, ServicesData.ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE })
     @Operation(summary = "Upload an streaming SIP")
     @PostMapping(value = CommonConstants.INGEST_UPLOAD, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<Void> streamingUpload(
