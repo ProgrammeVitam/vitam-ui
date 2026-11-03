@@ -31,6 +31,18 @@
   notify: reload nginx
   when: vitamui_reverse_external_protocol | lower == 'https'
 
+- name: Add CA bundle used to verify the CAS server certificate
+  copy:
+    content: "{% for ca in query('fileglob', inventory_dir + '/certs/vitamui-services/ca/*.crt') | sort %}{{ lookup('file', ca) }}\n{% endfor %}"
+    dest: "{{ nginx_ssl_dir }}/vitamui-ca.crt"
+    group: "{{ reverse_group }}"
+    owner: "{{ reverse_user }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission }}"
+  notify: reload nginx
+  when:
+    - vitamui.cas_server.secure | default(secure) | bool
+    - vitamui_proxy_ssl_verify | default(true) | bool
+
 - name: Ensure nginx is started
   systemd:
     name: nginx
