@@ -558,7 +558,9 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
      * @return Matching levels
      */
     public List<String> getLevels(final Optional<String> criteriaJsonString) {
-        final Document document = groupFields(criteriaJsonString, CommonConstants.LEVEL_ATTRIBUTE);
+        // Apply the same authorization-aware criteria construction as the paginated search, so the
+        // customer/level restrictions prevent reading levels outside the caller's scope.
+        final Document document = groupFields(checkAuthorization(criteriaJsonString), CommonConstants.LEVEL_ATTRIBUTE);
         LOGGER.debug("getLevels : {}", document);
         if (document == null) {
             return new ArrayList<>();

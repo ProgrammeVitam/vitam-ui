@@ -1140,7 +1140,9 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
      * @return Matching levels
      */
     public List<String> getLevels(final Optional<String> criteriaJsonString) {
-        final Document document = groupFields(criteriaJsonString, CommonConstants.LEVEL_ATTRIBUTE);
+        // Build the criteria like the paginated search: only allowed keys are accepted and the
+        // customer/level restrictions apply.
+        final Document document = groupFields(checkAuthorization(criteriaJsonString), CommonConstants.LEVEL_ATTRIBUTE);
         LOGGER.debug("getLevels : {}", document);
         if (document == null) {
             return new ArrayList<>();

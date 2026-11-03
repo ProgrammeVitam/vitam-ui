@@ -300,6 +300,10 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
         final Tenant tenant = findById(tenantDto.getId());
 
         final String message = "Unable to update tenant " + tenantDto.getId();
+        // Authorize the stored tenant's customer before any mutation, and forbid replacing it with a
+        // customer the caller may not manage (requires ROLE_UPDATE_TENANTS_ALL_CUSTOMERS otherwise).
+        checkCanAccessCustomer(tenant.getCustomerId(), message);
+        checkCanAccessCustomer(tenantDto.getCustomerId(), message);
         checkCustomer(tenantDto.getCustomerId(), message);
         checkIsReadonly(tenant.isReadonly(), message);
         checkIdentifier(tenant.getIdentifier(), tenantDto.getIdentifier(), message);
@@ -324,6 +328,10 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
         final Tenant tenant = tenantRepository
             .findById(id)
             .orElseThrow(() -> new NotFoundException("Entity not found " + getObjectName() + " with id : " + id));
+
+        // Authorize the stored tenant's customer before mutating it: holding ROLE_UPDATE_TENANTS on
+        // one's own customer must not grant write access to another customer's tenant.
+        checkCanAccessCustomer(tenant.getCustomerId(), message);
 
         Assert.isTrue(
             !checkMapContainsOnlyFieldsUnmodifiable(
@@ -699,6 +707,12 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
             securityService.hasRole(ServicesData.ROLE_UPDATE_TENANTS_ALL_CUSTOMERS) ||
             customerId.equals(securityService.getCustomerId())
         );
+    }
+
+    private void checkCanAccessCustomer(final String customerId, final String message) {
+        if (!canAccessToCustomer(customerId)) {
+            throw new NoRightsException(message + ": insufficient permissions on customer " + customerId);
+        }
     }
 
     /**
