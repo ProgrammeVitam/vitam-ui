@@ -232,6 +232,8 @@
     "VIEWER": "Consultation",
     "EDITOR": "Édition",
     "DATA": "Données",
+    "EXPAND_ALL": "Tout déplier",
+    "COLLAPSE_ALL": "Tout replier",
     "ORIGINAL_DATA": "Données d'origine (entrée de toProjected)",
     "PROJECTED_DATA": "Données projetées (valeur du formulaire)",
     "RECONSTITUTED_DATA": "Données reconstituées (sortie de toOriginal, à envoyer à l'enregistrement)",

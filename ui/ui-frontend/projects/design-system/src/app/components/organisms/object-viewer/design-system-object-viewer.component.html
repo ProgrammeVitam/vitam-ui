@@ -13,8 +13,12 @@
           </mat-radio-button>
         }
       </mat-radio-group>
+      <div class="d-flex hgap-2 mt-3">
+        <button type="button" class="btn secondary" (click)="viewer.expandAll()">{{ 'OBJECT_VIEWER.EXPAND_ALL' | translate }}</button>
+        <button type="button" class="btn secondary" (click)="viewer.collapseAll()">{{ 'OBJECT_VIEWER.COLLAPSE_ALL' | translate }}</button>
+      </div>
       <div class="mt-3">
-        <vitamui-common-object-viewer [data]="data()" [template]="template" [mode]="mode()"></vitamui-common-object-viewer>
+        <vitamui-common-object-viewer #viewer [data]="data()" [template]="template" [mode]="mode()"></vitamui-common-object-viewer>
       </div>
 
       <h3>{{ 'OBJECT_VIEWER.DATA' | translate }}</h3>
