@@ -34,6 +34,7 @@ import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
@@ -91,6 +92,28 @@ public class SearchCriteriaHistoryService
         if (null != list && list.size() >= 10) {
             LOGGER.warn(MAX_SEARCH_CRITERIA_SAVED_ACHIEVED);
             throw new IllegalArgumentException(MAX_SEARCH_CRITERIA_SAVED_ACHIEVED);
+        }
+    }
+
+    @Override
+    protected void beforeUpdate(final SearchCriteriaHistoryDto dto) {
+        checkOwnedByCurrentUser(dto.getId());
+        dto.setUserId(securityService.getUser().getIdentifier());
+    }
+
+    @Override
+    protected void beforeDelete(final String id) {
+        checkOwnedByCurrentUser(id);
+    }
+
+    private void checkOwnedByCurrentUser(final String id) {
+        final String userId = securityService.getUser().getIdentifier();
+        final boolean ownedByAnotherUser = getRepository()
+            .findById(id)
+            .map(searchCriteriaHistory -> !userId.equals(searchCriteriaHistory.getUserId()))
+            .orElse(false);
+        if (ownedByAnotherUser) {
+            throw new NotFoundException("No " + getObjectName() + " found with id: " + id);
         }
     }
 
