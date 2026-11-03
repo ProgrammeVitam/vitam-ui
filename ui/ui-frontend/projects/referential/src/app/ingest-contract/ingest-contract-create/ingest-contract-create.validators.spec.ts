@@ -132,6 +132,32 @@ describe('IngestContractCreateValidators', () => {
     expect(errorKinds(testForm.identifier)).toEqual(['identifierExists']);
   });
 
+  it('uniqueNameWhileEdit should ignore the name of the edited ingest contract surrounded by spaces', async () => {
+    ingestContractServiceSpy.existsProperties.mockReturnValue(of(true));
+    const validators = new IngestContractCreateValidators(ingestContractServiceSpy as any);
+    const ingestContract = { name: 'Original' } as IngestContract;
+    const testForm = form(signal({ name: ' Original ' }), (path) => validators.uniqueNameWhileEdit(path.name, () => ingestContract), {
+      injector,
+    });
+
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    expect(ingestContractServiceSpy.existsProperties).not.toHaveBeenCalled();
+    expect(errorKinds(testForm.name)).toEqual([]);
+  });
+
+  it('uniqueIdentifier should not call the service for the ignored identifier surrounded by spaces', async () => {
+    const validators = new IngestContractCreateValidators(ingestContractServiceSpy as any);
+    const testForm = form(signal({ identifier: ' id ' }), (path) => validators.uniqueIdentifier(path.identifier, () => 'id'), {
+      injector,
+    });
+
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    expect(ingestContractServiceSpy.existsProperties).not.toHaveBeenCalled();
+    expect(errorKinds(testForm.identifier)).toEqual([]);
+  });
+
   it('uniqueNameWhileEdit should be valid without calling the service when no ingest contract is edited', async () => {
     ingestContractServiceSpy.existsProperties.mockReturnValue(of(true));
     const validators = new IngestContractCreateValidators(ingestContractServiceSpy as any);
