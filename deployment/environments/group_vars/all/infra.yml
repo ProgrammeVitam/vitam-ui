@@ -10,8 +10,10 @@ smtp:
   auth: true
   tls_enable: true
   smtps:
-    checkserveridentity: false
-    trust: "*"
+    checkserveridentity: true
+    # Optional: space-separated list of SMTP hosts trusted without certificate verification ("*" trusts all hosts).
+    # Prefer adding the SMTP server CA to the truststore.
+    # trust: "smtp.example.com"
     timeout: 8000
     ssl:
       protocols: "TLSv1.2 TLSv1.3"
