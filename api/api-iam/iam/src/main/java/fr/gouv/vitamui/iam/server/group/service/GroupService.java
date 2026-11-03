@@ -586,7 +586,7 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
         criterias.add(Criteria.where(CUSTOMER_ID).in(customerId));
         criterias.add(Criteria.where(ENABLED_KEY).is(true));
         if (!level.isEmpty()) {
-            criterias.add(Criteria.where(LEVEL).regex("^" + level + "\\..+$"));
+            criterias.add(Criteria.where(LEVEL).regex("^" + Pattern.quote(level) + "\\..+$"));
         }
         return getRepository().findAll(criterias).stream().map(Group::getLevel).collect(Collectors.toList());
     }

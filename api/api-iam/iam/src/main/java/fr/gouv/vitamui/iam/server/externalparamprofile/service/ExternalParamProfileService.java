@@ -71,6 +71,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -229,7 +230,10 @@ public class ExternalParamProfileService {
         final Collection<EventDiffDto> externalParamProfileLogbooks = new ArrayList<>();
         String idProfile = (String) partialDto.get(ID_PROFILE);
 
-        ProfileDto profileDto = profileService.getOne(idProfile);
+        ProfileDto profileDto = profileService.checkCanBeModified(
+            idProfile,
+            "Unable to patch external parameter profile " + idProfile
+        );
 
         // Ancienne valeur
         ExternalParamProfileDto externalParamProfileDto = externalParamProfileRepository.findByIdProfile(idProfile);
@@ -365,16 +369,13 @@ public class ExternalParamProfileService {
         Map<String, Object> partialDto,
         Collection<EventDiffDto> externalParamProfileLogbooks
     ) {
-        final Collection<EventDiffDto> logbooks = new ArrayList<>();
+        final Map<String, Object> profilePatch = new HashMap<>();
 
         for (final Map.Entry<String, Object> entry : partialDto.entrySet()) {
             switch (entry.getKey()) {
                 case DESCRIPTION:
                     String description = (String) entry.getValue();
-                    profileDto.setDescription(description);
-                    logbooks.add(
-                        new EventDiffDto(ProfileConverter.DESCRIPTION_KEY, oldDto.getDescription(), description)
-                    );
+                    profilePatch.put(DESCRIPTION, description);
                     externalParamProfileLogbooks.add(
                         new EventDiffDto(
                             ExternalParamProfileConverter.DESCRIPTION,
@@ -385,16 +386,14 @@ public class ExternalParamProfileService {
                     break;
                 case NAME:
                     String name = (String) entry.getValue();
-                    profileDto.setName(name);
-                    logbooks.add(new EventDiffDto(ProfileConverter.NAME_KEY, oldDto.getName(), name));
+                    profilePatch.put(NAME, name);
                     externalParamProfileLogbooks.add(
                         new EventDiffDto(ExternalParamProfileConverter.NAME_KEY, oldDto.getName(), name)
                     );
                     break;
                 case ENABLED:
                     Boolean enabled = (Boolean) entry.getValue();
-                    profileDto.setEnabled(enabled);
-                    logbooks.add(new EventDiffDto(ProfileConverter.ENABLED_KEY, oldDto.isEnabled(), enabled));
+                    profilePatch.put(ENABLED, enabled);
                     externalParamProfileLogbooks.add(
                         new EventDiffDto(ExternalParamProfileConverter.ENABLED_KEY, oldDto.isEnabled(), enabled)
                     );
@@ -403,9 +402,12 @@ public class ExternalParamProfileService {
             }
         }
 
-        if (partialDto.get(DESCRIPTION) != null || partialDto.get(NAME) != null || partialDto.get(ENABLED) != null) {
-            profileService.update(profileDto);
-            iamLogbookService.updateProfileEvent(profileConverter.convertDtoToEntity(profileDto), logbooks);
+        if (!profilePatch.isEmpty()) {
+            // The profile patch runs the usual profile checks and journalizes the profile changes.
+            profilePatch.put("id", profileDto.getId());
+            profilePatch.put("customerId", profileDto.getCustomerId());
+            profilePatch.put("tenantIdentifier", profileDto.getTenantIdentifier());
+            profileService.patch(profilePatch);
         }
     }
 

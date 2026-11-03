@@ -272,6 +272,14 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
             checkEnabled(profile.getId(), enabled, message);
         }
 
+        // The external parameters of a profile are linked when the profile is created and cannot be changed.
+        if (partialDto.containsKey("externalParamId")) {
+            Assert.isTrue(
+                StringUtils.equals(profile.getExternalParamId(), CastUtils.toString(partialDto.get("externalParamId"))),
+                message + ": externalParamId cannot be modified"
+            );
+        }
+
         return profile;
     }
 
@@ -353,6 +361,22 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
         final Role role = new Role();
         role.setName(patchEntry.get("name").toString());
         return role;
+    }
+
+    /**
+     * Checks that the current user may modify the profile (customer, level, readonly), as done before a patch.
+     *
+     * @param id Id of the profile.
+     * @param message Error message prefix.
+     * @return The profile.
+     */
+    public ProfileDto checkCanBeModified(final String id, final String message) {
+        final ProfileDto profileDto = getOne(id, Optional.empty(), Optional.empty());
+        final Profile profile = find(id, profileDto.getCustomerId(), profileDto.getTenantIdentifier(), message);
+        checkCustomer(profile.getCustomerId(), message);
+        checkLevel(profile.getLevel(), message);
+        checkIsReadonly(profile.isReadonly(), message);
+        return profileDto;
     }
 
     private Profile find(
@@ -493,7 +517,7 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
         criterias.add(Criteria.where(TENANT_IDENTIFIER).is(tenantIdentifier));
         criterias.add(Criteria.where(ENABLED_KEY).is(true));
         if (!level.isEmpty()) {
-            criterias.add(Criteria.where(LEVEL).regex("^" + level + "\\..+$"));
+            criterias.add(Criteria.where(LEVEL).regex("^" + Pattern.quote(level) + "\\..+$"));
         }
         return getRepository()
             .findAll(criterias)
@@ -507,7 +531,7 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
         criterias.add(Criteria.where(CUSTOMER_ID).in(customerId));
         criterias.add(Criteria.where(ENABLED_KEY).is(true));
         if (!level.isEmpty()) {
-            criterias.add(Criteria.where(LEVEL).regex("^" + level + "\\..+$"));
+            criterias.add(Criteria.where(LEVEL).regex("^" + Pattern.quote(level) + "\\..+$"));
         }
         return getRepository().findAll(criterias).stream().map(Profile::getLevel).collect(Collectors.toList());
     }

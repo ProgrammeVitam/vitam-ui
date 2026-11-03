@@ -33,6 +33,8 @@ import org.mockito.ArgumentMatchers;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -205,5 +207,41 @@ class ExternalParamProfileServiceTest {
             NotFoundException.class
         );
         verify(logbookService, never()).findEventsByIdentifierAndCollectionNames(any(), any(), any(), any());
+    }
+
+    @Test
+    void patch_requires_the_right_to_modify_the_profile() {
+        when(profileService.checkCanBeModified(any(), any())).thenThrow(new IllegalArgumentException("readonly"));
+        final Map<String, Object> partialDto = new HashMap<>();
+        partialDto.put("idProfile", "profileId");
+        partialDto.put("accessContract", "AC-2");
+
+        assertThatThrownBy(() -> externalParamProfileService.patch(partialDto)).isInstanceOf(
+            IllegalArgumentException.class
+        );
+        verify(externalParametersService, never()).update(any(), any());
+    }
+
+    @Test
+    void patch_of_the_profile_fields_uses_the_profile_patch() throws Exception {
+        final ProfileDto profile = new ProfileDto();
+        profile.setId("profileId");
+        profile.setCustomerId("customerId");
+        profile.setTenantIdentifier(10);
+        when(profileService.checkCanBeModified(any(), any())).thenReturn(profile);
+        final ExternalParamProfileDto stored = new ExternalParamProfileDto();
+        stored.setIdExternalParam("externalParamId");
+        when(externalParamProfileRepository.findByIdProfile("profileId")).thenReturn(stored);
+        when(externalParametersService.getOneByPassSecurity(any(), any())).thenReturn(new ExternalParametersDto());
+        final Map<String, Object> partialDto = new HashMap<>();
+        partialDto.put("idProfile", "profileId");
+        partialDto.put("name", "new name");
+
+        externalParamProfileService.patch(partialDto);
+
+        verify(profileService).patch(
+            Map.of("id", "profileId", "customerId", "customerId", "tenantIdentifier", 10, "name", "new name")
+        );
+        verify(profileService, never()).update(any());
     }
 }
