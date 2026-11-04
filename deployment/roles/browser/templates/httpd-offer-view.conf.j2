@@ -1,6 +1,10 @@
 <Directory "{{vitamui_defaults.folder.root_path | default('/vitamui')}}">
     Options Indexes FollowSymLinks
 	Require all granted
+	# Keystores, private keys and password files are not served
+	<FilesMatch "\.(jks|p12|pfx|key|key_pass|pass|pwd)$">
+		Require all denied
+	</FilesMatch>
 </Directory>
 
 Alias /browse "{{vitamui_defaults.folder.root_path | default('/vitamui')}}"
