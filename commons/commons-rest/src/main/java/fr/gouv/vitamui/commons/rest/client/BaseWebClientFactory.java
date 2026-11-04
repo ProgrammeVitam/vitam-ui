@@ -47,7 +47,6 @@ import io.netty.handler.ssl.ClientAuth;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslProvider;
-import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import org.apache.commons.lang3.StringUtils;
@@ -63,6 +62,8 @@ import reactor.netty.http.client.HttpClient;
 import reactor.netty.transport.ProxyProvider;
 
 import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLEngine;
+import javax.net.ssl.SSLParameters;
 import javax.net.ssl.TrustManagerFactory;
 import java.io.File;
 import java.io.FileInputStream;
@@ -184,8 +185,21 @@ public class BaseWebClientFactory implements WebClientFactory {
 
             if (restClientConfig.isSecure()) {
                 final SslContext sslContext = buildSSLContext(restClientConfig);
+                final boolean hostnameVerification = restClientConfig.getSslConfiguration().isHostnameVerification();
                 // .secure() must come before .proxy() — Netty applies SSL at the transport layer first
-                httpClient = httpClient.secure(sslSpec -> sslSpec.sslContext(sslContext));
+                httpClient = httpClient.secure(sslSpec -> {
+                    final reactor.netty.tcp.SslProvider.Builder sslProviderBuilder = sslSpec.sslContext(sslContext);
+                    if (!hostnameVerification) {
+                        // Runs after the default Reactor Netty configurator, which enables hostname verification.
+                        // An empty algorithm is used because the JDK engine ignores a null value.
+                        sslProviderBuilder.handlerConfigurator(sslHandler -> {
+                            final SSLEngine engine = sslHandler.engine();
+                            final SSLParameters sslParameters = engine.getSSLParameters();
+                            sslParameters.setEndpointIdentificationAlgorithm("");
+                            engine.setSSLParameters(sslParameters);
+                        });
+                    }
+                });
             }
 
             final ProxyProperties proxyProperties = restClientConfig.getProxy();
@@ -234,16 +248,12 @@ public class BaseWebClientFactory implements WebClientFactory {
                 );
             }
 
-            if (restClientConfig.getSslConfiguration().isHostnameVerification()) {
-                final TrustManagerFactory tmf = createTrustManagerFactory(
-                    ts.getType(),
-                    ts.getKeyPath(),
-                    ts.getKeyPassword().toCharArray()
-                );
-                return sslContextBuilder.sslProvider(SslProvider.JDK).trustManager(tmf).build();
-            } else {
-                return sslContextBuilder.trustManager(InsecureTrustManagerFactory.INSTANCE).build();
-            }
+            final TrustManagerFactory tmf = createTrustManagerFactory(
+                ts.getType(),
+                ts.getKeyPath(),
+                ts.getKeyPassword().toCharArray()
+            );
+            return sslContextBuilder.sslProvider(SslProvider.JDK).trustManager(tmf).build();
         } catch (final GeneralSecurityException | IOException e) {
             LOGGER.warn("Unable to build SslContext.", e);
             throw new ApplicationServerException(e);

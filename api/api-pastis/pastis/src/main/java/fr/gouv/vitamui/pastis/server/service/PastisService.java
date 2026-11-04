@@ -178,12 +178,19 @@ public class PastisService {
     }
 
     public String getArchiveProfile(final ElementProperties json, ProfileVersion version) throws TechnicalException {
-        // Recover a statically generated BaliseXML by buildBaliseXMLTree
-        json.initTree(json);
-        BaliseXML.buildBaliseXMLTree(json, 0, null);
-        // Add Recip struct to xml balises tree
-        BaliseXML.addRecipTags();
-        BaliseXML eparentRng = BaliseXML.getBaliseXMLStatic();
+        final BaliseXML eparentRng;
+        // BaliseXML builds its tree in static fields: build one tree at a time
+        synchronized (BaliseXML.class) {
+            // Recover a statically generated BaliseXML by buildBaliseXMLTree
+            json.initTree(json);
+            BaliseXML.buildBaliseXMLTree(json, 0, null);
+            eparentRng = BaliseXML.getBaliseXMLStatic();
+            if (eparentRng == null) {
+                throw new TechnicalException("Failure RNG Profile could not be generated: root element has no name");
+            }
+            // Add Recip struct to xml balises tree
+            BaliseXML.addRecipTags();
+        }
         // Change namespaces to match seda version
         if (eparentRng instanceof GrammarXML grammarXML) {
             grammarXML.ns = GrammarXML.SEDA_PREFIX + version.getVersion();

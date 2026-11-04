@@ -91,6 +91,9 @@ public class BaliseXML {
      * @param parentNode noeud parent utilisé dans la récursivité pour lié parent & children
      */
     public static void buildBaliseXMLTree(ElementProperties node, int profondeur, BaliseXML parentNode) {
+        if (parentNode == null) {
+            baliseXMLStatic = null;
+        }
         if (node.getName() != null) {
             valueRNG = null;
             dataRNG = null;

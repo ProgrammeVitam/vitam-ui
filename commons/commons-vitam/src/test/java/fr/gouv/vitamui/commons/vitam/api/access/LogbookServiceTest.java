@@ -5,9 +5,11 @@ import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitam.common.model.logbook.LogbookEventOperation;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import jakarta.ws.rs.core.Response;
 import org.apache.commons.io.IOUtils;
@@ -22,6 +24,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -214,5 +217,38 @@ public class LogbookServiceTest {
         assertThatCode(
             () -> logbookService.toHistoryEvents(new RequestResponseOK<LogbookOperation>().setHttpCode(400), null)
         ).doesNotThrowAnyException();
+    }
+
+    @Test
+    void findEventsByIdentifierAndCollectionNames_should_only_return_events_of_requested_identifier()
+        throws VitamClientException {
+        final LogbookOperation operation = new LogbookOperation();
+        operation.setEvents(
+            List.of(logbookEvent("user-1", "users"), logbookEvent("user-2", "users"), logbookEvent("user-1", "groups"))
+        );
+        final RequestResponseOK<LogbookOperation> operationResponse = new RequestResponseOK<>();
+        operationResponse.addResult(operation);
+        logbookService = spy(logbookService);
+        Mockito.doReturn(operationResponse)
+            .when(logbookService)
+            .selectOperations(ArgumentMatchers.any(), ArgumentMatchers.any());
+
+        final List<HistoryEventDto> events = logbookService.findEventsByIdentifierAndCollectionNames(
+            "user-1",
+            "users",
+            new VitamContext(10),
+            null
+        );
+
+        Assertions.assertThat(events)
+            .extracting(HistoryEventDto::getObId, HistoryEventDto::getObIdReq)
+            .containsExactly(Assertions.tuple("user-1", "users"));
+    }
+
+    private static LogbookEventOperation logbookEvent(final String obId, final String obIdReq) {
+        final LogbookEventOperation event = new LogbookEventOperation();
+        event.setObId(obId);
+        event.setObIdReq(obIdReq);
+        return event;
     }
 }
