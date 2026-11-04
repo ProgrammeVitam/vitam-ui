@@ -169,7 +169,7 @@ public class RNGConstants {
         TypesMap.put("CustodialHistoryItem", DataType.STRING);
         TypesMap.put("Type", DataType.STRING);
         TypesMap.put("DocumentType", DataType.STRING);
-        TypesMap.put("language", DataType.LANGUAGE);
+        TypesMap.put("Language", DataType.LANGUAGE);
         TypesMap.put("DescriptionLanguage", DataType.LANGUAGE);
         TypesMap.put("Status", DataType.TOKEN);
         TypesMap.put("Version", DataType.STRING);
