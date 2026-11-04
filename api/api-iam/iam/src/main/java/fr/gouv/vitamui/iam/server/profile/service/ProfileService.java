@@ -263,6 +263,14 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
             checkEnabled(profile.getId(), enabled, message);
         }
 
+        // The external parameters of a profile are linked when the profile is created and cannot be changed.
+        if (partialDto.containsKey("externalParamId")) {
+            Assert.isTrue(
+                StringUtils.equals(profile.getExternalParamId(), CastUtils.toString(partialDto.get("externalParamId"))),
+                message + ": externalParamId cannot be modified"
+            );
+        }
+
         return profile;
     }
 
@@ -344,6 +352,22 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
         final Role role = new Role();
         role.setName(patchEntry.get("name").toString());
         return role;
+    }
+
+    /**
+     * Checks that the current user may modify the profile (customer, level, readonly), as done before a patch.
+     *
+     * @param id Id of the profile.
+     * @param message Error message prefix.
+     * @return The profile.
+     */
+    public ProfileDto checkCanBeModified(final String id, final String message) {
+        final ProfileDto profileDto = getOne(id, Optional.empty(), Optional.empty());
+        final Profile profile = find(id, profileDto.getCustomerId(), profileDto.getTenantIdentifier(), message);
+        checkCustomer(profile.getCustomerId(), message);
+        checkLevel(profile.getLevel(), message);
+        checkIsReadonly(profile.isReadonly(), message);
+        return profileDto;
     }
 
     private Profile find(
@@ -484,7 +508,7 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
         criterias.add(Criteria.where("tenantIdentifier").is(tenantIdentifier));
         criterias.add(Criteria.where("enabled").is(true));
         if (!level.isEmpty()) {
-            criterias.add(Criteria.where("level").regex("^" + level + "\\..+$"));
+            criterias.add(Criteria.where("level").regex("^" + Pattern.quote(level) + "\\..+$"));
         }
         return getRepository()
             .findAll(criterias)
@@ -498,7 +522,7 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
         criterias.add(Criteria.where("customerId").in(customerId));
         criterias.add(Criteria.where("enabled").is(true));
         if (!level.isEmpty()) {
-            criterias.add(Criteria.where("level").regex("^" + level + "\\..+$"));
+            criterias.add(Criteria.where("level").regex("^" + Pattern.quote(level) + "\\..+$"));
         }
         return getRepository().findAll(criterias).stream().map(Profile::getLevel).collect(Collectors.toList());
     }
@@ -535,16 +559,16 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
             id,
             vitamContext.getApplicationSessionId()
         );
-        final Optional<Profile> profile = getRepository().findById(id);
-        profile.orElseThrow(() -> new NotFoundException("No user found with id : %s".formatted(id)));
+        // getOne applies the same customer/tenant/level restrictions as an ordinary read.
+        final ProfileDto profile = getOne(id);
         LOGGER.debug(
             "findHistoryById : events.obId {}, events.obIdReq {}, VitamContext {}",
-            profile.get().getIdentifier(),
+            profile.getIdentifier(),
             MongoDbCollections.PROFILES,
             vitamContext
         );
         return logbookService.findEventsByIdentifierAndCollectionNames(
-            profile.get().getIdentifier(),
+            profile.getIdentifier(),
             MongoDbCollections.PROFILES,
             vitamContext,
             List.of(EventType.EXT_VITAMUI_CREATE_PROFILE.name(), EventType.EXT_VITAMUI_UPDATE_PROFILE.name())
@@ -558,7 +582,9 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
      * @return Matching levels
      */
     public List<String> getLevels(final Optional<String> criteriaJsonString) {
-        final Document document = groupFields(criteriaJsonString, CommonConstants.LEVEL_ATTRIBUTE);
+        // Apply the same authorization-aware criteria construction as the paginated search, so the
+        // customer/level restrictions prevent reading levels outside the caller's scope.
+        final Document document = groupFields(checkAuthorization(criteriaJsonString), CommonConstants.LEVEL_ATTRIBUTE);
         LOGGER.debug("getLevels : {}", document);
         if (document == null) {
             return new ArrayList<>();

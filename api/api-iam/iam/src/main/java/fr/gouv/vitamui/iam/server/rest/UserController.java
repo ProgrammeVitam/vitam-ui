@@ -48,7 +48,11 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.download.DownloadClaims;
 import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
+import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
+import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.commons.api.utils.EnumUtils;
 import fr.gouv.vitamui.commons.rest.CrudController;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
@@ -238,6 +242,7 @@ public class UserController implements CrudController<UserDto> {
             dto.getCustomerId(),
             "Unable to create user " + dto.getEmail() + " (" + dto.getCustomerId() + ")"
         );
+        checkUserTypeAllowed(dto.getType(), null, "Unable to create user " + dto.getEmail());
         return userService.create(dto);
     }
 
@@ -256,6 +261,7 @@ public class UserController implements CrudController<UserDto> {
             "The DTO identifier must match the path identifier for update."
         );
         userService.checkCustomerId(dto.getCustomerId(), "Unable to update user " + dto.getId());
+        checkUserTypeAllowed(dto.getType(), id, "Unable to update user " + id);
         return userService.update(dto);
     }
 
@@ -278,6 +284,12 @@ public class UserController implements CrudController<UserDto> {
             userService.checkCustomerId(customerId, "Unable to patch user");
         }
         partialDto.put("customerId", securityService.getCustomerId());
+        final Object requestedType = partialDto.get("type");
+        checkUserTypeAllowed(
+            requestedType == null ? null : EnumUtils.stringToEnum(UserTypeEnum.class, requestedType.toString()),
+            id,
+            "Unable to patch user " + id
+        );
         return userService.patch(partialDto);
     }
 
@@ -322,5 +334,37 @@ public class UserController implements CrudController<UserDto> {
 
     private String buildUserExportFileName() {
         return "export-utilisateurs-%s.xlsx".formatted(EXPORT_FILE_DATE_TIME_FORMATTER.format(LocalDateTime.now()));
+    }
+
+    /**
+     * Generic users can only be created, or modified, by callers holding ROLE_GENERIC_USERS.
+     *
+     * @param requestedType type sent by the caller, if any
+     * @param existingUserId id of the modified user, null on creation
+     */
+    private void checkUserTypeAllowed(
+        final UserTypeEnum requestedType,
+        final String existingUserId,
+        final String message
+    ) {
+        if (securityService.hasRole(ServicesData.ROLE_GENERIC_USERS)) {
+            return;
+        }
+        if (requestedType == UserTypeEnum.GENERIC || isGenericUser(existingUserId)) {
+            throw new ForbiddenException(message + ": generic users require " + ServicesData.ROLE_GENERIC_USERS);
+        }
+    }
+
+    private boolean isGenericUser(final String userId) {
+        if (userId == null) {
+            return false;
+        }
+        try {
+            final UserDto user = userService.findUserById(userId);
+            return user != null && user.getType() == UserTypeEnum.GENERIC;
+        } catch (final NotFoundException e) {
+            // The update itself reports the missing user.
+            return false;
+        }
     }
 }

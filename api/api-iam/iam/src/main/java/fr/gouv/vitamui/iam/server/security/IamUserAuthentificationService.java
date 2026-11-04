@@ -38,8 +38,10 @@ package fr.gouv.vitamui.iam.server.security;
 
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 import fr.gouv.vitamui.iam.security.service.UserAuthenticationService;
 import fr.gouv.vitamui.iam.server.subrogation.dao.SubrogationRepository;
 import fr.gouv.vitamui.iam.server.subrogation.domain.Subrogation;
@@ -152,6 +154,7 @@ public class IamUserAuthentificationService implements UserAuthenticationService
 
     private AuthUserDto getUserByToken(final Token token) {
         final UserDto userDto = userService.findUserById(token.getRefId());
+        rejectIneligibleAccount(userDto);
         final AuthUserDto authUserDto = userService.loadGroupAndProfiles(userDto);
         if (token.isSurrogation()) {
             final String surrogateEmail = userDto.getEmail();
@@ -159,6 +162,7 @@ public class IamUserAuthentificationService implements UserAuthenticationService
                 surrogateEmail,
                 userDto.getCustomerId()
             );
+            rejectInactiveSubrogation(subrogation);
             final String superUserEmail = subrogation.getSuperUser();
             authUserDto.setSuperUser(superUserEmail);
             authUserDto.setSuperUserCustomerId(subrogation.getSuperUserCustomerId());
@@ -166,11 +170,36 @@ public class IamUserAuthentificationService implements UserAuthenticationService
                 superUserEmail,
                 subrogation.getSuperUserCustomerId()
             );
+            rejectIneligibleAccount(superUserDto);
             authUserDto.setSuperUserIdentifier(superUserDto.getIdentifier());
         }
         userService.addBasicCustomerAndProofTenantIdentifierInformation(authUserDto);
         userService.addTenantsByAppInformation(authUserDto);
         authUserDto.setAuthToken(token.getRefId());
         return authUserDto;
+    }
+
+    /**
+     * Refuse to build an authenticated identity for an account that is no longer eligible. Disabling
+     * or logically removing an account must stop its outstanding tokens from being accepted, even
+     * though those tokens are not deleted eagerly.
+     */
+    /**
+     * A subrogation token is only valid while its subrogation is accepted and not expired.
+     */
+    private void rejectInactiveSubrogation(final Subrogation subrogation) {
+        if (subrogation == null || subrogation.getStatus() != SubrogationStatusEnum.ACCEPTED) {
+            throw new BadCredentialsException("No accepted subrogation for this token");
+        }
+        if (subrogation.getDate() != null && subrogation.getDate().before(new Date())) {
+            throw new BadCredentialsException("Subrogation expired for this token");
+        }
+    }
+
+    private void rejectIneligibleAccount(final UserDto userDto) {
+        final UserStatusEnum status = userDto.getStatus();
+        if (status == UserStatusEnum.DISABLED || status == UserStatusEnum.REMOVED) {
+            throw new BadCredentialsException("Account is not eligible for authentication: status=" + status);
+        }
     }
 }
