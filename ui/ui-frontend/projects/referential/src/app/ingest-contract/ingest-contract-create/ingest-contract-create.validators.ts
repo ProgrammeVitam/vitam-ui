@@ -86,12 +86,12 @@ export class IngestContractCreateValidators {
     stream: (value: string) => Observable<boolean>,
   ): void {
     validateObservable(path, {
-      stream,
+      stream: (value: string) => stream(value?.trim()),
       onSuccess: (exists: boolean) => (exists ? { kind: errorKind } : undefined),
     });
   }
 
   private exists(field: string, value: string, valueToIgnore?: string): Observable<boolean> {
-    return value !== valueToIgnore ? this.ingestContractService.existsProperties({ [field]: value?.trim() }) : of(false);
+    return value !== valueToIgnore ? this.ingestContractService.existsProperties({ [field]: value }) : of(false);
   }
 }
