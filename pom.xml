@@ -640,7 +640,7 @@
             </build>
         </profile>
 
-        <!-- This profile is used to run mutation testing with PIT (https://pitest.org/). -->
+        <!-- This profile is used to run mutation testing with PIT (https://pitest.org/). Keep it in sync with the "pitest" profile of cas/pom.xml. -->
         <profile>
             <id>pitest</id>
             <build>
