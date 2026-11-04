@@ -63,6 +63,10 @@ jobs:
         with:
           distribution: "temurin"
           java-version: "21"
+      - name: Pull MongoDB test image in background # Done while the first modules compile, instead of on the critical path of the first Testcontainers test
+        run: |
+          image=$(grep -o 'mongodb/mongodb-community-server:[^"]*' commons/commons-test/src/test/java/fr/gouv/vitamui/commons/test/AbstractMongoTests.java)
+          nohup docker pull "$image" > /tmp/docker-pull.log 2>&1 &
       - name: Restore maven cache # We're not using cache feature from actions/setup-java as it's not allowing to fine-tune it (in particular, we can't use restore-keys to load a previous cache if cache name mismatches)
         uses: actions/cache@v4
         with:
