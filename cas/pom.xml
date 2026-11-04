@@ -60,9 +60,9 @@
                             <targetTests>
                                 <param>fr.gouv.vitamui.cas.*</param>
                             </targetTests>
+                            <!-- Tests run by Failsafe ("*IntegrationTest" classes are run by Surefire and kept) -->
                             <excludedTestClasses>
                                 <param>*IT</param>
-                                <param>*IntegrationTest</param>
                             </excludedTestClasses>
                             <outputFormats>
                                 <format>HTML</format>
