@@ -31,7 +31,8 @@
     <profiles>
         <!--
             This profile is used to run mutation testing with PIT (https://pitest.org/).
-            CAS does not inherit from the root pom: keep this profile in sync with the "pitest" profile of the root pom.
+            CAS does not inherit from the root pom: keep this profile in sync with the "pitest" profile of the root pom
+            (except for target classes and tests).
         -->
         <profile>
             <id>pitest</id>
@@ -49,11 +50,15 @@
                             </dependency>
                         </dependencies>
                         <configuration>
+                            <!--
+                                Restricted to CAS packages: in a full reactor build, the classes of the other vitam-ui
+                                modules (built with Spring Boot 4) are on the classpath and make the PIT minion crash.
+                            -->
                             <targetClasses>
-                                <param>fr.gouv.vitamui.*</param>
+                                <param>fr.gouv.vitamui.cas.*</param>
                             </targetClasses>
                             <targetTests>
-                                <param>fr.gouv.vitamui.*</param>
+                                <param>fr.gouv.vitamui.cas.*</param>
                             </targetTests>
                             <excludedTestClasses>
                                 <param>*IT</param>
