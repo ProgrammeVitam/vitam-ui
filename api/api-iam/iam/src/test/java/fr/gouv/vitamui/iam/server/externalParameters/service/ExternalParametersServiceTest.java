@@ -16,12 +16,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.Optional;
 
@@ -36,7 +37,7 @@ public class ExternalParametersServiceTest extends AbstractLogbookIntegrationTes
 
     private ExternalParametersService service;
 
-    @MockitoBean
+    @Mock
     private ExternalParametersRepository externalParametersRepository;
 
     @Autowired
@@ -59,6 +60,7 @@ public class ExternalParametersServiceTest extends AbstractLogbookIntegrationTes
 
     @BeforeEach
     public void setup() {
+        MockitoAnnotations.openMocks(this);
         service = new ExternalParametersService(
             sequenceGeneratorService,
             externalParametersRepository,
