@@ -47,7 +47,7 @@ jobs:
         run: |
           base="origin/${{ github.base_ref }}"
           if [ "${{ github.event_name }}" != "pull_request" ] \
-            || ! git diff --quiet "$base...HEAD" -- pom.xml .github/workflows/mutation-testing.yml .github/scripts/pit-summary.py; then
+            || ! git diff --quiet "$base...HEAD" -- pom.xml cas/pom.xml .github/workflows/mutation-testing.yml .github/scripts/pit-summary.py; then
             echo "Analysing all modules"
             echo "projects=!cots/vitamui-mongo-express" >> "$GITHUB_OUTPUT"
             exit 0
