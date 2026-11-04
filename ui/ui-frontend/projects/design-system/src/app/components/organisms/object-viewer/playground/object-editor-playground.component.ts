@@ -114,13 +114,13 @@ export class ObjectEditorPlaygroundComponent {
   );
 
   /**
-   * Form value, mapped back to the original structure: this is what would be sent on save.
-   * Merged into the original data to keep the fields not mapped by the template.
+   * Form value, mapped back to the original structure by `toOriginal`: this is what would be sent on save.
+   * Only the fields mapped by the template are kept, as in `EditAgencyComponent.save`.
    */
   protected readonly reconstitutedData = computed(() => {
     const projectedData = this.projectedData();
     if (projectedData === undefined) return undefined;
 
-    return { ...(this.data.parsed().value as object), ...this.templateService.toOriginal(projectedData, this.template.parsed().value) };
+    return this.templateService.toOriginal(projectedData, this.template.parsed().value);
   });
 }
