@@ -117,6 +117,9 @@ import org.springframework.webflow.definition.registry.FlowDefinitionRegistry;
 import org.springframework.webflow.engine.builder.support.FlowBuilderServices;
 import org.springframework.webflow.execution.Action;
 
+import java.time.Duration;
+import java.util.List;
+
 /**
  * Webflow customizations.
  */
@@ -437,8 +440,12 @@ public class WebflowConfig {
     }
 
     @Bean
-    public Action checkMfaTokenAction(final TicketRegistry ticketRegistry) {
-        return new CheckMfaTokenAction(ticketRegistry);
+    public Action checkMfaTokenAction(
+        final TicketRegistry ticketRegistry,
+        @Value("${vitamui.mfa.max-failed-attempts:5}") final int maxFailedAttempts,
+        @Value("${vitamui.mfa.failed-attempts-retention:PT15M}") final Duration failedAttemptsRetention
+    ) {
+        return new CheckMfaTokenAction(ticketRegistry, maxFailedAttempts, failedAttemptsRetention);
     }
 
     @Bean
@@ -503,13 +510,15 @@ public class WebflowConfig {
             CasBeans.INITIAL_AUTHENTICATION_ATTEMPT_WEBFLOW_EVENT_RESOLVER
         ) final CasDelegatingWebflowEventResolver initialAuthenticationAttemptWebflowEventResolver,
         @Value("${vitamui.authn.x509.enabled:false}") final boolean x509AuthnEnabled,
-        @Value("${vitamui.authn.x509.mandatory:false}") final boolean x509AuthnMandatory
+        @Value("${vitamui.authn.x509.mandatory:false}") final boolean x509AuthnMandatory,
+        @Value("${vitamui.authn.x509.trusted-proxies:}") final List<String> x509TrustedProxies
     ) {
         if (x509AuthnEnabled) {
             val sslHeaderName = casProperties.getAuthn().getX509().getSslHeaderName();
             val certificateExtractor = new CustomRequestHeaderX509CertificateExtractor(
                 sslHeaderName,
-                x509AuthnMandatory
+                x509AuthnMandatory,
+                x509TrustedProxies
             );
 
             return new X509CertificateCredentialsRequestHeaderAction(

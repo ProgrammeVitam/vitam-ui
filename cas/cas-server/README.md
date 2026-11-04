@@ -97,6 +97,10 @@ phone number configured in its user account.
 
 Current version of VitamUI only supports `smsmode` (an SMS gateway platform).
 
+Wrong codes are counted per user: after `vitamui.mfa.max-failed-attempts` wrong codes (default `5`), every code is
+refused until no wrong code has been submitted for `vitamui.mfa.failed-attempts-retention` (default `PT15M`). A valid
+code resets the count. The count is kept in the memory of each CAS node.
+
 For now, **NO** test mode is available yet.
 To test this MFA authentication locally, you would need to either temporarily alter the SmsModeSmsSender class, to mock
 the smsmode API, or to get a real test token from smsmode...
@@ -121,6 +125,10 @@ Local test configuration is available in the `tools/docker/nginx-cas-x509` folde
 cas.authn.x509.sslHeaderName: x-ssl-cert
 vitamui.authn.x509.enabled: true
 vitamui.authn.x509.mandatory: true
+# Addresses (IP or CIDR range) of the reverse proxies allowed to forward the client certificate header. The header is
+# ignored on any other connection, and always ignored when this list is empty (the default). The local nginx runs on
+# the host network, so it reaches CAS from the loopback.
+vitamui.authn.x509.trusted-proxies: 127.0.0.1,::1
 # Extract user email (identifier) from the Certificate "subject alternate name"
 vitamui.authn.x509.emailAttribute: 'SUBJECT_ALTERNATE_NAME'
 vitamui.authn.x509.emailAttributeParsing: '.*RFC822Name=(.*)'
@@ -143,6 +151,8 @@ https://dev.vitamui.com:8080/cas/login).
 **Warnings:**
 - For now, the above configuration is only available locally. VitamUI Ansible configuration must be updated to support
   these settings.
+- `vitamui.authn.x509.trusted-proxies` is matched against the address of the connection that reaches CAS. List only
+  the proxies that set the certificate header, and make sure that header cannot reach CAS any other way.
 - Certificate authentication does work NOT with subrogation (superuser cannot be authenticated with X509 certificate).
 - Only ONE organization may use x509 certificate authentication per email domain; CAS has no means to know to which
   organization a certificate belongs.

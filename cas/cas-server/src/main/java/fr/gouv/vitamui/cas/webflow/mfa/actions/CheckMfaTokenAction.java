@@ -26,7 +26,8 @@
  */
 package fr.gouv.vitamui.cas.webflow.mfa.actions;
 
-import lombok.RequiredArgsConstructor;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCredential;
 import org.apereo.cas.mfa.simple.ticket.CasSimpleMultifactorAuthenticationTicket;
@@ -42,17 +43,45 @@ import java.time.ZonedDateTime;
 
 /**
  * Check the MFA token.
+ *
+ * <p>Wrong codes are counted per principal: once {@code maxFailedAttempts} is reached, every code is refused until no
+ * wrong code has been submitted for {@code failedAttemptsRetention}. The count lives on the server, so resubmitting a
+ * previous flow state or asking for a new code does not reset it; only a valid code does.
  */
 @Slf4j
-@RequiredArgsConstructor
 public class CheckMfaTokenAction extends AbstractAction {
 
     private static final Duration TOKEN_VALIDITY = Duration.ofSeconds(60);
 
     private final TicketRegistry ticketRegistry;
 
+    private final int maxFailedAttempts;
+
+    private final Cache<String, Integer> failedAttempts;
+
+    public CheckMfaTokenAction(
+        final TicketRegistry ticketRegistry,
+        final int maxFailedAttempts,
+        final Duration failedAttemptsRetention
+    ) {
+        this.ticketRegistry = ticketRegistry;
+        this.maxFailedAttempts = maxFailedAttempts;
+        this.failedAttempts = Caffeine.newBuilder().expireAfterWrite(failedAttemptsRetention).build();
+    }
+
     @Override
     protected Event doExecute(final RequestContext requestContext) {
+        final var authentication = WebUtils.getAuthentication(requestContext);
+        if (authentication == null) {
+            LOGGER.warn("No primary authentication in the flow: the MFA token is refused");
+            return error();
+        }
+        final var principalId = authentication.getPrincipal().getId();
+        if (failedAttempts.asMap().getOrDefault(principalId, 0) >= maxFailedAttempts) {
+            LOGGER.warn("Too many wrong MFA tokens for [{}]: the token is refused", principalId);
+            return failure(principalId);
+        }
+
         var credential = WebUtils.getCredential(requestContext);
         var tokenCredential = (CasSimpleMultifactorTokenCredential) credential;
         var token = CasSimpleMultifactorAuthenticationTicket.PREFIX + "-" + tokenCredential.getToken();
@@ -63,12 +92,18 @@ public class CheckMfaTokenAction extends AbstractAction {
         try {
             var acct = this.ticketRegistry.getTicket(token, CasSimpleMultifactorAuthenticationTicket.class);
             if (acct == null || acct.getCreationTime().isBefore(ZonedDateTime.now().minus(TOKEN_VALIDITY))) {
-                return error();
+                return failure(principalId);
             }
         } catch (final InvalidTicketException e) {
             LOGGER.debug("MFA token {} is invalid: {}", token, e.getMessage());
-            return error();
+            return failure(principalId);
         }
+        failedAttempts.invalidate(principalId);
         return success();
+    }
+
+    private Event failure(final String principalId) {
+        failedAttempts.asMap().merge(principalId, 1, Integer::sum);
+        return error();
     }
 }

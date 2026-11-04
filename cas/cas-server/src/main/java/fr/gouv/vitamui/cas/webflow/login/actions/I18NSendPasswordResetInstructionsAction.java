@@ -173,7 +173,7 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
             var duration = Beans.newDuration(pm.getReset().getExpiration());
             LOGGER.debug(
                 "Generated password reset URL [{}]; Link is only active for the next [{}] minute(s)",
-                url,
+                utils.sanitizePasswordResetUrl(url.toString()),
                 duration
             );
             // CUSTO: only send email (and not SMS)
