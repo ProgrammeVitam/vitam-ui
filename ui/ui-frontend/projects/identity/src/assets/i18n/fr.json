@@ -1,10 +1,5 @@
 {
   "COMMON": {
-    "CANCEL": "Annuler",
-    "SUBMIT": "Terminer",
-    "SAVE": "ENREGISTRER",
-    "UPDATE": "Modifier",
-    "APPLY_UPDATE": "Appliquer les modifications",
     "ID": "Identifiant",
     "ADRESS": {
       "STREET": "N° et nom de rue",
@@ -12,19 +7,7 @@
       "CITY": "Ville",
       "COUNTRY": "Pays"
     },
-    "HISTORY": {
-      "OPERATIONS": "Journal des opérations",
-      "NO_HISTORY": "Aucun historique"
-    },
-    "NEXT": "Suivant",
-    "LANGUAGE": {
-      "TITLE": "Langue",
-      "ENGLISH": "Anglais",
-      "FRENCH": "Français",
-      "GERMAN": "Allemand"
-    },
     "ACTIVE": "actif",
-    "NO_RESULT": "Aucun résultat",
     "MORE_RESULT": "Afficher plus de résultats...",
     "ERROR": {
       "WRONG_FORMAT": "Format incorrect",

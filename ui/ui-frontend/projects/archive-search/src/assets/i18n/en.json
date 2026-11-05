@@ -167,9 +167,6 @@
       "TRANSFER_CONFIRM": "Confirm",
       "REQUEST_MESSAGE": "Your transfer acknowledgment request has been taken into account"
     },
-    "EXPORT_CSV": {
-      "EXPORT_CSV_LIMIT_REACHED": "It's not possible to export more than 10,000 results, please update your filters."
-    },
     "FOLDER": "Folder",
     "DOCUMENT": "Document",
     "SUBFONDS": "Sub fonds",
