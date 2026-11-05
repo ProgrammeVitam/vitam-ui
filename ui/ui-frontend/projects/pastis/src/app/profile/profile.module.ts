@@ -73,7 +73,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { CoreModule } from './../core/core.module';
 import { FileTreeModule } from './../profile/edit-profile/file-tree/file-tree.module';
 
 import { MatIconModule } from '@angular/material/icon';
@@ -95,7 +94,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 @NgModule({
   imports: [
     CommonModule,
-    CoreModule,
     FileTreeModule,
     MatIconModule,
     MatSlideToggleModule,
