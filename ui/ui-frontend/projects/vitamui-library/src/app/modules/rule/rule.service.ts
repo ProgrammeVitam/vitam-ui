@@ -47,9 +47,7 @@ import { VitamuiSelectOptions } from '../../../lib/components/select/select.comp
 
 const keySnackbar = 'APPLICATION.RULES_APP.MESSAGES.';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class RuleService extends SearchService<Rule> {
   private readonly ruleApiService: RuleApiService;
   private readonly snackBarService = inject(SnackBarService);

@@ -50,9 +50,7 @@ export interface ProfileNameCheckParams {
   nameToIgnore?: string;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ProfileValidators {
   private readonly rngProfileService = inject(ProfileService);
 

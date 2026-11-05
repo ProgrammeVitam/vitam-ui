@@ -49,7 +49,7 @@ import { DisplayObjectType } from '../object-viewer/types';
 
 export type SchemaElementByApiPath = { [key: string]: SchemaElement };
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ArchiveUnitEditObjectService {
   private readonly editObjectService = inject(EditObjectService);
   private readonly templateService = inject(TemplateService);

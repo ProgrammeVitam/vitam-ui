@@ -43,9 +43,7 @@ import { TenantsByApplication } from './models/user/tenants-by-application.inter
 import { TENANT_SELECTION_URL_CONDITION, TenantSelectionService } from './tenant-selection.service';
 import { SnackBarService } from './components/snack-bar/snack-bar.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class TenantSelectionGuard {
   private readonly authService = inject(AuthService);
   private readonly appService = inject(ApplicationService);

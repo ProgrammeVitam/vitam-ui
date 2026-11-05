@@ -41,9 +41,7 @@ import { map } from 'rxjs/operators';
 import { Customer, DEFAULT_PAGE_SIZE, Direction, Owner, PageRequest, PaginatedResponse, SearchService } from 'vitamui-library';
 import { CustomerApiService } from '../../core/api/customer-api.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class CustomerListService extends SearchService<Customer> {
   private readonly customerApi: CustomerApiService;
 

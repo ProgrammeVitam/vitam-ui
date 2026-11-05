@@ -47,9 +47,7 @@ import { inject, Injectable } from '@angular/core';
 import { ReclassificationCriteriaDto } from './reclassification.interface';
 import { getUnitI18nAttribute } from '../pipes/unitI18n.pipe';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ReclassificationService extends SearchService<any> implements SearchArchiveUnitsInterface {
   private readonly reclassificationApiService: ReclassificationApiService;
 

@@ -40,9 +40,7 @@ import { Observable } from 'rxjs';
 import { BASE_URL } from '../../app/modules/injection-tokens';
 import { SearchResponse } from '../../app/modules/models/criteria/search-response.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SearchUnitApiService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = inject(BASE_URL);

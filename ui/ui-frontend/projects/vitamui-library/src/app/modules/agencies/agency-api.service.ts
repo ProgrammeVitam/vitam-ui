@@ -44,9 +44,7 @@ import { PaginatedHttpClient } from '../paginated-http-client';
 
 const HTTP_STATUS_OK = 200;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AgencyApiService extends PaginatedHttpClient<Agency> {
   baseUrl: string;
 

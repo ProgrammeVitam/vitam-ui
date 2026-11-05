@@ -44,9 +44,7 @@ import { map, switchMap, take } from 'rxjs/operators';
 import { FieldPath } from '../../shared/signal-forms/signal-form-validators';
 import { TenantService } from '../tenant.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class TenantFormValidators {
   private readonly tenantService = inject(TenantService);
 

@@ -41,9 +41,7 @@ import { Observable, of } from 'rxjs';
 import { validateObservable } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class FileFormatCreateValidators {
   private readonly fileFormatService: FileFormatService;
 

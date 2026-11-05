@@ -41,11 +41,11 @@ import { ApplicationSvgLoaderFactory } from './app/app.module';
 import { environment } from './environments/environment';
 import {
   AuthenticationModule,
-  BASE_URL,
   ENVIRONMENT,
   InjectorModule,
   LoggerModule,
   provideI18n,
+  provideVitamuiFeature,
   VitamUICommonModule,
   VitamUILibraryModule,
   WINDOW_LOCATION,
@@ -94,7 +94,7 @@ bootstrapApplication(AppComponent, {
     provideI18n(),
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
-    { provide: BASE_URL, useValue: '/portal-api' },
+    provideVitamuiFeature({ baseUrl: '/portal-api' }),
     { provide: ENVIRONMENT, useValue: environment },
     { provide: WINDOW_LOCATION, useValue: window.location },
   ],

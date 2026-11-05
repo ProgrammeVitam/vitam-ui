@@ -44,9 +44,7 @@ import { PaginatedHttpClient } from '../paginated-http-client';
 
 const HTTP_STATUS_OK = 200;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class RuleApiService extends PaginatedHttpClient<Rule> {
   private readonly baseUrl: string;
 

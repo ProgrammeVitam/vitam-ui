@@ -39,9 +39,7 @@ import { Injectable, inject } from '@angular/core';
 import { BaseHttpClient } from '../base-http-client';
 import { BASE_URL } from '../injection-tokens';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SiteApiService extends BaseHttpClient<any> {
   constructor() {
     const http = inject(HttpClient);

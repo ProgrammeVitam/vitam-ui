@@ -40,9 +40,7 @@ import { Observable } from 'rxjs';
 import { SearchCriteriaHistory, SearchService } from 'vitamui-library';
 import { ProjectsApiService } from '../../../core/api/project-api.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SearchCriteriaSaverService extends SearchService<any> {
   private readonly projectsApiService: ProjectsApiService;
 

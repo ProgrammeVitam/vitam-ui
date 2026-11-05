@@ -79,9 +79,7 @@ import { ProfileDescription, ProfileDescriptionModel } from '../../models/profil
 import { FileService } from './file.service';
 import { ProfileVersion } from '../../models/profile-version.enum';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class NoticeService {
   private readonly fileService = inject(FileService);
 

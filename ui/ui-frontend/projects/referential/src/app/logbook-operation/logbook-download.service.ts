@@ -53,9 +53,7 @@ const DOWNLOAD_TYPE_BATCH_REPORT: LogbookDownloadType = 'batchreport';
 const DOWNLOAD_TYPE_REPORT: LogbookDownloadType = 'report';
 const DOWNLOAD_TYPE_OBJECT: LogbookDownloadType = 'object';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class LogbookDownloadService extends SearchService<IEvent> {
   private readonly logbookApiService: LogbookApiService;
   private readonly snackBarService = inject(SnackBarService);

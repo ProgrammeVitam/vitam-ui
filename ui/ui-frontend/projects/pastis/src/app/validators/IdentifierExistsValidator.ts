@@ -44,9 +44,7 @@ import { Profile } from '../models/profile';
 
 export const IDENTIFIER_EXIST_ERROR_KEY = 'identifierExist';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class IdentifierExistsValidator {
   private readonly profileService = inject(ProfileService);
 

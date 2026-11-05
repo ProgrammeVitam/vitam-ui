@@ -42,9 +42,7 @@ import { map, take } from 'rxjs/operators';
 import { Tenant } from 'vitamui-library';
 import { TenantService } from './tenant.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class TenantResolver {
   private readonly tenantService = inject(TenantService);
   private readonly router = inject(Router);

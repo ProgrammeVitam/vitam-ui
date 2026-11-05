@@ -44,9 +44,7 @@ import { BASE_URL } from '../injection-tokens';
 import { Collection } from '../models/schema/collection.enum';
 import { Schema } from '../models/schema/schema.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SchemaApiService extends BaseHttpClient<Ontology> {
   constructor() {
     const http = inject(HttpClient);

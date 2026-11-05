@@ -49,9 +49,7 @@ import { Logger } from '../logger/logger';
 import { Subrogation } from '../models/subrogation/subrogation.interface';
 import { SubrogationSnackBarComponent } from './subrogation-snack-bar/subrogation-snack-bar.component';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SubrogationService {
   private readonly logger = inject(Logger);
   private readonly subrogationApi = inject(SubrogationApiService);

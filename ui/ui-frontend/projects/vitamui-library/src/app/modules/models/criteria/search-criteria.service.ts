@@ -88,9 +88,7 @@ import { firstValueFrom } from 'rxjs';
 
 const SEPARATOR = '|';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SearchCriteriaService {
   private readonly splittableValues = ['guid', 'guidopi'];
   private readonly schemaPromise: Promise<Schema>;

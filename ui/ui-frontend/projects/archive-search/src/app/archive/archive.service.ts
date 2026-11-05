@@ -73,9 +73,7 @@ import { RuleTypeEnum } from './models/rule-type-enum';
 import { ReassignRequestDto } from './models/reassign-request.interface';
 import { PreservationRequestDto } from './models/preservation-request.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ArchiveService extends SearchService<any> implements SearchArchiveUnitsInterface {
   private readonly archiveApiService: ArchiveApiService;
   private readonly locale = inject(LOCALE_ID);

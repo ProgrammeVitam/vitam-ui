@@ -39,9 +39,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AccessionRegisterSummary, BaseHttpClient, BASE_URL } from 'vitamui-library';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AccessionRegisterSummaryApiService extends BaseHttpClient<AccessionRegisterSummary> {
   constructor() {
     const http = inject(HttpClient);

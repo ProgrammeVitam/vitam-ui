@@ -40,9 +40,7 @@ import { Observable } from 'rxjs';
 import { ArchiveUnitApiService } from './archive-unit-api.service';
 import { ArchiveUnit, JsonPatchDto, MultiJsonPatchDto, OperationId } from 'vitamui-library';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ArchiveUnitService {
   private readonly archiveUnitApiService = inject(ArchiveUnitApiService);
 

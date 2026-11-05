@@ -41,7 +41,7 @@ import { catchError, map, shareReplay } from 'rxjs/operators';
 import { BASE_URL } from 'vitamui-library';
 import { IngestReferentialNames } from '../../models/logbook-event.interface';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class IngestReferentialService {
   private readonly baseUrl = inject(BASE_URL);
   private readonly http = inject(HttpClient);

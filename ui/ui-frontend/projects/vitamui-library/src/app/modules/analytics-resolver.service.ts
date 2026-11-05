@@ -42,9 +42,7 @@ import { ApplicationService } from './application.service';
 import { User } from './models/user/user.interface';
 import { TenantSelectionService } from './tenant-selection.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AnalyticsResolver {
   private readonly userApiService = inject(UserApiService);
   private readonly applicationService = inject(ApplicationService);

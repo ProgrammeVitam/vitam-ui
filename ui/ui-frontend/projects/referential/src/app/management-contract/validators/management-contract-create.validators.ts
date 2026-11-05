@@ -43,9 +43,7 @@ import { ManagementContractService } from '../management-contract.service';
 
 type FieldPath<TValue, TPathKind extends PathKind> = SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ManagementContractCreateValidators {
   private readonly managementContractService: ManagementContractService;
 

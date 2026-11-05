@@ -61,9 +61,7 @@ import { ReclassificationCriteriaDto } from '../../archive/models/reclassificati
 import { RuleSearchCriteriaDto } from '../../archive/models/ruleAction.interface';
 import { ReassignRequestDto } from '../../archive/models/reassign-request.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ArchiveApiService extends PaginatedHttpClient<any> {
   baseUrl: string;
 

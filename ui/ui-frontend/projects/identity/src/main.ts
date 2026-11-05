@@ -41,11 +41,11 @@ import { bootstrapApplication, BrowserModule, Title } from '@angular/platform-br
 import { environment } from './environments/environment';
 import {
   AuthenticationModule,
-  BASE_URL,
   ENVIRONMENT,
   InjectorModule,
   LoggerModule,
   provideI18n,
+  provideVitamuiFeature,
   VitamUICommonModule,
   VitamUILibraryModule,
   WINDOW_LOCATION,
@@ -55,6 +55,7 @@ import { default as localeFr } from '@angular/common/locales/fr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app/app-routing.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { provideIdentityServices } from './app/identity.providers';
 import { AppComponent } from './app/app.component';
 
 registerLocaleData(localeFr, 'fr');
@@ -86,7 +87,7 @@ bootstrapApplication(AppComponent, {
     provideI18n(),
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
-    { provide: BASE_URL, useValue: './identity-api' },
+    provideVitamuiFeature({ baseUrl: './identity-api' }, provideIdentityServices()),
     { provide: ENVIRONMENT, useValue: environment },
     { provide: WINDOW_LOCATION, useValue: window.location },
     DatePipe,

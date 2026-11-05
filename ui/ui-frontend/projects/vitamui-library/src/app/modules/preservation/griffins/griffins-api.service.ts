@@ -42,9 +42,7 @@ import { CreateGriffin, Griffin } from './griffin.type';
 import { OperationId } from '../../../../lib/models/operation-id';
 import { addSkipErrorNotificationHeader } from '../../utils/http-header.util';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class GriffinsApiService {
   protected http: HttpClient;
   protected readonly apiUrl: string;

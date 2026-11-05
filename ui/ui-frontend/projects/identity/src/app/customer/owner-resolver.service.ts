@@ -43,9 +43,7 @@ import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
 import { OwnerService } from './owner.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class OwnerResolver {
   private readonly ownerService = inject(OwnerService);
   private readonly router = inject(Router);

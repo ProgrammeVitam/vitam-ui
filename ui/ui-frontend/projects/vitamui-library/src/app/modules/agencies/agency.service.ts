@@ -45,9 +45,7 @@ import { Option } from '../components/autocomplete/utils/option.interface';
 import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 import { Agency } from '../../../lib/models/agency';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AgencyService extends SearchService<Agency> {
   private readonly agencyApiService: AgencyApiService;
   private readonly snackBarService = inject(SnackBarService);

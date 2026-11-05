@@ -41,12 +41,12 @@ import { bootstrapApplication, BrowserModule, Title } from '@angular/platform-br
 import { environment } from './environments/environment';
 import {
   AuthenticationModule,
-  BASE_URL,
   BytesPipe,
   ENVIRONMENT,
   InjectorModule,
   LoggerModule,
   provideI18n,
+  provideVitamuiFeature,
   VitamUICommonModule,
   VitamUILibraryModule,
   WINDOW_LOCATION,
@@ -57,6 +57,7 @@ import { default as localeFr } from '@angular/common/locales/fr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app/app-routing.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { provideCollectServices } from './app/collect.providers';
 import { AppComponent } from './app/app.component';
 
 registerLocaleData(localeFr, 'fr');
@@ -89,7 +90,7 @@ bootstrapApplication(AppComponent, {
     provideNativeDateAdapter(),
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
-    { provide: BASE_URL, useValue: './collect-api' },
+    provideVitamuiFeature({ baseUrl: './collect-api' }, provideCollectServices()),
     { provide: ENVIRONMENT, useValue: environment },
     {
       provide: WINDOW_LOCATION,

@@ -42,9 +42,7 @@ import { AuthService } from '../auth.service';
 import { AuthUser } from '../models/user/auth-user.interface';
 import { TenantSelectionService } from '../tenant-selection.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SecurityService {
   private readonly authService = inject(AuthService);
   private readonly tenantSelectionService = inject(TenantSelectionService);

@@ -40,9 +40,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Option, Project, ProjectAttachments, SearchService } from 'vitamui-library';
 import { ProjectsApiService } from '../core/api/project-api.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ProjectsService extends SearchService<Project> {
   private readonly projectsApiService: ProjectsApiService;
   private readonly translationService = inject(TranslateService);

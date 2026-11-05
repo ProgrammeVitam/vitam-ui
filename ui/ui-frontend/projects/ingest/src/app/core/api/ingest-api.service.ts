@@ -41,9 +41,7 @@ import { map, tap } from 'rxjs/operators';
 import { BASE_URL, PageRequest, PaginatedHttpClient, PaginatedResponse, VitamuiHttpHeaders } from 'vitamui-library';
 import { IngestType } from '../common/ingest-type.enum';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class IngestApiService extends PaginatedHttpClient<any> {
   baseUrl: string;
 
