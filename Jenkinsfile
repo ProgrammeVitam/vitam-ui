@@ -127,7 +127,7 @@ pipeline {
                                 }
                                 if (env.GOAL == 'publish') {
                                     // If the goal is to publish, we also generate .deb/.rpm
-                                    sh '../../tools/packaging/package-fronts.sh ui-identity,ui-archive-search,ui-portal,ui-pastis,ui-collect,ui-referential,ui-ingest,ui-design-system ${POM_VERSION}'
+                                    sh '../../tools/packaging/package-fronts.sh ui-portal,ui-design-system ${POM_VERSION}'
                                 }
                             }
                         }
