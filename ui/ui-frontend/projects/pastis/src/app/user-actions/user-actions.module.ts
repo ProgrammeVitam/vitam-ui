@@ -76,8 +76,7 @@ import { NgModule } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { VitamUILibraryModule } from 'vitamui-library';
-import { CoreModule } from '../core/core.module';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { FilterByNamePipe } from './add-metadata/add-metadata.component';
 import { UserActionAddPuaControlComponent } from './add-pua-control/add-pua-control.component';
@@ -92,7 +91,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @NgModule({
   imports: [
     CommonModule,
-    CoreModule,
+    VitamUICommonModule,
     MatFormFieldModule,
     MatInputModule,
     MatSlideToggleModule,

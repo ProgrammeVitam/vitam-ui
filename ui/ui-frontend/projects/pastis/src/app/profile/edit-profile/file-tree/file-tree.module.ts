@@ -98,7 +98,6 @@ import {
   VitamUICommonModule,
   VitamUILibraryModule,
 } from 'vitamui-library';
-import { CoreModule } from '../../../core/core.module';
 import { AttributesPopupComponent } from '../file-tree-metadata/attributes/attributes.component';
 import { FileTreeMetadataComponent } from '../file-tree-metadata/file-tree-metadata.component';
 import { FileTreeComponent } from './file-tree.component';
@@ -114,7 +113,6 @@ import { OverlayModule } from '@angular/cdk/overlay';
 @NgModule({
   imports: [
     CommonModule,
-    CoreModule,
     MatTableModule,
     UserActionsModule,
     VitamUICommonModule,

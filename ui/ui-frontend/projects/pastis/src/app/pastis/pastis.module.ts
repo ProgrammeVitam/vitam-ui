@@ -51,7 +51,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
-import { CoreModule } from '../core/core.module';
 import { MainComponent } from '../main/main.component';
 import { FileTreeModule } from '../profile/edit-profile/file-tree/file-tree.module';
 import { ProfileModule } from '../profile/profile.module';
@@ -65,7 +64,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
-    CoreModule,
     ProfileModule,
     UserActionsModule,
     FileTreeModule,
