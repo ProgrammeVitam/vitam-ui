@@ -1,10 +1,4 @@
 {
-  "COMMON": {
-    "CANCEL": "Cancel",
-    "SUBMIT": "Submit",
-    "UPDATE": "Update",
-    "APPLY_UPDATE": "Apply changes"
-  },
   "INGEST_LIST": {
     "TABLE_NAME": "Monitoring of deposits",
     "ID": "Deposit identifier",

@@ -1,10 +1,4 @@
 {
-  "COMMON": {
-    "CANCEL": "Annuler",
-    "SUBMIT": "Terminer",
-    "UPDATE": "Modifier",
-    "APPLY_UPDATE": "Appliquer les modifications"
-  },
   "INGEST_LIST": {
     "TABLE_NAME": "Suivi des versements",
     "ID": "Identifiant du message",

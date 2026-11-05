@@ -44,7 +44,8 @@
       "OPERATIONS": "Journal des opérations"
     },
     "COPY": "Copier",
-    "IMPORT": "Importer"
+    "IMPORT": "Importer",
+    "APPLY_UPDATE": "Appliquer les modifications"
   },
   "CONFIRM_DIALOG": {
     "DELETE_TITLE": "Suppression {{objectType}}",
