@@ -148,7 +148,12 @@ cd api/api-iam/iam && mvn test
 # Integration tests (requires full environment)
 mvn clean verify -Pdev-it        # Development environment
 mvn clean verify -Pintegration   # Jenkins environment
+
+# Mutation testing with PIT (https://pitest.org/), reports in target/pit-reports/index.html
+cd commons/commons-utils && mvn test -Ppitest
 ```
+
+Mutation testing also runs in the `Mutation testing` GitHub Action: on pull requests, only modules with modified Java files are analysed; on protected branches, weekly or on manual runs, all modules are analysed.
 
 ### Frontend Tests
 
