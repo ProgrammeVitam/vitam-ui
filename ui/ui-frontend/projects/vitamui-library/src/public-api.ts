@@ -200,6 +200,7 @@ export * from './app/modules/global-event.service';
 export * from './app/modules/helper/injector.module';
 export * from './app/modules/injection-tokens';
 export * from './app/modules/feature-providers';
+export * from './app/modules/feature-routes';
 export * from './app/modules/language.service';
 export * from './app/modules/logbook/history/history.module';
 export * from './app/modules/logbook/logbook.service';
