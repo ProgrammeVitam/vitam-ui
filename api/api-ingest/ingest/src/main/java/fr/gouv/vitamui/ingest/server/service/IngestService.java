@@ -57,7 +57,9 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.enums.AttachmentType;
+import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.IngestFileGenerationException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
@@ -101,6 +103,7 @@ public class IngestService {
 
     private static final String ILLEGAL_CHARACTERS = "[\uFEFF-\uFFFF]";
     private static final String SELECTED_ORIGINATING_AGENCIES = "SELECTED_ORIGINATING_AGENCIES";
+    private static final Set<String> SCHEME_IMPORT_WORKFLOWS = Set.of("HOLDING_SCHEME", "FILING_SCHEME");
 
     private final SecurityService securityService;
 
@@ -357,6 +360,12 @@ public class IngestService {
 
     public ResponseEntity<Void> streamingUpload(InputStream inputStream, String contextId, String action)
         throws IngestExternalException {
+        final String requiredRole = SCHEME_IMPORT_WORKFLOWS.contains(contextId)
+            ? ServicesData.ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE
+            : ServicesData.ROLE_CREATE_INGEST;
+        if (!securityService.hasRole(requiredRole)) {
+            throw new ForbiddenException("Upload with workflow " + contextId + " requires role " + requiredRole);
+        }
         try {
             VitamContext vitamContext = new VitamContext(securityService.getTenantIdentifier()).setApplicationSessionId(
                 securityService.getApplicationId()

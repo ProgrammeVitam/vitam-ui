@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.referential.server.rest;
 
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.download.DownloadClaims;
 import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
@@ -52,6 +53,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.access.annotation.Secured;
 
 import java.util.Map;
 
@@ -174,5 +176,14 @@ class ProfileControllerTest {
         assertThatThrownBy(() -> profileController.signedDownload("the-token", response)).isInstanceOf(
             BadRequestException.class
         );
+    }
+
+    @Test
+    void download_should_require_archive_profile_read_role() throws NoSuchMethodException {
+        final Secured secured =
+            ProfileController.class.getMethod("download", String.class).getAnnotation(Secured.class);
+
+        assertThat(secured).isNotNull();
+        assertThat(secured.value()).containsExactly(ServicesData.ROLE_GET_ARCHIVE_PROFILES);
     }
 }
