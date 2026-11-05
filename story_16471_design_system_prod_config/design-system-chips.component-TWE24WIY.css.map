@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/design-system/src/app/components/atoms/chips/design-system-chips.component.scss"],
-  "sourcesContent": [":host {\n  display: flex;\n  gap: 5px;\n}\n"],
-  "mappings": "AAAA,MACE,QAAA,KACA,IAAA",
-  "names": []
-}

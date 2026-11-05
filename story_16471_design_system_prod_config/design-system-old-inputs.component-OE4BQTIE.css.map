@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/design-system/src/app/components/molecules/inputs/old-input/design-system-old-inputs.component.scss"],
-  "sourcesContent": [":host {\n  .layer {\n    width: 33px;\n    height: 39px;\n\n    font-size: 30px;\n    font-weight: normal;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: -0.8px;\n    text-align: left;\n    margin-left: 20px;\n  }\n\n  vitamui-common-input:not(:last-child) {\n    margin-right: 2rem;\n  }\n\n  .contrast-container {\n    background-color: var(--vitamui-white);\n    border: 1px solid var(--vitamui-grey-200);\n    border-radius: 10px;\n  }\n}\n"],
-  "mappings": "AACE,MAAA,CAAA,MACE,MAAA,KACA,OAAA,KAEA,UAAA,KACA,YAAA,IACA,WAAA,OACA,aAAA,OACA,YAAA,OACA,eAAA,MACA,WAAA,KACA,YAAA,KAGF,MAAA,oBAAA,KAAA,aACE,aAAA,KAGF,MAAA,CAAA,mBACE,iBAAA,IAAA,iBACA,OAAA,IAAA,MAAA,IAAA,oBApBF,cAqBE",
-  "names": []
-}
