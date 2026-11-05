@@ -46,7 +46,10 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.nio.charset.StandardCharsets;
 
 @ExtendWith(MockitoExtension.class)
 class PastisServiceTest {
@@ -99,5 +102,42 @@ class PastisServiceTest {
             TechnicalException.class,
             () -> pastisService.getArchiveProfile(namelessProfile, ProfileVersion.VERSION_2_1)
         );
+    }
+
+    @Test
+    void loadProfileFromFile_should_keep_seda_2_4_version_of_rng() throws Exception {
+        String rngSeda24 = readProfileOk()
+            .replace("fr:gouv:culture:archivesdefrance:seda:v2.1", "fr:gouv:culture:archivesdefrance:seda:v2.4");
+
+        ProfileResponse profileResponse = pastisService.loadProfileFromFile(
+            new MockMultipartFile("file", rngSeda24.getBytes(StandardCharsets.UTF_8)),
+            "profile_seda_2_4.rng",
+            false
+        );
+
+        Assertions.assertEquals(ProfileVersion.VERSION_2_4, profileResponse.getSedaVersion());
+    }
+
+    @Test
+    void loadProfileFromFile_should_use_seda_2_3_when_rng_has_no_seda_version() throws Exception {
+        String rngWithoutSedaVersion = readProfileOk()
+            .replace("xmlns:seda=\"fr:gouv:culture:archivesdefrance:seda:v2.1\"", "")
+            .replace("xmlns=\"fr:gouv:culture:archivesdefrance:seda:v2.1\"", "")
+            .replace("ns=\"fr:gouv:culture:archivesdefrance:seda:v2.1\"", "");
+        Assertions.assertFalse(rngWithoutSedaVersion.contains("seda:v2"));
+
+        ProfileResponse profileResponse = pastisService.loadProfileFromFile(
+            new MockMultipartFile("file", rngWithoutSedaVersion.getBytes(StandardCharsets.UTF_8)),
+            "profile_without_seda_version.rng",
+            false
+        );
+
+        Assertions.assertEquals(ProfileVersion.VERSION_2_3, profileResponse.getSedaVersion());
+    }
+
+    private static String readProfileOk() throws Exception {
+        try (var inputStream = new ClassPathResource("profiles/profile_ok.rng").getInputStream()) {
+            return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        }
     }
 }

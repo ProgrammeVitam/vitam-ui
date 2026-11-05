@@ -111,7 +111,7 @@ describe('TransferRequestModalComponent tests', () => {
 
   it('should have correct default values for toggle buttons', () => {
     expect(component.step2Form.includeLifeCycleLogs().value()).toBe(true);
-    expect(component.step2Form.sedaVersion().value()).toBe('2.3');
+    expect(component.step2Form.sedaVersion().value()).toBe('2.4');
     expect(component.step2Form.includeObjects().value()).toBe(UsageVersionEnum.ALL);
   });
 
@@ -145,6 +145,12 @@ describe('TransferRequestModalComponent tests', () => {
 
     it('should have 3 mat-button-toggle-group', () => {
       expect(fixture.nativeElement.querySelectorAll('mat-button-toggle-group').length).toBe(3);
+    });
+
+    it('should propose SEDA versions 2.1 to 2.4', () => {
+      const sedaVersionToggles: HTMLElement[] = Array.from(fixture.nativeElement.querySelectorAll('mat-button-toggle'));
+      const sedaVersionLabels = sedaVersionToggles.map((toggle) => toggle.textContent.trim()).filter((label) => label.startsWith('SEDA'));
+      expect(sedaVersionLabels).toEqual(['SEDA 2.1', 'SEDA 2.2', 'SEDA 2.3', 'SEDA 2.4']);
     });
   });
 });
