@@ -48,11 +48,11 @@ import { PastisConfigurationFactory } from './app/app.module';
 import { environment } from './environments/environment';
 import {
   AuthenticationModule,
-  BASE_URL,
   ENVIRONMENT,
   InjectorModule,
   LoggerModule,
   provideI18n,
+  provideVitamuiFeature,
   StartupService,
   ThemeService,
   VitamUICommonModule,
@@ -69,6 +69,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app/app-routing.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { providePastisServices } from './app/pastis.providers';
 import { AppComponent } from './app/app.component';
 
 const startupServiceClass = environment.standalone ? StandaloneStartupService : StartupService;
@@ -109,7 +110,7 @@ bootstrapApplication(AppComponent, {
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: WINDOW_LOCATION, useValue: window.location },
     PastisConfiguration,
-    { provide: BASE_URL, useValue: './pastis-api' },
+    provideVitamuiFeature({ baseUrl: './pastis-api' }, providePastisServices()),
     { provide: ENVIRONMENT, useValue: environment },
     provideAppInitializer(() => {
       const initializerFn = PastisConfigurationFactory(inject(PastisConfiguration));

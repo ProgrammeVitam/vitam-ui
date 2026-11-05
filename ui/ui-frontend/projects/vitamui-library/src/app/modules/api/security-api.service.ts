@@ -41,9 +41,7 @@ import { Observable } from 'rxjs';
 import { BASE_URL } from '../injection-tokens';
 import { AuthUser } from '../models/user/auth-user.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SecurityApiService {
   private readonly http = inject(HttpClient);
 

@@ -44,9 +44,7 @@ import { ArchiveService } from '../archive.service';
 
 const PAGE_SIZE = 10;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ArchiveUnitEliminationService {
   private readonly vitamConfigurationService = inject(VitamTenantConfigService);
   private readonly archiveService = inject(ArchiveService);

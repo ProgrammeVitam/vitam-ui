@@ -67,9 +67,7 @@ interface ReassignmentDialogResult {
   entryOperationIds?: string;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ReassignmentDialogService {
   dialog = inject(MatDialog);
   private readonly archiveService = inject(ArchiveService);

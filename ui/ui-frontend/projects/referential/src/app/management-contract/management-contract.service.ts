@@ -43,9 +43,7 @@ import { ManagementContract, SearchService, SnackBarService, VitamuiHttpHeaders 
 
 import { ManagementContractsApiService } from '../core/api/management-contracts-api.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ManagementContractService extends SearchService<ManagementContract> {
   private readonly managementContractApi: ManagementContractsApiService;
   private readonly snackBarService = inject(SnackBarService);

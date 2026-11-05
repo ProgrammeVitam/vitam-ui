@@ -42,9 +42,7 @@ import { CriteriaSearchQuery, Criterion, Group, Operators, SearchService, SnackB
 
 import { GroupApiService } from '../core/api/group-api.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class GroupService extends SearchService<Group> {
   private readonly groupApi: GroupApiService;
   private readonly snackBarService = inject(SnackBarService);

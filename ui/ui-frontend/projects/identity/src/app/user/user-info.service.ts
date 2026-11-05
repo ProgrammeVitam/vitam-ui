@@ -39,7 +39,7 @@ import { EMPTY, Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { BaseUserInfoApiService, SearchService, User, UserInfo, SnackBarService } from 'vitamui-library';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class UserInfoService extends SearchService<UserInfo> {
   private readonly userInfoServiceApi = inject(BaseUserInfoApiService);
   private readonly snackBarService = inject(SnackBarService);

@@ -1,0 +1,78 @@
+/*
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
+ * and the signatories of the "VITAM - Accord du Contributeur" agreement.
+ *
+ * contact@programmevitam.fr
+ *
+ * This software is a computer program whose purpose is to implement
+ * implement a digital archiving front-office system for the secure and
+ * efficient high volumetry VITAM solution.
+ *
+ * This software is governed by the CeCILL-C license under French law and
+ * abiding by the rules of distribution of free software.  You can  use,
+ * modify and/ or redistribute the software under the terms of the CeCILL-C
+ * license as circulated by CEA, CNRS and INRIA at the following URL
+ * "http://www.cecill.info".
+ *
+ * As a counterpart to the access to the source code and  rights to copy,
+ * modify and redistribute granted by the license, users are provided only
+ * with a limited warranty  and the software's author,  the holder of the
+ * economic rights,  and the successive licensors  have only  limited
+ * liability.
+ *
+ * In this respect, the user's attention is drawn to the risks associated
+ * with loading,  using,  modifying and/or developing or reproducing the
+ * software by the user in light of its specific status of free software,
+ * that may mean  that it is complicated to manipulate,  and  that  also
+ * therefore means  that it is reserved for developers  and  experienced
+ * professionals having in-depth computer knowledge. Users are therefore
+ * encouraged to load and test the software's suitability as regards their
+ * requirements in conditions enabling the security of their systems and/or
+ * data to be ensured and,  more generally, to use and operate it in the
+ * same conditions as regards security.
+ *
+ * The fact that you are presently reading this means that you have had
+ * knowledge of the CeCILL-C license and that you accept its terms.
+ */
+import { Provider } from '@angular/core';
+import { ArchiveUnitLifecycleHistoryService } from './archive/archive-preview/archive-unit-history-tab/archive-unit-lifecycle-history.service';
+import { EntryOperationValidatorService } from './archive/archive-search/additional-actions-search/originating-agency-reassignment-dialog/entry-operation-validator.service';
+import { ReassignmentDialogService } from './archive/archive-search/additional-actions-search/originating-agency-reassignment-dialog/reassignment-dialog.service';
+import { PreservationDialogService } from './archive/archive-search/additional-actions-search/preservation-dialog/preservation-dialog.service';
+import { RuleValidator } from './archive/archive-search/rule.validator';
+import { SearchCriteriaListService } from './archive/archive-search/search-criteria-list/search-criteria-list.service';
+import { ArchiveService } from './archive/archive.service';
+import { ArchiveUnitDipService } from './archive/common-services/archive-unit-dip.service';
+import { ArchiveUnitEliminationService } from './archive/common-services/archive-unit-elimination.service';
+import { ComputeInheritedRulesService } from './archive/common-services/compute-inherited-rules.service';
+import { UpdateUnitManagementRuleService } from './archive/common-services/update-unit-management-rule.service';
+import { PersistentIdentifierService } from './archive/persistent-identifier.service';
+import { ArchiveUnitValidatorService } from './archive/validators/archive-unit-validator.service';
+import { ManagementRulesValidatorService } from './archive/validators/management-rules-validator.service';
+import { ArchiveApiService } from './core/api/archive-api.service';
+import { PersistentIdentifierApiService } from './core/api/persistent-identifier-api.service';
+
+/**
+ * Services of the archive-search feature whose HTTP calls depend on BASE_URL, directly or through another service.
+ * They are not provided in root: they must be provided with the feature's BASE_URL (see provideVitamuiFeature).
+ */
+export function provideArchiveSearchServices(): Provider[] {
+  return [
+    ArchiveApiService,
+    ArchiveService,
+    ArchiveUnitDipService,
+    ArchiveUnitEliminationService,
+    ArchiveUnitLifecycleHistoryService,
+    ArchiveUnitValidatorService,
+    ComputeInheritedRulesService,
+    EntryOperationValidatorService,
+    ManagementRulesValidatorService,
+    PersistentIdentifierApiService,
+    PersistentIdentifierService,
+    PreservationDialogService,
+    ReassignmentDialogService,
+    RuleValidator,
+    SearchCriteriaListService,
+    UpdateUnitManagementRuleService,
+  ];
+}

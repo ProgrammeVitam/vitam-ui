@@ -41,9 +41,7 @@ import { map, switchMap, take } from 'rxjs/operators';
 import { RuleService } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class RuleValidator {
   private readonly ruleService = inject(RuleService);
   private readonly archiveSharedDataService = inject(ArchiveSharedDataService);

@@ -43,9 +43,7 @@ import { VitamuiHttpHeaders, addSkipErrorNotificationHeader } from 'vitamui-libr
 import { ArchiveApiService } from '../../../core/api/archive-api.service';
 import { ConsolidatedLifecycleEvent, LifecycleOrigin, OperationLifecycleGroup } from './archive-unit-lifecycle-history.model';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ArchiveUnitLifecycleHistoryService {
   private readonly archiveApiService = inject(ArchiveApiService);
 

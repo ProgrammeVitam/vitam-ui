@@ -40,9 +40,7 @@ import { Observable } from 'rxjs';
 
 import { BaseHttpClient, BASE_URL, IdentityProvider } from 'vitamui-library';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ProviderApiService extends BaseHttpClient<IdentityProvider> {
   constructor() {
     const http = inject(HttpClient);

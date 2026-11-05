@@ -40,6 +40,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import {
   ApiUnitObject,
+  APP_ROUTE_PREFIX,
   ApplicationId,
   BreadCrumbData,
   SearchBarComponent,
@@ -61,6 +62,7 @@ const PERMANENT_IDENTIFIER = 'PersistentIdentifier.PersistentIdentifierContent';
   imports: [VitamuiTitleBreadcrumbComponent, SearchBarComponent, TranslatePipe],
 })
 export class PersistentIdentifierSearchComponent {
+  private readonly routePrefix = inject(APP_ROUTE_PREFIX);
   private readonly dialog = inject(MatDialog);
   private readonly persistentIdentifierService = inject(PersistentIdentifierService);
   private readonly tenantSelectionService = inject(TenantSelectionService);
@@ -104,7 +106,10 @@ export class PersistentIdentifierSearchComponent {
         [PERMANENT_IDENTIFIER]: id,
       },
     };
-    this.router.navigate(['/archive-search/tenant/', this.tenantSelectionService.getSelectedTenant().identifier], extras);
+    this.router.navigate(
+      [`${this.routePrefix}/archive-search/tenant/`, this.tenantSelectionService.getSelectedTenant().identifier],
+      extras,
+    );
   }
 
   openPurgedDialog(ark: string, purgedPersistentIdentifier: PurgedPersistentIdentifierDto) {

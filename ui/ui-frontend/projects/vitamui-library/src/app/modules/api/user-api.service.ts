@@ -42,9 +42,7 @@ import { BASE_URL } from '../injection-tokens';
 import { User } from '../models/user/user.interface';
 import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class UserApiService {
   private readonly http = inject(HttpClient);
   private readonly authService = inject(AuthService);

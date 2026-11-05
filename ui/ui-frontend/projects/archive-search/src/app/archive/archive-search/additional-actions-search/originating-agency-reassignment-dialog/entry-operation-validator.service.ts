@@ -43,9 +43,7 @@ import { ArchiveService } from '../../../archive.service';
 
 type EntryOperationIdsError = ValidationError & Record<string, unknown>;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class EntryOperationValidatorService {
   private readonly archiveService = inject(ArchiveService);
 

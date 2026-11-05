@@ -42,9 +42,7 @@ import { BASE_URL, FileFormat, PaginatedHttpClient } from 'vitamui-library';
 
 const HTTP_STATUS_OK = 200;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class FileFormatApiService extends PaginatedHttpClient<FileFormat> {
   constructor() {
     const http = inject(HttpClient);

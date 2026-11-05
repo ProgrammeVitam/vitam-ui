@@ -42,9 +42,7 @@ import { IngestContractService } from '../ingest-contract.service';
 
 type FieldPath<TValue, TPathKind extends PathKind> = SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class IngestContractCreateValidators {
   private readonly ingestContractService: IngestContractService;
 

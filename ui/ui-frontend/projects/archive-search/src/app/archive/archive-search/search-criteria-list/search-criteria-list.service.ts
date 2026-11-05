@@ -39,9 +39,7 @@ import { Observable } from 'rxjs';
 import { SearchCriteriaHistory, SearchService } from 'vitamui-library';
 import { ArchiveApiService } from '../../../core/api/archive-api.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SearchCriteriaListService extends SearchService<any> {
   private readonly archiveApiService: ArchiveApiService;
 

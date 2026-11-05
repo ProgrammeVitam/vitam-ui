@@ -45,9 +45,7 @@ import { ArchiveSearchComponent } from '../archive-search/archive-search.compone
 
 const PAGE_SIZE = 10;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ArchiveUnitDipService {
   private readonly vitamConfigurationService = inject(VitamTenantConfigService);
   private readonly translateService = inject(TranslateService);

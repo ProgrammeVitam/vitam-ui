@@ -40,7 +40,14 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, SearchCriteriaEltDto, SearchCriteriaTypeEnum, UnitType } from 'vitamui-library';
+import {
+  APP_ROUTE_PREFIX,
+  CriteriaDataType,
+  CriteriaOperator,
+  SearchCriteriaEltDto,
+  SearchCriteriaTypeEnum,
+  UnitType,
+} from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ArchiveSearchComponent } from '../archive-search/archive-search.component';
 import { ArchiveService } from '../archive.service';
@@ -48,10 +55,9 @@ import { ArchiveService } from '../archive.service';
 const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
 const PAGE_SIZE = 10;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class UpdateUnitManagementRuleService {
+  private readonly routePrefix = inject(APP_ROUTE_PREFIX);
   private readonly archiveService = inject(ArchiveService);
   private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
   private readonly translateService = inject(TranslateService);
@@ -159,7 +165,7 @@ export class UpdateUnitManagementRuleService {
         this.managementRulesSharedDataService.emitCriteriaSearchDSLQuery(criteriaSearchDSLQueryToSend);
 
         // Navigate preserving query params in URL to maintain browser history
-        router.navigate(['/archive-search/update-rules/tenant/', tenantIdentifier], {
+        router.navigate([`${this.routePrefix}/archive-search/update-rules/tenant/`, tenantIdentifier], {
           queryParamsHandling: 'preserve',
         });
       }

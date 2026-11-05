@@ -42,9 +42,7 @@ import { SecurityProfileService } from '../security-profile.service';
 
 type FieldPath<TValue, TPathKind extends PathKind> = SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SecurityProfileCreateValidators {
   private readonly securityProfileService: SecurityProfileService;
 

@@ -43,7 +43,7 @@ import '@angular/compiler';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { provideRouter } from '@angular/router';
-import { BASE_URL, LoggerModule, SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from 'vitamui-library';
+import { LoggerModule, provideVitamuiFeature, SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from 'vitamui-library';
 import { provideTranslateService, TranslatePipe } from '@ngx-translate/core';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -59,7 +59,7 @@ TestBed.configureTestingModule = ((moduleDef: any) =>
       provideTranslateService({ fallbackLang: 'fr' }),
       provideHttpClient(withInterceptorsFromDi()),
       provideHttpClientTesting(),
-      { provide: BASE_URL, useValue: '/fake-api' },
+      provideVitamuiFeature({ baseUrl: '/fake-api' }),
       { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },
       { provide: WINDOW_LOCATION, useValue: typeof location !== 'undefined' ? location : ({} as Location) },
       provideAnimations(),

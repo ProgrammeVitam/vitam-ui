@@ -51,9 +51,7 @@ interface PreservationDialogResult {
   targetUsage?: PreservationRequestDto['targetUsage'];
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class PreservationDialogService {
   dialog = inject(MatDialog);
   private readonly archiveService = inject(ArchiveService);

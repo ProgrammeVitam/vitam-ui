@@ -43,9 +43,7 @@ import { SnackBarService } from '../components/snack-bar/snack-bar.service';
 import { HistoryEvent, IEvent } from '../models/logbook/event.interface';
 import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class LogbookService {
   private readonly logbookApi = inject(LogbookApiService);
   private readonly snackBarService = inject(SnackBarService);

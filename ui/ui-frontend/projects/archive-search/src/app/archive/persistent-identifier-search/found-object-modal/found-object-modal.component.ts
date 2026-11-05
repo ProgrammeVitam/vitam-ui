@@ -41,6 +41,7 @@ import {
   AccessContract,
   AccessContractService,
   ApiUnitObject,
+  APP_ROUTE_PREFIX,
   DialogHeaderComponent,
   ObjectQualifierType,
   qualifiersToVersionsWithQualifier,
@@ -59,6 +60,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class FoundObjectModalComponent {
   private readonly dialogRef = inject<MatDialogRef<PurgedPersistentIdentifierDto>>(MatDialogRef);
+  private readonly routePrefix = inject(APP_ROUTE_PREFIX);
   private readonly router = inject(Router);
   private readonly tenantSelectionService = inject(TenantSelectionService);
   private readonly archiveService = inject(ArchiveService);
@@ -106,7 +108,10 @@ export class FoundObjectModalComponent {
       },
     };
     this.closeDialog();
-    this.router.navigate(['/archive-search/tenant/', this.tenantSelectionService.getSelectedTenant().identifier], extras);
+    this.router.navigate(
+      [`${this.routePrefix}/archive-search/tenant/`, this.tenantSelectionService.getSelectedTenant().identifier],
+      extras,
+    );
   }
 
   accessContractAllowDownload(accessContract: AccessContract): boolean {

@@ -42,9 +42,7 @@ import { IngestContract, SearchService, SnackBarService, VitamuiHttpHeaders } fr
 
 import { IngestContractApiService } from '../core/api/ingest-contract-api.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class IngestContractService extends SearchService<IngestContract> {
   private readonly ingestContractApi: IngestContractApiService;
   private readonly snackBarService = inject(SnackBarService);

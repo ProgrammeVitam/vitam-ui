@@ -75,9 +75,7 @@ export interface TenantConfiguration {
   readonly deletionThreshold: number;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ConfigurationsApiService {
   private readonly http: HttpClient;
   private readonly baseUrl: string;

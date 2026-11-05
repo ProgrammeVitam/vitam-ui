@@ -42,9 +42,7 @@ import { BASE_URL, IngestContract, PaginatedHttpClient } from 'vitamui-library';
 
 const HTTP_STATUS_OK = 200;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class IngestContractApiService extends PaginatedHttpClient<IngestContract> {
   private readonly baseUrl: string;
 

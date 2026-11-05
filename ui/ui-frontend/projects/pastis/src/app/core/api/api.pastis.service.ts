@@ -77,9 +77,7 @@ import { Observable } from 'rxjs';
 import { BASE_URL } from 'vitamui-library';
 import { environment } from '../../../environments/environment';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class PastisApiService {
   private readonly http = inject(HttpClient);
 

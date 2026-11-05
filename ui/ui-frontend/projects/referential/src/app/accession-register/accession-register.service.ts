@@ -54,9 +54,7 @@ import {
 } from 'vitamui-library';
 import { AccessionRegisterDetailApiService } from '../core/api/accession-register-detail-api.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AccessionRegistersService extends SearchService<AccessionRegisterDetail> {
   private readonly accessionRegisterApiService: AccessionRegisterDetailApiService;
   private readonly translateService = inject(TranslateService);

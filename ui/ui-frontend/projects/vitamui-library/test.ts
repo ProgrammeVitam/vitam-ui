@@ -38,14 +38,14 @@
 /// <reference types="vitest/globals" />
 
 import { TestBed } from '@angular/core/testing';
-import { BASE_URL } from './src/app/modules/injection-tokens';
+import { provideVitamuiFeature } from './src/app/modules/feature-providers';
 
 /**
- * We just need to override BASE_URL differently when executing tests in vitamui-library because the injection token wouldn't be recognized if it were imported from 'vitamui-library' (we use a relative path instead)
+ * We just need to provide BASE_URL and the library services differently when executing tests in vitamui-library because the injection token wouldn't be recognized if it were imported from 'vitamui-library' (we use a relative path instead)
  */
 const configureTestingModule = TestBed.configureTestingModule.bind(TestBed);
 TestBed.configureTestingModule = ((moduleDef: any) =>
   configureTestingModule({
     ...moduleDef,
-    providers: [{ provide: BASE_URL, useValue: '/fake-api' }, ...(moduleDef?.providers ?? [])],
+    providers: [provideVitamuiFeature({ baseUrl: '/fake-api' }), ...(moduleDef?.providers ?? [])],
   })) as typeof TestBed.configureTestingModule;

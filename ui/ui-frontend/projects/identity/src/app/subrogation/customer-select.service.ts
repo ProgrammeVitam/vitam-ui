@@ -43,9 +43,7 @@ import { inject, Injectable } from '@angular/core';
 
 import { CustomerApiService } from '../core/api/customer-api.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class CustomerSelectService {
   private readonly customerApi = inject(CustomerApiService);
 

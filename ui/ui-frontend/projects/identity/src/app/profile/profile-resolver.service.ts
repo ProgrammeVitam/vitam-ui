@@ -42,9 +42,7 @@ import { map, take } from 'rxjs/operators';
 import { Profile } from 'vitamui-library';
 import { ProfileService } from './profile.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ProfileResolver {
   private readonly rngProfileService = inject(ProfileService);
   private readonly router = inject(Router);

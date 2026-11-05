@@ -42,9 +42,7 @@ import { BASE_URL, Context, PaginatedHttpClient } from 'vitamui-library';
 
 const HTTP_STATUS_OK = 200;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ContextApiService extends PaginatedHttpClient<Context> {
   constructor() {
     const http = inject(HttpClient);

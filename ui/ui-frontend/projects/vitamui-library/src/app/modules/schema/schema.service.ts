@@ -44,9 +44,7 @@ import { SchemaElement } from '../models/schema/schema-element.model';
 import { ItemNode } from '../components/autocomplete/utils/item-node.interface';
 import { TranslateService } from '@ngx-translate/core';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SchemaService {
   private readonly api = inject(SchemaApiService);
   private readonly translateService = inject(TranslateService);

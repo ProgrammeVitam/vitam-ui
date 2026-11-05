@@ -41,9 +41,7 @@ import { SearchService, SnackBarService, VitamuiHttpHeaders } from 'vitamui-libr
 import { IngestApiService } from '../core/api/ingest-api.service';
 import { LogbookOperation } from '../models/logbook-event.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class IngestService extends SearchService<any> {
   private readonly ingestApiService: IngestApiService;
   private readonly snackBarService = inject(SnackBarService);

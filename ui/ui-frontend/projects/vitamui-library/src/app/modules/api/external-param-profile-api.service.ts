@@ -41,9 +41,7 @@ import { BASE_URL } from '../injection-tokens';
 import { ExternalParamProfile } from '../models/externalparamprofile/external-param-profile.interface';
 import { PaginatedHttpClient } from '../paginated-http-client';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ExternalParamProfileApiService extends PaginatedHttpClient<ExternalParamProfile> {
   constructor() {
     const http = inject(HttpClient);

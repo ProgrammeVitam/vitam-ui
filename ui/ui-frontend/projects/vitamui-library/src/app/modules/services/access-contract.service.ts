@@ -46,9 +46,7 @@ import { ExternalParametersService } from '../externalParameters.service';
 import { ExternalParameters } from '../externalParameters.enum';
 import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AccessContractService extends SearchService<AccessContract> {
   private readonly accessContractApi: AccessContractApiService;
   private readonly snackBarService = inject(SnackBarService);

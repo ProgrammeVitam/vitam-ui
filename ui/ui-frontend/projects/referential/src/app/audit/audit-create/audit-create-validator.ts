@@ -41,9 +41,7 @@ import { Observable, of } from 'rxjs';
 import { validateObservable } from 'vitamui-library';
 import { AuditService } from '../audit.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AuditCreateValidators {
   private readonly auditService = inject(AuditService);
 

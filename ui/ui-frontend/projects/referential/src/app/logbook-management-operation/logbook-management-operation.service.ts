@@ -41,9 +41,7 @@ import { SearchService, SnackBarService } from 'vitamui-library';
 import { LogbookManagementOperationApiService } from '../core/api/logbook-management-operation-api.service';
 import { OperationDetails, OperationResponse, OperationsResults } from '../models/operation-response.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class LogbookManagementOperationService extends SearchService<any> {
   private readonly logbookManagementOperationApiService: LogbookManagementOperationApiService;
   private readonly snackBarService = inject(SnackBarService);

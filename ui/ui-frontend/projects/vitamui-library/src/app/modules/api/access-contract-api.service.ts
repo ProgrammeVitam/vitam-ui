@@ -45,9 +45,7 @@ import { PaginatedHttpClient } from '../paginated-http-client';
 
 const HTTP_STATUS_OK = 200;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AccessContractApiService extends PaginatedHttpClient<AccessContract> {
   private readonly baseUrl: string;
 

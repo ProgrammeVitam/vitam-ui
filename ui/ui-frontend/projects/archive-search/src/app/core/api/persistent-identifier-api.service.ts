@@ -40,9 +40,7 @@ import { Observable } from 'rxjs';
 import { BaseHttpClient, BASE_URL, Unit, ApiUnitObject } from 'vitamui-library';
 import { PersistentIdentifierResponseDto } from './persistent-identifier-response-dto.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class PersistentIdentifierApiService extends BaseHttpClient<any> {
   constructor() {
     const http = inject(HttpClient);

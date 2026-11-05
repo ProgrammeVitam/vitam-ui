@@ -43,9 +43,7 @@ import { Router } from '@angular/router';
 
 import { CustomerSelectService } from './customer-select.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SubrogationResolver {
   private readonly customerSearchService = inject(CustomerSelectService);
   private readonly router = inject(Router);
