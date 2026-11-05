@@ -829,6 +829,11 @@ public class CasService {
      */
     String resolveDelegatedIdentity(final DelegatedIdpContextDto delegatedIdp, final String expectedEmail) {
         final IdentityProviderDto provider = identityProviderService.getOne(delegatedIdp.getProviderId());
+        if (!Boolean.TRUE.equals(provider.getEnabled())) {
+            throw new InvalidAuthenticationException(
+                String.format("Identity provider '%s' is disabled", delegatedIdp.getProviderId())
+            );
+        }
         final Map<String, List<String>> attributes = delegatedIdp.getAttributes();
         final String principalId = delegatedIdp.getPrincipalId();
 

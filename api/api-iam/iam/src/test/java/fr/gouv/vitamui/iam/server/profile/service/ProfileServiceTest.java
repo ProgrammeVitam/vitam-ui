@@ -267,6 +267,7 @@ public class ProfileServiceTest extends AbstractMongoTests {
 
     @Test
     void getLevels_whenProfilesExist_returnsLevels() {
+        stubSecurityContextForLevels();
         final Optional<String> criteria = Optional.of(
             "{\"criteria\":[{\"key\":\"applicationName\",\"value\":\"ARCHIVE_APP\",\"operator\":\"EQUALS\"},{\"key\":\"tenantIdentifier\",\"value\":107,\"operator\":\"EQUALS\"}]}"
         );
@@ -286,6 +287,7 @@ public class ProfileServiceTest extends AbstractMongoTests {
 
     @Test
     void getLevels_whenNoProfile_returnsEmptyList() {
+        stubSecurityContextForLevels();
         final Optional<String> criteria = Optional.of(
             "{\"criteria\":[{\"key\":\"applicationName\",\"value\":\"ARCHIVE_APP\",\"operator\":\"EQUALS\"},{\"key\":\"tenantIdentifier\",\"value\":107,\"operator\":\"EQUALS\"}]}"
         );
@@ -297,5 +299,14 @@ public class ProfileServiceTest extends AbstractMongoTests {
         );
         final List<String> levels = service.getLevels(criteria);
         assertThat(levels.size()).isEqualTo(0);
+    }
+
+    private void stubSecurityContextForLevels() {
+        final AuthUserDto user = IamServerUtilsTest.buildAuthUserDto();
+        user.setLevel("");
+        when(securityService.userIsRootLevel()).thenCallRealMethod();
+        when(securityService.getUser()).thenReturn(user);
+        when(securityService.getLevel()).thenReturn("");
+        when(securityService.getCustomerId()).thenReturn(IamServerUtilsTest.CUSTOMER_ID);
     }
 }

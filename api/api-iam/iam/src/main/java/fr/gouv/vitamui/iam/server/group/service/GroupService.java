@@ -582,7 +582,7 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
         criterias.add(Criteria.where("customerId").in(customerId));
         criterias.add(Criteria.where("enabled").is(true));
         if (!level.isEmpty()) {
-            criterias.add(Criteria.where("level").regex("^" + level + "\\..+$"));
+            criterias.add(Criteria.where("level").regex("^" + Pattern.quote(level) + "\\..+$"));
         }
         return getRepository().findAll(criterias).stream().map(Group::getLevel).collect(Collectors.toList());
     }
@@ -648,10 +648,10 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
             .setAccessContract(securityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
             .setApplicationSessionId(securityService.getApplicationId());
 
-        final Optional<Group> group = getRepository().findById(id);
-        group.orElseThrow(() -> new NotFoundException("No group found with id : %s".formatted(id)));
+        // getOne applies the same customer/level restrictions as an ordinary read.
+        final GroupDto group = getOne(id);
         return logbookService.findEventsByIdentifierAndCollectionNames(
-            group.get().getIdentifier(),
+            group.getIdentifier(),
             MongoDbCollections.GROUPS,
             vitamContext,
             List.of(EXT_VITAMUI_CREATE_GROUP.name(), EXT_VITAMUI_UPDATE_GROUP.name())
@@ -665,7 +665,9 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
      * @return Matching levels
      */
     public List<String> getLevels(final Optional<String> criteriaJsonString) {
-        final Document document = groupFields(criteriaJsonString, CommonConstants.LEVEL_ATTRIBUTE);
+        // Apply the same authorization-aware criteria construction as the paginated search, so the
+        // customer/level restrictions prevent reading levels outside the caller's scope.
+        final Document document = groupFields(checkAuthorization(criteriaJsonString), CommonConstants.LEVEL_ATTRIBUTE);
         LOGGER.debug("getLevels : {}", document);
         if (document == null) {
             return new ArrayList<>();

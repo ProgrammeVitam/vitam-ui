@@ -49,6 +49,7 @@ import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.download.DownloadClaims;
 import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
@@ -155,6 +156,11 @@ public class LogbookController {
             if (Objects.isNull(requestedTenant)) {
                 throw new BadRequestException(
                     "Tenant not found with identifier : '%d'".formatted(vitamTenantIdentifier)
+                );
+            }
+            if (!isTenantAllowed(tenantId, vitamTenantIdentifier)) {
+                throw new ForbiddenException(
+                    "Tenant '%d' is not available for the current user".formatted(vitamTenantIdentifier)
                 );
             }
             vitamContext = securityService.buildVitamContext(vitamTenantIdentifier);
@@ -490,5 +496,23 @@ public class LogbookController {
         claims.setResource(resource);
         claims.setTenantId(tenantId);
         return claims;
+    }
+
+    /**
+     * The requested tenant must be the header tenant, the proof tenant or one of the user's tenants.
+     */
+    private boolean isTenantAllowed(final Integer headerTenantId, final Integer requestedTenantId) {
+        if (
+            requestedTenantId.equals(headerTenantId) ||
+            requestedTenantId.equals(securityService.getProofTenantIdentifier())
+        ) {
+            return true;
+        }
+        return securityService
+            .getUser()
+            .getTenantsByApp()
+            .stream()
+            .flatMap(t -> t.getTenants().stream())
+            .anyMatch(t -> requestedTenantId.equals(t.getIdentifier()));
     }
 }

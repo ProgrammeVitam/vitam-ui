@@ -204,12 +204,13 @@ public class IdentityProviderController implements CrudController<IdentityProvid
         @RequestPart(value = "keystore", required = false) final MultipartFile keystore,
         @RequestPart(value = "idpMetadata", required = false) final MultipartFile idpMetadata
     ) throws Exception {
-        LOGGER.debug("Create provider: {}", provider);
         if (Objects.nonNull(keystore) && Objects.nonNull(idpMetadata)) {
             SanityChecker.isValidFileName(keystore.getOriginalFilename());
             SanityChecker.isValidFileName(idpMetadata.getOriginalFilename());
         }
         IdentityProviderDto dto = identityProviderService.mapToIdentityProviderDto(keystore, idpMetadata, provider);
+        // The DTO string representation leaves out the keystore, passwords and client secret.
+        LOGGER.debug("Create provider: {}", dto);
         return identityProviderService.create(dto);
     }
 
@@ -239,7 +240,7 @@ public class IdentityProviderController implements CrudController<IdentityProvid
     ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
-        LOGGER.debug("Patch {} with {}", id, partialDto);
+        LOGGER.debug("Patch {} with fields {}", id, partialDto.keySet());
         Assert.isTrue(
             StringUtils.equals(id, (String) partialDto.get("id")),
             "The DTO identifier must match the path identifier for update."
@@ -260,7 +261,7 @@ public class IdentityProviderController implements CrudController<IdentityProvid
     ) throws IOException {
         ParameterChecker.checkParameter("Parameters are mandatory : ", keystore, provider, id);
         SanityChecker.isValidFileName(keystore.getOriginalFilename());
-        LOGGER.debug("Update keystore provider id={} with partialDto={}", id, provider);
+        LOGGER.debug("Update keystore provider id={}", id);
         return identityProviderService.patch(
             VitamUIUtils.convertObjectFromJson(provider, Map.class),
             keystore,
@@ -285,7 +286,7 @@ public class IdentityProviderController implements CrudController<IdentityProvid
     ) throws IOException {
         ParameterChecker.checkParameter("Parameters are mandatory : ", provider, idpMetadata, id);
         SanityChecker.isValidFileName(idpMetadata.getOriginalFilename());
-        LOGGER.debug("Update idpMetadata provider id={} with partialDto", id, provider);
+        LOGGER.debug("Update idpMetadata provider id={}", id);
         return identityProviderService.patch(
             VitamUIUtils.convertObjectFromJson(provider, Map.class),
             null,

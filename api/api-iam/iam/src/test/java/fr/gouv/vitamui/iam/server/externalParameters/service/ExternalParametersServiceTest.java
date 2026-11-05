@@ -87,4 +87,23 @@ public class ExternalParametersServiceTest extends AbstractLogbookIntegrationTes
         Assertions.assertNotNull(res, "ExternalParameters should be returned.");
         Assertions.assertEquals(ID, res.getId());
     }
+
+    @Test
+    void getMyExternalParameters_ignoresADisabledProfile() {
+        final AuthUserDto user = IamServerUtilsTest.buildAuthUserDto();
+        user.getProfileGroup().getProfiles().get(0).setApplicationName(Application.EXTERNAL_PARAMS.toString());
+        user.getProfileGroup().getProfiles().get(0).setExternalParamId(ANY_EXTERNAL_PARAM_ID);
+        user.getProfileGroup().getProfiles().get(0).setTenantIdentifier(1);
+        user.getProfileGroup().getProfiles().get(0).setEnabled(false);
+        final ExternalParameters externalParameters = new ExternalParameters();
+        externalParameters.setId(ID);
+
+        when(externalParametersRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(
+            Optional.of(externalParameters)
+        );
+        when(securityService.getUser()).thenReturn(user);
+        when(securityService.getTenantIdentifier()).thenReturn(1);
+
+        Assertions.assertNull(this.service.getMyExternalParameters());
+    }
 }

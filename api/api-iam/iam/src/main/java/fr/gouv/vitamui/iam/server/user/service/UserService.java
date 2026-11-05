@@ -1123,10 +1123,10 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
             .setAccessContract(securityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
             .setApplicationSessionId(securityService.getApplicationId());
 
-        final Optional<User> user = getRepository().findById(id);
-        user.orElseThrow(() -> new NotFoundException("No user found with id : %s".formatted(id)));
+        // getOne applies the same customer/level restrictions as an ordinary read.
+        final UserDto user = getOne(id);
         return logbookService.findEventsByIdentifierAndCollectionNames(
-            user.get().getIdentifier(),
+            user.getIdentifier(),
             MongoDbCollections.USERS,
             vitamContext,
             USER_OPERATIONS_EVENT_TYPES.stream().map(Enum::name).collect(Collectors.toList())
@@ -1140,7 +1140,9 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
      * @return Matching levels
      */
     public List<String> getLevels(final Optional<String> criteriaJsonString) {
-        final Document document = groupFields(criteriaJsonString, CommonConstants.LEVEL_ATTRIBUTE);
+        // Build the criteria like the paginated search: only allowed keys are accepted and the
+        // customer/level restrictions apply.
+        final Document document = groupFields(checkAuthorization(criteriaJsonString), CommonConstants.LEVEL_ATTRIBUTE);
         LOGGER.debug("getLevels : {}", document);
         if (document == null) {
             return new ArrayList<>();
