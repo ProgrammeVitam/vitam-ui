@@ -38,6 +38,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AccountComponent, ActiveTenantGuard, AnalyticsResolver, AppGuard, AuthGuard } from 'vitamui-library';
 import { AppComponent } from './app.component';
+import { ARCHIVE_SEARCH_ROUTES } from './archive-search.routes';
 
 const routes: Routes = [
   {
@@ -54,14 +55,7 @@ const routes: Routes = [
     resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'ACCOUNTS_APP' },
   },
-  {
-    path: 'archive-search',
-    loadChildren: () => import('./archive/archive.module').then((m) => m.ArchiveModule),
-    canActivate: [AuthGuard, AppGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' },
-  },
-
+  ...ARCHIVE_SEARCH_ROUTES,
   { path: '**', redirectTo: '' },
 ];
 
