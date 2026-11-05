@@ -47,6 +47,8 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -57,6 +59,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
@@ -133,6 +136,18 @@ class MetaModelServiceTest {
             .getResourceAsStream("metamodel/expected_pua_2.3_with_external_schema.json");
         JSONObject expected = new JSONObject(new JSONTokener(inputStreamExpected));
         assertEquals(expected, actual, JSONCompareMode.STRICT);
+    }
+
+    @ParameterizedTest
+    @EnumSource(ProfileVersion.class)
+    void shouldProvidePAAndPUAMetaModelsForEverySupportedVersion(ProfileVersion profileVersion) throws Exception {
+        doReturn(new ArrayList<>()).when(externalSchemaService).getExternalSchemaModels();
+
+        SedaNode paMetaModel = metaModelService.getMetaModelForVersion(profileVersion, ProfileType.PA);
+        SedaNode puaMetaModel = metaModelService.getArchiveUnitMetaModelForVersion(profileVersion, ProfileType.PUA);
+
+        assertThat(paMetaModel.getName()).isEqualTo("ArchiveTransfer");
+        assertThat(puaMetaModel.getName()).isEqualTo("ArchiveUnit");
     }
 
     private List<SchemaResponse> getSchemaResponses(String path) throws IOException {
