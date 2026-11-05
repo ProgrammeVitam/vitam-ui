@@ -22,6 +22,8 @@ export default defineConfig([
     settings: {
       'boundaries/elements': [
         { type: 'library', pattern: 'projects/vitamui-library/**/*' },
+        // Entry point of a feature (former application) of the single application: its routes.
+        { type: 'feature-routes', pattern: 'projects/!(vitamui-library|portal)/src/app/*.routes.ts', mode: 'file', capture: ['project'] },
         { type: 'app', pattern: 'projects/!(vitamui-library)/**/*', capture: ['project'] }
       ],
       // Resolve extensionless TS imports and the 'vitamui-library' path alias
@@ -46,10 +48,24 @@ export default defineConfig([
               // NB: 'vitamui-library' package imports resolve to dist/ (external),
               // so they are unaffected — only relative paths land on the element.
               to: [
-                { element: { type: 'app', captured: { project: '{{ from.element.captured.project }}' } } }
+                { element: { type: 'app', captured: { project: '{{ from.element.captured.project }}' } } },
+                { element: { type: 'feature-routes', captured: { project: '{{ from.element.captured.project }}' } } }
               ]
             },
             message: 'Cross-project imports are forbidden: apps can only import their own project or vitamui-library (found "{{ to.element.captured.project }}").'
+          },
+          {
+            // The single application (portal) lazy loads the features through their routes only.
+            from: { element: { type: 'app', captured: { project: 'portal' } } },
+            allow: {
+              to: [{ element: { type: 'feature-routes' } }]
+            }
+          },
+          {
+            from: { element: { type: 'feature-routes' } },
+            allow: {
+              to: [{ element: { type: 'app', captured: { project: '{{ from.element.captured.project }}' } } }]
+            }
           },
           {
             from: { element: { type: 'library' } },

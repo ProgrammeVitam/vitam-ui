@@ -16,7 +16,16 @@
   "UI_URL": "https://dev.vitamui.com",
   "ARCHIVES_SEARCH_URL": "https://dev.vitamui.com/archive-search/archive-search",
   "PORTAL_URL": "https://dev.vitamui.com",
-  "ALLOWED_URLS": ["/portal-api"],
+  "ALLOWED_URLS": [
+    "/portal-api",
+    "/identity-api",
+    "/identity-admin-api",
+    "/referential-api",
+    "/ingest-api",
+    "/archive-search-api",
+    "/collect-api",
+    "/pastis-api"
+  ],
   "OIDC_CONFIG": {
     "issuer": "https://dev.vitamui.com/cas/oidc",
     "redirectUri": "https://dev.vitamui.com/",
@@ -61,5 +70,12 @@
       "title": "Organisation & droits utilisateurs",
       "order": 5
     }
-  ]
+  ],
+  "MAX_STREET_LENGTH": 250,
+  "VITAM_ADMIN_TENANT": 1,
+  "REASSIGNMENT_ENABLED": false,
+  "NON_SORTABLE_FIELDS": {},
+  "COLLECT": {
+    "OFFLINE_SERVICES": []
+  }
 }
