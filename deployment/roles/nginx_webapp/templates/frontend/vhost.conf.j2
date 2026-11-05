@@ -32,13 +32,15 @@ server {
     allow {{ hostvars[reverse]['ip_service'] }};
     {% endfor %}
     deny all; # Deny access to all other IP addresses
-    {% if api.gateway_prefix is defined %}
-
-    rewrite ^/{{ api.prefix }}(.*)$ /{{ api.gateway_prefix }}$1 break;
-    {% endif %}
 
     {% if vitamui.api_gateway.secure | default(secure) | bool %}
     set $api_gateway_dns "vitamui-{{ vitamui.api_gateway.vitamui_component }}.service.{{ consul_domain }}";
+    {% endif %}
+    {% if api.gateway_prefix is defined %}
+    # After the set above: 'break' also stops the rewrite module directives that follow it (set included).
+    rewrite ^/{{ api.prefix }}(.*)$ /{{ api.gateway_prefix }}$1 break;
+    {% endif %}
+    {% if vitamui.api_gateway.secure | default(secure) | bool %}
     proxy_pass https://$api_gateway_dns:{{ vitamui.api_gateway.port_service }};
     {% else %}
     proxy_pass http://API-GATEWAY;
