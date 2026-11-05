@@ -283,6 +283,26 @@ describe('FileSelectorComponent', () => {
       expect(control.hasError('invalidFiles')).toBe(true);
     });
 
+    it('should keep the error when the native file picker is reopened and cancelled (empty FileList)', async () => {
+      fixture.componentInstance.extensions = ['.json'];
+      fixture.detectChanges();
+
+      await component.handleFilesSelection([file('file1.txt')]);
+      await waitForValidation();
+
+      expect(control.valid).toBe(false);
+      expect(control.hasError('invalidFiles')).toBe(true);
+
+      // Simulates the browser firing a (change) event with no files when the OS file dialog is cancelled
+      await component.handleFilesSelection([]);
+      await waitForValidation();
+
+      expect(component.displayFiles.length).toBe(1);
+      expect(component.displayFiles[0].errors).toEqual(expect.objectContaining({ invalidExtension: { extensions: '.json' } }));
+      expect(control.valid).toBe(false);
+      expect(control.hasError('invalidFiles')).toBe(true);
+    });
+
     describe('Duplication', () => {
       beforeEach(() => {
         fixture.componentInstance.multiple = true;
