@@ -186,6 +186,7 @@
                         <exclude>**/target/**</exclude>
                         <exclude>**/dist/**</exclude>
                         <exclude>**/.directory/**</exclude>
+                        <exclude>.claude/**</exclude>
                         <exclude>**/cas-server/src/main/resources/**</exclude>
                     </excludes>
                     <mapping>
