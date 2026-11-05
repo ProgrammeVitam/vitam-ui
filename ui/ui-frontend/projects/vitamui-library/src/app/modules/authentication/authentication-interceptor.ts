@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { DOCUMENT } from '@angular/common';
 import { Injectable, inject } from '@angular/core';
 import { OAuthStorage } from 'angular-oauth2-oidc';
 import { Observable } from 'rxjs';
@@ -45,10 +46,20 @@ import { ConfigService } from '../config.service';
 export class AuthenticationInterceptor implements HttpInterceptor {
   private authStorage = inject(OAuthStorage);
   private configService = inject(ConfigService);
+  private document = inject(DOCUMENT);
 
+  /**
+   * The url must target the application origin and its path must contain one of the allowed urls.
+   * The query string and the fragment are not taken into account.
+   */
   private checkUrl(url: string): boolean {
-    const found = this.configService.config.ALLOWED_URLS.find((u) => url.includes(u));
-    return !!found;
+    const baseUrl = new URL(this.document.baseURI);
+    const requestUrl = new URL(url, baseUrl);
+    if (requestUrl.origin !== baseUrl.origin) {
+      return false;
+    }
+    const path = requestUrl.pathname.toLowerCase();
+    return this.configService.config.ALLOWED_URLS.some((u) => path.includes(u.toLowerCase()));
   }
 
   public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
