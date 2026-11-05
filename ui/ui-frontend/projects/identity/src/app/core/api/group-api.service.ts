@@ -41,9 +41,7 @@ import { map } from 'rxjs/operators';
 
 import { BASE_URL, CriteriaSearchQuery, Group, PaginatedHttpClient } from 'vitamui-library';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class GroupApiService extends PaginatedHttpClient<Group> {
   baseUrl: string;
 

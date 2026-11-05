@@ -42,9 +42,7 @@ import { CriteriaDataType, CriteriaOperator, SearchCriteriaDto, SearchCriteriaTy
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ArchiveUnitValidatorService {
   private readonly archiveService = inject(ArchiveService);
   private readonly archiveSharedDataService = inject(ArchiveSharedDataService);

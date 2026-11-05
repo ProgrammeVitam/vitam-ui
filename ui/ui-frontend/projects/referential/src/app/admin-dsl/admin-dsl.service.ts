@@ -40,9 +40,7 @@ import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { SearchUnitApiService, VitamuiHttpHeaders } from 'vitamui-library';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AdminDslService {
   private readonly unitApiService = inject(SearchUnitApiService);
 

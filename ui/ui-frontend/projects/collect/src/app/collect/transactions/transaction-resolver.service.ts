@@ -42,9 +42,7 @@ import { map } from 'rxjs/operators';
 import { ProjectsService } from '../projects/projects.service';
 import { TransactionsService } from './transactions.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class TransactionResolver {
   private readonly transactionsService = inject(TransactionsService);
   private readonly projectService = inject(ProjectsService);

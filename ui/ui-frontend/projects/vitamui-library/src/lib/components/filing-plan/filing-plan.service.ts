@@ -63,9 +63,7 @@ export enum FilingPlanMode {
   BOTH,
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class FilingPlanService {
   private readonly searchUnitApi = inject(SearchUnitApiService);
   private readonly accessContractService = inject(AccessContractService);

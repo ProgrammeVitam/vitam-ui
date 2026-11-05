@@ -53,9 +53,7 @@ import { ArchiveService } from '../archive.service';
 const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
 const PAGE_SIZE = 10;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ComputeInheritedRulesService {
   private readonly archiveService = inject(ArchiveService);
   private readonly translateService = inject(TranslateService);

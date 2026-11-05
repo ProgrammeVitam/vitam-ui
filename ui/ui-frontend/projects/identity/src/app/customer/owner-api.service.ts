@@ -40,9 +40,7 @@ import { Observable } from 'rxjs';
 
 import { BaseHttpClient, BASE_URL, Owner } from 'vitamui-library';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class OwnerApiService extends BaseHttpClient<Owner> {
   constructor() {
     const http = inject(HttpClient);

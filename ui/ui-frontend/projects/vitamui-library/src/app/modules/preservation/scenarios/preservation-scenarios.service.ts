@@ -39,9 +39,7 @@ import { PreservationScenario } from './preservation-scenario.type';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Subject, switchMap, tap } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class PreservationScenariosService {
   private readonly api: PreservationScenariosApiService;
 

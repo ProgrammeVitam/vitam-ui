@@ -45,9 +45,7 @@ import { ProfileType } from '../../models/profile-type.enum';
 import { fromPromise } from 'rxjs/internal/observable/innerFrom';
 import { map } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ArchiveUnitProfileSaverService {
   private readonly profileService = inject(ProfileService);
   private readonly toggleService = inject(ToggleSidenavService);

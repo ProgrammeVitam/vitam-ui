@@ -42,9 +42,7 @@ import { PreservationScenario } from './preservation-scenario.type';
 import { OperationId } from '../../../../lib/models/operation-id';
 import { addSkipErrorNotificationHeader } from '../../utils/http-header.util';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class PreservationScenariosApiService {
   protected http: HttpClient;
   protected readonly apiUrl: string;

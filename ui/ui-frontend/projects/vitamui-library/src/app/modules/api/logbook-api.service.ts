@@ -54,9 +54,7 @@ const API_CONTEXT_INDEX = 2;
 
 export type LogbookDownloadType = 'report' | 'batchreport' | 'object' | 'dip' | 'transfersip' | 'atr' | 'manifest';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class LogbookApiService implements PaginatedApi<IEvent> {
   private readonly http = inject(HttpClient);
 

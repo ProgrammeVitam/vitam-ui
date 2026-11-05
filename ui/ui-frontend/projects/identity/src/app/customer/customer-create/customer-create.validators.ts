@@ -48,9 +48,7 @@ import { FieldPath } from '../../shared/signal-forms/signal-form-validators';
 export const CUSTOMER_CODE_MAX_LENGTH = 15;
 export const ALPHA_NUMERIC_REGEX = /^[a-zA-Z0-9]*$/;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class CustomerCreateValidators {
   private readonly customerService = inject(CustomerService);
 

@@ -39,20 +39,21 @@ import { Component, OnDestroy, OnInit, TemplateRef, inject, signal, viewChild } 
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
   Agency,
+  AgencyService,
+  APP_ROUTE_PREFIX,
   ApplicationId,
   BreadCrumbData,
   EditObject,
   EditObjectService,
   ObjectEditorModule,
   ProfiledSchemaElement,
+  SnackBarService,
   SpinnerOverlayService,
   TemplateService,
   TenantSelectionService,
   TypeService,
   VitamUICommonModule,
   VitamUILibraryModule,
-  SnackBarService,
-  AgencyService,
 } from 'vitamui-library';
 import { agencyTemplate } from '../agency.template';
 import { schema } from '../agency.schema';
@@ -68,6 +69,7 @@ import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dial
   imports: [RouterModule, VitamUICommonModule, VitamUILibraryModule, ObjectEditorModule, MatDialogModule, TranslatePipe],
 })
 export class EditAgencyComponent implements OnInit, OnDestroy {
+  private readonly routePrefix = inject(APP_ROUTE_PREFIX);
   private readonly route = inject(ActivatedRoute);
   private readonly agencyService = inject(AgencyService);
   private readonly editObjectService = inject(EditObjectService);
@@ -148,7 +150,7 @@ export class EditAgencyComponent implements OnInit, OnDestroy {
                 },
               ],
             });
-            this.router.navigate(['/agency/tenant/', this.tenantSelectionService.getSelectedTenant().identifier]);
+            this.router.navigate([`${this.routePrefix}/agency/tenant/`, this.tenantSelectionService.getSelectedTenant().identifier]);
           }),
         )
         .subscribe((agency) => {
@@ -160,7 +162,7 @@ export class EditAgencyComponent implements OnInit, OnDestroy {
 
   cancel() {
     if (this.editObject().control.pristine) {
-      this.router.navigate(['/agency/tenant/', this.tenantSelectionService.getSelectedTenant().identifier]);
+      this.router.navigate([`${this.routePrefix}/agency/tenant/`, this.tenantSelectionService.getSelectedTenant().identifier]);
     } else {
       this.dialogRefToClose = this.dialog.open(this.confirmCancelDialog());
     }
@@ -168,7 +170,7 @@ export class EditAgencyComponent implements OnInit, OnDestroy {
 
   confirmCancel() {
     this.dialogRefToClose.close(true);
-    this.router.navigate(['/agency/tenant/', this.tenantSelectionService.getSelectedTenant().identifier]);
+    this.router.navigate([`${this.routePrefix}/agency/tenant/`, this.tenantSelectionService.getSelectedTenant().identifier]);
   }
 
   cancelCancel() {

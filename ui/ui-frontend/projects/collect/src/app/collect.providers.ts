@@ -34,19 +34,35 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { TestBed } from '@angular/core/testing';
+import { Provider } from '@angular/core';
+import { ArchiveCollectService } from './collect/archive-search-collect/archive-collect.service';
+import { ArchiveUnitApiService } from './collect/archive-search-collect/archive-preview/archive-unit-description-tab/archive-unit-api.service';
+import { ArchiveUnitService } from './collect/archive-search-collect/archive-preview/archive-unit-description-tab/archive-unit.service';
+import { ManagementRulesSharedDataService } from './collect/archive-search-collect/archive-search-criteria/services/management-rules-shared-data.service';
+import { SearchCriteriaSaverService } from './collect/archive-search-collect/archive-search-criteria/services/search-criteria-saver.service';
+import { ProjectsApiService } from './collect/core/api/project-api.service';
+import { TransactionApiService } from './collect/core/api/transaction-api.service';
+import { ProjectsService } from './collect/projects/projects.service';
+import { SipImportTrackingService } from './collect/shared/sip-import-tracking.service';
+import { TransactionResolver } from './collect/transactions/transaction-resolver.service';
+import { TransactionsService } from './collect/transactions/transactions.service';
 
-import { CoreModule } from './core.module';
-
-describe('CoreModule', () => {
-  let coreModule: CoreModule;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    coreModule = TestBed.runInInjectionContext(() => new CoreModule());
-  });
-
-  it('should create an instance', () => {
-    expect(coreModule).toBeTruthy();
-  });
-});
+/**
+ * Services of the collect feature whose HTTP calls depend on BASE_URL, directly or through another service.
+ * They are not provided in root: they must be provided with the feature's BASE_URL (see provideVitamuiFeature).
+ */
+export function provideCollectServices(): Provider[] {
+  return [
+    ArchiveCollectService,
+    ArchiveUnitApiService,
+    ArchiveUnitService,
+    ManagementRulesSharedDataService,
+    ProjectsApiService,
+    ProjectsService,
+    SearchCriteriaSaverService,
+    SipImportTrackingService,
+    TransactionApiService,
+    TransactionResolver,
+    TransactionsService,
+  ];
+}

@@ -54,9 +54,7 @@ export const OWNER_INTERNAL_CODE_MAX_LENGTH = 20;
 export const OWNER_ZIP_CODE_MAX_LENGTH = 10;
 export const OWNER_CITY_MAX_LENGTH = 100;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class OwnerFormValidators {
   private readonly ownerService = inject(OwnerService);
 

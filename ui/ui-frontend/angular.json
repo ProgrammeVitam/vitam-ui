@@ -106,7 +106,8 @@
           "options": {
             "tsConfig": "projects/identity/tsconfig.spec.json",
             "setupFiles": [
-              "test.ts"
+              "test.ts",
+              "projects/identity/test.ts"
             ],
             "outputFile": "junit/identity.xml",
             "buildTarget": "identity:build:test"
@@ -348,7 +349,8 @@
           "options": {
             "tsConfig": "projects/referential/tsconfig.spec.json",
             "setupFiles": [
-              "test.ts"
+              "test.ts",
+              "projects/referential/test.ts"
             ],
             "outputFile": "junit/referential.xml",
             "buildTarget": "referential:build:test"
@@ -614,7 +616,8 @@
           "options": {
             "tsConfig": "projects/ingest/tsconfig.spec.json",
             "setupFiles": [
-              "test.ts"
+              "test.ts",
+              "projects/ingest/test.ts"
             ],
             "outputFile": "junit/ingest.xml",
             "buildTarget": "ingest:build:test"
@@ -722,7 +725,8 @@
           "options": {
             "tsConfig": "projects/archive-search/tsconfig.spec.json",
             "setupFiles": [
-              "test.ts"
+              "test.ts",
+              "projects/archive-search/test.ts"
             ],
             "outputFile": "junit/archive-search.xml",
             "buildTarget": "archive-search:build:test"
@@ -830,7 +834,8 @@
           "options": {
             "tsConfig": "projects/collect/tsconfig.spec.json",
             "setupFiles": [
-              "test.ts"
+              "test.ts",
+              "projects/collect/test.ts"
             ],
             "outputFile": "junit/collect.xml",
             "buildTarget": "collect:build:test"
@@ -948,7 +953,8 @@
           "options": {
             "tsConfig": "projects/pastis/tsconfig.spec.json",
             "setupFiles": [
-              "test.ts"
+              "test.ts",
+              "projects/pastis/test.ts"
             ],
             "outputFile": "junit/pastis.xml",
             "buildTarget": "pastis:build:test"

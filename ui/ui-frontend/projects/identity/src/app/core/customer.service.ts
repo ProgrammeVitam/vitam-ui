@@ -47,9 +47,7 @@ import { CustomerApiService } from './api/customer-api.service';
 
 export const DEFAULT_PAGE_SIZE = 20;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class CustomerService {
   private readonly customerApi = inject(CustomerApiService);
   private readonly snackBarService = inject(SnackBarService);

@@ -41,9 +41,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Rule, RuleApiService, SearchCriteriaDto, SearchCriteriaEltDto } from 'vitamui-library';
 import { ActionsRules, ManagementRules } from '../models/rule-action.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ManagementRulesSharedDataService {
   private readonly ruleApiService = inject(RuleApiService);
 

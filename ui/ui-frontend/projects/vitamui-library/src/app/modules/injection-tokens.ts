@@ -39,6 +39,8 @@ import { Observable } from 'rxjs';
 
 export const APP_ID = new InjectionToken<string>('APP_ID');
 export const BASE_URL = new InjectionToken<string>('BASE_URL');
+/** Prefix of the current feature routes, to build absolute navigations (see provideVitamuiFeature). */
+export const APP_ROUTE_PREFIX = new InjectionToken<string>('APP_ROUTE_PREFIX');
 export const VITAMUI_TOOLTIP_MESSAGE = new InjectionToken<VitamUITooltipMessage>('VITAMUI_TOOLTIP_MESSAGE');
 export const ENVIRONMENT = new InjectionToken<any>('ENVIRONMENT');
 export const SUBROGRATION_REFRESH_RATE_MS = new InjectionToken<number>('SUBROGRATION_REFRESH_RATE_MS');

@@ -41,9 +41,7 @@ import { BASE_URL } from '../../app/modules/injection-tokens';
 
 import { Metadata } from '../models/metadata.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class MetadataApiService {
   private readonly http = inject(HttpClient);
 

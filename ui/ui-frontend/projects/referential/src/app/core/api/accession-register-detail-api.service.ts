@@ -40,9 +40,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AccessionRegisterDetail, BASE_URL, PaginatedHttpClient } from 'vitamui-library';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AccessionRegisterDetailApiService extends PaginatedHttpClient<AccessionRegisterDetail> {
   private readonly baseUrl: string;
 

@@ -44,9 +44,7 @@ import { UserInfo } from '../models/user/user-info.interface';
 import { AuthService } from './../auth.service';
 import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class BaseUserInfoApiService extends BaseHttpClient<UserInfo> {
   private readonly authService = inject(AuthService);
 

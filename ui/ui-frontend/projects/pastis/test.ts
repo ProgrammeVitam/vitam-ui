@@ -34,26 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { inject, NgModule } from '@angular/core';
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, throwIfAlreadyLoaded, VitamUICommonModule } from 'vitamui-library';
-import { environment } from '../../environments/environment';
+import { TestBed } from '@angular/core/testing';
+import { providePastisServices } from './src/app/pastis.providers';
 
-@NgModule({
-  declarations: [],
-  exports: [VitamUICommonModule],
-  imports: [CommonModule, VitamUICommonModule, InjectorModule, LoggerModule.forRoot()],
-  providers: [
-    { provide: BASE_URL, useValue: './archive-search-api' },
-    { provide: ENVIRONMENT, useValue: environment },
-    provideHttpClient(withInterceptorsFromDi()),
-  ],
-})
-export class CoreModule {
-  constructor() {
-    const parentModule = inject(CoreModule, { optional: true, skipSelf: true });
-
-    throwIfAlreadyLoaded(parentModule, 'CoreModule');
-  }
-}
+/**
+ * The pastis services are not provided in root (they depend on the feature BASE_URL): provide them in every test.
+ */
+const configureTestingModule = TestBed.configureTestingModule.bind(TestBed);
+TestBed.configureTestingModule = ((moduleDef: any) =>
+  configureTestingModule({
+    ...moduleDef,
+    providers: [providePastisServices(), ...(moduleDef?.providers ?? [])],
+  })) as typeof TestBed.configureTestingModule;

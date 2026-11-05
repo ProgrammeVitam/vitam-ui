@@ -52,9 +52,7 @@ import {
 import { UserApiService } from '../core/api/user-api.service';
 import { ProfileService } from '../profile/profile.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class UserService extends SearchService<User> {
   private readonly userApi: UserApiService;
   private readonly snackBarService = inject(SnackBarService);

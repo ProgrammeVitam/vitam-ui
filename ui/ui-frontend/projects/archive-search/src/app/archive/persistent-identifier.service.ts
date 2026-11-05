@@ -41,9 +41,7 @@ import { ApiUnitObject, Unit } from 'vitamui-library';
 import { PersistentIdentifierApiService } from '../core/api/persistent-identifier-api.service';
 import { PersistentIdentifierResponseDto } from '../core/api/persistent-identifier-response-dto.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class PersistentIdentifierService {
   private readonly persistentIdentifierApiService = inject(PersistentIdentifierApiService);
 

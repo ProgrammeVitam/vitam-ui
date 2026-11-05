@@ -69,9 +69,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 const PAGE_SIZE = 10;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ArchiveCollectService extends SearchService<any> implements SearchArchiveUnitsInterface {
   private readonly projectsApiService: ProjectsApiService;
   private readonly transactionApiService = inject(TransactionApiService);

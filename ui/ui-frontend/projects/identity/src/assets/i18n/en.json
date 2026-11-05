@@ -1,19 +1,6 @@
 {
   "COMMON": {
-    "CANCEL": "Cancel",
-    "SUBMIT": "Submit",
-    "UPDATE": "Update",
-    "SAVE": "Save",
-    "NEXT": "Next",
-    "LANGUAGE": {
-      "TITLE": "Language",
-      "ENGLISH": "English",
-      "FRENCH": "French",
-      "GERMAN": "German"
-    },
-    "APPLY_UPDATE": "Apply changes",
     "ACTIVE": "activated",
-    "NO_RESULT": "No Result",
     "MORE_RESULT": "Show more results...",
     "ID": "Id",
     "ADRESS": {
@@ -21,10 +8,6 @@
       "ZIPCODE": "Zipcode",
       "CITY": "City",
       "COUNTRY": "Country"
-    },
-    "HISTORY": {
-      "OPERATIONS": "Logbook",
-      "NO_HISTORY": "No history"
     },
     "ERROR": {
       "WRONG_FORMAT": "Wrong format",

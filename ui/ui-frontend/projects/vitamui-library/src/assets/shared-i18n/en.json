@@ -19,7 +19,7 @@
     "CANCEL": "Cancel",
     "SAVE": "Save",
     "CLOSE": "Close",
-    "REQUIRED": "Required param",
+    "REQUIRED": "Required field",
     "INCORRECT_VALUE": "Incorrect value",
     "NO_RESULT": "No result",
     "SHOW_MORE_RESULTS": "Show more results",
@@ -44,7 +44,8 @@
       "OPERATIONS": "Logbook"
     },
     "COPY": "Copy",
-    "IMPORT": "Import"
+    "IMPORT": "Import",
+    "APPLY_UPDATE": "Apply changes"
   },
   "CONFIRM_DIALOG": {
     "DELETE_TITLE": "Delete {{objectType}}",

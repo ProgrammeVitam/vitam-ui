@@ -34,25 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { inject, NgModule } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { provideArchiveSearchServices } from './src/app/archive-search.providers';
 
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, throwIfAlreadyLoaded, VitamUICommonModule } from 'vitamui-library';
-import { environment } from '../../environments/environment';
-
-@NgModule({
-  exports: [VitamUICommonModule],
-  imports: [VitamUICommonModule, InjectorModule, LoggerModule.forRoot()],
-  providers: [
-    { provide: BASE_URL, useValue: './ingest-api' },
-    { provide: ENVIRONMENT, useValue: environment },
-    provideHttpClient(withInterceptorsFromDi()),
-  ],
-})
-export class CoreModule {
-  constructor() {
-    const parentModule = inject(CoreModule, { optional: true, skipSelf: true });
-
-    throwIfAlreadyLoaded(parentModule, 'CoreModule');
-  }
-}
+/**
+ * The archive-search services are not provided in root (they depend on the feature BASE_URL): provide them in every test.
+ */
+const configureTestingModule = TestBed.configureTestingModule.bind(TestBed);
+TestBed.configureTestingModule = ((moduleDef: any) =>
+  configureTestingModule({
+    ...moduleDef,
+    providers: [provideArchiveSearchServices(), ...(moduleDef?.providers ?? [])],
+  })) as typeof TestBed.configureTestingModule;

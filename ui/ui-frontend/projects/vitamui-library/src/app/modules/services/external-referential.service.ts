@@ -48,9 +48,7 @@ import { Option } from '../components/autocomplete/utils/option.interface';
 
 export const TENANT_SEPARATOR = ' - Tenant ';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ExternalReferentialService extends PaginatedHttpClient<any> {
   readonly #electronicArchivingSystemList$ = this.http.get<ElectronicArchivingSystem[]>(`${this.apiUrl}/config`).pipe(shareReplay(1));
 

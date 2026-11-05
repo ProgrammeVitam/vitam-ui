@@ -35,16 +35,18 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { enableProdMode, importProvidersFrom, LOCALE_ID, provideZonelessChangeDetection } from '@angular/core';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { bootstrapApplication, BrowserModule, Title } from '@angular/platform-browser';
 
 import { environment } from './environments/environment';
 import {
   AuthenticationModule,
-  BASE_URL,
   BytesPipe,
   ENVIRONMENT,
   InjectorModule,
+  LoggerModule,
   provideI18n,
+  provideVitamuiFeature,
   VitamUICommonModule,
   VitamUILibraryModule,
   WINDOW_LOCATION,
@@ -52,10 +54,10 @@ import {
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { DatePipe, registerLocaleData } from '@angular/common';
 import { default as localeFr } from '@angular/common/locales/fr';
-import { CoreModule } from './app/core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app/app-routing.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { provideReferentialServices } from './app/referential.providers';
 import { AppComponent } from './app/app.component';
 
 registerLocaleData(localeFr, 'fr');
@@ -68,7 +70,7 @@ bootstrapApplication(AppComponent, {
   providers: [
     provideZonelessChangeDetection(),
     importProvidersFrom(
-      CoreModule,
+      LoggerModule.forRoot(),
       AuthenticationModule.forRoot(),
       InjectorModule,
       BrowserAnimationsModule,
@@ -83,11 +85,12 @@ bootstrapApplication(AppComponent, {
       }),
       VitamUILibraryModule, // For Material tokens
     ),
+    provideHttpClient(withInterceptorsFromDi()),
     provideI18n(),
     provideNativeDateAdapter(),
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
-    { provide: BASE_URL, useValue: './referential-api' },
+    provideVitamuiFeature({ baseUrl: './referential-api' }, provideReferentialServices()),
     { provide: ENVIRONMENT, useValue: environment },
     { provide: WINDOW_LOCATION, useValue: window.location },
     BytesPipe,

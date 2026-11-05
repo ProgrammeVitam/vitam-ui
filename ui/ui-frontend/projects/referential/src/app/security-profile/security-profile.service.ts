@@ -42,9 +42,7 @@ import { SearchService, SecurityProfile, SnackBarService } from 'vitamui-library
 
 import { SecurityProfileApiService } from '../core/api/security-profile-api.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SecurityProfileService extends SearchService<SecurityProfile> {
   private readonly securityProfileApiService: SecurityProfileApiService;
   private readonly snackBarService = inject(SnackBarService);

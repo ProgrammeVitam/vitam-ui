@@ -34,27 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { inject, InjectionToken, NgModule } from '@angular/core';
+import { Provider } from '@angular/core';
+import { IngestApiService } from './core/api/ingest-api.service';
+import { UploadService } from './core/common/upload.service';
+import { IngestReferentialService } from './core/service/ingest-referential.service';
+import { IngestService } from './ingest/ingest.service';
 
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, throwIfAlreadyLoaded, VitamUICommonModule } from 'vitamui-library';
-import { environment } from '../../environments/environment';
-
-export declare const BASE_URL_IDENTITY: InjectionToken<string>;
-
-@NgModule({
-  exports: [VitamUICommonModule],
-  imports: [VitamUICommonModule, InjectorModule, LoggerModule.forRoot()],
-  providers: [
-    { provide: BASE_URL, useValue: './referential-api' },
-    { provide: ENVIRONMENT, useValue: environment },
-    provideHttpClient(withInterceptorsFromDi()),
-  ],
-})
-export class CoreModule {
-  constructor() {
-    const parentModule = inject(CoreModule, { optional: true, skipSelf: true });
-
-    throwIfAlreadyLoaded(parentModule, 'CoreModule');
-  }
+/**
+ * Services of the ingest feature whose HTTP calls depend on BASE_URL, directly or through another service.
+ * They are not provided in root: they must be provided with the feature's BASE_URL (see provideVitamuiFeature).
+ */
+export function provideIngestServices(): Provider[] {
+  return [IngestApiService, IngestReferentialService, IngestService, UploadService];
 }

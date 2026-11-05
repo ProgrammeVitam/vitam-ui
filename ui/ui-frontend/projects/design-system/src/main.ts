@@ -48,13 +48,13 @@ import { registerLocaleData } from '@angular/common';
 import { default as localeFr } from '@angular/common/locales/fr';
 import { environment } from './environments/environment';
 import {
-  BASE_URL,
   BaseUserInfoApiService,
   ConfigService,
   ENVIRONMENT,
   loadConfigFactory,
   LoggerModule,
   provideI18n,
+  provideVitamuiFeature,
   VitamUILibraryModule,
   WINDOW_LOCATION,
 } from 'vitamui-library';
@@ -94,7 +94,7 @@ bootstrapApplication(AppComponent, {
     provideNativeDateAdapter(),
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: ENVIRONMENT, useValue: environment },
-    { provide: BASE_URL, useValue: '/FAKE' },
+    provideVitamuiFeature({ baseUrl: '/FAKE' }),
     {
       provide: WINDOW_LOCATION,
       useValue: window.location,

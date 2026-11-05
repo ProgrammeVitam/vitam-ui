@@ -43,9 +43,7 @@ import { ApplicationId, validateObservable } from 'vitamui-library';
 import { FieldPath } from '../shared/signal-forms/signal-form-validators';
 import { ExternalParamProfileService } from './external-param-profile.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ExternalParamProfileValidators {
   private readonly externalParamProfileService = inject(ExternalParamProfileService);
 

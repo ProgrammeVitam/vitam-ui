@@ -85,9 +85,7 @@ import {
   SnackBarService,
 } from 'vitamui-library';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class HierarchyService extends SearchService<Profile> {
   private readonly profileApi: ProfileApiService;
   private readonly snackBarService = inject(SnackBarService);

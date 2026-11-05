@@ -38,9 +38,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { BaseHttpClient, BASE_URL } from 'vitamui-library';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ManagementContractApiService extends BaseHttpClient<any> {
   constructor() {
     const http = inject(HttpClient);

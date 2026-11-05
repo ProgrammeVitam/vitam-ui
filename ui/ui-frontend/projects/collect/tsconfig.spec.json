@@ -15,7 +15,8 @@
     "src/**/*.ts"
   ],
   "files": [
-    "../../test.ts"
+    "../../test.ts",
+    "test.ts"
   ],
   "angularCompilerOptions": {
     "strictTemplates": false

@@ -1,21 +1,13 @@
 {
   "COMMON": {
-    "CANCEL": "Annuler",
-    "BACK": "Retour",
-    "SUBMIT": "Confirmer",
     "TERMINATE": "Terminer",
-    "UPDATE": "Modifier",
-    "APPLY_UPDATE": "Appliquer les modifications",
-    "REQUIRED": "Champ requis",
     "MIN_LENGTH": "La taille minimale est {{minlength.requiredLength}}, actuellement {{minlength.actualLength}}",
     "MAX_LENGTH": "La taille maximale est {{maxlength.requiredLength}}, actuellement {{maxlength.actualLength}}",
     "EDIT": "Modifier",
-    "SAVE": "Enregistrer",
     "NAME_ALREADY_EXISTS": "Nom déjà utilisé",
     "DESCRIPTION": "Description",
     "NAME": "Nom",
     "SEARCH": "Rechercher",
-    "COPY": "Copier",
     "DELETE": "Effacer"
   },
   "IMPORT_DIALOG": {

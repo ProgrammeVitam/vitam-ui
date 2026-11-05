@@ -43,9 +43,7 @@ import { IngestInfo, IngestList, IngestUploadStatus } from './ingest-list';
 import { IngestType } from './ingest-type.enum';
 import { VitamuiHttpHeaders } from 'vitamui-library';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class UploadService {
   private readonly ingestApiService = inject(IngestApiService);
 

@@ -45,9 +45,7 @@ import { Application } from '../models/application/application.interface';
 import { AttachmentType } from '../models/customer/theme/attachmentType.enum';
 import { IdentifierName } from '../models/application/identifier-name.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ApplicationApiService {
   private readonly http = inject(HttpClient);
 

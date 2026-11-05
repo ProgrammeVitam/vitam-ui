@@ -34,21 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { inject, NgModule } from '@angular/core';
-import { throwIfAlreadyLoaded, VitamUICommonModule } from 'vitamui-library';
+import { Provider } from '@angular/core';
+import { PastisApiService } from './core/api/api.pastis.service';
+import { ArchivalProfileUnitApiService } from './core/services/archival-profile-unit-api.service';
+import { FileService } from './core/services/file.service';
+import { NoticeService } from './core/services/notice.service';
+import { ArchiveProfileSaverService } from './user-actions/save-profile/archive-profile-saver.service';
+import { ArchiveUnitProfileSaverService } from './user-actions/save-profile/archive-unit-profile-saver.service';
+import { IdentifierExistsValidator } from './validators/IdentifierExistsValidator';
 
-@NgModule({
-  declarations: [],
-  exports: [VitamUICommonModule],
-  imports: [CommonModule, VitamUICommonModule],
-  providers: [provideHttpClient(withInterceptorsFromDi())],
-})
-export class CoreModule {
-  constructor() {
-    const parentModule = inject(CoreModule, { optional: true, skipSelf: true });
-
-    throwIfAlreadyLoaded(parentModule, 'CoreModule');
-  }
+/**
+ * Services of the pastis feature whose HTTP calls depend on BASE_URL, directly or through another service.
+ * They are not provided in root: they must be provided with the feature's BASE_URL (see provideVitamuiFeature).
+ */
+export function providePastisServices(): Provider[] {
+  return [
+    ArchivalProfileUnitApiService,
+    ArchiveProfileSaverService,
+    ArchiveUnitProfileSaverService,
+    FileService,
+    IdentifierExistsValidator,
+    NoticeService,
+    PastisApiService,
+  ];
 }

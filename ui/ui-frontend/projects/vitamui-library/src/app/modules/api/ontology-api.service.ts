@@ -41,9 +41,7 @@ import { BaseHttpClient } from '../base-http-client';
 import { BASE_URL } from '../injection-tokens';
 import { IOntology } from '../models/ontology/ontology.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class OntologyApiService extends BaseHttpClient<IOntology> {
   constructor() {
     const http = inject(HttpClient);

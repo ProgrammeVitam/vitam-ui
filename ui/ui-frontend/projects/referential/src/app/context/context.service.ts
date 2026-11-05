@@ -42,9 +42,7 @@ import { Context, SearchService, SnackBarService, VitamuiHttpHeaders } from 'vit
 
 import { ContextApiService } from '../core/api/context-api.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ContextService extends SearchService<Context> {
   private readonly contextApiService: ContextApiService;
   private readonly snackBarService = inject(SnackBarService);

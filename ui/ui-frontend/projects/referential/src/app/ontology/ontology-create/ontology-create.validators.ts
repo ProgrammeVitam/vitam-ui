@@ -40,9 +40,7 @@ import { validateObservable } from 'vitamui-library';
 
 import { OntologyService } from '../ontology.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class OntologyCreateValidators {
   private readonly ontologyService: OntologyService;
 

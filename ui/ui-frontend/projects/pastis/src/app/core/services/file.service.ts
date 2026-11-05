@@ -85,9 +85,7 @@ import { SedaService } from './seda.service';
 import { filter, map, tap } from 'rxjs/operators';
 import { SpinnerOverlayService } from 'vitamui-library';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class FileService implements OnDestroy {
   private readonly profileService = inject(ProfileService);
   private readonly dialog = inject(MatDialog);

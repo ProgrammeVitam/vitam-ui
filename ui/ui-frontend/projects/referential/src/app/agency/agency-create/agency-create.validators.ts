@@ -40,9 +40,7 @@ import { SchemaPath, validate } from '@angular/forms/signals';
 import { Observable, of } from 'rxjs';
 import { AgencyService, validateObservable } from 'vitamui-library';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AgencyCreateValidators {
   private readonly agencyService: AgencyService;
 

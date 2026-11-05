@@ -42,9 +42,7 @@ import { BASE_URL, PaginatedHttpClient, SecurityProfile } from 'vitamui-library'
 
 const HTTP_STATUS_OK = 200;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SecurityProfileApiService extends PaginatedHttpClient<SecurityProfile> {
   constructor() {
     const http = inject(HttpClient);

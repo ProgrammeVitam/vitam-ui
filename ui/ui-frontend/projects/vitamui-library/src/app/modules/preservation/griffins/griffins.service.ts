@@ -40,9 +40,7 @@ import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class GriffinsService {
   private readonly api: GriffinsApiService;
 

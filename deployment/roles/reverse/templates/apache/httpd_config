@@ -97,15 +97,16 @@
     ProxyPassReverse /cas {{ 'https' if vitamui.cas_server.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.cas_server.port_service }}
 {% endfor %}
 
+    # DESIGN SYSTEM
+{% for host in groups.get('hosts_ui_design_system', []) %}
+    ProxyPassMatch ^/design-system/(.*)$ {{ 'https' if vitamui.ui_design_system.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_design_system.port_service }}/$1
+    ProxyPassReverse /design-system {{ 'https' if vitamui.ui_design_system.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_design_system.port_service }}
+{% endfor %}
+
     # PORTAL
 {% for host in groups['hosts_ui_portal'] %}
     ProxyPass / {{ 'https' if vitamui.ui_portal.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_portal.port_service }}/ {{ reverse_connection_params }}
     ProxyPassReverse / {{ 'https' if vitamui.ui_portal.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_portal.port_service }}/
-{% endfor %}
-
-{% for host in groups.get('hosts_ui_design_system', []) %}
-    ProxyPass / {{ 'https' if vitamui.ui_design_system.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_design_system.port_service }}/ {{ reverse_connection_params }}
-    ProxyPassReverse / {{ 'https' if vitamui.ui_design_system.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_design_system.port_service }}/
 {% endfor %}
 
 </VirtualHost>
