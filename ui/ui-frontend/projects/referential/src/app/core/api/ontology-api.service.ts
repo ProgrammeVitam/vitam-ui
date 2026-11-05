@@ -42,9 +42,7 @@ import { BASE_URL, Ontology, PaginatedHttpClient } from 'vitamui-library';
 
 const HTTP_STATUS_OK = 200;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class OntologyApiService extends PaginatedHttpClient<Ontology> {
   constructor() {
     const http = inject(HttpClient);

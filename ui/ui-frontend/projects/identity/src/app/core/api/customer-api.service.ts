@@ -40,9 +40,7 @@ import { Observable } from 'rxjs';
 import { BASE_URL, PaginatedHttpClient, Customer, Logger, Logo, PageRequest, PaginatedResponse } from 'vitamui-library';
 import { AttachmentType } from '../../customer/attachment.enum';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class CustomerApiService extends PaginatedHttpClient<Customer> {
   private readonly logger = inject(Logger);
 

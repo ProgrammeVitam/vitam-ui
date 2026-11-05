@@ -41,9 +41,7 @@ import { map } from 'rxjs/operators';
 
 import { BASE_URL, CriteriaSearchQuery, PaginatedHttpClient, User } from 'vitamui-library';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class UserApiService extends PaginatedHttpClient<User> {
   baseUrl: string;
 

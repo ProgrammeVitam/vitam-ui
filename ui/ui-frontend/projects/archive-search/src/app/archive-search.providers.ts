@@ -35,6 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Provider } from '@angular/core';
+import { ArchiveUnitApiService } from './archive/archive-preview/archive-unit-description-tab/archive-unit-api.service';
+import { ArchiveUnitService } from './archive/archive-preview/archive-unit-description-tab/archive-unit.service';
+import { SearchCriteriaSaverService } from './archive/archive-search/search-criteria-saver/search-criteria-saver.service';
+import { ArchiveSearchHelperService } from './archive/common-services/archive-search-helper.service';
 import { ArchiveUnitLifecycleHistoryService } from './archive/archive-preview/archive-unit-history-tab/archive-unit-lifecycle-history.service';
 import { EntryOperationValidatorService } from './archive/archive-search/additional-actions-search/originating-agency-reassignment-dialog/entry-operation-validator.service';
 import { ReassignmentDialogService } from './archive/archive-search/additional-actions-search/originating-agency-reassignment-dialog/reassignment-dialog.service';
@@ -58,6 +62,10 @@ import { PersistentIdentifierApiService } from './core/api/persistent-identifier
  */
 export function provideArchiveSearchServices(): Provider[] {
   return [
+    ArchiveUnitApiService,
+    ArchiveUnitService,
+    SearchCriteriaSaverService,
+    ArchiveSearchHelperService,
     ArchiveApiService,
     ArchiveService,
     ArchiveUnitDipService,

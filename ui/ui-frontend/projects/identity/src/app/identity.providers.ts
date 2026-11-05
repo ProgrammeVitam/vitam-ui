@@ -35,6 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Provider } from '@angular/core';
+import { TenantApiService } from './customer/tenant-api.service';
+import { UserApiService } from './core/api/user-api.service';
+import { CustomerApiService } from './core/api/customer-api.service';
+import { ProfileValidators as IdentityProfileValidators } from './hierarchy/profile.validators';
+import { ProfileService } from './profile/profile.service';
+import { SubrogationService } from './subrogation/subrogation.service';
 import { GroupApiService } from './core/api/group-api.service';
 import { CustomerService } from './core/customer.service';
 import { CustomerCreateValidators } from './customer/customer-create/customer-create.validators';
@@ -72,6 +78,12 @@ import { UserService } from './user/user.service';
  */
 export function provideIdentityServices(): Provider[] {
   return [
+    TenantApiService,
+    UserApiService,
+    CustomerApiService,
+    IdentityProfileValidators,
+    ProfileService,
+    SubrogationService,
     CustomerCreateValidators,
     CustomerListService,
     CustomerResolver,

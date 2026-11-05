@@ -41,9 +41,7 @@ import { map, switchMap, take } from 'rxjs/operators';
 
 import { HierarchyService } from './hierarchy.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ProfileValidators {
   private readonly rngProfileService = inject(HierarchyService);
 

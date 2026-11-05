@@ -50,9 +50,7 @@ import {
 
 import { UserGenericApiService } from './user-generic-api.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SubrogationService extends SearchService<SubrogationUser> {
   private readonly subrogationApiService = inject(SubrogationApiService);
 
