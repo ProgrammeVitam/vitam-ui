@@ -1,0 +1,32 @@
+{
+  "mcpServers": {
+    "vitam-ui": {
+      "type": "http",
+      "url": "http://localhost:8811/mcp",
+      "headers": {
+        "Authorization": "Bearer ${MCP_GATEWAY_AUTH_TOKEN}"
+      }
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@1.10.1",
+        "--usageStatistics=false",
+        "--performanceCrux=false"
+      ]
+    },
+    "mongodb": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mongodb-mcp-server@3.0.5",
+        "--readOnly",
+        "--telemetry",
+        "disabled",
+        "--disabledTools",
+        "search-knowledge,list-knowledge-sources,atlas-local-list-deployments,atlas-local-connect-deployment"
+      ]
+    }
+  }
+}
