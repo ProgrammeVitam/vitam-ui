@@ -44,15 +44,18 @@ import { GroupComponent } from './components/group/group.component';
 import { ListComponent } from './components/list/list.component';
 import { PrimitiveComponent } from './components/primitive/primitive.component';
 import { AsyncPipe } from '@angular/common';
+import { ObjectViewerExpansionService } from './services/object-viewer-expansion.service';
 
 @Component({
   selector: 'vitamui-common-object-viewer',
   templateUrl: './object-viewer.component.html',
   styleUrls: ['./object-viewer.component.scss'],
   imports: [GroupComponent, ListComponent, PrimitiveComponent, AsyncPipe],
+  providers: [ObjectViewerExpansionService],
 })
 export class ObjectViewerComponent implements OnInit, OnChanges {
   private readonly logger = inject(Logger);
+  private readonly expansionService = inject(ObjectViewerExpansionService);
   displayObjectService = inject(DisplayObjectService);
 
   readonly data = input<any>(undefined);
@@ -81,5 +84,15 @@ export class ObjectViewerComponent implements OnInit, OnChanges {
     if (template) {
       this.displayObjectService.setTemplate(template.currentValue);
     }
+  }
+
+  /** Opens every group of the displayed object. */
+  expandAll(): void {
+    this.expansionService.expandAll();
+  }
+
+  /** Closes every group of the displayed object. */
+  collapseAll(): void {
+    this.expansionService.collapseAll();
   }
 }

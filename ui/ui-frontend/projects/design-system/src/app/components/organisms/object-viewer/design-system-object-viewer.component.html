@@ -1,0 +1,17 @@
+<h2>Object viewer / Object editor</h2>
+
+<p>{{ 'OBJECT_VIEWER.INTRO' | translate }}</p>
+
+<mat-tab-group class="vitamui-tab-group">
+  <mat-tab [label]="'OBJECT_VIEWER.VIEWER' | translate">
+    <div class="mt-4 p-2">
+      <design-system-object-viewer-playground />
+    </div>
+  </mat-tab>
+
+  <mat-tab [label]="'OBJECT_VIEWER.EDITOR' | translate">
+    <div class="mt-4 p-2">
+      <design-system-object-editor-playground />
+    </div>
+  </mat-tab>
+</mat-tab-group>

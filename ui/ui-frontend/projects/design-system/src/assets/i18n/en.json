@@ -47,6 +47,7 @@
       "TITLE": "Organisms",
       "dialog.TITLE": "Dialog",
       "discussion.TITLE": "Discussion",
+      "object-viewer.TITLE": "Object viewer / editor",
       "snackbar.TITLE": "Snackbar",
       "table.TITLE": "Table",
       "tab-group.TITLE": "Tab group"
@@ -225,5 +226,38 @@
     "INVALID_FILE_NAME": "Invalid file name. Expected name: \"{{expectedFileName}}\"",
     "INVALID_CSV": "Invalid CSV file",
     "INVALID_CSV_DETAIL": "Identified errors detail: <ul>{{detail}}</ul>"
+  },
+  "OBJECT_VIEWER": {
+    "INTRO": "The viewer displays data according to a template (DisplayRule[]). The editor builds a form (EditObject) from the data projected by the template and a schema.",
+    "VIEWER": "View",
+    "EDITOR": "Edit",
+    "DATA": "Data",
+    "EXPAND_ALL": "Expand all",
+    "COLLAPSE_ALL": "Collapse all",
+    "PROJECTED_DATA": "Projected data (form value)",
+    "RECONSTITUTED_DATA": "Reconstituted data (toOriginal output, to send on save)",
+    "TEMPLATE": "Template",
+    "SCHEMA": "Schema",
+    "PLAYGROUND": {
+      "INTRO": "Edit the inputs (JSON): the component is recomputed on each input.",
+      "RESET": "Reset",
+      "INVALID_JSON": "Invalid JSON"
+    },
+    "MODE": {
+      "data-driven": "the displayed structure follows the data structure, the template is ignored",
+      "template-driven": "only the fields mapped by the template are displayed, following its structure",
+      "mixed-driven": "mapped fields follow the template, then unmapped fields follow the data structure (here status and address)"
+    },
+    "LABEL": {
+      "IDENTIFICATION": "Identification",
+      "IDENTIFIER": "Identifier",
+      "NAME": "Name",
+      "OTHER_NAMES": "Other names",
+      "LANGUAGES": "Languages",
+      "DESCRIPTION": "Description",
+      "FROM_DATE": "Start date",
+      "TO_DATE": "End date",
+      "MAX_LENGTH_10": "10 characters maximum"
+    }
   }
 }
