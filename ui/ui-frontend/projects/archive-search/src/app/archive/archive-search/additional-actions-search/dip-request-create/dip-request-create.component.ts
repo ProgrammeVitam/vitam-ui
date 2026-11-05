@@ -166,7 +166,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
   readonly step2Form = form(
     signal<DipExportParametersForm>({
       includeLifeCycleLogs: false,
-      sedaVersion: '2.3',
+      sedaVersion: '2.4',
       exportWithTree: false,
       includeObjects: UsageVersionEnum.ALL,
       usages: [{ usage: ObjectQualifierType.BINARYMASTER, version: 'FIRST' }],
