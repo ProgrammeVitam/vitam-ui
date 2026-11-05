@@ -54,6 +54,7 @@ import { ThemeService } from '../../theme.service';
 import { MenuOption } from '../../models/menu-option.interface';
 import { ApplicationId } from './../../application-id.enum';
 import { SubrogationService } from './../../subrogation/subrogation.service';
+import { isVitamuiFeatureRoute } from '../../feature-routes';
 import { TENANT_SELECTION_URL_CONDITION, TenantSelectionService } from './../../tenant-selection.service';
 import { MenuOverlayService } from './menu/menu-overlay.service';
 import { SelectTenantDialogComponent } from './select-tenant-dialog/select-tenant-dialog.component';
@@ -303,7 +304,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private changeTenant(tenantIdentifier: number): void {
-    this.router.navigate([this.route.firstChild.snapshot.routeConfig.path + TENANT_SELECTION_URL_CONDITION, tenantIdentifier], {
+    // Path of the current page, below the routes that only scope a feature (in the single application).
+    const paths: string[] = [];
+    let route = this.route.firstChild;
+    while (isVitamuiFeatureRoute(route.snapshot.routeConfig) && route.firstChild) {
+      paths.push(route.snapshot.routeConfig.path);
+      route = route.firstChild;
+    }
+    paths.push(route.snapshot.routeConfig.path);
+    this.router.navigate([paths.filter((path) => !!path).join('/') + TENANT_SELECTION_URL_CONDITION, tenantIdentifier], {
       relativeTo: this.route,
     });
   }
