@@ -56,8 +56,6 @@ import { DatePipe, registerLocaleData } from '@angular/common';
 import { default as localeFr } from '@angular/common/locales/fr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app/app-routing.module';
-import { IngestModule } from './app/ingest/ingest.module';
-import { HoldingFillingSchemeModule } from './app/holding-filling-scheme/holding-filling-scheme.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { AppComponent } from './app/app.component';
 
@@ -78,8 +76,6 @@ bootstrapApplication(AppComponent, {
       BrowserModule,
       VitamUICommonModule.forRoot(),
       AppRoutingModule,
-      IngestModule,
-      HoldingFillingSchemeModule,
       ServiceWorkerModule.register('ngsw-worker.js', {
         enabled: environment.production,
         // Register the ServiceWorker as soon as the application is stable
