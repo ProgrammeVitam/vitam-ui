@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/design-system/src/app/components/tokens/spacing/spacing.component.scss"],
+  "sourcesContent": [".outer {\n  background-color: var(--vitamui-primary);\n\n  &[class^='gap-'],\n  &[class*=' gap-'] {\n    height: 100px;\n  }\n}\n\n.inner {\n  background-color: var(--vitamui-primary-50);\n  color: var(--vitamui-grey-900);\n  min-height: 20px;\n\n  .outer[class^='hgap-'] &,\n  .outer[class*=' hgap-'] & {\n    width: 100%;\n  }\n\n  .outer[class^='gap-'] &,\n  .outer[class*=' gap-'] & {\n    width: 100%;\n    height: 100%;\n  }\n}\n\n.m-auto {\n  max-width: 50%;\n}\n"],
+  "mappings": "AAAA,CAAA,MACE,iBAAA,IAAA,mBAEA,CAHF,KAGE,CAAA,aAAA,CAHF,KAGE,CAAA,gBAEE,OAAA,MAIJ,CAAA,MACE,iBAAA,IAAA,sBACA,MAAA,IAAA,oBACA,WAAA,KAEA,CAdF,KAcE,CAAA,cAAA,CALF,MAKE,CAdF,KAcE,CAAA,iBAAA,CALF,MAOI,MAAA,KAGF,CAnBF,KAmBE,CAAA,aAAA,CAVF,MAUE,CAnBF,KAmBE,CAAA,gBAAA,CAVF,MAYI,MAAA,KACA,OAAA,KAIJ,CAAA,OACE,UAAA",
+  "names": []
+}
