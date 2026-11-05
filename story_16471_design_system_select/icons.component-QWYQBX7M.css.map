@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/design-system/src/app/components/atoms/icons/icons.component.scss"],
+  "sourcesContent": ["i {\n  font-size: 40px;\n  line-height: 100px;\n  text-align: center;\n  color: var(--vitamui-grey-600);\n}\nul {\n  list-style: none;\n  display: flex;\n  background-color: var(--vitamui-grey-300);\n  flex-wrap: wrap;\n  justify-content: center;\n  padding-top: 50px;\n}\n.icon-container {\n  width: 100px;\n  height: 100px;\n  background-color: var(--vitamui-grey-100);\n  margin-right: 20px;\n  border-radius: 6px;\n  text-align: center;\n}\n\n.text-container {\n  width: 100px;\n  height: 100px;\n  padding-top: 10px;\n  display: flex;\n  justify-content: center;\n  text-align: center;\n  letter-spacing: 0.4px;\n  color: var(--vitamui-grey-800);\n}\n.color-select-container {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n"],
+  "mappings": "AAAA,EACE,UAAA,KACA,YAAA,MACA,WAAA,OACA,MAAA,IAAA,oBAEF,GACE,WAAA,KACA,QAAA,KACA,iBAAA,IAAA,oBACA,UAAA,KACA,gBAAA,OACA,YAAA,KAEF,CAAA,eACE,MAAA,MACA,OAAA,MACA,iBAAA,IAAA,oBACA,aAAA,KAlBF,cAmBE,IACA,WAAA,OAGF,CAAA,eACE,MAAA,MACA,OAAA,MACA,YAAA,KACA,QAAA,KACA,gBAAA,OACA,WAAA,OACA,eAAA,KACA,MAAA,IAAA,oBAEF,CAAA,uBACE,QAAA,KACA,gBAAA,cACA,YAAA",
+  "names": []
+}
