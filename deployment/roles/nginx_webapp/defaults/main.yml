@@ -16,3 +16,20 @@ secure: "{{ vitamui_defaults.services.secure | default(true) | bool }}"
 default_non_sortable_fields: "{{ vitamui_defaults.services.query_non_sortable_fields | default({}) }}"
 
 package_name: "vitamui-{{ vitamui_struct.vitamui_component }}-rsc"
+
+# APIs relayed by the vhost of each frontend to the API gateway, each one with the client certificate of its security
+# context (the gateway routes /<prefix>/... and the certificate selects the roles of the calls).
+# The single frontend application (ui-portal) calls the APIs of all its features. gateway_prefix: the prefix of the
+# API on the gateway, when it differs.
+frontend_apis:
+  ui-portal:
+    - { prefix: portal-api, certificate: ui-portal }
+    - { prefix: identity-api, certificate: ui-identity }
+    - { prefix: referential-api, certificate: ui-referential }
+    - { prefix: ingest-api, certificate: ui-ingest, upload: true }
+    - { prefix: archive-search-api, certificate: ui-archive-search }
+    - { prefix: collect-api, certificate: ui-collect, upload: true }
+    - { prefix: pastis-api, certificate: ui-pastis }
+  ui-identity-admin:
+    - { prefix: identity-admin-api, certificate: ui-identity-admin, gateway_prefix: identity-api }
+  ui-design-system: []

@@ -12,7 +12,7 @@
     "analyze:pastis": "npm run build:pastis -- --stats-json ; esbuild-visualizer --metadata dist/pastis/stats.json --filename dist/pastis/stats.html",
     "analyze:portal": "npm run build:portal -- --stats-json ; esbuild-visualizer --metadata dist/portal/stats.json --filename dist/portal/stats.html",
     "analyze:referential": "npm run build:referential -- --stats-json ; esbuild-visualizer --metadata dist/referential/stats.json --filename dist/referential/stats.html",
-    "build:allModules": "concurrently --max-processes 4 'npm:build:portal' 'npm:build:identity' 'npm:build:referential' 'npm:build:archive-search' 'npm:build:pastis' 'npm:build:collect' 'npm:build:ingest' 'npm:build:design-system'",
+    "build:allModules": "concurrently --max-processes 2 'npm:build:portal' 'npm:build:design-system'",
     "build:allModulesDev": "concurrently --max-processes 4 'npm:build:*:dev'",
     "build:archive-search:dev": "export NODE_OPTIONS=--max_old_space_size=2048; ng build archive-search --configuration development --base-href=/archive-search/ --deploy-url=/archive-search/",
     "build:collect:dev": "export NODE_OPTIONS=--max_old_space_size=2048; ng build collect --configuration development --base-href=/collect/ --deploy-url=/collect/",

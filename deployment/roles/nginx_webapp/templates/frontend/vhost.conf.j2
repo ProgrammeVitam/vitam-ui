@@ -24,18 +24,18 @@ server {
     }
     try_files $uri $uri/ /index.html;
   }
-{% if vitamui_struct.vitamui_component != 'ui-design-system' %}
+{% for api in frontend_apis[vitamui_struct.vitamui_component] | default([]) %}
 
-  {% if vitamui_struct.vitamui_component == 'ui-identity-admin' %}
-  location /identity-api {
-  {% else %}
-  location /{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }}-api {
-  {% endif %}
+  location /{{ api.prefix }} {
     # Allow access only from reverseproxy addresses
     {% for reverse in groups['hosts_vitamui_reverseproxy'] %}
     allow {{ hostvars[reverse]['ip_service'] }};
     {% endfor %}
     deny all; # Deny access to all other IP addresses
+    {% if api.gateway_prefix is defined %}
+
+    rewrite ^/{{ api.prefix }}(.*)$ /{{ api.gateway_prefix }}$1 break;
+    {% endif %}
 
     {% if vitamui.api_gateway.secure | default(secure) | bool %}
     set $api_gateway_dns "vitamui-{{ vitamui.api_gateway.vitamui_component }}.service.{{ consul_domain }}";
@@ -43,11 +43,11 @@ server {
     {% else %}
     proxy_pass http://API-GATEWAY;
     {% endif %}
-    proxy_ssl_certificate {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}_client.crt;
-    proxy_ssl_certificate_key {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}_client.key;
+    proxy_ssl_certificate {{ nginx_ssl_dir }}/{{ api.certificate }}_client.crt;
+    proxy_ssl_certificate_key {{ nginx_ssl_dir }}/{{ api.certificate }}_client.key;
 
     proxy_ssl_session_reuse off;
-    {% if vitamui_struct.vitamui_component in [ 'ui-ingest', 'ui-collect' ] %}
+    {% if api.upload | default(false) | bool %}
     # http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_request_buffering
     # The request body is sent to the proxied server immediately as it is received.
     proxy_request_buffering off;
@@ -70,5 +70,5 @@ server {
     proxy_read_timeout 600s;
     {% endif %}
   }
-{% endif %}
+{% endfor %}
 }
