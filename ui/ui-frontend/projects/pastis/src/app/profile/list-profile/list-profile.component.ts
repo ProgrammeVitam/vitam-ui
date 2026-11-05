@@ -87,7 +87,6 @@ import { ProfileDescription } from '../../models/profile-description.model';
 import { DataGeneriquePopupService } from '../../shared/data-generique-popup.service';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { CreateProfileComponent, CreateProfileFormResult } from '../create-profile/create-profile.component';
-import { ProfileInformationTabComponent } from '../profile-preview/profile-information-tab/profile-information-tab/profile-information-tab.component';
 import { ProfileType } from '../../models/profile-type.enum';
 import { LoadProfileComponent, LoadProfileConfig } from './load-profile/load-profile.component';
 import { Profile } from '../../models/profile';
@@ -107,8 +106,6 @@ const POPUP_UPLOAD_PATH = 'PROFILE.POP_UP_UPLOAD_FILE';
   standalone: false,
 })
 export class ListProfileComponent extends SidenavPage<ProfileDescription> implements OnInit, OnDestroy {
-  @ViewChild(ProfileInformationTabComponent, { static: true }) profileInformationTabComponent: ProfileInformationTabComponent;
-
   @ViewChild('confirmReplacement') confirmReplacement: TemplateRef<any>;
 
   retrievedProfiles: ProfileDescription[] = [];
@@ -136,7 +133,6 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   sedaUrl: string =
     this.pastisConfig.pastisPathPrefix + (this.isStandalone ? '' : this.startupService.getTenantIdentifier()) + this.pastisConfig.sedaUrl;
   subscription1$: Subscription;
-  _uploadProfileSub: Subscription;
   subscriptions: Subscription[] = [];
 
   donnees: string[];
@@ -261,15 +257,20 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     if (fileToUpload) {
       const formData = new FormData();
       formData.append('file', fileToUpload, fileToUpload.name);
-      this._uploadProfileSub = this.profileService.uploadProfile(formData).subscribe((response: any) => {
-        if (response && response.id) {
-          // Navigate to edit page with the profile ID
-          this.router.navigate(['edit', response.id], {
+      this.profileService.uploadProfile(formData).subscribe((response: any) => {
+        if (response) {
+          this.router.navigate(['new'], {
+            state: {
+              payload: response,
+            },
+            queryParams: {
+              type: response.type,
+              version: response.sedaVersion,
+            },
             relativeTo: this.route,
           });
         }
       });
-      this.subscriptions.push(this._uploadProfileSub);
     }
   }
 
