@@ -60,6 +60,7 @@ import {
   AlertDialogComponent,
   ALL_ARCHIVE_UNIT_TYPES,
   ALL_DESCENDANTS_FACET,
+  APP_ROUTE_PREFIX,
   APPRAISAL_RULE,
   ARCHIVE_UNIT_FILING_UNIT,
   ARCHIVE_UNIT_HOLDING_UNIT,
@@ -222,6 +223,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   private readonly archiveFacetsService = inject(ArchiveFacetsService);
   private readonly translateService = inject(TranslateService);
   private readonly route = inject(ActivatedRoute);
+  private readonly routePrefix = inject(APP_ROUTE_PREFIX);
   private readonly archiveSharedDataService = inject(ArchiveSharedDataService);
   dialog = inject(MatDialog);
   private readonly router = inject(Router);
@@ -1588,7 +1590,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   goToPersistentIdentifierSearchPage(): void {
-    this.router.navigate(['archive-search/persistent-identifier-search'], {});
+    this.router.navigate([`${this.routePrefix}/archive-search/persistent-identifier-search`], {});
   }
 
   private addCriteria(

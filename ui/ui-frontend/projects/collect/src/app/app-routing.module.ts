@@ -38,6 +38,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AccountComponent, ActiveTenantGuard, AnalyticsResolver, AppGuard, AuthGuard } from 'vitamui-library';
 import { AppComponent } from './app.component';
+import { COLLECT_ROUTES } from './collect.routes';
 
 const routes: Routes = [
   {
@@ -54,13 +55,7 @@ const routes: Routes = [
     resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'ACCOUNTS_APP' },
   },
-  {
-    path: 'collect',
-    loadChildren: () => import('./collect/collect.module').then((m) => m.CollectModule),
-    canActivate: [AuthGuard, AppGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'COLLECT_APP' },
-  },
+  ...COLLECT_ROUTES,
   { path: '**', redirectTo: '' },
 ];
 

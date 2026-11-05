@@ -83,7 +83,7 @@ import { ProfileResponse } from '../models/profile-response';
 import { EditProfileComponent } from '../profile/edit-profile/edit-profile.component';
 import { ProfileService } from '../core/services/profile.service';
 import { SedaService } from '../core/services/seda.service';
-import { SpinnerOverlayService } from 'vitamui-library';
+import { APP_ROUTE_PREFIX, SpinnerOverlayService } from 'vitamui-library';
 import { tap } from 'rxjs/operators';
 import { ProfileType } from '../models/profile-type.enum';
 import { ProfileVersion } from '../models/profile-version.enum';
@@ -111,6 +111,7 @@ import { FileTreeMetadataComponent } from '../profile/edit-profile/file-tree-met
 export class MainComponent implements OnInit, OnDestroy {
   fileService = inject(FileService);
   private readonly route = inject(ActivatedRoute);
+  private readonly routePrefix = inject(APP_ROUTE_PREFIX);
   private readonly sideNavService = inject(ToggleSidenavService);
   private readonly profileService = inject(ProfileService);
   private readonly sedaService = inject(SedaService);
@@ -155,7 +156,7 @@ export class MainComponent implements OnInit, OnDestroy {
             this.createNewProfile(type, version);
           } else {
             // No valid params, redirect to list
-            this.router.navigate(['/'], { skipLocationChange: false });
+            this.router.navigate([`${this.routePrefix}/pastis`], { skipLocationChange: false });
           }
         });
       }
@@ -226,7 +227,7 @@ export class MainComponent implements OnInit, OnDestroy {
       if (profileDescription) {
         this.fileService.getProfileAndUpdateTree(profileDescription);
       } else {
-        this.router.navigate(['/'], { skipLocationChange: false });
+        this.router.navigate([`${this.routePrefix}/pastis`], { skipLocationChange: false });
       }
     });
   }

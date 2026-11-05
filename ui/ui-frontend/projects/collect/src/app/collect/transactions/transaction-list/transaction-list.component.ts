@@ -38,6 +38,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, filter, finalize, of, switchMap } from 'rxjs';
 import {
+  APP_ROUTE_PREFIX,
   BatchStatus,
   ConfirmDialogComponent,
   ConfirmDialogData,
@@ -82,6 +83,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   private readonly projectService = inject(ProjectsService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly routePrefix = inject(APP_ROUTE_PREFIX);
   private readonly startupService = inject(StartupService);
   private readonly snackBarService = inject(SnackBarService);
   private readonly dialog = inject(MatDialog);
@@ -127,7 +129,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   }
 
   searchArchiveUnitsByTransaction(transaction: Transaction) {
-    this.router.navigate(['collect/tenant/' + this.tenantIdentifier + '/units', transaction.projectId, transaction.id]);
+    this.router.navigate([`${this.routePrefix}/collect/tenant/${this.tenantIdentifier}/units`, transaction.projectId, transaction.id]);
   }
 
   sendTransaction(transaction: Transaction) {

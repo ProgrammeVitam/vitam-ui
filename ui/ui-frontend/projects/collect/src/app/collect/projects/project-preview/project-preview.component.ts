@@ -68,6 +68,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import {
+  APP_ROUTE_PREFIX,
   ApplicationId,
   DEFAULT_PAGE_SIZE,
   Direction,
@@ -169,6 +170,7 @@ export class ProjectPreviewComponent implements OnChanges, OnInit, AfterViewInit
   private readonly securityService = inject(SecurityService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly routePrefix = inject(APP_ROUTE_PREFIX);
   private readonly dialog = inject(MatDialog);
   private readonly translationService = inject(TranslateService);
   private readonly snackBarService = inject(SnackBarService);
@@ -468,7 +470,7 @@ export class ProjectPreviewComponent implements OnChanges, OnInit, AfterViewInit
   }
 
   searchArchiveUnitsByProject() {
-    this.router.navigate([`collect/tenant/${this.tenantIdentifier}/units`, this.project().id]);
+    this.router.navigate([`${this.routePrefix}/collect/tenant/${this.tenantIdentifier}/units`, this.project().id]);
   }
 
   emitClose() {
