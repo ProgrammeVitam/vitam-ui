@@ -234,7 +234,7 @@ public class AgencyController {
     }
 
     @Secured(ServicesData.ROLE_EXPORT_AGENCIES)
-    @PostMapping(CommonConstants.PATH_EXPORT + "/signed-url")
+    @PostMapping(value = CommonConstants.PATH_EXPORT + "/signed-url", produces = MediaType.TEXT_PLAIN_VALUE)
     public String prepareSignedExport(@RequestHeader(CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId) {
         LOGGER.debug("Prepare signed agencies export URL");
 

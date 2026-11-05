@@ -173,7 +173,7 @@ public class OperationController {
     }
 
     @Secured(ServicesData.ROLE_GET_OPERATIONS)
-    @PostMapping(CommonConstants.PATH_ID + "/download/{type}/signed-url")
+    @PostMapping(value = CommonConstants.PATH_ID + "/download/{type}/signed-url", produces = MediaType.TEXT_PLAIN_VALUE)
     public String prepareSignedDownloadOperation(
         @RequestHeader(CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @RequestHeader(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
@@ -312,7 +312,10 @@ public class OperationController {
     }
 
     @Secured(ServicesData.ROLE_RUN_PROBATIVE_VALUE)
-    @PostMapping("/probativeValue" + CommonConstants.PATH_ID + "/signed-url")
+    @PostMapping(
+        value = "/probativeValue" + CommonConstants.PATH_ID + "/signed-url",
+        produces = MediaType.TEXT_PLAIN_VALUE
+    )
     public String prepareSignedExportProbativeValue(
         @RequestHeader(CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @RequestHeader(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,

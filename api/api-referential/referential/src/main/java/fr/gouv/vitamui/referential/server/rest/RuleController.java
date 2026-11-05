@@ -229,7 +229,7 @@ public class RuleController {
     }
 
     @Secured(ServicesData.ROLE_GET_RULES)
-    @PostMapping("/export/signed-url")
+    @PostMapping(value = "/export/signed-url", produces = MediaType.TEXT_PLAIN_VALUE)
     public String prepareSignedExport(@RequestHeader(CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId) {
         LOGGER.debug("Prepare signed rules export URL");
 
