@@ -35,6 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Provider } from '@angular/core';
+import { OntologyApiService } from './core/api/ontology-api.service';
+import { OntologyService } from './ontology/ontology.service';
 import { AccessContractCreateValidators } from './access-contract/access-contract-create/access-contract-create.validators';
 import { AccessionRegistersService } from './accession-register/accession-register.service';
 import { AdminDslService } from './admin-dsl/admin-dsl.service';
@@ -79,6 +81,8 @@ import { ReferentialImportService } from './shared/import-dialog/referential-imp
  */
 export function provideReferentialServices(): Provider[] {
   return [
+    OntologyApiService,
+    OntologyService,
     AccessContractCreateValidators,
     AccessionRegisterDetailApiService,
     AccessionRegisterSummaryApiService,

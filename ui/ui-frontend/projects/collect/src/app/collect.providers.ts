@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Provider } from '@angular/core';
+import { TransactionsService as CollectTransactionsService } from './collect/projects/transactions.service';
 import { ArchiveCollectService } from './collect/archive-search-collect/archive-collect.service';
 import { ArchiveUnitApiService } from './collect/archive-search-collect/archive-preview/archive-unit-description-tab/archive-unit-api.service';
 import { ArchiveUnitService } from './collect/archive-search-collect/archive-preview/archive-unit-description-tab/archive-unit.service';
@@ -53,6 +54,7 @@ import { TransactionsService } from './collect/transactions/transactions.service
  */
 export function provideCollectServices(): Provider[] {
   return [
+    CollectTransactionsService,
     ArchiveCollectService,
     ArchiveUnitApiService,
     ArchiveUnitService,

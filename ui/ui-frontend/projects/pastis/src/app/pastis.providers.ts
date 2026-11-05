@@ -35,6 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Provider } from '@angular/core';
+import { ArchiveProfileApiService } from './core/services/archive-profile-api.service';
+import { ProfileService } from './core/services/profile.service';
 import { PastisApiService } from './core/api/api.pastis.service';
 import { ArchivalProfileUnitApiService } from './core/services/archival-profile-unit-api.service';
 import { FileService } from './core/services/file.service';
@@ -49,6 +51,8 @@ import { IdentifierExistsValidator } from './validators/IdentifierExistsValidato
  */
 export function providePastisServices(): Provider[] {
   return [
+    ArchiveProfileApiService,
+    ProfileService,
     ArchivalProfileUnitApiService,
     ArchiveProfileSaverService,
     ArchiveUnitProfileSaverService,
