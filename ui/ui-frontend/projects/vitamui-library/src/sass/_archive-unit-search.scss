@@ -1,0 +1,177 @@
+@use './spacing';
+
+// Styles shared by the archive-search and collect applications.
+.mat-drawer-container {
+  background-color: var(--vitamui-background);
+}
+
+.archive-search-section {
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+}
+
+.after-search-launched-button {
+  color: var(--vitamui-white);
+  background-color: var(--vitamui-secondary);
+  border: 1px solid var(--vitamui-grey);
+  box-sizing: border-box;
+  border-radius: 5px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.before-search-launched-button {
+  box-sizing: border-box;
+  border: 1px solid var(--vitamui-grey);
+  border-left: 0px;
+}
+
+.left-arround {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border: 1px solid var(--vitamui-grey);
+}
+
+.left-not-arround {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border: 1px solid var(--vitamui-grey);
+}
+
+.right-arround {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border: 1px solid var(--vitamui-grey);
+  border-left: 0px;
+}
+
+.right-button {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border: 1px solid var(--vitamui-grey);
+  border-left: 0px;
+}
+
+.button-or {
+  padding-left: 10px;
+  padding-right: 10px;
+  border-right-width: 0px;
+  border-left-width: 0px;
+  height: 60px;
+  font-weight: bold;
+  padding-top: 18px;
+}
+
+.button-content {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 18px;
+  border-right-width: 0px;
+  max-width: 400px;
+  font-weight: bold;
+  height: 60px;
+  border: 1px solid var(--vitamui-grey);
+}
+
+.hide-ink {
+  cursor: pointer;
+  color: var(--vitamui-primary);
+  text-decoration: underline;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-left: 30px;
+}
+
+.area-criteria {
+  @extend .hgap-4;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.icon-download {
+  color: var(--vitamui-primary);
+  padding-right: 10px;
+  padding-left: 10px;
+  font-size: 22px;
+}
+
+.search-criterias {
+  font-size: large;
+  font-weight: bold;
+  margin-top: 50px;
+}
+
+::ng-deep .my-menu {
+  max-width: 380px;
+}
+
+.circle {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 13px;
+  position: static;
+  width: 50px;
+  height: 50px;
+  left: 0px;
+  top: 0px;
+
+  background: var(--vitamui-secondary);
+  border-radius: 50px;
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  border: none;
+}
+
+.circle:focus {
+  border: none;
+  outline: -webkit-focus-ring-color auto 0px;
+  outline-color: -webkit-focus-ring-color;
+  outline-style: auto;
+  outline-width: 0px;
+}
+
+.primary-save-icon {
+  color: white;
+}
+
+.div-btn-delete {
+  width: 78px;
+}
+
+.btn-add {
+  color: var(--vitamui-grey-600);
+  font-size: 37x;
+}
+
+.btn-new-save {
+  font-size: 16px;
+}
+
+.text-on-right-side {
+  padding-right: 20px;
+}
+
+.extended-lateral-panel {
+  width: 60% !important;
+}
+
+.normal-lateral-panel {
+  width: 574px;
+}
+
+.padding-btm-style {
+  padding-bottom: 15px;
+}
