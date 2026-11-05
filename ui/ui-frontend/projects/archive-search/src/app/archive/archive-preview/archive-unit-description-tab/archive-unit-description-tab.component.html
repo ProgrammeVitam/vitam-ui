@@ -4,7 +4,7 @@
 
 @if (editMode()) {
   <div>
-    <vitamui-common-editor-banner [title]="'ARCHIVE_UNIT.EDITOR_BANNER.TITLE' | translate: { sedaVersion: '2.3' }" class="editor-banner">
+    <vitamui-common-editor-banner [title]="'ARCHIVE_UNIT.EDITOR_BANNER.TITLE' | translate: { sedaVersion: '2.4' }" class="editor-banner">
       <button (click)="onSave()" [disabled]="!canSave" class="btn" [ngClass]="isModified() ? 'save' : 'primary'">
         {{ 'COMMON.SAVE' | translate }}
       </button>
