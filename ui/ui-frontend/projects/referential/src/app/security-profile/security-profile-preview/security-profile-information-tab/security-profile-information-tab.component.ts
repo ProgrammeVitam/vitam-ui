@@ -94,10 +94,13 @@ export class SecurityProfileInformationTabComponent implements OnChanges {
   submitted = signal(false);
 
   previousValue = (): any => {
-    return FORM_KEYS.reduce((acc: any, key) => {
-      acc[key] = this.securityProfile()[key];
-      return acc;
-    }, {} as Partial<SecurityProfile>);
+    return FORM_KEYS.reduce(
+      (acc: any, key) => {
+        acc[key] = this.securityProfile()[key];
+        return acc;
+      },
+      { id: this.securityProfile()?.id } as Partial<SecurityProfile>,
+    );
   };
 
   readonly securityProfile = model<SecurityProfile>(undefined);
