@@ -42,6 +42,7 @@ import { GlobalEventService } from './global-event.service';
 import { Tenant } from './models/customer/tenant.interface';
 import { TenantsByApplication } from './models/user/tenants-by-application.interface';
 import { StartupService } from './startup.service';
+import { routePath } from './route-path';
 import { TenantSelectionService } from './tenant-selection.service';
 
 @Injectable()
@@ -76,7 +77,7 @@ export class ActiveTenantGuard {
       }
     }
     // redirect user to the tenant selection page
-    this.router.navigate(route.pathFromRoot.map((r) => r.url.toString()).concat(['tenant']));
+    this.router.navigate(routePath(route).concat(['tenant']));
 
     return false;
   }
