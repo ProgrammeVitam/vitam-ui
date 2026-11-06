@@ -42,6 +42,7 @@ import { WINDOW_LOCATION } from './injection-tokens';
 import { TenantsByApplication } from './models/user/tenants-by-application.interface';
 import { TENANT_SELECTION_URL_CONDITION, TenantSelectionService } from './tenant-selection.service';
 import { SnackBarService } from './components/snack-bar/snack-bar.service';
+import { routePath } from './route-path';
 
 @Injectable()
 export class TenantSelectionGuard {
@@ -69,9 +70,7 @@ export class TenantSelectionGuard {
       const tenants = tenantsByApp.tenants;
       if (tenants.length === 1) {
         // redirect user to the unique tenant page of the app
-        this.router.navigate(
-          route.pathFromRoot.map((activeRouter) => activeRouter.url.toString()).concat([tenants[0].identifier.toString()]),
-        );
+        this.router.navigate(routePath(route).concat([tenants[0].identifier.toString()]));
       }
       return true;
     } else {
