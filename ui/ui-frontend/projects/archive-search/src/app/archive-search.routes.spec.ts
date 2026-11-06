@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { TestBed } from '@angular/core/testing';
 import { Routes } from '@angular/router';
 import { archiveSearchRoutes, ARCHIVE_SEARCH_ROUTES } from './archive-search.routes';
 import { ArchiveSearchFeatureComponent } from './archive-search-feature.component';
@@ -48,5 +49,16 @@ describe('archiveSearchRoutes', () => {
     const pages: Routes = wrapper.children;
     expect(pages[0]).toEqual({ path: '', pathMatch: 'full', redirectTo: '/' });
     expect(pages.slice(1)).toEqual(ARCHIVE_SEARCH_ROUTES);
+  });
+
+  it('should lazy load every page of the feature', async () => {
+    const pages = await Promise.all(ARCHIVE_SEARCH_ROUTES.filter((route) => route.loadChildren).map((route) => route.loadChildren()));
+
+    expect(pages.length).toBeGreaterThan(0);
+    pages.forEach((page) => expect(page).toBeTruthy());
+  });
+
+  it('should host the pages of the feature', () => {
+    expect(TestBed.createComponent(ArchiveSearchFeatureComponent).componentInstance).toBeTruthy();
   });
 });

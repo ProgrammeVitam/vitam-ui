@@ -47,4 +47,11 @@ describe('identityRoutes', () => {
     expect(pages[0]).toEqual({ path: '', pathMatch: 'full', redirectTo: '/' });
     expect(pages.slice(1)).toEqual(IDENTITY_ROUTES);
   });
+
+  it('should lazy load every page of the feature', async () => {
+    const pages = await Promise.all(IDENTITY_ROUTES.filter((route) => route.loadChildren).map((route) => route.loadChildren()));
+
+    expect(pages.length).toBeGreaterThan(0);
+    pages.forEach((page) => expect(page).toBeTruthy());
+  });
 });
