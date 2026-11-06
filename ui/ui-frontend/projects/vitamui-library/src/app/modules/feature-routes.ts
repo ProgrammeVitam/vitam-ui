@@ -37,7 +37,7 @@
 import { Dialog } from '@angular/cdk/dialog';
 import { Provider, Type } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { CanActivateFn, LoadChildrenCallback, Route, Routes } from '@angular/router';
+import { ActivatedRoute, CanActivateFn, LoadChildrenCallback, Route, Routes } from '@angular/router';
 import { provideVitamuiFeature, VitamuiFeatureConfig } from './feature-providers';
 
 /** Routes created by vitamuiFeatureRoute/vitamuiFeatureRoutes: they only scope a feature, they are not pages. */
@@ -51,6 +51,21 @@ function markFeatureRoute(route: Route): Route {
 /** Whether a route only scopes a feature (prefix and providers), its pages being its children. */
 export function isVitamuiFeatureRoute(route: Route | null | undefined): boolean {
   return !!route && FEATURE_ROUTES.has(route);
+}
+
+/**
+ * Path of the page displayed under the given route, relative to its parent: the routes that only scope a feature are
+ * crossed, so that the path is the same in a separate application and in the single one (e.g. 'archive-search').
+ */
+export function featurePagePath(route: ActivatedRoute): string {
+  const paths: string[] = [];
+  let current = route;
+  while (isVitamuiFeatureRoute(current.snapshot.routeConfig) && current.firstChild) {
+    paths.push(current.snapshot.routeConfig.path);
+    current = current.firstChild;
+  }
+  paths.push(current.snapshot.routeConfig.path);
+  return paths.filter((path) => !!path).join('/');
 }
 
 /**
