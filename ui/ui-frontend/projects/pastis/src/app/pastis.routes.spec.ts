@@ -61,4 +61,11 @@ describe('pastisRoutes', () => {
     expect(initConfiguration).toHaveBeenCalled();
     expect(canActivate).toBe(true);
   });
+
+  it('should lazy load every page of the feature', async () => {
+    const pages = await Promise.all(PASTIS_ROUTES.filter((route) => route.loadChildren).map((route) => route.loadChildren()));
+
+    expect(pages.length).toBeGreaterThan(0);
+    pages.forEach((page) => expect(page).toBeTruthy());
+  });
 });
