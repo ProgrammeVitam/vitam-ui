@@ -46,23 +46,21 @@ import { SecurityProfileInformationTabComponent } from './security-profile-infor
 describe('SecurityProfileInformationTabComponent', () => {
   let component: SecurityProfileInformationTabComponent;
   let fixture: ComponentFixture<SecurityProfileInformationTabComponent>;
+  let patchedData: Partial<SecurityProfile>;
 
-  const securityProfileServiceMock = {
-    patch: (_data: any) => of(null),
-  };
-
-  const securityProfileValue = {
-    name: 'Name',
-    identifier: 'SP-000001',
-    fullAccess: true,
-  };
-
-  const previousValue: SecurityProfile = {
+  const securityProfile: SecurityProfile = {
     id: 'vitam_id',
     name: 'Name',
     identifier: 'SP-000001',
     fullAccess: true,
     permissions: [],
+  };
+
+  const securityProfileServiceMock = {
+    patch: (data: Partial<SecurityProfile>) => {
+      patchedData = data;
+      return of(null);
+    },
   };
 
   beforeEach(async () => {
@@ -75,14 +73,27 @@ describe('SecurityProfileInformationTabComponent', () => {
   });
 
   beforeEach(() => {
+    patchedData = undefined;
     fixture = TestBed.createComponent(SecurityProfileInformationTabComponent);
     component = fixture.componentInstance;
+<<<<<<< HEAD
     component.form.setValue(securityProfileValue);
     component.previousValue = (): SecurityProfile => previousValue;
+=======
+    fixture.componentRef.setInput('securityProfile', securityProfile);
+>>>>>>> 2a488fad9 (Bug #15694: [Security Profiles && Application Contexts] “DTO identifier” error when editing a security profile)
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should send id, identifier and name when patching', () => {
+    component.form.name().value.set('New Name');
+
+    component.prepareSubmit().subscribe();
+
+    expect(patchedData).toEqual({ id: 'vitam_id', identifier: 'SP-000001', name: 'New Name' });
   });
 });
