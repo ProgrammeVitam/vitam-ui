@@ -228,6 +228,9 @@ public class SecurityProfileService extends AbstractService {
         ObjectNode propertiesToUpdate = JsonHandler.createObjectNode();
 
         // Transform Vitam-UI fields into Vitam fields
+        if (partialDto.get("name") != null) {
+            propertiesToUpdate.put("Name", (String) partialDto.get("name"));
+        }
         if (partialDto.get("fullAccess") != null) {
             propertiesToUpdate.put("FullAccess", (boolean) partialDto.get("fullAccess"));
         }
