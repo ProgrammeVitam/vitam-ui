@@ -1,0 +1,186 @@
+<div class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+  <div class="vitamui-table-head">
+    <div class="col-1 d-flex align-items-center">
+      <i class="vitamui-icon vitamui-icon-ic40-flux"></i>
+      <button
+        class="vitamui-filter-button"
+        [vitamuiCommonTableFilter]="automaticIngestFilterTemplate"
+        [class.active]="automaticIngestFilter.length > 0"
+      >
+        <i class="material-icons vitamui-row-icon">filter_list</i>
+      </button>
+    </div>
+    <div class="col-3 d-flex align-items-center hgap-1">
+      <span class="no-wrap">{{ 'COLLECT.TRANSACTIONS_TO_PROCESS.FIELD_TRANSACTION_TITLE' | translate }}</span>
+      <vitamui-order-by-button
+        [orderByKey]="messageIdentifier"
+        [(direction)]="direction"
+        [(orderBy)]="column"
+        (directionChange)="changeDirection($event)"
+        (orderByChange)="changeColumn($event)"
+        (orderChange)="sortTable()"
+      ></vitamui-order-by-button>
+    </div>
+    <div class="col-3 d-flex align-items-center hgap-1">
+      <span class="no-wrap">{{ 'COLLECT.FIELD_ORIGINATING_AGENCY_IDENTIFIER' | translate }}</span>
+      <vitamui-order-by-button
+        [orderByKey]="originatingAgencyIdentifier"
+        [(direction)]="direction"
+        [(orderBy)]="column"
+        (directionChange)="changeDirection($event)"
+        (orderByChange)="changeColumn($event)"
+        (orderChange)="sortTable()"
+      ></vitamui-order-by-button>
+    </div>
+    <div class="col-2 d-flex align-items-center hgap-1">
+      <span class="no-wrap">{{ 'COLLECT.FIELD_LAST_MODIFY_ON' | translate }}</span>
+      <vitamui-order-by-button
+        [orderByKey]="lastUpdate"
+        [(direction)]="direction"
+        [(orderBy)]="column"
+        (directionChange)="changeDirection($event)"
+        (orderByChange)="changeColumn($event)"
+        (orderChange)="sortTable()"
+      ></vitamui-order-by-button>
+    </div>
+    <div class="col-2 d-flex align-items-center hgap-1">
+      <span class="no-wrap">{{ 'COLLECT.STATUS' | translate }}</span>
+      <vitamui-order-by-button
+        [orderByKey]="status"
+        [(direction)]="direction"
+        [(orderBy)]="column"
+        (directionChange)="changeDirection($event)"
+        (orderByChange)="changeColumn($event)"
+        (orderChange)="sortTable()"
+      ></vitamui-order-by-button>
+    </div>
+    <div class="col-1">
+      <!-- errors / discussions / actions -->
+    </div>
+  </div>
+
+  <div class="vitamui-table-body">
+    @for (transaction of dataSource(); track transaction) {
+      <div class="vitamui-table-rows">
+        <div class="vitamui-row d-flex align-items-center">
+          <div class="col-1">
+            <i
+              class="vitamui-icon {{ getTransactionIcon(transaction) }}"
+              [ngClass]="
+                transactionStatusVisualColor(transaction.status)
+                  ? 'status-badge status-badge-' + transactionStatusVisualColor(transaction.status)
+                  : ''
+              "
+            ></i>
+          </div>
+          <div class="col-3">{{ transaction.messageIdentifier }}</div>
+          <div class="col-3">
+            <span
+              class="originating-agency-ellipsis"
+              [vitamuiTooltip]="getAgencyFullLabel(transaction)"
+              [outline]="true"
+              vitamuiTooltipClass="primary"
+            >
+              {{ transaction.originatingAgencyIdentifier }}
+              @if (getAgencyName(transaction.originatingAgencyIdentifier)) {
+                - {{ getAgencyName(transaction.originatingAgencyIdentifier) }}
+              }
+            </span>
+          </div>
+          <div class="col-2">
+            <div>{{ transaction.lastUpdate | dateTime: 'dd/MM/yyyy' | empty }}</div>
+            <span class="text normal light">{{ transaction.lastUpdate | dateTime: 'HH:mm:ss' }}</span>
+          </div>
+          <div class="col-2">
+            <div class="text" [ngClass]="getStatusColorClass(transaction)">
+              {{ 'COLLECT.PROJECT_TRANSACTION_PREVIEW.STATUS.' + transaction.status | translate }}
+            </div>
+          </div>
+          <div class="col-1">
+            <div class="hgap-4 justify-content-end align-items-center">
+              <div class="hgap-2 align-items-center">
+                @if (hasUnreadDiscussions(transaction)) {
+                  <vitamui-discussion-icon
+                    [discussions]="getUnreadDiscussions(transaction)"
+                    [vitamuiTooltip]="'DISCUSSION.UNREAD_MESSAGES' | translate"
+                    [outline]="true"
+                    vitamuiTooltipClass="secondary"
+                  ></vitamui-discussion-icon>
+                }
+                @if (hasBatchInError(transaction)) {
+                  <i
+                    class="vitamui-icon vitamui-icon-danger warning batch-error-icon"
+                    [vitamuiTooltip]="'COLLECT.BATCH_ERROR_RECORDED' | translate"
+                    [outline]="true"
+                    vitamuiTooltipClass="orange"
+                  ></i>
+                }
+              </div>
+              <vitamui-menu-button
+                [icon]="'vitamui-icon-more-horiz'"
+                [overlayPos]="'end'"
+                menuButtonSize="medium"
+                [disabled]="!transactionHasActions(transaction)"
+              >
+                <button mat-menu-item (click)="searchArchiveUnitsByTransaction(transaction)">
+                  {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.SHOW_PROJECT_ARCHIVE_UNITS' | translate }}
+                </button>
+                @switch (transaction.status) {
+                  @case (TransactionStatus.OPEN) {
+                    <button mat-menu-item [disabled]="!hasCloseTransactionRole()" (click)="validateTransaction(transaction)">
+                      {{ 'COLLECT.VALIDATE_ACTION' | translate }}
+                    </button>
+                  }
+                  @case (TransactionStatus.VALIDATED) {
+                    <button mat-menu-item [disabled]="!canSendTransaction(transaction)" (click)="sendTransaction(transaction)">
+                      {{ 'COLLECT.INGEST_ACTION' | translate }}
+                    </button>
+                  }
+                  @default {
+                    <button mat-menu-item [disabled]="!hasEditTransactionRole()" (click)="editTransaction(transaction)">
+                      {{ 'COLLECT.EDIT_ACTION' | translate }}
+                    </button>
+                  }
+                }
+                <button mat-menu-item [disabled]="!hasAbortTransactionRole()" (click)="abortTransaction(transaction)">
+                  {{ 'COLLECT.ABORT_ACTION' | translate }}
+                </button>
+              </vitamui-menu-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  @if (!dataSource() || pending()) {
+    <div class="vitamui-min-content">
+      <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+    </div>
+  }
+  @if (!pending() && dataSource()?.length === 0) {
+    <div class="vitamui-min-content vitamui-table-message">{{ 'COLLECT.NO_RESULT' | translate }}</div>
+  }
+  @if (infiniteScrollDisabled() && transactionsToProcessService.canLoadMore && !pending()) {
+    <div (click)="loadMore()" (keydown.enter)="loadMore()" tabindex="0" role="button" class="vitamui-min-content vitamui-table-message">
+      <span class="clickable">{{ 'COLLECT.LOAD_MORE_RESULTS' | translate }}</span>
+    </div>
+  }
+</div>
+
+<ng-template #automaticIngestFilterTemplate>
+  <vitamui-common-table-filter [filter]="automaticIngestFilter" (filterChange)="onAutomaticIngestFilterChange($event)">
+    <vitamui-common-table-filter-option [value]="false">
+      <div class="table-filter-icon">
+        <i class="vitamui-icon vitamui-icon-ic40-flux-manuel"></i>
+        <span>{{ 'COLLECT.MODAL.MANUAL_WORKFLOW' | translate }}</span>
+      </div>
+    </vitamui-common-table-filter-option>
+    <vitamui-common-table-filter-option [value]="true">
+      <div class="table-filter-icon">
+        <i class="vitamui-icon vitamui-icon-ic40-flux-industriel"></i>
+        <span>{{ 'COLLECT.MODAL.FLOW_WORKFLOW' | translate }}</span>
+      </div>
+    </vitamui-common-table-filter-option>
+  </vitamui-common-table-filter>
+</ng-template>

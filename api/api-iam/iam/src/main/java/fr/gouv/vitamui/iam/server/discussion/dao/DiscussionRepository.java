@@ -20,5 +20,10 @@ public interface DiscussionRepository extends VitamUIRepository<Discussion, Stri
         String entityId,
         EntityType entityType
     );
+    List<Discussion> findByTenantAndEntitiesEntityTypeAndEntitiesEntityIdIn(
+        Integer tenant,
+        EntityType entityType,
+        List<String> entityIds
+    );
     Stream<Discussion> findByEntitiesEntityType(EntityType entityType);
 }

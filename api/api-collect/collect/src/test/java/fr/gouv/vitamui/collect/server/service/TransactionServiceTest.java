@@ -32,6 +32,8 @@ package fr.gouv.vitamui.collect.server.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitam.collect.common.dto.BatchDto;
+import fr.gouv.vitam.collect.common.dto.BatchStatusDto;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.collect.common.enums.TransactionValidationMode;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -45,15 +47,21 @@ import fr.gouv.vitam.common.model.ProcessState;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.StatusCode;
+import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.collect.common.dto.CollectOperationStatusDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.server.service.converters.TransactionConverter;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationCommonService;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import jakarta.ws.rs.core.Response;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -67,11 +75,16 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -85,6 +98,9 @@ class TransactionServiceTest {
 
     @Mock
     VitamOperationCommonService vitamOperationCommonService;
+
+    @Mock
+    ExternalParametersService externalParametersService;
 
     final PodamFactory factory = new PodamFactoryImpl();
     final VitamContext vitamContext = new VitamContext(1);
@@ -435,5 +451,290 @@ class TransactionServiceTest {
             VitamClientException.class,
             () -> transactionService.getOperationStatus(operationId, vitamContext)
         );
+    }
+
+    @Test
+    void shouldReturnEmptyPageWhenAccessContractRestrictsToNoOriginatingAgency()
+        throws VitamClientException, JsonProcessingException {
+        // GIVEN: an access contract restricted to originating agencies, but listing none
+        when(externalParametersService.retrieveAccessContract()).thenReturn(
+            new AccessContractModel().setEveryOriginatingAgency(false).setOriginatingAgencies(Set.of())
+        );
+
+        // WHEN
+        PaginatedValuesDto<CollectTransactionDto> result = transactionService.searchTransactionsPaginated(
+            0,
+            10,
+            Optional.empty(),
+            Optional.empty(),
+            Optional.empty(),
+            vitamContext
+        );
+
+        // THEN: Vitam is not even called, since it would otherwise ignore the empty list and return everything
+        assertEquals(0, result.getValues().size());
+        verify(collectService, never()).searchTransactions(any(), any());
+    }
+
+    @Test
+    void shouldExcludeOnlyFullyPurgedTerminatedTransactionsWhenSearchingTransactionsToProcess()
+        throws VitamClientException, JsonProcessingException, InvalidParseOperationException {
+        // GIVEN
+        when(externalParametersService.retrieveAccessContract()).thenReturn(
+            new AccessContractModel().setEveryOriginatingAgency(true)
+        );
+
+        TransactionDto fullyPurgedAckOk = buildTransactionDto(
+            "FULLY_PURGED_ACK_OK",
+            "ACK_OK",
+            List.of(new BatchDto("batch1", BatchStatusDto.PURGED, "proc1"))
+        );
+        TransactionDto notPurgedAckOk = buildTransactionDto(
+            "NOT_PURGED_ACK_OK",
+            "ACK_OK",
+            List.of(new BatchDto("batch1", BatchStatusDto.KO, "proc1"))
+        );
+        TransactionDto ackOkWithoutBatches = buildTransactionDto("ACK_OK_WITHOUT_BATCHES", "ACK_OK", null);
+        TransactionDto fullyPurgedAckWarning = buildTransactionDto(
+            "FULLY_PURGED_ACK_WARNING",
+            "ACK_WARNING",
+            List.of(new BatchDto("batch1", BatchStatusDto.PURGED, "proc1"))
+        );
+        TransactionDto notPurgedAckWarning = buildTransactionDto(
+            "NOT_PURGED_ACK_WARNING",
+            "ACK_WARNING",
+            List.of(new BatchDto("batch1", BatchStatusDto.KO, "proc1"))
+        );
+        TransactionDto fullyPurgedAborted = buildTransactionDto(
+            "FULLY_PURGED_ABORTED",
+            "ABORTED",
+            List.of(new BatchDto("batch1", BatchStatusDto.PURGED, "proc1"))
+        );
+        TransactionDto notPurgedAborted = buildTransactionDto(
+            "NOT_PURGED_ABORTED",
+            "ABORTED",
+            List.of(new BatchDto("batch1", BatchStatusDto.KO, "proc1"))
+        );
+        TransactionDto openWithPurgedBatch = buildTransactionDto(
+            "OPEN_WITH_PURGED_BATCH",
+            "OPEN",
+            List.of(new BatchDto("batch1", BatchStatusDto.PURGED, "proc1"))
+        );
+
+        RequestResponseOK<JsonNode> fakeResponse = new RequestResponseOK<JsonNode>()
+            .setHttpCode(200)
+            .addAllResults(
+                List.of(
+                    JsonHandler.toJsonNode(fullyPurgedAckOk),
+                    JsonHandler.toJsonNode(notPurgedAckOk),
+                    JsonHandler.toJsonNode(ackOkWithoutBatches),
+                    JsonHandler.toJsonNode(fullyPurgedAckWarning),
+                    JsonHandler.toJsonNode(notPurgedAckWarning),
+                    JsonHandler.toJsonNode(fullyPurgedAborted),
+                    JsonHandler.toJsonNode(notPurgedAborted),
+                    JsonHandler.toJsonNode(openWithPurgedBatch)
+                )
+            );
+        when(collectService.searchTransactions(any(), any())).thenReturn(fakeResponse);
+
+        // WHEN
+        PaginatedValuesDto<CollectTransactionDto> result = transactionService.searchTransactionsPaginated(
+            0,
+            10,
+            Optional.empty(),
+            Optional.empty(),
+            Optional.empty(),
+            vitamContext
+        );
+
+        // THEN
+        assertEquals(5, result.getValues().size());
+        assertEquals(
+            List.of(
+                "NOT_PURGED_ACK_OK",
+                "ACK_OK_WITHOUT_BATCHES",
+                "NOT_PURGED_ACK_WARNING",
+                "NOT_PURGED_ABORTED",
+                "OPEN_WITH_PURGED_BATCH"
+            ),
+            result.getValues().stream().map(CollectTransactionDto::getId).toList()
+        );
+        // The counter must only count the statuses listed as "to process" by CA01, excluding
+        // not-yet-purged terminated transactions (ACK_OK, ACK_WARNING, ABORTED) even though they
+        // are still displayed in the list above.
+        assertEquals(1, result.getTotalElements());
+    }
+
+    @Test
+    void shouldThrowBadRequestExceptionWhenPageIsInvalid() {
+        assertThrows(
+            BadRequestException.class,
+            () ->
+                transactionService.searchTransactionsPaginated(
+                    -1,
+                    10,
+                    Optional.empty(),
+                    Optional.empty(),
+                    Optional.empty(),
+                    vitamContext
+                )
+        );
+    }
+
+    @Test
+    void shouldThrowBadRequestExceptionWhenSizeIsInvalid() {
+        assertThrows(
+            BadRequestException.class,
+            () ->
+                transactionService.searchTransactionsPaginated(
+                    0,
+                    0,
+                    Optional.empty(),
+                    Optional.empty(),
+                    Optional.empty(),
+                    vitamContext
+                )
+        );
+    }
+
+    @Test
+    void shouldApplyQueryStatusesAndOrderingCriteriaWhenSearchingTransactionsToProcess()
+        throws VitamClientException, JsonProcessingException {
+        // GIVEN
+        when(externalParametersService.retrieveAccessContract()).thenReturn(
+            new AccessContractModel().setEveryOriginatingAgency(true)
+        );
+        RequestResponseOK<JsonNode> fakeResponse = new RequestResponseOK<JsonNode>()
+            .setHttpCode(200)
+            .addAllResults(List.of());
+        when(collectService.searchTransactions(any(), any())).thenReturn(fakeResponse);
+
+        // WHEN
+        transactionService.searchTransactionsPaginated(
+            0,
+            10,
+            Optional.of("{\"query\":\"my query\",\"statuses\":[\"OPEN\"],\"automaticIngestValues\":[true]}"),
+            Optional.of("messageIdentifier"),
+            Optional.of(DirectionDto.ASC),
+            vitamContext
+        );
+
+        // THEN
+        ArgumentCaptor<fr.gouv.vitam.collect.common.dto.CriteriaTransactionDto> criteriaCaptor =
+            ArgumentCaptor.forClass(fr.gouv.vitam.collect.common.dto.CriteriaTransactionDto.class);
+        verify(collectService).searchTransactions(any(), criteriaCaptor.capture());
+        fr.gouv.vitam.collect.common.dto.CriteriaTransactionDto capturedCriteria = criteriaCaptor.getValue();
+        assertEquals("my query", capturedCriteria.getQuery());
+        assertEquals(List.of("OPEN"), capturedCriteria.getStatuses());
+        assertEquals("MessageIdentifier", capturedCriteria.getOrderBy());
+        assertEquals(DirectionDto.ASC.getValue(), capturedCriteria.getOrderDirection());
+    }
+
+    @Test
+    void shouldReturnEmptyPageWhenNoAccessContractIsFound() throws VitamClientException, JsonProcessingException {
+        // GIVEN
+        when(externalParametersService.retrieveAccessContract()).thenReturn(null);
+
+        // WHEN
+        PaginatedValuesDto<CollectTransactionDto> result = transactionService.searchTransactionsPaginated(
+            0,
+            10,
+            Optional.empty(),
+            Optional.empty(),
+            Optional.empty(),
+            vitamContext
+        );
+
+        // THEN
+        assertEquals(0, result.getValues().size());
+        verify(collectService, never()).searchTransactions(any(), any());
+    }
+
+    @Test
+    void shouldFilterByAutomaticIngestValuesWhenSearchingTransactionsToProcess()
+        throws VitamClientException, InvalidParseOperationException, JsonProcessingException {
+        // GIVEN
+        when(externalParametersService.retrieveAccessContract()).thenReturn(
+            new AccessContractModel().setEveryOriginatingAgency(true)
+        );
+
+        TransactionDto automaticTransaction = buildTransactionDto("AUTOMATIC", "OPEN", null);
+        automaticTransaction.setAutomaticIngest(true);
+        TransactionDto manualTransaction = buildTransactionDto("MANUAL", "OPEN", null);
+        manualTransaction.setAutomaticIngest(false);
+
+        RequestResponseOK<JsonNode> fakeResponse = new RequestResponseOK<JsonNode>()
+            .setHttpCode(200)
+            .addAllResults(
+                List.of(JsonHandler.toJsonNode(automaticTransaction), JsonHandler.toJsonNode(manualTransaction))
+            );
+        when(collectService.searchTransactions(any(), any())).thenReturn(fakeResponse);
+
+        // WHEN
+        PaginatedValuesDto<CollectTransactionDto> result = transactionService.searchTransactionsPaginated(
+            0,
+            10,
+            Optional.of("{\"automaticIngestValues\":[true]}"),
+            Optional.empty(),
+            Optional.empty(),
+            vitamContext
+        );
+
+        // THEN
+        assertEquals(List.of("AUTOMATIC"), result.getValues().stream().map(CollectTransactionDto::getId).toList());
+    }
+
+    @Test
+    void shouldThrowInternalServerExceptionWhenCollectServiceReturnsKo()
+        throws VitamClientException, JsonProcessingException {
+        // GIVEN
+        when(externalParametersService.retrieveAccessContract()).thenReturn(
+            new AccessContractModel().setEveryOriginatingAgency(true)
+        );
+        when(collectService.searchTransactions(any(), any())).thenReturn(null);
+
+        // THEN
+        assertThrows(
+            InternalServerException.class,
+            () ->
+                transactionService.searchTransactionsPaginated(
+                    0,
+                    10,
+                    Optional.empty(),
+                    Optional.empty(),
+                    Optional.empty(),
+                    vitamContext
+                )
+        );
+    }
+
+    @Test
+    void shouldThrowInternalServerExceptionWhenCriteriaIsNotValidJson()
+        throws VitamClientException, JsonProcessingException {
+        // GIVEN
+        when(externalParametersService.retrieveAccessContract()).thenReturn(
+            new AccessContractModel().setEveryOriginatingAgency(true)
+        );
+
+        // THEN
+        assertThrows(
+            InternalServerException.class,
+            () ->
+                transactionService.searchTransactionsPaginated(
+                    0,
+                    10,
+                    Optional.of("not valid json"),
+                    Optional.empty(),
+                    Optional.empty(),
+                    vitamContext
+                )
+        );
+    }
+
+    private static TransactionDto buildTransactionDto(String id, String status, List<BatchDto> batches) {
+        TransactionDto transactionDto = new TransactionDto(id);
+        transactionDto.setStatus(status);
+        transactionDto.setBatches(batches);
+        return transactionDto;
     }
 }

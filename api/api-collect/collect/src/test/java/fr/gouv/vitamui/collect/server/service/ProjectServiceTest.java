@@ -45,6 +45,7 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDescriptionDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
@@ -274,6 +275,45 @@ class ProjectServiceTest {
         // THEN
         assertNotNull(paginatedProjects);
         paginatedProjects.getValues().forEach(elmt -> assertNotNull(elmt.getId()));
+    }
+
+    @Test
+    void shouldReturnTotalElementsAndPageInfoWhenAccessContractAllowsEveryOriginatingAgency()
+        throws VitamClientException, JsonProcessingException {
+        // GIVEN
+        Mockito.when(externalParametersService.retrieveAccessContract()).thenReturn(
+            new AccessContractModel().setEveryOriginatingAgency(true)
+        );
+        final List<ProjectDto> projects = factory.manufacturePojo(ArrayList.class, ProjectDto.class);
+        RequestResponseOK<ProjectDto> responseFromVitam = new RequestResponseOK<>();
+        responseFromVitam.setHttpCode(200);
+        responseFromVitam.setHits(projects.size(), 1, 1000, projects.size());
+        responseFromVitam.addAllResults(projects);
+        RequestResponse<JsonNode> mockResponse = RequestResponse.parseFromResponse(
+            Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build()
+        );
+        Mockito.when(collectService.searchProject(eq(vitamContext), any(CriteriaProjectDto.class))).thenReturn(
+            mockResponse
+        );
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        projectService = new ProjectService(collectService, objectMapper, externalParametersService);
+
+        // WHEN
+        PaginatedValuesDto<CollectProjectDto> paginatedProjects = projectService.getAllProjectsPaginated(
+            1,
+            1,
+            Optional.empty(),
+            Optional.empty(),
+            Optional.empty(),
+            vitamContext
+        );
+
+        // THEN
+        assertEquals(projects.size(), paginatedProjects.getValues().size());
+        assertEquals(projects.size(), paginatedProjects.getTotalElements());
+        assertEquals(1, paginatedProjects.getPageNum());
+        assertEquals(ProjectService.MAX_RESULTS, paginatedProjects.getPageSize());
+        assertEquals(false, paginatedProjects.isHasMore());
     }
 
     @Test

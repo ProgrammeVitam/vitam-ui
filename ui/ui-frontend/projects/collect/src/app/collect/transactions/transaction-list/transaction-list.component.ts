@@ -36,16 +36,16 @@
  */
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, filter, finalize, of, switchMap } from 'rxjs';
+import { BehaviorSubject, filter, of, switchMap } from 'rxjs';
 import {
-  BatchStatus,
   ConfirmDialogComponent,
   ConfirmDialogData,
+  DEFAULT_PAGE_SIZE,
   Direction,
   InfiniteScrollDirective,
   InfiniteScrollTable,
   OrderByButtonComponent,
-  SnackBarService,
+  PageRequest,
   StartupService,
   Transaction,
   TransactionStatus,
@@ -83,7 +83,6 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly startupService = inject(StartupService);
-  private readonly snackBarService = inject(SnackBarService);
   private readonly dialog = inject(MatDialog);
   private readonly sipImportTrackingService = inject(SipImportTrackingService);
 
@@ -91,6 +90,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   orderBy = 'archivalAgreement';
   orderChange = new BehaviorSubject<string>(this.orderBy);
   tenantIdentifier: string;
+  private projectId: string;
   hasAbortTransactionRole = signal(false);
   hasEditTransactionRole = signal(false);
   hasSendTransactionRole = signal(false);
@@ -111,11 +111,18 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
     this.checkTransactionsPermissions();
     super.search(null);
     this.route.params.subscribe((params) => {
-      const projectId = params['projectId'];
-      this.projectService.getProjectById(projectId).subscribe((project) => {
+      this.projectId = params['projectId'];
+      this.projectService.getProjectById(this.projectId).subscribe((project) => {
         this.isAutomaticIngest.set(project?.automaticIngest);
       });
     });
+  }
+
+  // Reload at least as many items as are currently displayed, so items already loaded via infinite scroll aren't dropped.
+  private refreshTransactions() {
+    const loadedCount = this.dataSource()?.length ?? 0;
+    const pageRequest = new PageRequest(0, Math.max(DEFAULT_PAGE_SIZE, loadedCount), 'id', Direction.ASCENDANT);
+    this.transactionService.refreshTransactionsByProjectId(this.projectId, pageRequest).subscribe();
   }
 
   override onScroll() {
@@ -131,18 +138,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   }
 
   sendTransaction(transaction: Transaction) {
-    this.transactionService.sendTransaction(transaction.id).subscribe(
-      () => {
-        transaction.status = TransactionStatus.SENDING;
-        this.snackBarService.open({
-          message: 'COLLECT.INGEST_TRANSACTION_LAUNCHED',
-          duration: 10_000,
-        });
-      },
-      () => {
-        transaction.status = TransactionStatus.KO;
-      },
-    );
+    this.transactionService.sendTransactionAndNotify(transaction.id).subscribe(this.refreshAfterAction());
   }
 
   validateTransaction(transaction: Transaction) {
@@ -165,25 +161,11 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
 
     confirmation$
       .pipe(
-        switchMap(() => {
-          return this.transactionService.validate(transaction, validationMode, { isAutomaticIngest: this.isAutomaticIngest() }).pipe(
-            finalize(() => {
-              this.snackBarService.open({
-                message: 'COLLECT.VALIDATE_TRANSACTION_VALIDATED',
-                duration: 10_000,
-              });
-            }),
-          );
-        }),
+        switchMap(() =>
+          this.transactionService.validateAndNotify(transaction, validationMode, { isAutomaticIngest: this.isAutomaticIngest() }),
+        ),
       )
-      .subscribe({
-        next: (next) => {
-          transaction.status = next.status;
-        },
-        error: () => {
-          transaction.status = TransactionStatus.KO;
-        },
-      });
+      .subscribe(this.refreshAfterAction());
   }
 
   canSend(transaction: Transaction): boolean {
@@ -194,33 +176,19 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   }
 
   abortTransaction(transaction: Transaction) {
-    this.transactionService.abortTransaction(transaction.id).subscribe(
-      () => {
-        transaction.status = TransactionStatus.ABORTED;
-        this.snackBarService.open({
-          message: 'COLLECT.TRANSACTION_ABORTED',
-          duration: 10_000,
-        });
-      },
-      () => {
-        transaction.status = TransactionStatus.KO;
-      },
-    );
+    this.transactionService.abortTransactionAndNotify(transaction.id).subscribe(this.refreshAfterAction());
   }
 
   editTransaction(transaction: Transaction) {
-    this.transactionService.editTransaction(transaction.id).subscribe(
-      () => {
-        transaction.status = TransactionStatus.OPEN;
-        this.snackBarService.open({
-          message: 'COLLECT.TRANSACTION_REOPENED',
-          duration: 10_000,
-        });
-      },
-      () => {
-        transaction.status = TransactionStatus.KO;
-      },
-    );
+    this.transactionService.editTransactionAndNotify(transaction.id).subscribe(this.refreshAfterAction());
+  }
+
+  // Server state is the source of truth for the resulting status, whether the action succeeded or failed.
+  private refreshAfterAction(): { next: () => void; error: () => void } {
+    return {
+      next: () => this.refreshTransactions(),
+      error: () => this.refreshTransactions(),
+    };
   }
 
   downloadSipTransaction(transaction: Transaction) {
@@ -269,7 +237,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   }
 
   private hasBatchInError(transaction: Transaction): boolean {
-    return transaction.batches?.some((b) => b.BatchStatus === BatchStatus.KO) ?? false;
+    return this.transactionService.hasBatchInError(transaction);
   }
 
   shouldShowBatchError(transaction: Transaction): boolean {

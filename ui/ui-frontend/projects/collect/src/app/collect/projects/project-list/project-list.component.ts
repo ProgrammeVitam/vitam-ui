@@ -34,10 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit, input, output } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, input, output, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import {
+  AgencyService,
   DEFAULT_PAGE_SIZE,
   Direction,
   getProjectIcon,
@@ -47,6 +48,7 @@ import {
   PageRequest,
   PipesModule,
   Project,
+  TooltipDirective,
   VitamuiMenuButtonComponent,
 } from 'vitamui-library';
 import { ProjectsService } from '../projects.service';
@@ -69,17 +71,21 @@ import { TranslatePipe } from '@ngx-translate/core';
     TranslatePipe,
     CommonModule,
     InfiniteScrollDirective,
+    TooltipDirective,
   ],
 })
 export class ProjectListComponent extends InfiniteScrollTable<Project> implements OnDestroy, OnInit {
   projectsService: ProjectsService;
   private readonly router = inject(Router);
+  private readonly agencyService = inject(AgencyService);
 
   readonly tenantIdentifier = input<string>(undefined);
   readonly previewProjectDetailsPanel = output<any>();
   selectedProjectId$: Subject<string>;
   projectUpdated: Subscription;
   getProjectIcon = getProjectIcon;
+  totalElements = signal(0);
+  agencyNames = signal<Map<string, string>>(new Map());
   // sort columns :
   messageIdentifier: keyof Project = 'messageIdentifier';
   submissionAgencyIdentifier: keyof Project = 'submissionAgencyIdentifier';
@@ -98,6 +104,12 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
   }
 
   ngOnInit(): void {
+    this.agencyService.getAll().subscribe((agencies) => {
+      this.agencyNames.set(new Map(agencies.map((agency) => [agency.identifier, agency.name])));
+    });
+    this.updatedData.subscribe(() => {
+      this.totalElements.set(this.projectsService.getTotalElements ?? 0);
+    });
     this.searchProject();
 
     this.projectUpdated = this.projectsService.getUpdatedProject$().subscribe((projectUpdated) => {
@@ -137,8 +149,13 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
     this.loadMore();
   }
 
-  searchArchiveUnitsByProject(project: Project) {
-    this.router.navigate(['collect/tenant/' + this.tenantIdentifier() + '/units', project.id]);
+  getAgencyName(identifier: string): string {
+    return this.agencyNames().get(identifier);
+  }
+
+  getAgencyFullLabel(project: Project): string {
+    const agencyName = this.getAgencyName(project.submissionAgencyIdentifier);
+    return agencyName ? `${project.submissionAgencyIdentifier} - ${agencyName}` : project.submissionAgencyIdentifier;
   }
 
   searchTransactions(project: Project) {

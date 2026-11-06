@@ -36,8 +36,9 @@
  */
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, switchMap } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, last, map, tap } from 'rxjs/operators';
 import {
+  BatchStatus,
   DEFAULT_PAGE_SIZE,
   Direction,
   PageRequest,
@@ -52,6 +53,8 @@ import { ProjectsApiService } from '../core/api/project-api.service';
 import { TransactionApiService } from '../core/api/transaction-api.service';
 import { pollUntil } from './polling';
 import { TransactionValidationMode } from '../models/transaction-validation-mode.enum';
+
+const DEFAULT_VALIDATION_CONTEXT = { isAutomaticIngest: false };
 
 @Injectable({
   providedIn: 'root',
@@ -131,6 +134,68 @@ export class TransactionsService extends SearchService<Transaction> {
     return this.transactionApiService.abortTransaction(id);
   }
 
+  public hasBatchInError(transaction: Transaction): boolean {
+    return transaction.batches?.some((b) => b.BatchStatus === BatchStatus.KO) ?? false;
+  }
+
+  /**
+   * Validates the transaction (polling until a final state is reached) and notifies the user of the outcome.
+   * Callers should not infer or set the transaction status locally: reload the list to reflect the real server state.
+   *
+   * `validate()` polls and can emit several interim statuses before completing (e.g. for automatic ingest, it stops
+   * as soon as the status is no longer SENDING, which isn't necessarily VALIDATED): only the last emission reflects
+   * the actual outcome, and is what the success/error notification must be based on.
+   */
+  public validateAndNotify(
+    transaction: Transaction,
+    validationMode: TransactionValidationMode,
+    context = DEFAULT_VALIDATION_CONTEXT,
+  ): Observable<Transaction> {
+    return this.validate(transaction, validationMode, context).pipe(
+      last(),
+      tap({
+        next: (result) => {
+          const message = this.isFailedStatus(result.status)
+            ? 'COLLECT.VALIDATE_TRANSACTION_ERROR'
+            : 'COLLECT.VALIDATE_TRANSACTION_VALIDATED';
+          this.snackBarService.open({ message, duration: 10_000 });
+        },
+        error: () => this.snackBarService.open({ message: 'COLLECT.VALIDATE_TRANSACTION_ERROR', duration: 10_000 }),
+      }),
+    );
+  }
+
+  private isFailedStatus(status: TransactionStatus): boolean {
+    return status === TransactionStatus.KO || status === TransactionStatus.ACK_KO;
+  }
+
+  public sendTransactionAndNotify(id: string): Observable<Transaction> {
+    return this.sendTransaction(id).pipe(
+      tap({
+        next: () => this.snackBarService.open({ message: 'COLLECT.INGEST_TRANSACTION_LAUNCHED', duration: 10_000 }),
+        error: () => this.snackBarService.open({ message: 'COLLECT.INGEST_TRANSACTION_ERROR', duration: 10_000 }),
+      }),
+    );
+  }
+
+  public editTransactionAndNotify(id: string): Observable<Transaction> {
+    return this.editTransaction(id).pipe(
+      tap({
+        next: () => this.snackBarService.open({ message: 'COLLECT.TRANSACTION_REOPENED', duration: 10_000 }),
+        error: () => this.snackBarService.open({ message: 'COLLECT.TRANSACTION_REOPEN_ERROR', duration: 10_000 }),
+      }),
+    );
+  }
+
+  public abortTransactionAndNotify(id: string): Observable<Transaction> {
+    return this.abortTransaction(id).pipe(
+      tap({
+        next: () => this.snackBarService.open({ message: 'COLLECT.TRANSACTION_ABORTED', duration: 10_000 }),
+        error: () => this.snackBarService.open({ message: 'COLLECT.TRANSACTION_ABORT_ERROR', duration: 10_000 }),
+      }),
+    );
+  }
+
   downloadSipTransaction(id: string) {
     return this.transactionApiService
       .prepareSignedDownloadSipTransaction(id)
@@ -151,5 +216,12 @@ export class TransactionsService extends SearchService<Transaction> {
   loadDataForTransactions(transactions: Transaction[], project: Project) {
     this.transactions$.next(transactions);
     this.project$.next(project);
+  }
+
+  public refreshTransactionsByProjectId(projectId: string, pageRequest?: PageRequest): Observable<Transaction[]> {
+    return this.getTransactionsByProjectId(projectId, pageRequest).pipe(
+      map((response) => response.values),
+      tap((transactions) => this.transactions$.next(transactions)),
+    );
   }
 }
