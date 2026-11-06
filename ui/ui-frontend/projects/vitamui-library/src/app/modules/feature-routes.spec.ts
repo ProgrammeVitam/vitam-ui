@@ -37,9 +37,9 @@
 import { Component, EnvironmentInjector, createEnvironmentInjector } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
-import { Route } from '@angular/router';
+import { ActivatedRoute, Route } from '@angular/router';
 import { APP_ROUTE_PREFIX, BASE_URL } from './injection-tokens';
-import { isVitamuiFeatureRoute, vitamuiFeatureRoute, vitamuiFeatureRoutes } from './feature-routes';
+import { featurePagePath, isVitamuiFeatureRoute, vitamuiFeatureRoute, vitamuiFeatureRoutes } from './feature-routes';
 
 @Component({ template: '' })
 class PageComponent {}
@@ -82,5 +82,32 @@ describe('feature routes', () => {
     expect(isVitamuiFeatureRoute(guarded)).toBe(true);
     expect(guarded.canActivate).toEqual([guard]);
     expect(guarded.children).toBe(pages);
+  });
+
+  describe('featurePagePath', () => {
+    function activatedRoute(...routeConfigs: Route[]): ActivatedRoute {
+      return routeConfigs.reduceRight<ActivatedRoute>(
+        (firstChild, routeConfig) => ({ snapshot: { routeConfig }, firstChild }) as unknown as ActivatedRoute,
+        null,
+      );
+    }
+
+    it('should give the path of a page of a separate application', () => {
+      expect(featurePagePath(activatedRoute({ path: 'archive-search' }))).toBe('archive-search');
+    });
+
+    it('should cross the routes that only scope a feature', () => {
+      const feature = vitamuiFeatureRoute('archive-search', () => Promise.resolve([]));
+      const [wrapper] = vitamuiFeatureRoutes({ baseUrl: '/archive-search-api', canActivate: [() => true] }, pages);
+      const [guarded] = wrapper.children;
+
+      expect(featurePagePath(activatedRoute(feature, wrapper, guarded, { path: 'archive-search' }))).toBe('archive-search/archive-search');
+    });
+
+    it('should stop at a feature route without child', () => {
+      const feature = vitamuiFeatureRoute('identity', () => Promise.resolve([]));
+
+      expect(featurePagePath(activatedRoute(feature))).toBe('identity');
+    });
   });
 });
