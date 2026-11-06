@@ -36,10 +36,10 @@
  */
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 
 import { EditAgencyGuard } from './edit-agency.guard';
-import { SecurityService, TenantSelectionService } from 'vitamui-library';
+import { APP_ROUTE_PREFIX, SecurityService, TenantSelectionService } from 'vitamui-library';
 import { ROUTES } from './edit-agency.constants';
 
 describe('EditAgencyGuard', () => {
@@ -65,6 +65,7 @@ describe('EditAgencyGuard', () => {
         { provide: SecurityService, useValue: mockSecurityService },
         { provide: TenantSelectionService, useValue: mockTenantSelectionService },
         { provide: Router, useValue: mockRouter },
+        { provide: APP_ROUTE_PREFIX, useValue: '/referential' },
       ],
     });
   });
@@ -116,7 +117,33 @@ describe('EditAgencyGuard', () => {
       // THEN : La redirection doit avoir lieu
       result$.subscribe((canActivate) => {
         expect(canActivate).toBe(false);
-        expect(mockRouter.navigateByUrl).toHaveBeenCalledWith(ROUTES.AGENCY_DETAILS(1, 'agency123'));
+        expect(mockRouter.navigateByUrl).toHaveBeenCalledWith('/referential' + ROUTES.AGENCY_DETAILS(1, 'agency123'));
+      });
+    });
+  });
+
+  it('should deny the access when the agency identifier is missing', () => {
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const route: any = { paramMap: { get: (key: string) => (key === 'tenantIdentifier' ? '1' : null) } };
+
+    TestBed.runInInjectionContext(() => {
+      (EditAgencyGuard(route, {} as any) as Observable<boolean>).subscribe((canActivate) => {
+        expect(canActivate).toBe(false);
+        expect(mockSecurityService.hasRole$).not.toHaveBeenCalled();
+        expect(mockRouter.navigateByUrl).toHaveBeenCalledWith('/referential' + ROUTES.ACCESS_DENIED);
+      });
+    });
+  });
+
+  it('should deny the access when the permission check fails', () => {
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    mockSecurityService.hasRole$.mockReturnValue(throwError(() => new Error('unavailable')));
+    const route: any = { paramMap: { get: (key: string) => (key === 'tenantIdentifier' ? '1' : 'agency123') } };
+
+    TestBed.runInInjectionContext(() => {
+      (EditAgencyGuard(route, {} as any) as Observable<boolean>).subscribe((canActivate) => {
+        expect(canActivate).toBe(false);
+        expect(mockRouter.navigateByUrl).toHaveBeenCalledWith('/referential' + ROUTES.ACCESS_DENIED);
       });
     });
   });

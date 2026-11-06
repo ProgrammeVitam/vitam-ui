@@ -7,6 +7,8 @@
     - assets_copy
     - nginx
 
+# The single frontend application: the portal and every former application (identity, referential, ingest,
+# archive-search, collect, pastis) as features. The hosts_ui_<app> groups of these applications are no longer used.
 - hosts: hosts_ui_portal
   gather_facts: no
   any_errors_fatal: true
@@ -15,14 +17,7 @@
   vars:
     vitamui_struct: "{{ vitamui.ui_portal }}"
 
-- hosts: hosts_ui_identity
-  gather_facts: no
-  any_errors_fatal: true
-  roles:
-    - nginx_webapp
-  vars:
-    vitamui_struct: "{{ vitamui.ui_identity }}"
-
+# Relays the identity API of the admin zone (/identity-admin-api), with its own certificate.
 - hosts: hosts_ui_identity_admin
   gather_facts: no
   any_errors_fatal: true
@@ -30,46 +25,6 @@
     - nginx_webapp
   vars:
     vitamui_struct: "{{ vitamui.ui_identity_admin }}"
-
-- hosts: hosts_ui_referential
-  gather_facts: no
-  any_errors_fatal: true
-  roles:
-    - nginx_webapp
-  vars:
-    vitamui_struct: "{{ vitamui.ui_referential }}"
-
-- hosts: hosts_ui_archive_search
-  gather_facts: no
-  any_errors_fatal: true
-  roles:
-    - nginx_webapp
-  vars:
-    vitamui_struct: "{{ vitamui.ui_archive_search }}"
-
-- hosts: hosts_ui_pastis
-  gather_facts: no
-  any_errors_fatal: true
-  roles:
-    - nginx_webapp
-  vars:
-    vitamui_struct: "{{ vitamui.ui_pastis }}"
-
-- hosts: hosts_ui_collect
-  gather_facts: no
-  any_errors_fatal: true
-  roles:
-    - nginx_webapp
-  vars:
-    vitamui_struct: "{{ vitamui.ui_collect }}"
-
-- hosts: hosts_ui_ingest
-  gather_facts: no
-  any_errors_fatal: true
-  roles:
-    - nginx_webapp
-  vars:
-    vitamui_struct: "{{ vitamui.ui_ingest }}"
 
 - hosts: hosts_ui_design_system
   gather_facts: no

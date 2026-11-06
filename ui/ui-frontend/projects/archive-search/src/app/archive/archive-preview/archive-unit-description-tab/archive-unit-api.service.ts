@@ -39,9 +39,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BaseHttpClient, BASE_URL, Ontology, ArchiveUnit, JsonPatchDto, MultiJsonPatchDto, OperationId } from 'vitamui-library';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ArchiveUnitApiService extends BaseHttpClient<Ontology> {
   constructor() {
     const http = inject(HttpClient);

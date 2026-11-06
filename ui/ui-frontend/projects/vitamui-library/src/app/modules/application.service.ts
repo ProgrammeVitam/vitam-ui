@@ -147,9 +147,17 @@ export class ApplicationService {
 
   public openApplication(app: Application, router: Router, uiUrl: string, tenantId?: number): void {
     this.tenantService.saveTenantIdentifier(tenantId).subscribe(async (savedTenantId: number) => {
+      const hasTenant = app.hasTenantList;
+      const uiUrlPrefix = uiUrl?.endsWith('/') ? uiUrl : `${uiUrl}/`;
+      if (uiUrl && (app.url === uiUrl || app.url.startsWith(uiUrlPrefix))) {
+        // The application is a feature of this (single) application: no page reload.
+        const path = '/' + app.url.substring(uiUrl.length).replace(/^\/+/, '');
+        await router.navigateByUrl(hasTenant ? `${path}/tenant/${savedTenantId}` : path);
+        return;
+      }
+
       const isSameService = app.serviceId.includes(uiUrl);
       const isHomePage = router.url === '/';
-      const hasTenant = app.hasTenantList;
       const baseUrl = app.url.replace(uiUrl, '');
 
       if (isSameService && !isHomePage) {

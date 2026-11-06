@@ -38,6 +38,7 @@ import { Component, inject, OnDestroy, OnInit, input, output } from '@angular/co
 import { Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import {
+  APP_ROUTE_PREFIX,
   DEFAULT_PAGE_SIZE,
   Direction,
   getProjectIcon,
@@ -74,6 +75,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class ProjectListComponent extends InfiniteScrollTable<Project> implements OnDestroy, OnInit {
   projectsService: ProjectsService;
   private readonly router = inject(Router);
+  private readonly routePrefix = inject(APP_ROUTE_PREFIX);
 
   readonly tenantIdentifier = input<string>(undefined);
   readonly previewProjectDetailsPanel = output<any>();
@@ -138,11 +140,11 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
   }
 
   searchArchiveUnitsByProject(project: Project) {
-    this.router.navigate(['collect/tenant/' + this.tenantIdentifier() + '/units', project.id]);
+    this.router.navigate([`${this.routePrefix}/collect/tenant/${this.tenantIdentifier()}/units`, project.id]);
   }
 
   searchTransactions(project: Project) {
-    this.router.navigate(['collect/transactions', project.id]);
+    this.router.navigate([`${this.routePrefix}/collect/transactions`, project.id]);
   }
 
   showProjectDetails(projectId: string) {

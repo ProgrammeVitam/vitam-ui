@@ -39,6 +39,7 @@ import { PreloadAllModules, Route, RouterModule } from '@angular/router';
 import { AccountComponent, ActiveTenantGuard, AnalyticsResolver, AppGuard, AuthGuard } from 'vitamui-library';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
+import { PASTIS_ROUTES } from './pastis.routes';
 
 const standalone: boolean = environment.standalone;
 const routes: Route[] = standalone
@@ -73,13 +74,7 @@ const routes: Route[] = standalone
         resolve: { userAnalytics: AnalyticsResolver },
         data: { appId: 'ACCOUNTS_APP' },
       },
-      {
-        path: 'pastis',
-        loadChildren: () => import('./pastis/pastis.module').then((m) => m.PastisModule),
-        canActivate: [AuthGuard, AppGuard],
-        resolve: { userAnalytics: AnalyticsResolver },
-        data: { appId: 'PASTIS_APP' },
-      },
+      ...PASTIS_ROUTES,
 
       { path: '**', redirectTo: '' },
     ];

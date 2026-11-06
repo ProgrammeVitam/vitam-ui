@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, input, output } from '@angular/core';
-import { TenantSelectionService } from 'vitamui-library';
+import { APP_ROUTE_PREFIX, TenantSelectionService } from 'vitamui-library';
 import { PastisConfiguration } from '../../../core/classes/pastis-configuration';
 import { BreadcrumbDataMetadata } from '../../../models/breadcrumb';
 import { PastisPopupMetadataLanguageService } from '../../pastis-popup-metadata-language/pastis-popup-metadata-language.service';
@@ -52,6 +52,7 @@ export class PastisBreadcrumbComponent {
   private readonly metadataLanguageService = inject(PastisPopupMetadataLanguageService);
   private readonly tenantService = inject(TenantSelectionService);
   private readonly pastisConfig = inject(PastisConfiguration);
+  private readonly routePrefix = inject(APP_ROUTE_PREFIX);
 
   public readonly data = input<Array<any>>(undefined);
 
@@ -60,7 +61,7 @@ export class PastisBreadcrumbComponent {
   public onClick(d: any, emit: boolean): void {
     if (emit) {
       if (d.label === 'PROFILE.EDIT_PROFILE.BREADCRUMB.CREER_ET_GERER_PROFIL') {
-        d.url = this.pastisConfig.pastisPathPrefix + this.tenantService.getSelectedTenant().identifier;
+        d.url = this.routePrefix + this.pastisConfig.pastisPathPrefix + this.tenantService.getSelectedTenant().identifier;
       }
       this.selected.emit(d);
     }

@@ -79,8 +79,10 @@ import { ExternalReferentialService } from './services/external-referential.serv
 import { ProfileService } from './services/profile.service';
 import { ReclassificationApiService } from './services/reclassification-api.service';
 import { ReclassificationService } from './services/reclassification.service';
+import { SubrogationModalService } from './subrogation/subrogation-modal/subrogation-modal.service';
 import { SubrogationService } from './subrogation/subrogation.service';
 import { TenantSelectionGuard } from './tenant-selection.guard';
+import { VitamTenantConfigService } from './vitam-tenant-config.service';
 
 export interface VitamuiFeatureConfig {
   /** Prefix of the API calls of the feature (e.g. './identity-api'). It selects the gateway routes and the security context. */
@@ -137,9 +139,11 @@ export function provideVitamuiApiServices(): Provider[] {
     SecurityService,
     SiteApiService,
     SubrogationApiService,
+    SubrogationModalService,
     SubrogationService,
     TenantSelectionGuard,
     UserApiService,
+    VitamTenantConfigService,
   ];
 }
 

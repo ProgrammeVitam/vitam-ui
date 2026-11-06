@@ -41,6 +41,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {
   Agency,
   AgencyService,
+  APP_ROUTE_PREFIX,
   ApplicationId,
   FileTypes,
   QueryParamsService,
@@ -80,6 +81,7 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   dialog = inject(MatDialog);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly route = inject(ActivatedRoute);
+  private readonly routePrefix = inject(APP_ROUTE_PREFIX);
   private readonly securityService = inject(SecurityService);
   private readonly agencyService = inject(AgencyService);
   private readonly translateService = inject(TranslateService);
@@ -130,7 +132,7 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
         this.refreshList();
       }
       if (result?.action === 'edit') {
-        this.router.navigateByUrl(`/agency/tenant/${this.tenantIdentifier}/agencies/${result?.agency?.identifier}/edit`);
+        this.router.navigateByUrl(`${this.routePrefix}/agency/tenant/${this.tenantIdentifier}/agencies/${result?.agency?.identifier}/edit`);
       }
     });
   }

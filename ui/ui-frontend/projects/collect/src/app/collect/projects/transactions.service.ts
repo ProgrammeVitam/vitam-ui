@@ -39,9 +39,7 @@ import { Observable } from 'rxjs';
 import { Transaction } from 'vitamui-library';
 import { ProjectsApiService } from '../core/api/project-api.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class TransactionsService {
   private readonly projectsApiService = inject(ProjectsApiService);
 

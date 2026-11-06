@@ -44,9 +44,7 @@ import { PastisConfiguration } from '../classes/pastis-configuration';
 
 const HTTP_STATUS_OK = 200;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ArchiveProfileApiService extends PaginatedHttpClient<Profile> {
   private readonly pastisConfig = inject(PastisConfiguration);
   baseUrl: string;

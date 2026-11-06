@@ -35,8 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AccountComponent, AnalyticsResolver, AppGuard, ApplicationId, AuthGuard } from 'vitamui-library';
+import { RouterModule, Routes } from '@angular/router';
+import { AccountComponent, AnalyticsResolver, AppGuard, ApplicationId, AuthGuard, vitamuiFeatureRoute } from 'vitamui-library';
 import { PortalComponent } from './portal/portal.component';
 
 const routes: Routes = [
@@ -54,14 +54,43 @@ const routes: Routes = [
     resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: ApplicationId.ACCOUNTS_APP },
   },
+  // Features (former applications), each one with its own API prefix, i.e. its own security context.
+  vitamuiFeatureRoute('identity', () =>
+    import('../../../identity/src/app/identity.routes').then((m) =>
+      m.identityRoutes({ baseUrl: '/identity-api', routePrefix: '/identity' }),
+    ),
+  ),
+  vitamuiFeatureRoute('identity-admin', () =>
+    import('../../../identity/src/app/identity.routes').then((m) =>
+      m.identityRoutes({ baseUrl: '/identity-admin-api', routePrefix: '/identity-admin' }),
+    ),
+  ),
+  vitamuiFeatureRoute('referential', () =>
+    import('../../../referential/src/app/referential.routes').then((m) =>
+      m.referentialRoutes({ baseUrl: '/referential-api', routePrefix: '/referential' }),
+    ),
+  ),
+  vitamuiFeatureRoute('ingest', () =>
+    import('../../../ingest/src/app/ingest.routes').then((m) => m.ingestRoutes({ baseUrl: '/ingest-api', routePrefix: '/ingest' })),
+  ),
+  vitamuiFeatureRoute('archive-search', () =>
+    import('../../../archive-search/src/app/archive-search.routes').then((m) =>
+      m.archiveSearchRoutes({ baseUrl: '/archive-search-api', routePrefix: '/archive-search' }),
+    ),
+  ),
+  vitamuiFeatureRoute('collect', () =>
+    import('../../../collect/src/app/collect.routes').then((m) => m.collectRoutes({ baseUrl: '/collect-api', routePrefix: '/collect' })),
+  ),
+  vitamuiFeatureRoute('pastis', () =>
+    import('../../../pastis/src/app/pastis.routes').then((m) => m.pastisRoutes({ baseUrl: '/pastis-api', routePrefix: '/pastis' })),
+  ),
   { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, {
-      preloadingStrategy: PreloadAllModules,
-    }),
+    // No preloading: the features are only loaded when displayed.
+    RouterModule.forRoot(routes),
   ],
   exports: [RouterModule],
   providers: [AuthGuard],

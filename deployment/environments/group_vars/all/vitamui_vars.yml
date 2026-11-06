@@ -71,7 +71,7 @@ vitamui:
     vitamui_component: ui-identity-admin
     port_service: 8401
     secure: false
-    package_name: vitamui-ui-identity-rsc
+    package_name: vitamui-ui-portal-rsc
   ui_referential:
     vitamui_component: ui-referential
     port_service: 8005
