@@ -129,7 +129,11 @@ export class ContextInformationTabComponent implements OnChanges {
 
   rules: Option[] = RULE_TYPES;
 
-  previousValue = (): any => this.toFormValue(this._context);
+  previousValue = (): any => ({
+    ...this.toFormValue(this._context),
+    id: this._context?.id,
+    identifier: this._context?.identifier,
+  });
 
   readonly context = input<Context>(undefined);
 
