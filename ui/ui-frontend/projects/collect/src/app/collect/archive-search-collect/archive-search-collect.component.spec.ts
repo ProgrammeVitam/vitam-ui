@@ -43,6 +43,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { environment } from 'projects/collect/src/environments/environment';
 import { of } from 'rxjs';
 import {
+  ALL_DESCENDANTS_FACET,
   ConfigService,
   DiscussionIconComponent,
   DiscussionPanelComponent,
@@ -58,6 +59,7 @@ import {
   Transaction,
   TransactionStatus,
   UnitType,
+  VALID_COMPUTED_INHERITED_RULES_FACET,
   VitamTenantConfigService,
   WINDOW_LOCATION,
 } from 'vitamui-library';
@@ -221,6 +223,57 @@ describe('ArchiveSearchCollectComponent', () => {
       expect(component.isIndeterminate).toBeFalsy();
       expect(component.isAllChecked).toBeFalsy();
       expect(component.itemNotSelected).toBe(0);
+    });
+
+    describe('facets', () => {
+      const lastSearchFacets = () => vi.mocked(archiveCollectServiceStub.searchArchiveUnitsByCriteria).mock.lastCall[0].facets;
+
+      beforeEach(() => {
+        component.criteriaSearchList = [
+          { criteria: 'Title', operator: 'EQ', category: 'FIELDS', values: [{ id: 'title', value: 'title' }], dataType: 'STRING' },
+        ];
+        vi.mocked(archiveCollectServiceStub.searchArchiveUnitsByCriteria).mockClear();
+      });
+
+      afterEach(() => vi.mocked(archiveCollectServiceStub.searchArchiveUnitsByCriteria).mockClear());
+
+      it('should only request the nodes facet on the first page when rules facets are not needed', () => {
+        component.currentPage = 0;
+
+        (component as any).searchArchiveUnits(false);
+
+        expect(lastSearchFacets()).toEqual([ALL_DESCENDANTS_FACET]);
+      });
+
+      it('should request nodes and rules facets on the first page when rules facets are needed', () => {
+        component.currentPage = 0;
+
+        (component as any).searchArchiveUnits(true);
+
+        expect(lastSearchFacets()).toEqual([ALL_DESCENDANTS_FACET, VALID_COMPUTED_INHERITED_RULES_FACET]);
+      });
+
+      it('should not request any facet when loading more results', () => {
+        component.currentPage = 0;
+        component.pageNumbers = 3;
+        component.archiveUnits = [];
+        component.pending.set(false);
+
+        component.loadMore();
+
+        expect(component.currentPage).toBe(1);
+        expect(lastSearchFacets()).toEqual([]);
+      });
+
+      it('should only request the rules facet when computing management rules facets', async () => {
+        component.waitingToGetFixedCount = false;
+        component.pendingComputeFacets.set(false);
+
+        await component.launchFacetsComputing();
+
+        expect(lastSearchFacets()).toEqual([VALID_COMPUTED_INHERITED_RULES_FACET]);
+        expect(component.rulesFacetsComputed()).toBe(true);
+      });
     });
 
     describe('checkChildrenBoxChange', () => {

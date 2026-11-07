@@ -745,8 +745,11 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.pending.set(true);
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
 
-    let facets: TermsFacet[] = [];
-    facets.push(ALL_DESCENDANTS_FACET);
+    const facets: TermsFacet[] = [];
+    // Nodes counts are only read on the first page (not when loading more results)
+    if (this.currentPage === 0) {
+      facets.push(ALL_DESCENDANTS_FACET);
+    }
     if (includeFacets) {
       facets.push(VALID_COMPUTED_INHERITED_RULES_FACET);
     }
@@ -1133,9 +1136,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   private launchComputingManagementRulesFacets() {
     this.pendingComputeFacets.set(true);
-    let facets: TermsFacet[] = [];
-    facets.push(ALL_DESCENDANTS_FACET);
-    facets.push(VALID_COMPUTED_INHERITED_RULES_FACET);
+    // Only the management rules facet is read from this response
+    const facets: TermsFacet[] = [VALID_COMPUTED_INHERITED_RULES_FACET];
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
     const searchCriteria = {
       criteriaList: this.criteriaSearchList,
