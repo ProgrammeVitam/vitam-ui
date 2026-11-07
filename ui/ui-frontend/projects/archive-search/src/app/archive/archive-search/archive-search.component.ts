@@ -752,9 +752,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   private launchComputingManagementRulesFacets() {
     this.pendingComputeFacets.set(true);
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
-    let facets: TermsFacet[] = [];
-    facets.push(ALL_DESCENDANTS_FACET);
-    facets.push(VALID_COMPUTED_INHERITED_RULES_FACET);
+    // Only the management rules facet is read from this response
+    const facets: TermsFacet[] = [VALID_COMPUTED_INHERITED_RULES_FACET];
 
     const searchCriteria = {
       criteriaList: this.criteriaSearchList,
@@ -788,8 +787,11 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.showingFacets.set(false);
     }
     this.pending.set(true);
-    let facets: TermsFacet[] = [];
-    facets.push(ALL_DESCENDANTS_FACET);
+    const facets: TermsFacet[] = [];
+    // Nodes counts are only read on the first page (not when loading more results)
+    if (this.currentPage === 0) {
+      facets.push(ALL_DESCENDANTS_FACET);
+    }
     if (includeFacets) {
       facets.push(VALID_COMPUTED_INHERITED_RULES_FACET);
     }
