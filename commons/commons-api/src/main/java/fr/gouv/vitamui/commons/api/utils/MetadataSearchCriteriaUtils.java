@@ -27,7 +27,6 @@
 package fr.gouv.vitamui.commons.api.utils;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import fr.gouv.vitam.common.database.builder.facet.FacetHelper;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.query.Query;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
@@ -38,6 +37,7 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
+import fr.gouv.vitamui.commons.api.dtos.Facet;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.dtos.TermsFacet;
@@ -53,19 +53,20 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.exists;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.not;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ALL_UNIT_UPS;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ARCHIVE_UNIT_FILING_UNIT;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ARCHIVE_UNIT_HOLDING_UNIT;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ARCHIVE_UNIT_VIRTUAL_PATHS;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ARCHIVE_UNIT_WITHOUT_OBJECTS;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ARCHIVE_UNIT_WITH_OBJECTS;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE;
@@ -78,14 +79,9 @@ import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaOper
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaOperators.EXISTS;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaOperators.MISSING;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.DEFAULT_DEPTH;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.DEFAULT_FACET_SIZE;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACETS_COMPUTE_RULES_AU_NUMBER;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACETS_COUNT_BY_NODE;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACETS_VIRTUAL_TREE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FILING_UNIT_TYPE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.HOLDING_UNIT_TYPE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ID;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.RULES_COMPUTED;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.RULE_ORIGIN_CRITERIA;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.UPDATE_OPERATION_FIELD;
@@ -124,35 +120,14 @@ public final class MetadataSearchCriteriaUtils {
 
     private MetadataSearchCriteriaUtils() {}
 
+    /**
+     * Builds the DSL query for an archive units search. Facets are only computed when they are explicitly requested by
+     * the caller through {@link SearchCriteriaDto#getFacets()} (see {@code mapFacets}).
+     */
     public static SelectMultiQuery createDslQueryWithFacets(SearchCriteriaDto searchQuery)
         throws VitamClientException, InvalidCreateOperationException {
         fillWaitingToComputeCriteria(searchQuery);
-
-        SelectMultiQuery selectMultiQuery = mapRequestToSelectMultiQuery(searchQuery);
-        selectMultiQuery.addFacets(
-            FacetHelper.terms(FACETS_COUNT_BY_NODE, ALL_UNIT_UPS, DEFAULT_FACET_SIZE, FacetOrder.ASC)
-        );
-
-        selectMultiQuery.addFacets(
-            FacetHelper.terms(FACETS_VIRTUAL_TREE, ARCHIVE_UNIT_VIRTUAL_PATHS, DEFAULT_FACET_SIZE, FacetOrder.ASC)
-        );
-
-        if (searchQuery.isComputeMgtRulesFacets()) {
-            selectMultiQuery.addFacets(
-                FacetHelper.terms(
-                    FACETS_COMPUTE_RULES_AU_NUMBER,
-                    SIMPLE_FIELDS_VALUES_MAPPING.get(RULES_COMPUTED),
-                    3,
-                    FacetOrder.ASC
-                )
-            );
-            selectMultiQuery.trackTotalHits(searchQuery.isTrackTotalHits());
-            selectMultiQuery.setLimitFilter(
-                (long) searchQuery.getPageNumber() * searchQuery.getSize(),
-                searchQuery.getSize()
-            );
-        }
-        return selectMultiQuery;
+        return mapRequestToSelectMultiQuery(searchQuery);
     }
 
     public static SelectMultiQuery getBasicQuery(SearchCriteriaDto searchQuery) throws VitamClientException {
@@ -274,10 +249,25 @@ public final class MetadataSearchCriteriaUtils {
             .stream()
             .filter(TermsFacet.class::isInstance)
             .map(TermsFacet.class::cast)
+            .filter(distinctByName())
             .toList();
         if (CollectionUtils.isEmpty(termsFacet)) return;
         mapTermsFacets(termsFacet, selectMultiQuery);
         //FIXME add mapping others facets types
+    }
+
+    /**
+     * Keeps only the first facet for a given name: Vitam/Elasticsearch facet names must be unique within a request.
+     */
+    private static Predicate<Facet> distinctByName() {
+        Set<String> names = new HashSet<>();
+        return facet -> {
+            if (names.add(facet.getName())) {
+                return true;
+            }
+            LOGGER.warn("Duplicate facet '{}' ignored", facet.getName());
+            return false;
+        };
     }
 
     private static void mapTermsFacets(List<TermsFacet> termsFacet, SelectMultiQuery selectMultiQuery)
