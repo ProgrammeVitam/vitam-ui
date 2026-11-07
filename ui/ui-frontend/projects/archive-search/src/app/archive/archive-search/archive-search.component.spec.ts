@@ -47,6 +47,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
 import {
+  ALL_DESCENDANTS_FACET,
   InjectorModule,
   LoggerModule,
   PagedResult,
@@ -57,6 +58,7 @@ import {
   SearchCriteriaTypeEnum,
   SecurityService,
   UnitType,
+  VALID_COMPUTED_INHERITED_RULES_FACET,
   VitamuiRoles,
   VitamTenantConfigService,
   WINDOW_LOCATION,
@@ -263,6 +265,57 @@ describe('ArchiveSearchComponent', () => {
             expect(criteriaValue.status).toEqual(SearchCriteriaStatusEnum.NOT_INCLUDED);
           });
         });
+      });
+    });
+
+    describe('facets', () => {
+      const lastSearchFacets = () => vi.mocked(archiveServiceStub.searchArchiveUnitsByCriteria as Mock).mock.lastCall[0].facets;
+
+      beforeEach(() => {
+        component.criteriaSearchList = [
+          { criteria: 'Title', operator: 'EQ', category: 'FIELDS', values: [{ id: 'title', value: 'title' }], dataType: 'STRING' },
+        ];
+        vi.mocked(archiveServiceStub.searchArchiveUnitsByCriteria as Mock).mockClear();
+      });
+
+      afterEach(() => vi.mocked(archiveServiceStub.searchArchiveUnitsByCriteria as Mock).mockClear());
+
+      it('should only request the nodes facet on the first page when rules facets are not needed', () => {
+        component.currentPage = 0;
+
+        (component as any).callVitamApiService(false);
+
+        expect(lastSearchFacets()).toEqual([ALL_DESCENDANTS_FACET]);
+      });
+
+      it('should request nodes and rules facets on the first page when rules facets are needed', () => {
+        component.currentPage = 0;
+
+        (component as any).callVitamApiService(true);
+
+        expect(lastSearchFacets()).toEqual([ALL_DESCENDANTS_FACET, VALID_COMPUTED_INHERITED_RULES_FACET]);
+      });
+
+      it('should not request any facet when loading more results', () => {
+        component.currentPage = 0;
+        component.pageNumbers = 3;
+        component.archiveUnits = [];
+        component.pending.set(false);
+
+        component.loadMore();
+
+        expect(component.currentPage).toBe(1);
+        expect(lastSearchFacets()).toEqual([]);
+      });
+
+      it('should only request the rules facet when computing management rules facets', async () => {
+        component.waitingToGetFixedCount = false;
+        component.pendingComputeFacets.set(false);
+
+        await component.launchFacetsComputing();
+
+        expect(lastSearchFacets()).toEqual([VALID_COMPUTED_INHERITED_RULES_FACET]);
+        expect(component.rulesFacetsComputed()).toBe(true);
       });
     });
 
