@@ -61,6 +61,8 @@ export class EditableDomainInputComponent extends EditableFieldComponent {
   readonly defaultDomain = input<string>();
   protected readonly defaultDomainState = linkedSignal(() => this.defaultDomain());
 
+  readonly lockedDomains = input<string[]>([]);
+
   readonly defaultDomainChange = output<string>();
 
   readonly selected = linkedSignal(() => this.defaultDomain());

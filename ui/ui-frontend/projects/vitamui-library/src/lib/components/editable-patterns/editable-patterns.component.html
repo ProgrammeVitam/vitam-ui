@@ -9,7 +9,13 @@
           }
         </span>
         <div class="mt-2 editable-field-control">
-          <app-pattern [style.width.%]="100" [formControl]="control" [options]="options()" (click)="onPatternClick()"></app-pattern>
+          <app-pattern
+            [style.width.%]="100"
+            [formControl]="control"
+            [options]="options()"
+            [lockedPatterns]="lockedPatterns()"
+            (click)="onPatternClick()"
+          ></app-pattern>
         </div>
       </div>
       @if (!showSpinner && !editMode) {

@@ -167,6 +167,7 @@
         [label]="'CUSTOMER.INFORMATIONS.DOMAINS' | translate"
         [validator]="requiredValidator"
         [defaultDomain]="form.defaultEmailDomain().value()"
+        [lockedDomains]="lockedDomains()"
         (defaultDomainChange)="form.defaultEmailDomain().value.set($event)"
       ></app-editable-domain-input>
     </div>

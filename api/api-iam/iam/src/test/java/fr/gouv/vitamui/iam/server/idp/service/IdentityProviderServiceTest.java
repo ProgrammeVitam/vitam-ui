@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.iam.server.idp.service;
 
+import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
@@ -9,6 +10,8 @@ import fr.gouv.vitamui.iam.server.idp.converter.IdentityProviderConverter;
 import fr.gouv.vitamui.iam.server.idp.dao.IdentityProviderRepository;
 import fr.gouv.vitamui.iam.server.idp.domain.IdentityProvider;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
+import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
+import fr.gouv.vitamui.iam.server.user.domain.User;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -66,6 +69,9 @@ class IdentityProviderServiceTest {
     @Mock
     private SecurityService securityService;
 
+    @Mock
+    private UserRepository userRepository;
+
     @BeforeEach
     public void setup() {
         mocks = MockitoAnnotations.openMocks(this);
@@ -77,7 +83,8 @@ class IdentityProviderServiceTest {
             customerRepository,
             iamLogbookService,
             identityProviderConverter,
-            securityService
+            securityService,
+            userRepository
         );
     }
 
@@ -315,6 +322,78 @@ class IdentityProviderServiceTest {
                 e.getMessage()
             );
         }
+    }
+
+    @Test
+    void testUpdateFailsWhenRemovingPatternUsedByActiveUser() {
+        final IdentityProvider idp = buildIdentityProvider();
+        idp.setPatterns(List.of(".*@other.com", ".*@vitamui.com"));
+
+        final User activeUser = new User();
+        activeUser.setEmail("someone@other.com");
+        activeUser.setStatus(UserStatusEnum.ENABLED);
+
+        prepareServices();
+        when(identityProviderRepository.findById(any())).thenReturn(Optional.of(idp));
+        when(userRepository.findByCustomerId(idp.getCustomerId())).thenReturn(List.of(activeUser));
+
+        final IdentityProviderDto dto = buildIdentityProviderDto();
+        dto.setTechnicalName("MyIdp");
+        dto.setPatterns(List.of("vitamui.com"));
+
+        final IllegalArgumentException exception = Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> service.update(dto)
+        );
+        assertThat(exception.getMessage()).contains("other.com");
+    }
+
+    @Test
+    void testUpdateFailsWhenRemovingPatternUsedByBlockedUser() {
+        final IdentityProvider idp = buildIdentityProvider();
+        idp.setPatterns(List.of(".*@other.com", ".*@vitamui.com"));
+
+        final User blockedUser = new User();
+        blockedUser.setEmail("someone@other.com");
+        blockedUser.setStatus(UserStatusEnum.BLOCKED);
+
+        prepareServices();
+        when(identityProviderRepository.findById(any())).thenReturn(Optional.of(idp));
+        when(userRepository.findByCustomerId(idp.getCustomerId())).thenReturn(List.of(blockedUser));
+
+        final IdentityProviderDto dto = buildIdentityProviderDto();
+        dto.setTechnicalName("MyIdp");
+        dto.setPatterns(List.of("vitamui.com"));
+
+        final IllegalArgumentException exception = Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> service.update(dto)
+        );
+        assertThat(exception.getMessage()).contains("other.com");
+    }
+
+    @Test
+    void testPatchFailsWhenRemovingPatternUsedByActiveUser() {
+        final IdentityProvider idp = buildIdentityProvider();
+        idp.setPatterns(List.of(".*@other.com", ".*@vitamui.com"));
+
+        final User activeUser = new User();
+        activeUser.setEmail("someone@other.com");
+        activeUser.setStatus(UserStatusEnum.ENABLED);
+
+        prepareServices();
+        when(identityProviderRepository.findById(any())).thenReturn(Optional.of(idp));
+        when(userRepository.findByCustomerId(idp.getCustomerId())).thenReturn(List.of(activeUser));
+
+        final Map<String, Object> partialDto = new HashMap<>();
+        partialDto.put("id", idp.getId());
+        partialDto.put("patterns", List.of("vitamui.com"));
+
+        final IllegalArgumentException exception = Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> service.beforePatch(partialDto)
+        );
+        assertThat(exception.getMessage()).contains("other.com");
     }
 
     @Test

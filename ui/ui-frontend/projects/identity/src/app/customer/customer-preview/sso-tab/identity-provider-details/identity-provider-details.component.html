@@ -87,6 +87,7 @@
         formControlName="patterns"
         [label]="'CUSTOMER.SSO.PATTERNS' | translate"
         [options]="domainsState"
+        [lockedPatterns]="lockedPatterns()"
         [validator]="form?.get('patterns')?.validator"
         [asyncValidator]="form?.get('patterns')?.asyncValidator"
       >

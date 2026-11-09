@@ -250,6 +250,19 @@ public class CustomerController implements CrudController<CustomerDto> {
         return customerService.findHistoryById(id);
     }
 
+    @Operation(
+        operationId = "customers_getActiveUserEmailDomains",
+        summary = "Get the email domains still used by an active user of this customer"
+    )
+    @GetMapping(CommonConstants.PATH_ID + "/active-user-email-domains")
+    @Secured(ServicesData.ROLE_GET_CUSTOMERS)
+    public List<String> getActiveUserEmailDomains(final @PathVariable("id") String id) {
+        SanityChecker.checkSecureParameter(id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY, id);
+        LOGGER.debug("Get active user email domains for customer {}", id);
+        return customerService.getActiveUserEmailDomains(id);
+    }
+
     @Override
     public CustomerDto create(final CustomerDto dto) {
         throw new NotImplementedException("Method is not implemented");

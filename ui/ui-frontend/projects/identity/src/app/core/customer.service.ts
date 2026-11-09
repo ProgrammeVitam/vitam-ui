@@ -152,4 +152,8 @@ export class CustomerService {
   public getGdprReadOnlySettingStatus(): Observable<boolean> {
     return this.customerApi.getGdprSettingStatus();
   }
+
+  public getActiveUserEmailDomains(customerId: string): Observable<string[]> {
+    return this.customerApi.getActiveUserEmailDomains(customerId);
+  }
 }

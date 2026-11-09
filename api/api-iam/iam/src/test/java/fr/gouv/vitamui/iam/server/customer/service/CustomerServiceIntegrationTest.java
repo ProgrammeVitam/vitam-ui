@@ -19,6 +19,7 @@ import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.server.common.service.AddressService;
 import fr.gouv.vitamui.iam.server.customer.converter.CustomerConverter;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
+import fr.gouv.vitamui.iam.server.idp.dao.IdentityProviderRepository;
 import fr.gouv.vitamui.iam.server.logbook.service.AbstractLogbookIntegrationTest;
 import fr.gouv.vitamui.iam.server.owner.service.OwnerService;
 import fr.gouv.vitamui.iam.server.tenant.dao.TenantRepository;
@@ -96,6 +97,9 @@ public class CustomerServiceIntegrationTest extends AbstractLogbookIntegrationTe
     @Mock
     private LogbookService logbookService;
 
+    @Mock
+    private IdentityProviderRepository identityProviderRepository;
+
     @BeforeEach
     public void setup() {
         mocks = MockitoAnnotations.openMocks(this);
@@ -111,7 +115,8 @@ public class CustomerServiceIntegrationTest extends AbstractLogbookIntegrationTe
             initCustomerService,
             iamLogbookService,
             customerConverter,
-            logbookService
+            logbookService,
+            identityProviderRepository
         );
         final Tenant tenant = new Tenant();
         tenant.setIdentifier(10);

@@ -61,6 +61,8 @@ import fr.gouv.vitamui.iam.server.idp.dao.IdentityProviderRepository;
 import fr.gouv.vitamui.iam.server.idp.domain.IdentityProvider;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.server.security.AbstractResourceClientService;
+import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
+import fr.gouv.vitamui.iam.server.user.service.ActiveUserEmailDomainsResolver;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
@@ -105,11 +107,13 @@ public class IdentityProviderService extends AbstractResourceClientService<Ident
     private final CustomerRepository customerRepository;
     private final IamLogbookService iamLogbookService;
     private final IdentityProviderConverter idpConverter;
+    private final UserRepository userRepository;
 
     private static final String CUSTOMER = "customerId";
     private static final String AUTO_PROVISIONING_ENABLED = "autoProvisioningEnabled";
     private static final String READ_ONLY = "readonly";
     private static final String INTERNAL = "internal";
+    private static final String PATTERNS = "patterns";
 
     @Autowired
     public IdentityProviderService(
@@ -119,7 +123,8 @@ public class IdentityProviderService extends AbstractResourceClientService<Ident
         final CustomerRepository customerRepository,
         final IamLogbookService iamLogbookService,
         final IdentityProviderConverter idpConverter,
-        final SecurityService securityService
+        final SecurityService securityService,
+        final UserRepository userRepository
     ) {
         super(sequenceGeneratorService, securityService);
         this.identityProviderRepository = identityProviderRepository;
@@ -127,6 +132,7 @@ public class IdentityProviderService extends AbstractResourceClientService<Ident
         this.customerRepository = customerRepository;
         this.idpConverter = idpConverter;
         this.iamLogbookService = iamLogbookService;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -159,6 +165,46 @@ public class IdentityProviderService extends AbstractResourceClientService<Ident
     }
 
     /**
+     * Checks that none of the patterns removed from the identity provider still match the email of an active
+     * user of the same customer, since that user would otherwise lose the ability to authenticate through this
+     * identity provider.
+     */
+    private void checkRemovedPatternsNotUsedByActiveUser(
+        final List<String> oldPatterns,
+        final List<String> newPatterns,
+        final String customerId,
+        final String message
+    ) {
+        final List<String> newDomains = toDomains(newPatterns);
+        final List<String> removedDomains = toDomains(oldPatterns)
+            .stream()
+            .filter(domain -> !newDomains.contains(domain))
+            .collect(Collectors.toList());
+        if (removedDomains.isEmpty()) {
+            return;
+        }
+        final List<String> activeUserDomains = ActiveUserEmailDomainsResolver.resolve(userRepository, customerId);
+        final List<String> forbiddenDomains = removedDomains
+            .stream()
+            .filter(activeUserDomains::contains)
+            .collect(Collectors.toList());
+        Assert.isTrue(
+            CollectionUtils.isEmpty(forbiddenDomains),
+            message +
+            ": the pattern(s) for domain(s) " +
+            String.join(",", forbiddenDomains) +
+            " are still used by an active user and cannot be removed"
+        );
+    }
+
+    private static List<String> toDomains(final List<String> patterns) {
+        if (patterns == null) {
+            return Collections.emptyList();
+        }
+        return patterns.stream().map(pattern -> pattern.replace(".*@", "").toLowerCase()).collect(Collectors.toList());
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -170,6 +216,7 @@ public class IdentityProviderService extends AbstractResourceClientService<Ident
         checkSetReadonly(dto.isReadonly(), message);
         checkCustomer(dto.getCustomerId(), message);
         checkEmailPatterns(dto.getPatterns(), message);
+        checkRemovedPatternsNotUsedByActiveUser(idp.getPatterns(), dto.getPatterns(), idp.getCustomerId(), message);
         if (Boolean.TRUE.equals(dto.getInternal())) {
             checkIdendityProviderInternUniqueByCustomer(dto.getCustomerId(), message);
             checkAutoUpdateUsersDisabledForInternalProvider(dto.isAutoProvisioningEnabled());
@@ -198,6 +245,11 @@ public class IdentityProviderService extends AbstractResourceClientService<Ident
         final String customerId = CastUtils.toString(partialDto.get(CUSTOMER));
         if (customerId != null) {
             checkCustomer(customerId, message);
+        }
+
+        final List<String> patterns = CastUtils.toList(partialDto.get(PATTERNS));
+        if (patterns != null) {
+            checkRemovedPatternsNotUsedByActiveUser(idp.getPatterns(), patterns, idp.getCustomerId(), message);
         }
 
         final Boolean readonly = CastUtils.toBoolean(partialDto.get(READ_ONLY));

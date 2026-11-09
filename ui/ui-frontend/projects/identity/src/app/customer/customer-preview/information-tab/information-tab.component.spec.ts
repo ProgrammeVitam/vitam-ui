@@ -40,6 +40,7 @@ import { CountryService, Customer, StartupService } from 'vitamui-library';
 
 import { CustomerService } from '../../../core/customer.service';
 import { CustomerCreateValidators } from '../../customer-create/customer-create.validators';
+import { IdentityProviderService } from '../sso-tab/identity-provider.service';
 import { InformationTabComponent } from './information-tab.component';
 
 const customer = {
@@ -62,7 +63,8 @@ const customer = {
 describe('Customer InformationTabComponent', () => {
   let fixture: ComponentFixture<InformationTabComponent>;
   let component: InformationTabComponent;
-  let customerServiceSpy: { patch: ReturnType<typeof vi.fn> };
+  let customerServiceSpy: { patch: ReturnType<typeof vi.fn>; getActiveUserEmailDomains: ReturnType<typeof vi.fn> };
+  let identityProviderServiceSpy: { getDomainByCustomerId: ReturnType<typeof vi.fn> };
 
   const waitForUpdate = async (time = 500) => {
     TestBed.tick();
@@ -76,6 +78,10 @@ describe('Customer InformationTabComponent', () => {
         .fn()
         .mockName('CustomerService.patch')
         .mockReturnValue(of({ ...customer, name: 'New name' })),
+      getActiveUserEmailDomains: vi.fn().mockName('CustomerService.getActiveUserEmailDomains').mockReturnValue(of([])),
+    };
+    identityProviderServiceSpy = {
+      getDomainByCustomerId: vi.fn().mockName('IdentityProviderService.getDomainByCustomerId').mockReturnValue(of([])),
     };
     await TestBed.configureTestingModule({
       imports: [InformationTabComponent],
@@ -87,6 +93,7 @@ describe('Customer InformationTabComponent', () => {
         },
         { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
         { provide: StartupService, useValue: { getConfigNumberValue: () => 100 } },
+        { provide: IdentityProviderService, useValue: identityProviderServiceSpy },
       ],
     })
       .overrideComponent(InformationTabComponent, { set: { template: '' } })
@@ -130,6 +137,25 @@ describe('Customer InformationTabComponent', () => {
     fixture.componentRef.setInput('readOnly', true);
     fixture.detectChanges();
     expect(component.form().disabled()).toBe(true);
+  });
+
+  it('should fetch the domains locked by an identity provider for the customer', () => {
+    expect(identityProviderServiceSpy.getDomainByCustomerId).toHaveBeenCalledWith('42');
+  });
+
+  it('should fetch the domains used by an active user for the customer', () => {
+    expect(customerServiceSpy.getActiveUserEmailDomains).toHaveBeenCalledWith('42');
+  });
+
+  it('should merge the IDP-locked and user-locked domains without duplicates', async () => {
+    identityProviderServiceSpy.getDomainByCustomerId.mockReturnValue(of(['idp.com', 'shared.com']));
+    customerServiceSpy.getActiveUserEmailDomains.mockReturnValue(of(['user.com', 'shared.com']));
+
+    fixture.componentRef.setInput('customer', { ...customer, id: '42' });
+    fixture.detectChanges();
+    await waitForUpdate(0);
+
+    expect(component.lockedDomains()).toEqual(['idp.com', 'shared.com', 'user.com']);
   });
 
   it('should disable the GDPR fields', () => {

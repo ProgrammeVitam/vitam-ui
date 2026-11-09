@@ -5,6 +5,7 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.LanguageDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.utils.TestUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
@@ -23,6 +24,7 @@ import fr.gouv.vitamui.iam.server.customer.domain.GraphicIdentity;
 import fr.gouv.vitamui.iam.server.group.dao.GroupRepository;
 import fr.gouv.vitamui.iam.server.group.service.GroupService;
 import fr.gouv.vitamui.iam.server.idp.dao.IdentityProviderRepository;
+import fr.gouv.vitamui.iam.server.idp.domain.IdentityProvider;
 import fr.gouv.vitamui.iam.server.idp.service.IdentityProviderService;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.server.owner.converter.OwnerConverter;
@@ -33,6 +35,7 @@ import fr.gouv.vitamui.iam.server.profile.service.ProfileService;
 import fr.gouv.vitamui.iam.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.server.tenant.service.TenantService;
 import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
+import fr.gouv.vitamui.iam.server.user.domain.User;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
 import org.junit.jupiter.api.Assertions;
@@ -44,6 +47,7 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -140,7 +144,8 @@ class CustomerServiceTest {
             initCustomerService,
             iamLogbookService,
             customerConverter,
-            logbookService
+            logbookService,
+            identityProviderRepository
         );
     }
 
@@ -389,5 +394,169 @@ class CustomerServiceTest {
         } catch (final IllegalArgumentException e) {
             assertEquals("Duplicate email domain found @vitamui.com", e.getMessage());
         }
+    }
+
+    @Test
+    void testUpdateFailsWhenRemovingEmailDomainUsedByIdentityProvider() {
+        final Customer existingCustomer = IamServerUtilsTest.buildCustomer(
+            "id",
+            "name",
+            "0123456",
+            Arrays.asList("vitamui.com", "other.com")
+        );
+
+        final IdentityProvider identityProvider = new IdentityProvider();
+        identityProvider.setPatterns(List.of(".*@other.com"));
+
+        final CustomerDto customerToUpdate = buildDto();
+        customerToUpdate.setId(existingCustomer.getId());
+        customerToUpdate.setCode(existingCustomer.getCode());
+        customerToUpdate.setEmailDomains(List.of("vitamui.com"));
+        customerToUpdate.setDefaultEmailDomain("vitamui.com");
+
+        when(customerRepository.findById(existingCustomer.getId())).thenReturn(Optional.of(existingCustomer));
+        when(customerRepository.findByCode("0123456")).thenReturn(Optional.of(existingCustomer));
+        when(identityProviderRepository.findByCustomerId(existingCustomer.getId())).thenReturn(
+            List.of(identityProvider)
+        );
+
+        final IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> customerService.update(customerToUpdate)
+        );
+        assertThat(exception.getMessage()).contains("other.com");
+    }
+
+    @Test
+    void testPatchFailsWhenRemovingEmailDomainUsedByIdentityProvider() {
+        final Customer existingCustomer = IamServerUtilsTest.buildCustomer(
+            "id",
+            "name",
+            "0123456",
+            Arrays.asList("vitamui.com", "other.com")
+        );
+
+        final IdentityProvider identityProvider = new IdentityProvider();
+        identityProvider.setPatterns(List.of(".*@other.com"));
+
+        when(customerRepository.findById("id")).thenReturn(Optional.of(existingCustomer));
+        when(identityProviderRepository.findByCustomerId("id")).thenReturn(List.of(identityProvider));
+
+        final Map<String, Object> partialDto = new HashMap<>();
+        partialDto.put("id", "id");
+        partialDto.put("emailDomains", List.of("vitamui.com"));
+
+        final IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> customerService.beforePatch(partialDto)
+        );
+        assertThat(exception.getMessage()).contains("other.com");
+    }
+
+    @Test
+    void testUpdateFailsWhenRemovingEmailDomainUsedByActiveUser() {
+        final Customer existingCustomer = IamServerUtilsTest.buildCustomer(
+            "id",
+            "name",
+            "0123456",
+            Arrays.asList("vitamui.com", "other.com")
+        );
+
+        final User activeUser = new User();
+        activeUser.setEmail("someone@other.com");
+        activeUser.setStatus(UserStatusEnum.ENABLED);
+
+        final CustomerDto customerToUpdate = buildDto();
+        customerToUpdate.setId(existingCustomer.getId());
+        customerToUpdate.setCode(existingCustomer.getCode());
+        customerToUpdate.setEmailDomains(List.of("vitamui.com"));
+        customerToUpdate.setDefaultEmailDomain("vitamui.com");
+
+        when(customerRepository.findById(existingCustomer.getId())).thenReturn(Optional.of(existingCustomer));
+        when(customerRepository.findByCode("0123456")).thenReturn(Optional.of(existingCustomer));
+        when(userRepository.findByCustomerId(existingCustomer.getId())).thenReturn(List.of(activeUser));
+
+        final IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> customerService.update(customerToUpdate)
+        );
+        assertThat(exception.getMessage()).contains("other.com");
+    }
+
+    @Test
+    void testPatchFailsWhenRemovingEmailDomainUsedByActiveUser() {
+        final Customer existingCustomer = IamServerUtilsTest.buildCustomer(
+            "id",
+            "name",
+            "0123456",
+            Arrays.asList("vitamui.com", "other.com")
+        );
+
+        final User activeUser = new User();
+        activeUser.setEmail("someone@other.com");
+        activeUser.setStatus(UserStatusEnum.ENABLED);
+
+        when(customerRepository.findById("id")).thenReturn(Optional.of(existingCustomer));
+        when(userRepository.findByCustomerId("id")).thenReturn(List.of(activeUser));
+
+        final Map<String, Object> partialDto = new HashMap<>();
+        partialDto.put("id", "id");
+        partialDto.put("emailDomains", List.of("vitamui.com"));
+
+        final IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> customerService.beforePatch(partialDto)
+        );
+        assertThat(exception.getMessage()).contains("other.com");
+    }
+
+    @Test
+    void testPatchSucceedsWhenRemovingEmailDomainUsedOnlyByDisabledUser() {
+        final Customer existingCustomer = IamServerUtilsTest.buildCustomer(
+            "id",
+            "name",
+            "0123456",
+            Arrays.asList("vitamui.com", "other.com")
+        );
+
+        final User disabledUser = new User();
+        disabledUser.setEmail("someone@other.com");
+        disabledUser.setStatus(UserStatusEnum.DISABLED);
+
+        when(customerRepository.findById("id")).thenReturn(Optional.of(existingCustomer));
+        when(userRepository.findByCustomerId("id")).thenReturn(List.of(disabledUser));
+
+        final Map<String, Object> partialDto = new HashMap<>();
+        partialDto.put("id", "id");
+        partialDto.put("emailDomains", List.of("vitamui.com"));
+
+        final Customer result = customerService.beforePatch(partialDto);
+        assertThat(result).isEqualTo(existingCustomer);
+    }
+
+    @Test
+    void testGetActiveUserEmailDomainsReturnsDistinctDomainsOfEnabledAndBlockedUsersOnly() {
+        final User enabledUserOne = new User();
+        enabledUserOne.setEmail("alice@vitamui.com");
+        enabledUserOne.setStatus(UserStatusEnum.ENABLED);
+
+        final User enabledUserTwo = new User();
+        enabledUserTwo.setEmail("Bob@VITAMUI.com");
+        enabledUserTwo.setStatus(UserStatusEnum.ENABLED);
+
+        final User blockedUser = new User();
+        blockedUser.setEmail("dave@blocked.com");
+        blockedUser.setStatus(UserStatusEnum.BLOCKED);
+
+        final User disabledUser = new User();
+        disabledUser.setEmail("carol@other.com");
+        disabledUser.setStatus(UserStatusEnum.DISABLED);
+
+        when(userRepository.findByCustomerId("id")).thenReturn(
+            List.of(enabledUserOne, enabledUserTwo, blockedUser, disabledUser)
+        );
+
+        final List<String> domains = customerService.getActiveUserEmailDomains("id");
+        assertThat(domains).containsExactly("vitamui.com", "blocked.com");
     }
 }

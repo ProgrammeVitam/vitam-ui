@@ -147,4 +147,8 @@ export class CustomerApiService extends PaginatedHttpClient<Customer> {
   getGdprSettingStatus(): Observable<boolean> {
     return this.http.get<boolean>(this.apiUrl + '/gdpr-status');
   }
+
+  getActiveUserEmailDomains(customerId: string): Observable<string[]> {
+    return this.http.get<string[]>(this.apiUrl + '/' + customerId + '/active-user-email-domains');
+  }
 }

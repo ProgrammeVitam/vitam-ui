@@ -40,6 +40,7 @@
       "WRONG_FORMAT": "Format incorrect (domaine.xyz)",
       "DOMAIN_ALREADY_EXIST": "Domaine déjà saisi",
       "DOMAIN_ALREADY_USED": "Domaine utilisé par une autre organisation",
+      "DOMAIN_LOCKED": "Ce domaine est encore utilisé par un fournisseur d'identité ou un utilisateur actif et ne peut pas être supprimé",
       "DEFAULT_DOMAIN": "(par défaut)"
     },
     "EDITABLE_FIELD": {
@@ -54,6 +55,7 @@
     },
     "PATTERN": "Pattern",
     "PATTERN_ALREADY_USED": "(déjà utilisé)",
+    "PATTERN_LOCKED": "Ce pattern est encore utilisé par un utilisateur actif et ne peut pas être supprimé",
     "SNACKBAR": {
       "CUSTOMER_CREATE": "L'organisation {{ param1 }} a bien été créée",
       "CUSTOMER_CREATE_ERROR": "L'organisation n'a pas pu être créée, veuillez contacter un administrateur",

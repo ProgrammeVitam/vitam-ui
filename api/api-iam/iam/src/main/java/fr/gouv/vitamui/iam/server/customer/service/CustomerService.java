@@ -66,11 +66,14 @@ import fr.gouv.vitamui.iam.server.common.service.AddressService;
 import fr.gouv.vitamui.iam.server.customer.converter.CustomerConverter;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.server.customer.domain.Customer;
+import fr.gouv.vitamui.iam.server.idp.dao.IdentityProviderRepository;
+import fr.gouv.vitamui.iam.server.idp.domain.IdentityProvider;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.server.owner.service.OwnerService;
 import fr.gouv.vitamui.iam.server.security.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.server.user.domain.User;
+import fr.gouv.vitamui.iam.server.user.service.ActiveUserEmailDomainsResolver;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
 import lombok.Getter;
 import lombok.Setter;
@@ -129,6 +132,7 @@ public class CustomerService extends AbstractResourceClientService<CustomerDto, 
     private final IamLogbookService iamLogbookService;
     private final CustomerConverter customerConverter;
     private final LogbookService logbookService;
+    private final IdentityProviderRepository identityProviderRepository;
 
     @Autowired
     public CustomerService(
@@ -142,7 +146,8 @@ public class CustomerService extends AbstractResourceClientService<CustomerDto, 
         final InitCustomerService initCustomerService,
         final IamLogbookService iamLogbookService,
         final CustomerConverter customerConverter,
-        final LogbookService logbookService
+        final LogbookService logbookService,
+        final IdentityProviderRepository identityProviderRepository
     ) {
         super(sequenceGeneratorService, securityService);
         this.customerRepository = customerRepository;
@@ -155,6 +160,7 @@ public class CustomerService extends AbstractResourceClientService<CustomerDto, 
         this.iamLogbookService = iamLogbookService;
         this.customerConverter = customerConverter;
         this.logbookService = logbookService;
+        this.identityProviderRepository = identityProviderRepository;
     }
 
     /**
@@ -226,6 +232,7 @@ public class CustomerService extends AbstractResourceClientService<CustomerDto, 
         final String message = "Unable to update customer " + dto.getName();
         checkCode(Optional.of(dto.getId()), dto.getCode());
         checkEmailDomains(dto.getEmailDomains(), customer.getId(), message);
+        checkRemovedEmailDomainsNotUsed(customer.getEmailDomains(), dto.getEmailDomains(), customer.getId(), message);
         checkDefaultEmailDomains(dto.getDefaultEmailDomain(), dto.getEmailDomains(), message);
     }
 
@@ -267,6 +274,7 @@ public class CustomerService extends AbstractResourceClientService<CustomerDto, 
         final String defaultEmailDomain = CastUtils.toString(partialDto.get(DEFAULT_EMAIL_DOMAIN));
         if (emailDomains != null) {
             checkEmailDomains(emailDomains, id, message);
+            checkRemovedEmailDomainsNotUsed(customer.getEmailDomains(), emailDomains, id, message);
         }
 
         final String domain = defaultEmailDomain == null ? customer.getDefaultEmailDomain() : defaultEmailDomain;
@@ -661,6 +669,79 @@ public class CustomerService extends AbstractResourceClientService<CustomerDto, 
                 );
             }
         }
+    }
+
+    /**
+     * Checks that none of the email domains removed from the customer are still used by an identity provider
+     * or by an active user. The removed domains are computed once and reused by both controls, avoiding
+     * redundant computation and the corresponding repository calls when nothing is actually removed.
+     */
+    private void checkRemovedEmailDomainsNotUsed(
+        final List<String> oldEmailDomains,
+        final List<String> newEmailDomains,
+        final String customerId,
+        final String message
+    ) {
+        final List<String> removedDomains = oldEmailDomains
+            .stream()
+            .filter(domain -> !newEmailDomains.contains(domain))
+            .collect(Collectors.toList());
+        if (removedDomains.isEmpty()) {
+            return;
+        }
+        checkEmailDomainsNotUsedByIdentityProvider(removedDomains, customerId, message);
+        checkEmailDomainsNotUsedByActiveUser(removedDomains, customerId, message);
+    }
+
+    private void checkEmailDomainsNotUsedByIdentityProvider(
+        final List<String> removedDomains,
+        final String customerId,
+        final String message
+    ) {
+        final List<String> domainsUsedByIdentityProviders = identityProviderRepository
+            .findByCustomerId(customerId)
+            .stream()
+            .map(IdentityProvider::getPatterns)
+            .flatMap(List::stream)
+            .map(pattern -> pattern.replace(".*@", "").toLowerCase())
+            .collect(Collectors.toList());
+        final List<String> forbiddenDomains = removedDomains
+            .stream()
+            .filter(domain -> domainsUsedByIdentityProviders.contains(domain.toLowerCase()))
+            .collect(Collectors.toList());
+        Assert.isTrue(
+            CollectionUtils.isEmpty(forbiddenDomains),
+            message +
+            ": the email domain(s) " +
+            String.join(",", forbiddenDomains) +
+            " are configured on an identity provider and cannot be removed"
+        );
+    }
+
+    /**
+     * Returns the email domains still used by an active user of the given customer.
+     */
+    public List<String> getActiveUserEmailDomains(final String customerId) {
+        return ActiveUserEmailDomainsResolver.resolve(userRepository, customerId);
+    }
+
+    private void checkEmailDomainsNotUsedByActiveUser(
+        final List<String> removedDomains,
+        final String customerId,
+        final String message
+    ) {
+        final List<String> activeUserDomains = getActiveUserEmailDomains(customerId);
+        final List<String> forbiddenDomains = removedDomains
+            .stream()
+            .filter(domain -> activeUserDomains.contains(domain.toLowerCase()))
+            .collect(Collectors.toList());
+        Assert.isTrue(
+            CollectionUtils.isEmpty(forbiddenDomains),
+            message +
+            ": the email domain(s) " +
+            String.join(",", forbiddenDomains) +
+            " are still used by an active user and cannot be removed"
+        );
     }
 
     private void checkOwners(final List<OwnerDto> owners, final String message) {

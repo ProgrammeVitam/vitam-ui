@@ -20,6 +20,7 @@
             [(selected)]="selected"
             [placeholder]="'CUSTOMER.INFORMATIONS.MODAL.DOMAINS_PLACEHOLDER' | translate"
             [spinnerDiameter]="18"
+            [lockedDomains]="lockedDomains()"
             (click)="onDomainInputClick()"
           ></app-domains-input>
         </div>

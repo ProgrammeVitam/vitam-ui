@@ -37,9 +37,15 @@
   @for (domain of domains; track domain) {
     <div class="vitamui-chip" (click)="setSelected(domain)" [class.active]="domain === selectedState()">
       <div class="vitamui-chip-content">{{ domain }}</div>
-      <div class="vitamui-remove-chip" (click)="remove(domain)">
-        <i class="material-icons">clear</i>
-      </div>
+      @if (isLocked(domain)) {
+        <div class="vitamui-remove-chip" [vitamuiTooltip]="'SHARED.DOMAIN_INPUT.DOMAIN_LOCKED' | translate">
+          <i class="material-icons">lock</i>
+        </div>
+      } @else {
+        <div class="vitamui-remove-chip" (click)="remove(domain)">
+          <i class="material-icons">clear</i>
+        </div>
+      }
     </div>
   }
 </div>

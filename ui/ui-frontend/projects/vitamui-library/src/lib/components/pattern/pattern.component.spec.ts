@@ -64,10 +64,21 @@ class ReactiveFormHostComponent {
   readonly pattern = viewChild(PatternComponent);
 }
 
+@Component({
+  template: `<app-pattern [formControl]="control" [options]="options" [lockedPatterns]="lockedPatterns()"></app-pattern>`,
+  imports: [PatternComponent, ReactiveFormsModule],
+})
+class LockedPatternsHostComponent {
+  readonly options = options;
+  readonly control = new FormControl<string[]>(['a.com', 'b.com']);
+  readonly lockedPatterns = signal<string[]>([]);
+  readonly pattern = viewChild(PatternComponent);
+}
+
 describe('PatternComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SignalFormHostComponent, ReactiveFormHostComponent],
+      imports: [SignalFormHostComponent, ReactiveFormHostComponent, LockedPatternsHostComponent],
       providers: [provideTranslateService()],
     }).compileComponents();
   });
@@ -100,5 +111,18 @@ describe('PatternComponent', () => {
 
     expect(fixture.componentInstance.control.value).toEqual(['a.com']);
     expect(pattern.controlValueValid()).toBe(false);
+  });
+
+  it('should not remove a locked pattern', async () => {
+    const fixture: ComponentFixture<LockedPatternsHostComponent> = TestBed.createComponent(LockedPatternsHostComponent);
+    fixture.componentInstance.lockedPatterns.set(['b.com']);
+    await fixture.whenStable();
+    const pattern = fixture.componentInstance.pattern();
+
+    pattern.remove('b.com');
+    expect(fixture.componentInstance.control.value).toEqual(['a.com', 'b.com']);
+
+    pattern.remove('a.com');
+    expect(fixture.componentInstance.control.value).toEqual(['b.com']);
   });
 });

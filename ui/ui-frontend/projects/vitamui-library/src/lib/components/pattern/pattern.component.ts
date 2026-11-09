@@ -42,6 +42,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MatSelectModule } from '@angular/material/select';
 import { SelectComponent } from '../select/select.component';
 import { Option } from '../../../app/modules/components/autocomplete/utils/option.interface';
+import { TooltipDirective } from '../../../app/modules/components/common-tooltip/tooltip.directive';
 
 export const PATTERN_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -55,7 +56,7 @@ export const PATTERN_VALUE_ACCESSOR: any = {
   selector: 'app-pattern',
   templateUrl: './pattern.component.html',
   styleUrls: ['./pattern.component.scss'],
-  imports: [FormField, MatSelectModule, TranslatePipe, SelectComponent],
+  imports: [FormField, MatSelectModule, TranslatePipe, SelectComponent, TooltipDirective],
   providers: [PATTERN_VALUE_ACCESSOR],
 })
 export class PatternComponent implements ControlValueAccessor, OnChanges {
@@ -63,6 +64,8 @@ export class PatternComponent implements ControlValueAccessor, OnChanges {
 
   readonly options = input<Array<{ value: string; disabled?: boolean }>>(undefined);
   availableOptions: Option[];
+
+  readonly lockedPatterns = input<string[]>([]);
 
   readonly vitamuiMiniMode = input(false);
 
@@ -116,6 +119,9 @@ export class PatternComponent implements ControlValueAccessor, OnChanges {
   }
 
   remove(pattern: string) {
+    if (this.isLocked(pattern)) {
+      return;
+    }
     this.patterns = this.patterns.filter((p) => p !== pattern);
     const option = this.availableOptions.find((o) => o.key === pattern);
     if (option) {
@@ -125,6 +131,10 @@ export class PatternComponent implements ControlValueAccessor, OnChanges {
     if (this.enabledOptions().length > 0) {
       this.allOptionsAdded.set(false);
     }
+  }
+
+  isLocked(pattern: string): boolean {
+    return this.lockedPatterns().includes(pattern);
   }
 
   enabledOptions(): Option[] {

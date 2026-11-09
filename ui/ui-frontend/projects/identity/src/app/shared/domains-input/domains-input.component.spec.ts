@@ -45,13 +45,18 @@ import { CustomerCreateValidators } from '../../customer/customer-create/custome
 import { DomainsInputComponent } from './domains-input.component';
 
 @Component({
-  template: '<app-domains-input [formField]="domainsForm.domains" [(selected)]="selected"></app-domains-input>',
+  template: `<app-domains-input
+    [formField]="domainsForm.domains"
+    [(selected)]="selected"
+    [lockedDomains]="lockedDomains()"
+  ></app-domains-input>`,
   imports: [DomainsInputComponent, FormField],
   schemas: [NO_ERRORS_SCHEMA],
 })
 export class TestHostComponent {
   readonly component = viewChild(DomainsInputComponent);
   readonly domainsForm = form(signal<{ domains: string[] }>({ domains: null }));
+  readonly lockedDomains = signal<string[]>([]);
   selected: string;
 
   get domains(): string[] {
@@ -195,5 +200,15 @@ describe('DomainsInputComponent', () => {
     testhost.component().remove('tata.fr');
     expect(testhost.component().domains).toEqual(['test.com', 'toto.co.uk']);
     expect(testhost.selected).toBeFalsy();
+  });
+
+  it('should not remove a locked domain', async () => {
+    testhost.domains = ['test.com', 'toto.co.uk'];
+    testhost.lockedDomains.set(['toto.co.uk']);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    testhost.component().remove('toto.co.uk');
+    expect(testhost.component().domains).toEqual(['test.com', 'toto.co.uk']);
   });
 });

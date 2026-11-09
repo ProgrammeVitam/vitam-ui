@@ -24,9 +24,15 @@
   @for (pattern of patterns; track pattern) {
     <div class="vitamui-chip">
       <div class="vitamui-chip-content">{{ pattern }}</div>
-      <div class="vitamui-remove-chip" (click)="remove(pattern)">
-        <i class="material-icons">clear</i>
-      </div>
+      @if (isLocked(pattern)) {
+        <div class="vitamui-remove-chip" [vitamuiTooltip]="'SHARED.PATTERN_LOCKED' | translate">
+          <i class="material-icons">lock</i>
+        </div>
+      } @else {
+        <div class="vitamui-remove-chip" (click)="remove(pattern)">
+          <i class="material-icons">clear</i>
+        </div>
+      }
     </div>
   }
 </div>

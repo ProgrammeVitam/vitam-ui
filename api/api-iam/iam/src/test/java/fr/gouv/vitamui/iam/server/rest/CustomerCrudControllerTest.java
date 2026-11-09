@@ -184,7 +184,8 @@ final class CustomerCrudControllerTest {
             initCustomerService,
             iamLogbookService,
             customerConverter,
-            logbookService
+            logbookService,
+            identityProviderRepository
         );
         customerController = new CustomerController(customerService);
         initCustomerService.setOwnerConverter(ownerConverter);
@@ -201,7 +202,8 @@ final class CustomerCrudControllerTest {
             initCustomerService,
             iamLogbookService,
             customerConverter,
-            logbookService
+            logbookService,
+            identityProviderRepository
         );
         customerController = new CustomerController(customerService);
         Mockito.when(ownerRepository.generateSuperId()).thenReturn(UUID.randomUUID().toString());

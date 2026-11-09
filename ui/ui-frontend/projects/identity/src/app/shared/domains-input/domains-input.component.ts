@@ -40,6 +40,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { form, FormField, pattern, required } from '@angular/forms/signals';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';
+import { TooltipDirective } from 'vitamui-library';
 
 export const DOMAINS_INPUT_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -53,13 +54,14 @@ export const DOMAINS_INPUT_ACCESSOR: any = {
   templateUrl: './domains-input.component.html',
   styleUrls: ['./domains-input.component.scss'],
   providers: [DOMAINS_INPUT_ACCESSOR],
-  imports: [FormField, MatProgressSpinner, TranslatePipe],
+  imports: [FormField, MatProgressSpinner, TranslatePipe, TooltipDirective],
 })
 export class DomainsInputComponent implements ControlValueAccessor {
   readonly placeholder = input<string>(undefined);
   readonly selected = input<string>(undefined);
   protected readonly selectedState = linkedSignal(() => this.selected());
   readonly spinnerDiameter = input(25);
+  readonly lockedDomains = input<string[]>([]);
 
   readonly selectedChange = output<string>();
 
@@ -104,6 +106,9 @@ export class DomainsInputComponent implements ControlValueAccessor {
   }
 
   remove(domain: string): void {
+    if (this.isLocked(domain)) {
+      return;
+    }
     const index = this.domains.indexOf(domain);
 
     if (index >= 0) {
@@ -113,6 +118,10 @@ export class DomainsInputComponent implements ControlValueAccessor {
       this.domains = this.domains.filter((_, i) => i !== index);
       this.onChange(this.domains);
     }
+  }
+
+  isLocked(domain: string): boolean {
+    return this.lockedDomains().includes(domain);
   }
 
   setSelected(value: string) {

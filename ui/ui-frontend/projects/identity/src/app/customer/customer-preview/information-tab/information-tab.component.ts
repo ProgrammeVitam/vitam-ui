@@ -35,10 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, computed, inject, OnChanges, OnInit, input, signal, SimpleChanges } from '@angular/core';
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { AsyncValidatorFn, ValidatorFn, Validators } from '@angular/forms';
 import { disabled, form, FormField, maxLength, min, pattern, required, validate } from '@angular/forms/signals';
-import { of } from 'rxjs';
+import { concat, forkJoin, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
 import {
@@ -62,6 +62,7 @@ import {
 import { CustomerService } from '../../../core/customer.service';
 import { ALPHA_NUMERIC_REGEX, CUSTOMER_CODE_MAX_LENGTH, CustomerCreateValidators } from '../../customer-create/customer-create.validators';
 import { EditableDomainInputComponent } from '../../../shared/editable-field/editable-domain-input/editable-domain-input.component';
+import { IdentityProviderService } from '../sso-tab/identity-provider.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
@@ -151,12 +152,33 @@ export class InformationTabComponent implements OnChanges, OnInit {
   private readonly customerCreateValidators = inject(CustomerCreateValidators);
   private readonly countryService = inject(CountryService);
   private readonly startupService = inject(StartupService);
+  private readonly identityProviderService = inject(IdentityProviderService);
 
   public maxStreetLength: number = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
   public customerCodeMaxLength = CUSTOMER_CODE_MAX_LENGTH;
   previousValue: CustomerInformationModel;
 
   readonly customer = input<Customer>();
+
+  readonly lockedDomains = toSignal(
+    toObservable(this.customer).pipe(
+      switchMap((customer) =>
+        customer
+          ? concat(
+              of([] as string[]),
+              forkJoin([
+                this.identityProviderService.getDomainByCustomerId(customer.id),
+                this.customerService.getActiveUserEmailDomains(customer.id),
+              ]).pipe(
+                map(([idpDomains, activeUserDomains]) => [...new Set([...idpDomains, ...activeUserDomains])]),
+                catchError(() => of([] as string[])),
+              ),
+            )
+          : of([] as string[]),
+      ),
+    ),
+    { initialValue: [] as string[] },
+  );
 
   readonly readOnly = input<boolean>();
 

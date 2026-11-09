@@ -40,6 +40,7 @@
       "WRONG_FORMAT": "Wrong format (domain.xyz)",
       "DOMAIN_ALREADY_EXIST": "Domain already entered",
       "DOMAIN_ALREADY_USED": "Domain used by another organization",
+      "DOMAIN_LOCKED": "This domain is still used by an identity provider or an active user and cannot be removed",
       "DEFAULT_DOMAIN": "(By default)"
     },
     "EDITABLE_FIELD": {
@@ -54,6 +55,7 @@
     },
     "PATTERN": "Pattern",
     "PATTERN_ALREADY_USED": "(Already used)",
+    "PATTERN_LOCKED": "This pattern is still used by an active user and cannot be removed",
     "SNACKBAR": {
       "CUSTOMER_CREATE": "The organization {{ param1 }} has been successfully created",
       "CUSTOMER_CREATE_ERROR": "The organization could not be created, please contact an administrator",

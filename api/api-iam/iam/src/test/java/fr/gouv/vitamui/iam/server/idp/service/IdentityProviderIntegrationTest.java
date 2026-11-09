@@ -79,6 +79,7 @@ public class IdentityProviderIntegrationTest extends AbstractLogbookIntegrationT
     public void setup() {
         MockitoAnnotations.openMocks(this);
         IdentityProviderConverter identityProviderConverter = new IdentityProviderConverter(spMetadataGenerator);
+        Mockito.when(userRepository.findByCustomerId(any())).thenReturn(List.of());
         service = new IdentityProviderService(
             sequenceGeneratorService,
             repository,
@@ -86,7 +87,8 @@ public class IdentityProviderIntegrationTest extends AbstractLogbookIntegrationT
             customerRepository,
             iamLogbookService,
             identityProviderConverter,
-            securityService
+            securityService,
+            userRepository
         );
         repository.deleteAll();
         final Tenant tenant = new Tenant();

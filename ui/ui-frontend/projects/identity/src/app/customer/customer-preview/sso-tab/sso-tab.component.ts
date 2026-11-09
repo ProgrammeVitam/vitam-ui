@@ -35,8 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, OnDestroy, OnInit, signal, input, OnChanges, SimpleChanges } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 
 import type { Customer, IdentityProvider } from 'vitamui-library';
 import { DownloadUtils, SnackBarService, TooltipDirective } from 'vitamui-library';
@@ -45,6 +47,7 @@ import { IdentityProviderService } from './identity-provider.service';
 import { ProviderApiService } from './provider-api.service';
 import { IdentityProviderDetailsComponent } from './identity-provider-details/identity-provider-details.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { CustomerService } from '../../../core/customer.service';
 
 @Component({
   selector: 'app-sso-tab',
@@ -57,6 +60,7 @@ export class SsoTabComponent implements OnChanges, OnDestroy, OnInit {
   private readonly identityProviderService = inject(IdentityProviderService);
   private readonly providerApi = inject(ProviderApiService);
   private readonly snackBarService = inject(SnackBarService);
+  private readonly customerService = inject(CustomerService);
 
   readonly providers = signal<IdentityProvider[]>(undefined);
   panel1Position = 'current';
@@ -65,6 +69,17 @@ export class SsoTabComponent implements OnChanges, OnDestroy, OnInit {
   readonly domains = signal<Array<{ value: string; disabled: boolean }>>([]);
 
   readonly customer = input<Customer>();
+
+  readonly lockedDomains = toSignal(
+    toObservable(this.customer).pipe(
+      switchMap((customer) =>
+        customer
+          ? this.customerService.getActiveUserEmailDomains(customer.id).pipe(catchError(() => of([] as string[])))
+          : of([] as string[]),
+      ),
+    ),
+    { initialValue: [] as string[] },
+  );
 
   readonly readOnly = input<boolean>(undefined);
 

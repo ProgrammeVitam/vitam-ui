@@ -263,7 +263,8 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
         final CustomerRepository customerRepository,
         final IamLogbookService iamLogbookService,
         final IdentityProviderConverter idpConverter,
-        final SecurityService securityService
+        final SecurityService securityService,
+        final UserRepository userRepository
     ) {
         return new IdentityProviderService(
             sequenceGeneratorService,
@@ -272,7 +273,8 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
             customerRepository,
             iamLogbookService,
             idpConverter,
-            securityService
+            securityService,
+            userRepository
         );
     }
 
@@ -288,7 +290,8 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
         final InitCustomerService initCustomerService,
         final IamLogbookService iamLogbookService,
         final CustomerConverter customerConverter,
-        final LogbookService logbookService
+        final LogbookService logbookService,
+        final IdentityProviderRepository identityProviderRepository
     ) {
         return new CustomerService(
             sequenceGeneratorService,
@@ -301,7 +304,8 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
             initCustomerService,
             iamLogbookService,
             customerConverter,
-            logbookService
+            logbookService,
+            identityProviderRepository
         );
     }
 

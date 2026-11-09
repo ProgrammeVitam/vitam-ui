@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, inject, input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, computed, inject, input, OnChanges, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
@@ -109,6 +109,12 @@ export class IdentityProviderDetailsComponent implements OnChanges {
   readonly identityProvider = input<IdentityProvider>();
 
   readonly domains = input<Array<{ value: string; disabled: boolean }>>();
+
+  readonly lockedDomains = input<string[]>([]);
+
+  readonly lockedPatterns = computed(() =>
+    (this.identityProvider()?.patterns ?? []).filter((pattern) => this.lockedDomains().includes(pattern.replace('.*@', '').toLowerCase())),
+  );
 
   domainsState: Array<{ value: string; disabled: boolean }> = [];
   displayOIDCSAMLBLOCKS = false;

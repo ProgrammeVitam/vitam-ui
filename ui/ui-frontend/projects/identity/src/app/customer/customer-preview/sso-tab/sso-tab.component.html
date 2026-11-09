@@ -74,6 +74,7 @@
         <app-identity-provider-details
           [identityProvider]="selectedIdentityProvider"
           [domains]="domains()"
+          [lockedDomains]="lockedDomains()"
           [readOnly]="readOnly() || selectedIdentityProvider.readonly"
         ></app-identity-provider-details>
       </div>

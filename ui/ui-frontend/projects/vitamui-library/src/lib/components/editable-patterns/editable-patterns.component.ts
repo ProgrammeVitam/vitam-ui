@@ -66,6 +66,8 @@ export class EditablePatternsComponent extends EditableFieldComponent {
     }>
   >(undefined);
 
+  readonly lockedPatterns = input<string[]>([]);
+
   readonly pattern = viewChild(PatternComponent);
 
   private patternClicked = false;
