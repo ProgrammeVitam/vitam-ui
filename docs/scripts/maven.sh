@@ -9,7 +9,7 @@ MAVEN_SHA512="c35a1803a6e70a126e80b2b3ae33eed961f83ed74d18fcd16909b2d44d7dada320
 
 #### MAVEN ####
 cd /usr/local
-wget --no-cookies "$MAVEN_URL" -O "$MAVEN_ARCHIVE"
+curl -fsSL --proto '=https' "$MAVEN_URL" -o "$MAVEN_ARCHIVE"
 echo "$MAVEN_SHA512  $MAVEN_ARCHIVE" | sha512sum -c -
 tar -xzvf $MAVEN_ARCHIVE
 ln -s $MAVEN_DIR/ apache-maven

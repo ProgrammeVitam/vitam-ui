@@ -9,7 +9,7 @@ ECLIPSE_SHA512="dfcfde9550fbf9fb4ecda5900bccbcc4c2d3c8812ecd126690de24f5187e2f10
 
 #### ECLIPSE ####
 cd /usr/local
-wget --no-cookies "$ECLIPSE_URL" -O "$ECLIPSE_ARCHIVE"
+curl -fsSL --proto '=https' "$ECLIPSE_URL" -o "$ECLIPSE_ARCHIVE"
 echo "$ECLIPSE_SHA512  $ECLIPSE_ARCHIVE" | sha512sum -c -
 tar -xzvf $ECLIPSE_ARCHIVE
 chown -R root:staff $ECLIPSE_DIR/
