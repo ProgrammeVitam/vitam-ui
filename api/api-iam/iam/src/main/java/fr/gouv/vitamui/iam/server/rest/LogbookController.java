@@ -152,15 +152,16 @@ public class LogbookController {
         SanityChecker.sanitizeCriteria(select);
         final VitamContext vitamContext;
         if (Objects.nonNull(vitamTenantIdentifier)) {
+            // Checked before the tenant lookup, so that the existence of a tenant is not revealed.
+            if (!isTenantAllowed(tenantId, vitamTenantIdentifier)) {
+                throw new ForbiddenException(
+                    "Tenant '%d' is not available for the current user".formatted(vitamTenantIdentifier)
+                );
+            }
             TenantDto requestedTenant = tenantService.findByIdentifier(vitamTenantIdentifier);
             if (Objects.isNull(requestedTenant)) {
                 throw new BadRequestException(
                     "Tenant not found with identifier : '%d'".formatted(vitamTenantIdentifier)
-                );
-            }
-            if (!isTenantAllowed(tenantId, vitamTenantIdentifier)) {
-                throw new ForbiddenException(
-                    "Tenant '%d' is not available for the current user".formatted(vitamTenantIdentifier)
                 );
             }
             vitamContext = securityService.buildVitamContext(vitamTenantIdentifier);
@@ -499,20 +500,15 @@ public class LogbookController {
     }
 
     /**
-     * The requested tenant must be the header tenant, the proof tenant or one of the user's tenants.
+     * The requested tenant must be the header tenant (ROLE_LOGBOOKS is already checked on it), or a tenant on which
+     * the user holds ROLE_LOGBOOKS.
      */
     private boolean isTenantAllowed(final Integer headerTenantId, final Integer requestedTenantId) {
-        if (
-            requestedTenantId.equals(headerTenantId) ||
-            requestedTenantId.equals(securityService.getProofTenantIdentifier())
-        ) {
+        if (requestedTenantId.equals(headerTenantId)) {
             return true;
         }
-        return securityService
-            .getUser()
-            .getTenantsByApp()
+        return SecurityService.getRoles(securityService.getUser(), requestedTenantId)
             .stream()
-            .flatMap(t -> t.getTenants().stream())
-            .anyMatch(t -> requestedTenantId.equals(t.getIdentifier()));
+            .anyMatch(role -> ServicesData.ROLE_LOGBOOKS.equals(role.getName()));
     }
 }
