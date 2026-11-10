@@ -404,8 +404,11 @@ public class CasService {
         final AuthUserDto authUserDto = userService.loadGroupAndProfiles(user);
         userService.addBasicCustomerAndProofTenantIdentifierInformation(authUserDto);
         userService.addTenantsByAppInformation(authUserDto);
-        generateAndAddAuthToken(authUserDto, subrogation, api);
-        createEventsSubrogation(user, subrogation);
+        final Subrogation activeSubrogation = subrogation
+            ? subrogationRepository.findOneBySurrogateAndSurrogateCustomerId(user.getEmail(), user.getCustomerId())
+            : null;
+        generateAndAddAuthToken(authUserDto, activeSubrogation, subrogation, api);
+        createEventsSubrogation(user, activeSubrogation);
         return authUserDto;
     }
 
@@ -652,12 +655,8 @@ public class CasService {
         }
     }
 
-    private void createEventsSubrogation(final UserDto surrogate, final boolean isSubrogation) {
-        if (isSubrogation) {
-            final Subrogation subro = subrogationRepository.findOneBySurrogateAndSurrogateCustomerId(
-                surrogate.getEmail(),
-                surrogate.getCustomerId()
-            );
+    private void createEventsSubrogation(final UserDto surrogate, final Subrogation subro) {
+        if (subro != null) {
             final EventType type;
             if (surrogate.getType().equals(UserTypeEnum.GENERIC)) {
                 type = EventType.EXT_VITAMUI_START_SURROGATE_GENERIC;
@@ -679,7 +678,12 @@ public class CasService {
         return set;
     }
 
-    private void generateAndAddAuthToken(final AuthUserDto user, final boolean isSubrogation, final boolean isApi) {
+    private void generateAndAddAuthToken(
+        final AuthUserDto user,
+        final Subrogation subrogation,
+        final boolean isSubrogation,
+        final boolean isApi
+    ) {
         final Token token = new Token();
         token.setRefId(user.getId());
         final int ttlInMinutes;
@@ -696,6 +700,9 @@ public class CasService {
         token.setUpdatedDate(nowPlusXMinutes);
         token.setId(generateUniqueTicketId(TOKEN_PREFIX));
         token.setSurrogation(isSubrogation);
+        if (subrogation != null) {
+            token.setSubrogationId(subrogation.getId());
+        }
         tokenRepository.save(token);
         user.setLastConnection(OffsetDateTime.now());
         user.setAuthToken(token.getId());
