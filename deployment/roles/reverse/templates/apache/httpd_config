@@ -33,6 +33,7 @@
     SSLProxyCACertificatePath /etc/{{ apache_service }}/ca/{{ vitamui_site_name }}
 {% if vitamui_proxy_ssl_verify | default(true) | bool %}
     # Verify the backend certificate chain against the deployment CA
+    # (applies to every HTTPS backend of this vhost: CAS server and UIs with secure: true)
     SSLProxyCACertificateFile /etc/{{ apache_service }}/ca/{{ vitamui_site_name }}-bundle.crt
     SSLProxyVerify require
     SSLProxyVerifyDepth 3

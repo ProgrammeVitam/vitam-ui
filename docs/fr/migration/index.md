@@ -9,6 +9,7 @@
 * [Montée de version V8.1](./upgrade_v8_1.md)
 * [Montée de version V9.0](./upgrade_v9_0.md)
 * [Montée de version V9.1](./upgrade_v9_1.md)
+* [Montée de version V10.0](./upgrade_v10_0.md)
 * [Migration container](./migration_container.md)
 
 # Documentation de montée de versions mineures / bugfixes Vitam-UI
