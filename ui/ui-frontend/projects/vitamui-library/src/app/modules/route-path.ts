@@ -43,3 +43,19 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 export function routePath(route: ActivatedRouteSnapshot): string[] {
   return ['/', ...route.pathFromRoot.map((r) => r.url.toString()).filter((path) => path !== '')];
 }
+
+/**
+ * Router path of the given URL when it is served by this (single) application, i.e. when it is under its UI_URL:
+ * navigating to it with the router avoids reloading the page. Undefined when the URL belongs to another application.
+ */
+export function appRouterPath(url: string, uiUrl: string): string | undefined {
+  if (!url || !uiUrl) {
+    return undefined;
+  }
+  const appUrl = uiUrl.replace(/\/+$/, '');
+  const targetUrl = url.replace(/\/+$/, '');
+  if (targetUrl !== appUrl && !targetUrl.startsWith(`${appUrl}/`)) {
+    return undefined;
+  }
+  return '/' + targetUrl.substring(appUrl.length).replace(/^\/+/, '');
+}

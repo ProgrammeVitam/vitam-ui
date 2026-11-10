@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
-import { routePath } from './route-path';
+import { appRouterPath, routePath } from './route-path';
 
 function snapshot(...paths: string[][]): ActivatedRouteSnapshot {
   const pathFromRoot = paths.map((segments) => ({ url: segments.map((path) => new UrlSegment(path, {})) }));
@@ -54,5 +54,26 @@ describe('routePath', () => {
       'archive-search',
       'tenant',
     ]);
+  });
+});
+
+describe('appRouterPath', () => {
+  it('should give the router path of a URL served by this application', () => {
+    expect(appRouterPath('https://vitamui.com/identity/user', 'https://vitamui.com/')).toBe('/identity/user');
+  });
+
+  it('should give the root path for the URL of this application, with or without a trailing slash', () => {
+    expect(appRouterPath('https://vitamui.com', 'https://vitamui.com/')).toBe('/');
+    expect(appRouterPath('https://vitamui.com/', 'https://vitamui.com')).toBe('/');
+  });
+
+  it('should not give a path for a URL of another application', () => {
+    expect(appRouterPath('https://vitamui.com/portal', 'https://vitamui.com/identity')).toBeUndefined();
+    expect(appRouterPath('https://vitamui.com/identity-admin', 'https://vitamui.com/identity')).toBeUndefined();
+  });
+
+  it('should not give a path when the URL or the URL of this application is unknown', () => {
+    expect(appRouterPath(null, 'https://vitamui.com/')).toBeUndefined();
+    expect(appRouterPath('https://vitamui.com/', null)).toBeUndefined();
   });
 });

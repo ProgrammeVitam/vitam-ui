@@ -50,6 +50,7 @@ import { AppConfiguration } from './models/app.configuration.interface';
 import { AuthUser } from './models/user/auth-user.interface';
 import { UserInfo } from './models/user/user-info.interface';
 import { ThemeService } from './theme.service';
+import { appRouterPath } from './route-path';
 
 const WARNING_DURATION = 2000;
 
@@ -206,6 +207,11 @@ export class StartupService {
     }
 
     return null;
+  }
+
+  /** Router path of the portal when it is served by this (single) application, undefined otherwise (see appRouterPath). */
+  getPortalRouterPath(): string | undefined {
+    return appRouterPath(this.getPortalUrl(), this.getConfigStringValue('UI_URL'));
   }
 
   getLoginUrl(): string {
