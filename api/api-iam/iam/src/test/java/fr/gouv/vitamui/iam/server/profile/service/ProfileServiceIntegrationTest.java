@@ -469,13 +469,18 @@ public class ProfileServiceIntegrationTest extends AbstractLogbookIntegrationTes
     @Test
     void patch_acceptsTheCurrentNameButRefusesTheNameOfAnotherProfile() {
         final ProfileDto profile = createProfile(Collections.singletonList(new Role(ServicesData.ROLE_CREATE_USERS)));
-        final ProfileDto otherProfile = IamServerUtilsTest.buildProfileDto();
-        otherProfile.setId(null);
-        otherProfile.setName("otherName");
-        otherProfile.setCustomerId(profile.getCustomerId());
-        otherProfile.setTenantIdentifier(TENANT_IDENTIFIER);
-        otherProfile.setRoles(profile.getRoles());
-        service.create(otherProfile);
+        // Saved directly: the mocked sequence would give it the same identifier as the first profile.
+        repository.save(
+            IamServerUtilsTest.buildProfile(
+                "otherProfileId",
+                "otherProfileIdentifier",
+                "otherName",
+                profile.getCustomerId(),
+                TENANT_IDENTIFIER,
+                profile.getApplicationName(),
+                profile.getLevel()
+            )
+        );
         when(securityService.getLevel()).thenReturn(ApiIamConstants.ADMIN_LEVEL);
         final Map<String, Object> partialDto = new HashMap<>();
         partialDto.put("customerId", profile.getCustomerId());
