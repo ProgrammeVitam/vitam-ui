@@ -9,7 +9,7 @@
 
 - name: Check the collected addresses are IPv4 addresses
   assert:
-    that: item.ipv4.address is match('^([0-9]{1,3}\\.){3}[0-9]{1,3}$')
+    that: item.ipv4.address | default('') is match('^([0-9]{1,3}\\.){3}[0-9]{1,3}$')
     fail_msg: "Unexpected IPv4 address on {{ inventory_hostname }}"
   loop: "{{ [ansible_eth0 | default(none), ansible_eth1 | default(none)] | select | list }}"
   loop_control:
