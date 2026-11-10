@@ -79,7 +79,7 @@ import { OwnerFormComponent, OwnerFormModel } from '../owner-form/owner-form.com
 import { TranslatePipe } from '@ngx-translate/core';
 import { enabledValue } from '../../shared/signal-forms/signal-form-utils';
 
-export interface CustomerCreateModel {
+interface CustomerCreateModel {
   gdprAlert: boolean;
   gdprAlertDelay: number;
   enabled: boolean;

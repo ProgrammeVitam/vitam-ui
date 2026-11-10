@@ -46,8 +46,6 @@ export const RULE_TYPES: Option[] = [
   { key: 'HoldRule', label: 'Gel / dégel', info: '' },
 ];
 
-export const NULL_TYPE: Option[] = [{ key: null, label: 'Tous', info: '' }];
-
 export const RULE_MEASUREMENTS: Option[] = [
   { key: 'day', label: 'Jour', info: '' },
   { key: 'month', label: 'Mois', info: '' },

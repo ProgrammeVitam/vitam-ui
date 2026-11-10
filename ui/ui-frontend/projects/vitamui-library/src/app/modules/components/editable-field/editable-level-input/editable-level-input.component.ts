@@ -42,7 +42,7 @@ import { LevelInputComponent } from '../level-input/level-input.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SubLevelPipe } from './sub-level.pipe';
 
-export const EDITABLE_LEVEL_INPUT_VALUE_ACCESSOR: any = {
+const EDITABLE_LEVEL_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => EditableLevelInputComponent),
   multi: true,

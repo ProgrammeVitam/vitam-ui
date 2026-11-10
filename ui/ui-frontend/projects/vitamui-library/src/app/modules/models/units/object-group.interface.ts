@@ -144,7 +144,7 @@ export interface PhysicalDimensionsDto {
   NumberOfPage: number;
 }
 
-export interface MeasurementDto {
+interface MeasurementDto {
   dValue: number;
   unit: string;
 }

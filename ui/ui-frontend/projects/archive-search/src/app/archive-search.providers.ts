@@ -43,7 +43,6 @@ import { ArchiveUnitLifecycleHistoryService } from './archive/archive-preview/ar
 import { EntryOperationValidatorService } from './archive/archive-search/additional-actions-search/originating-agency-reassignment-dialog/entry-operation-validator.service';
 import { ReassignmentDialogService } from './archive/archive-search/additional-actions-search/originating-agency-reassignment-dialog/reassignment-dialog.service';
 import { PreservationDialogService } from './archive/archive-search/additional-actions-search/preservation-dialog/preservation-dialog.service';
-import { RuleValidator } from './archive/archive-search/rule.validator';
 import { SearchCriteriaListService } from './archive/archive-search/search-criteria-list/search-criteria-list.service';
 import { ArchiveService } from './archive/archive.service';
 import { ArchiveUnitDipService } from './archive/common-services/archive-unit-dip.service';
@@ -51,7 +50,6 @@ import { ArchiveUnitEliminationService } from './archive/common-services/archive
 import { ComputeInheritedRulesService } from './archive/common-services/compute-inherited-rules.service';
 import { UpdateUnitManagementRuleService } from './archive/common-services/update-unit-management-rule.service';
 import { PersistentIdentifierService } from './archive/persistent-identifier.service';
-import { ArchiveUnitValidatorService } from './archive/validators/archive-unit-validator.service';
 import { ManagementRulesValidatorService } from './archive/validators/management-rules-validator.service';
 import { ArchiveApiService } from './core/api/archive-api.service';
 import { PersistentIdentifierApiService } from './core/api/persistent-identifier-api.service';
@@ -71,7 +69,6 @@ export function provideArchiveSearchServices(): Provider[] {
     ArchiveUnitDipService,
     ArchiveUnitEliminationService,
     ArchiveUnitLifecycleHistoryService,
-    ArchiveUnitValidatorService,
     ComputeInheritedRulesService,
     EntryOperationValidatorService,
     ManagementRulesValidatorService,
@@ -79,7 +76,6 @@ export function provideArchiveSearchServices(): Provider[] {
     PersistentIdentifierService,
     PreservationDialogService,
     ReassignmentDialogService,
-    RuleValidator,
     SearchCriteriaListService,
     UpdateUnitManagementRuleService,
   ];

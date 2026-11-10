@@ -143,7 +143,7 @@ export function loadConfigFactory(configService: ConfigService, environment: any
   return p;
 }
 
-export function startupServiceFactory(startupService: StartupService, authService: AuthService) {
+function startupServiceFactory(startupService: StartupService, authService: AuthService) {
   // leave it like this due to run packagr issue :
   // https://github.com/ng-packagr/ng-packagr/issues/696 & https://github.com/angular/angular/issues/
   const p = () =>

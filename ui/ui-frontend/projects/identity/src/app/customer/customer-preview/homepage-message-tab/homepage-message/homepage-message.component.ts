@@ -55,7 +55,7 @@ export interface HomepageMessageModel {
   translations: HomepageMessageTranslationModel[];
 }
 
-export interface HomepageMessageFormEvent {
+interface HomepageMessageFormEvent {
   form: FieldTree<HomepageMessageModel>;
   portalTitles: {
     [language: string]: string;

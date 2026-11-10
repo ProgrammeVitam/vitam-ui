@@ -45,7 +45,7 @@ import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { MatFormField } from '@angular/material/form-field';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
-export const EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR: any = {
+const EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => EditableEmailInputComponent),
   multi: true,

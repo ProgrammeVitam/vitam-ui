@@ -40,7 +40,7 @@ import { Direction } from './direction.enum';
 import { DEFAULT_PAGE_SIZE, PageRequest } from './page-request.model';
 import { SearchService } from './search.service';
 
-export const INFINITE_SCROLL_MAX_ITEMS = 100;
+const INFINITE_SCROLL_MAX_ITEMS = 100;
 
 export class InfiniteScrollTable<T> {
   infiniteScrollDisabled = signal(false);

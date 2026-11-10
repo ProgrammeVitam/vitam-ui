@@ -36,7 +36,7 @@
  */
 import { ValidatorFn } from '@angular/forms';
 
-export interface Validators {
+interface Validators {
   readonly ruleIdPattern: ValidatorFn;
 }
 

@@ -126,7 +126,7 @@ export interface PagedResult {
   facets?: ResultFacetList[];
 }
 
-export interface Facet {
+interface Facet {
   name: string;
 }
 

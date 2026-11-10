@@ -35,8 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { SearchCriteriaDto } from 'vitamui-library';
-
 export interface ActionsRules {
   ruleType: string;
   actionType: string;
@@ -45,17 +43,7 @@ export interface ActionsRules {
   stepValid: boolean;
 }
 
-export interface ActionCounter {
-  actionType: string;
-  actionCounter: number;
-}
-
-export interface RuleSearchCriteriaDto {
-  searchCriteriaDto: SearchCriteriaDto;
-  ruleActions: RuleActions;
-}
-
-export interface RuleAction {
+interface RuleAction {
   rule: string;
   name?: string;
   startDate?: string;
@@ -83,52 +71,8 @@ export interface RuleCategoryAction {
   preventRulesIdToRemove?: string[];
 }
 
-export interface RuleCat {
-  ruleCat: string;
-  ruleCategoryAction: RuleCategoryAction;
-}
-
-export interface RuleActions {
-  add: any[];
-  update: any[];
-  delete: any[];
-}
-
-export interface RuleCategoryActionDeletion {
-  rules?: RuleActions[];
-  finalAction?: string;
-  classificationAudience?: string;
-  classificationReassessingDate?: string;
-  needReassessingAuthorization?: boolean;
-  preventInheritance?: boolean;
-  preventRulesId?: string[];
-  preventRulesIdToRemove?: string[];
-}
-
-export interface ManagementMetadataAction {
-  archiveUnitProfile: string;
-}
-
-export interface VitamUiRuleActions {
-  actionType: string;
-  ruleCategories: string[];
-  ruleCatgoryAction: RuleCategoryAction;
-}
-
 export interface ManagementRules {
   category: string;
   ruleCategoryAction: RuleCategoryAction;
   actionType: string;
-}
-
-export enum RuleActionsEnum {
-  ADD_RULES = 'ADD_RULES',
-  UPDATE_PROPERTY = 'UPDATE_PROPERTY',
-  UPDATE_RULES = 'UPDATE_RULES',
-  DELETE_RULES = 'DELETE_RULES',
-  DELETE_PROPERTY = 'DELETE_PROPERTY',
-  BLOCK_CATEGORY_INHERITANCE = 'BLOCK_CATEGORY_INHERITANCE',
-  UNLOCK_CATEGORY_INHERITANCE = 'UNLOCK_CATEGORY_INHERITANCE',
-  BLOCK_RULE_INHERITANCE = 'BLOCK_RULE_INHERITANCE',
-  UNLOCK_RULE_INHERITANCE = 'UNLOCK_RULE_INHERITANCE',
 }

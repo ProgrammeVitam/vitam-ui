@@ -36,12 +36,10 @@
  */
 import { Provider } from '@angular/core';
 import { APP_ROUTE_PREFIX, BASE_URL } from './injection-tokens';
-import { MetadataApiService } from '../../lib/api/metadata-api.service';
 import { SearchUnitApiService } from '../../lib/api/search-unit-api.service';
 import { DiscussionService } from '../../lib/components/discussions/discussion.service';
 import { FilingPlanService } from '../../lib/components/filing-plan/filing-plan.service';
 import { ReclassificationValidatorService } from '../../lib/components/reclassification-dialog/reclassification-validator.service';
-import { MetadataService } from '../../lib/services/metadata.service';
 import { ActiveTenantGuard } from './active-tenant.guard';
 import { AgencyApiService } from './agencies/agency-api.service';
 import { AgencyService } from './agencies/agency.service';
@@ -117,8 +115,6 @@ export function provideVitamuiApiServices(): Provider[] {
     GriffinsService,
     LogbookApiService,
     LogbookService,
-    MetadataApiService,
-    MetadataService,
     OntologyApiService,
     OntologyService,
     PreservationScenariosApiService,

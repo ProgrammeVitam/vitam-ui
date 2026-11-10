@@ -35,18 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { PositionType } from '../../app/modules/models/position/position-type.enum';
-import { MetadataPermission } from '../models/metadata.interface';
+
 import { Unit } from '../../app/modules/models/units/unit.interface';
-
-export function getBooleanValue(unit: Unit, key: string): boolean {
-  const value = getKeywordValue(unit, key);
-
-  return value === 'true';
-}
-
-export function getPositionType(unit: Unit): PositionType {
-  return getKeywordValue(unit, 'position_type') as PositionType;
-}
 
 export function getKeywordValue(unit: Unit, keywordReference: string): string {
   if (!unit.Keyword) {
@@ -56,14 +46,4 @@ export function getKeywordValue(unit: Unit, keywordReference: string): string {
   const keyword = unit.Keyword.find((k) => k.KeywordReference === keywordReference);
 
   return keyword ? (keyword.KeywordContent as PositionType) : null;
-}
-
-export function getMetadataPermission(unit: Unit): MetadataPermission[] {
-  const serializedMetadata = getKeywordValue(unit, 'metadata');
-
-  if (!serializedMetadata) {
-    return [];
-  }
-
-  return JSON.parse(serializedMetadata);
 }

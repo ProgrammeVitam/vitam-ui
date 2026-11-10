@@ -63,7 +63,7 @@ export interface DefaultGriffin {
   ActionDetail: ActionDetail[];
 }
 
-export interface ActionValues {
+interface ActionValues {
   Extension: string;
   Args: string[];
   FilteredExtractedObjectGroupData: string[];
@@ -78,7 +78,7 @@ export enum ActionType {
   EXTRACT_AU = 'EXTRACT_AU',
 }
 
-export interface ActionDetail {
+interface ActionDetail {
   Type: ActionType;
   Values: ActionValues;
 }
