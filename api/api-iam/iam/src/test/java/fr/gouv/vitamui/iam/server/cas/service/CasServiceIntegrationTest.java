@@ -194,6 +194,8 @@ public class CasServiceIntegrationTest extends AbstractMongoTests {
             userService.findUserByEmailAndCustomerId(surrogate.getEmail(), surrogate.getCustomerId())
         ).thenReturn(surrogate);
         Mockito.when(userService.loadGroupAndProfiles(surrogate)).thenReturn(authUser);
+        // The start of subrogation event needs the proof tenant of the super user's customer: out of scope here.
+        casService.setIamLogbookService(Mockito.mock(IamLogbookService.class));
         Mockito.when(
             subrogationRepository.findOneBySurrogateAndSurrogateCustomerId(
                 surrogate.getEmail(),
