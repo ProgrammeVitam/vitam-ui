@@ -54,12 +54,12 @@ public class CustomOidcRevocationEndpointController extends OidcRevocationEndpoi
             LOGGER.error("Provided token [{}] has not been found in the ticket registry", token);
         } else if (isRefreshToken(registryToken) || isAccessToken(registryToken)) {
             // Custom : Don't check clientId to allow revoke token to all services (SSO)
-            revokeIamToken(registryToken);
             if (isRefreshToken(registryToken)) {
                 revokeToken((OAuth20RefreshToken) registryToken);
             } else {
                 revokeToken(registryToken.getId());
             }
+            revokeIamToken(registryToken);
         } else {
             LOGGER.error("Provided token [{}] is either not a refresh token or not an access token", token);
             return OAuth20Utils.writeError(response, OAuth20Constants.INVALID_REQUEST);
@@ -73,6 +73,12 @@ public class CustomOidcRevocationEndpointController extends OidcRevocationEndpoi
     /**
      * The access token identifier is the IAM auth token, which authenticates the API calls on its own: it is revoked
      * in IAM as well, the same way a CAS logout does. IAM ignores a token it no longer knows.
+     *
+     * <p>This is done once the CAS token is revoked and on a best-effort basis: an IAM failure is logged but does not
+     * fail the revocation, so that clients can still log out while IAM is unavailable.
+     *
+     * <p>The ticket-granting ticket is left alive: an access token obtained afterwards through it carries the revoked
+     * IAM token and is refused by the APIs. A revocation must therefore be followed by the CAS logout, as the UI does.
      */
     private void revokeIamToken(final OAuth20Token registryToken) {
         final var attributes = registryToken.getAuthentication().getPrincipal().getAttributes();
@@ -81,10 +87,14 @@ public class CustomOidcRevocationEndpointController extends OidcRevocationEndpoi
             LOGGER.debug("Token [{}] carries no IAM token", registryToken.getId());
             return;
         }
-        casApi.logout(
-            authToken,
-            (String) utils.getAttributeValue(attributes, SUPER_USER_ATTRIBUTE),
-            (String) utils.getAttributeValue(attributes, SUPER_USER_CUSTOMER_ID_ATTRIBUTE)
-        );
+        try {
+            casApi.logout(
+                authToken,
+                (String) utils.getAttributeValue(attributes, SUPER_USER_ATTRIBUTE),
+                (String) utils.getAttributeValue(attributes, SUPER_USER_CUSTOMER_ID_ATTRIBUTE)
+            );
+        } catch (final RuntimeException e) {
+            LOGGER.warn("Cannot revoke in IAM the IAM token of the revoked token [{}]", registryToken.getId(), e);
+        }
     }
 }
