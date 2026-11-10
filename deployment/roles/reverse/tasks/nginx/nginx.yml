@@ -31,6 +31,15 @@
   notify: reload nginx
   when: vitamui_reverse_external_protocol | lower == 'https'
 
+- name: Ensure CA certificates are available to verify the CAS server certificate
+  assert:
+    that: query('fileglob', inventory_dir + '/certs/vitamui-services/ca/*.crt') | length > 0
+    fail_msg: "No CA certificate found in {{ inventory_dir }}/certs/vitamui-services/ca/ to verify the CAS server certificate. Add the CA or set vitamui_proxy_ssl_verify to false."
+    quiet: true
+  when:
+    - vitamui.cas_server.secure | default(secure) | bool
+    - vitamui_proxy_ssl_verify | default(true) | bool
+
 - name: Add CA bundle used to verify the CAS server certificate
   copy:
     content: "{% for ca in query('fileglob', inventory_dir + '/certs/vitamui-services/ca/*.crt') | sort %}{{ lookup('file', ca) }}\n{% endfor %}"
