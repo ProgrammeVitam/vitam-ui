@@ -40,9 +40,7 @@ import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { BASE_URL } from '../injection-tokens';
-import { AppConfiguration } from '../models/app.configuration.interface';
 import { Application } from '../models/application/application.interface';
-import { AttachmentType } from '../models/customer/theme/attachmentType.enum';
 import { IdentifierName } from '../models/application/identifier-name.interface';
 
 @Injectable({
@@ -69,14 +67,6 @@ export class ApplicationApiService {
 
   isApplicationExternalIdentifierEnabled(id: string): Observable<boolean> {
     return this.http.get<boolean>(this.apiUrl + '/' + id + '/externalid');
-  }
-
-  getConfiguration(): Observable<AppConfiguration> {
-    return this.http.get<AppConfiguration>(this.apiUrl + '/conf');
-  }
-
-  getAsset(assets: AttachmentType[]): Observable<AppConfiguration> {
-    return this.http.get<AppConfiguration>(`${this.apiUrl}/asset?assets=${assets}`);
   }
 
   getLocalAsset(fileName: string): Observable<string> {

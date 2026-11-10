@@ -67,24 +67,18 @@ export class AuthenticationInterceptor implements HttpInterceptor {
 
     /**
      * Wait for the configuration to be loaded and add OAuth bearer token header.
-     * Only if the url is in the list of allowed urls and Gateway is enabled.
+     * Only if the url is in the list of allowed urls.
      */
     return this.configService.config$.pipe(
       first((config) => !!config),
       switchMap((_) => {
-        const sendAccessToken = this.configService.config?.GATEWAY_ENABLED;
-        const authorizationHeaderName = this.configService.config?.AUTHORIZATION_HEADER_NAME || 'Authorization';
-        if (sendAccessToken) {
-          if (!this.checkUrl(url)) {
-            return next.handle(req);
-          }
-          const token = this.authStorage.getItem('access_token');
-          const header = 'Bearer ' + token;
-          const headers = req.headers.set(authorizationHeaderName, header);
-          req = req.clone({ headers });
+        if (!this.checkUrl(url)) {
+          return next.handle(req);
         }
-
-        return next.handle(req);
+        const authorizationHeaderName = this.configService.config?.AUTHORIZATION_HEADER_NAME || 'Authorization';
+        const token = this.authStorage.getItem('access_token');
+        const headers = req.headers.set(authorizationHeaderName, 'Bearer ' + token);
+        return next.handle(req.clone({ headers }));
       }),
     );
   }
