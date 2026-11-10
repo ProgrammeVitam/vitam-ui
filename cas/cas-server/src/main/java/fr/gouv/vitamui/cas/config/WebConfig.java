@@ -43,6 +43,7 @@ import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.cas.web.CustomCorsProcessor;
 import fr.gouv.vitamui.cas.web.CustomOidcCasClientRedirectActionBuilder;
 import fr.gouv.vitamui.cas.web.CustomOidcRevocationEndpointController;
+import fr.gouv.vitamui.cas.x509.ConnectionPeerAddressValve;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import org.apereo.cas.configuration.CasConfigurationProperties;
@@ -64,6 +65,8 @@ import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointPr
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
 import org.springframework.boot.actuate.endpoint.web.PathMappedEndpoints;
 import org.springframework.boot.autoconfigure.web.WebProperties;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -135,6 +138,12 @@ public class WebConfig {
         final Utils utils
     ) {
         return new ResetPasswordController(utils, passwordResetUrlBuilder);
+    }
+
+    /** Lets the x509 certificate extractor check the proxy the connection comes from. */
+    @Bean
+    public WebServerFactoryCustomizer<TomcatServletWebServerFactory> connectionPeerAddressCustomizer() {
+        return factory -> factory.addEngineValves(new ConnectionPeerAddressValve());
     }
 
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)

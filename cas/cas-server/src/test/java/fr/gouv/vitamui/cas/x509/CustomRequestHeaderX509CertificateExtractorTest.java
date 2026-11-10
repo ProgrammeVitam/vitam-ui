@@ -29,7 +29,7 @@ public class CustomRequestHeaderX509CertificateExtractorTest {
     }
 
     @Test
-    public void readsTheHeaderSetByATrustedProxy() {
+    public void shouldReadTheHeaderSetByATrustedProxy() {
         final var extractor = new CustomRequestHeaderX509CertificateExtractor(HEADER, false, List.of("10.0.0.1"));
 
         final var certificates = extractor.extract(request("10.0.0.1"));
@@ -39,29 +39,48 @@ public class CustomRequestHeaderX509CertificateExtractorTest {
     }
 
     @Test
-    public void acceptsATrustedProxyRange() {
+    public void shouldAcceptATrustedProxyRange() {
         final var extractor = new CustomRequestHeaderX509CertificateExtractor(HEADER, false, List.of(" 10.0.0.0/24 "));
 
         assertNotNull(extractor.extract(request("10.0.0.42")));
     }
 
     @Test
-    public void ignoresTheHeaderOfAnotherClient() {
+    public void shouldIgnoreTheHeaderOfAnotherClient() {
         final var extractor = new CustomRequestHeaderX509CertificateExtractor(HEADER, false, List.of("10.0.0.1"));
 
         assertNull(extractor.extract(request("192.168.1.10")));
     }
 
     @Test
-    public void ignoresTheHeaderWhenNoProxyIsTrusted() {
+    public void shouldIgnoreTheHeaderWhenNoProxyIsTrusted() {
         final var extractor = new CustomRequestHeaderX509CertificateExtractor(HEADER, false, List.of());
 
         assertNull(extractor.extract(request("127.0.0.1")));
     }
 
-    private static MockHttpServletRequest request(final String remoteAddr) {
+    @Test
+    public void shouldIgnoreTheForwardedAddressOfATrustedProxy() {
+        final var extractor = new CustomRequestHeaderX509CertificateExtractor(HEADER, false, List.of("10.0.0.1"));
+        final var request = request("192.168.1.10");
+        request.setRemoteAddr("10.0.0.1");
+
+        assertNull(extractor.extract(request));
+    }
+
+    @Test
+    public void shouldIgnoreTheHeaderWhenTheConnectionAddressIsUnknown() {
+        final var extractor = new CustomRequestHeaderX509CertificateExtractor(HEADER, false, List.of("10.0.0.1"));
+        final var request = request("10.0.0.1");
+        request.removeAttribute(ConnectionPeerAddressValve.PEER_ADDRESS_ATTRIBUTE);
+        request.setRemoteAddr("10.0.0.1");
+
+        assertNull(extractor.extract(request));
+    }
+
+    private static MockHttpServletRequest request(final String connectionAddress) {
         final var request = new MockHttpServletRequest();
-        request.setRemoteAddr(remoteAddr);
+        request.setAttribute(ConnectionPeerAddressValve.PEER_ADDRESS_ATTRIBUTE, connectionAddress);
         request.addHeader(HEADER, apacheHeader);
         return request;
     }

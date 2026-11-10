@@ -151,8 +151,10 @@ https://dev.vitamui.com:8080/cas/login).
 **Warnings:**
 - For now, the above configuration is only available locally. VitamUI Ansible configuration must be updated to support
   these settings.
-- `vitamui.authn.x509.trusted-proxies` is matched against the address of the connection that reaches CAS. List only
-  the proxies that set the certificate header, and make sure that header cannot reach CAS any other way.
+- `vitamui.authn.x509.trusted-proxies` is matched against the address of the peer of the TCP connection that reaches
+  CAS (Tomcat's peer address), never against the address that `X-Forwarded-For` claims: the `RemoteIpValve` installed
+  by `server.tomcat.remoteip.*` does not affect it. List only the proxies that set the certificate header, and make
+  sure that header cannot reach CAS any other way.
 - Certificate authentication does work NOT with subrogation (superuser cannot be authenticated with X509 certificate).
 - Only ONE organization may use x509 certificate authentication per email domain; CAS has no means to know to which
   organization a certificate belongs.

@@ -48,6 +48,10 @@ import java.util.List;
  * <p>The certificate header is set by the reverse proxy that terminates the client TLS connection, so it is only read
  * on requests whose connection comes from one of the configured trusted proxies (IP addresses or CIDR ranges). With
  * no trusted proxy configured, the header is never read.
+ *
+ * <p>The address of the connection is the one exposed by {@link ConnectionPeerAddressValve}, not
+ * {@link HttpServletRequest#getRemoteAddr()}, which the {@code RemoteIpValve} takes from {@code X-Forwarded-For}.
+ * Without that address, the header is never read either.
  */
 @Slf4j
 public class CustomRequestHeaderX509CertificateExtractor implements X509CertificateExtractor {
@@ -99,11 +103,12 @@ public class CustomRequestHeaderX509CertificateExtractor implements X509Certific
             LOGGER.debug("Certificates not found via custom header: {}", customCertificateHeader);
             return null;
         }
-        if (!isFromTrustedProxy(request)) {
+        final Object peerAddress = request.getAttribute(ConnectionPeerAddressValve.PEER_ADDRESS_ATTRIBUTE);
+        if (!(peerAddress instanceof final String connectionAddress) || !isTrustedProxy(connectionAddress)) {
             LOGGER.warn(
-                "Certificate header [{}] ignored: the request comes from [{}], which is not a trusted proxy",
+                "Certificate header [{}] ignored: the connection comes from [{}], which is not a trusted proxy",
                 customCertificateHeader,
-                request.getRemoteAddr()
+                peerAddress
             );
             return null;
         }
@@ -135,10 +140,10 @@ public class CustomRequestHeaderX509CertificateExtractor implements X509Certific
         return certificates;
     }
 
-    private boolean isFromTrustedProxy(final HttpServletRequest request) {
-        final String remoteAddr = request.getRemoteAddr();
+    private boolean isTrustedProxy(final String connectionAddress) {
         return (
-            StringUtils.isNotBlank(remoteAddr) && trustedProxies.stream().anyMatch(proxy -> proxy.matches(remoteAddr))
+            StringUtils.isNotBlank(connectionAddress) &&
+            trustedProxies.stream().anyMatch(proxy -> proxy.matches(connectionAddress))
         );
     }
 
