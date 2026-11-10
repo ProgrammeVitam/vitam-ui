@@ -50,6 +50,7 @@ import {
   DatepickerComponent,
   EditableInputComponent,
   FormFieldValueWrapperComponent,
+  getSchemaElementLabel,
   ItemNode,
   Option,
   SchemaElement,
@@ -387,7 +388,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     const parent = path.reduce((acc, p) => acc.children.find((o) => o.item.FieldName === p), {
       children: this.otherCriteriaOptions(),
     } as ItemNode<SchemaElement>);
-    return `${criteria.ShortName}${parent?.item ? ` (${parent.item.ShortName})` : ''}`;
+    return getSchemaElementLabel(criteria, parent?.item);
   }
 
   toggleArchiveUnitCriteria(archiveUnitType: ArchiveUnitType, event: MatCheckboxChange) {

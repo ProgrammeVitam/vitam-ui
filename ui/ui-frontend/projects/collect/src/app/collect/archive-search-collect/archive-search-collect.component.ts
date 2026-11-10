@@ -980,6 +980,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       criteria.valueTranslated,
       criteria.dataType,
       false,
+      criteria.keyLabel,
     );
   }
 
@@ -1543,6 +1544,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     valueTranslated: boolean,
     dataType: string,
     emit: boolean,
+    keyLabel?: string,
   ) {
     this.archiveHelperService.addCriteria(
       this.searchCriterias,
@@ -1557,6 +1559,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       valueTranslated,
       dataType,
       emit,
+      keyLabel,
     );
     // The helper mutates the keys array in place: publish a new reference so zoneless change detection re-renders the chips.
     this.searchCriteriaKeys.set([...this.searchCriteriaKeys()]);
