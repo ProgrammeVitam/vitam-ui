@@ -76,6 +76,7 @@ export class ArchiveSearchHelperService {
     valueTranslated: boolean,
     dataType: string,
     emit: boolean,
+    keyLabel?: string,
   ) {
     if (!keyElt) {
       return;
@@ -123,6 +124,9 @@ export class ArchiveSearchHelperService {
     let criteria: CriteriaSearchCriteria;
     if (searchCriterias.has(keyElt)) {
       criteria = searchCriterias.get(keyElt);
+      if (keyLabel && !criteria.keyLabel) {
+        criteria.keyLabel = keyLabel;
+      }
       let values = criteria.values;
       if (!values || values.length === 0) {
         values = [];
@@ -176,6 +180,7 @@ export class ArchiveSearchHelperService {
       });
       const criteriaToAdd = {
         key: keyElt,
+        keyLabel,
         values,
         operator,
         category,

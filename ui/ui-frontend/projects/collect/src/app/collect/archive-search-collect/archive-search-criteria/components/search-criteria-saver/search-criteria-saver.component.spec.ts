@@ -41,15 +41,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
+import { provideTranslateService } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
 import { of } from 'rxjs';
 import {
   CriteriaDataType,
   CriteriaOperator,
+  CriteriaSearchCriteria,
   InjectorModule,
   LoggerModule,
   SearchCriteriaEltements,
   SearchCriteriaHistory,
+  SearchCriteriaStatusEnum,
+  SearchCriteriaTypeEnum,
   SnackBarService,
 } from 'vitamui-library';
 import { VitamInternalFields } from '../../models/utils';
@@ -228,6 +232,78 @@ describe('SearchCriteriaSaverComponent', () => {
         expect(component.criteriaToUpdate.savingDate).toBeDefined();
         expect(component.criteriaToUpdate.savingDate).not.toBeNull();
       });
+    });
+  });
+
+  describe('keyLabel display', () => {
+    let keyLabelFixture: ComponentFixture<SearchCriteriaSaverComponent>;
+    let keyLabelComponent: SearchCriteriaSaverComponent;
+
+    const buildOriginalSearchCriteria = (keyLabel?: string) =>
+      new Map<string, CriteriaSearchCriteria>([
+        [
+          'Extended.Ext1',
+          {
+            key: 'Extended.Ext1',
+            keyLabel,
+            operator: CriteriaOperator.EQ,
+            category: SearchCriteriaTypeEnum.FIELDS,
+            keyTranslated: false,
+            valueTranslated: false,
+            dataType: CriteriaDataType.STRING,
+            values: [
+              {
+                value: { id: 'foo', value: 'foo' },
+                label: 'foo',
+                status: SearchCriteriaStatusEnum.INCLUDED,
+                keyTranslated: false,
+                valueTranslated: false,
+              },
+            ],
+          },
+        ],
+      ]);
+
+    const configureWithOriginalSearchCriteria = async (originalSearchCriteria: Map<string, CriteriaSearchCriteria>) => {
+      TestBed.resetTestingModule();
+      await TestBed.configureTestingModule({
+        imports: [BrowserAnimationsModule, InjectorModule, LoggerModule.forRoot(), SearchCriteriaSaverComponent, MockTruncatePipe],
+        providers: [
+          provideTranslateService(),
+          ArchiveSharedDataService,
+          DatePipe,
+          { provide: MatDialogRef, useValue: matDialogRefSpy },
+          { provide: MatDialog, useValue: matDialogRefSpy },
+          { provide: SearchCriteriaSaverService, useValue: SearchCriteriaSaverServiceStub },
+          { provide: MAT_DIALOG_DATA, useValue: { originalSearchCriteria } },
+          {
+            provide: ActivatedRoute,
+            useValue: {
+              params: of({ tenantIdentifier: 1 }),
+              data: of({ appId: 'COLLECT_APP' }),
+              snapshot: { data: { appId: 'COLLECT_APP' } },
+            },
+          },
+          { provide: environment, useValue: environment },
+          { provide: SnackBarService, useValue: {} },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+      keyLabelFixture = TestBed.createComponent(SearchCriteriaSaverComponent);
+      keyLabelComponent = keyLabelFixture.componentInstance;
+      keyLabelFixture.detectChanges();
+    };
+
+    it('should use the keyLabel as display label instead of the translated key when set', async () => {
+      await configureWithOriginalSearchCriteria(buildOriginalSearchCriteria('My external field (Extension)'));
+
+      expect(keyLabelComponent.displaySearchCriterias[0].label).toEqual('My external field (Extension)');
+    });
+
+    it('should fall back to the translated key when no keyLabel is set', async () => {
+      await configureWithOriginalSearchCriteria(buildOriginalSearchCriteria(undefined));
+
+      expect(keyLabelComponent.displaySearchCriterias[0].label).not.toEqual('My external field (Extension)');
     });
   });
 });
