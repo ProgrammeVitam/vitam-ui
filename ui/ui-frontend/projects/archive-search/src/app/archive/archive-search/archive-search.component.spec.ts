@@ -237,6 +237,12 @@ describe('ArchiveSearchComponent', () => {
       expect(component.showCriteriaPanel()).toBeFalsy();
     });
 
+    it('should open the persistent identifier search page of the feature', () => {
+      component.goToPersistentIdentifierSearchPage();
+
+      expect(TestBed.inject(Router).navigate).toHaveBeenCalledWith(['/archive-search/persistent-identifier-search'], {});
+    });
+
     it('should call hasArchiveSearchRole', () => {
       vi.spyOn(archiveServiceStub, 'hasArchiveSearchRole');
       // When

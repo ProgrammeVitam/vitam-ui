@@ -38,7 +38,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslateLoader } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { LoggerModule, ObjectQualifierType } from 'vitamui-library';
+import { Router } from '@angular/router';
+import { APP_ROUTE_PREFIX, LoggerModule, ObjectQualifierType, TenantSelectionService } from 'vitamui-library';
 import { FoundObjectModalComponent } from './found-object-modal.component';
 
 class FakeTranslateLoader implements TranslateLoader {
@@ -67,6 +68,8 @@ describe('ErrorResponseModalComponent', () => {
     await TestBed.configureTestingModule({
       imports: [LoggerModule.forRoot(), FoundObjectModalComponent],
       providers: [
+        { provide: APP_ROUTE_PREFIX, useValue: '/feature' },
+        { provide: TenantSelectionService, useValue: { getSelectedTenant: () => ({ identifier: 1 }) } },
         {
           provide: MatDialogRef,
           useValue: matDialogRefSpy,
@@ -78,7 +81,7 @@ describe('ErrorResponseModalComponent', () => {
             object: {
               '#id': '',
               '#tenant': '',
-              '#unitups': [],
+              '#unitups': ['unitId'],
               '#allunitups': [],
               '#operations': [],
               '#opi': '',
@@ -121,5 +124,13 @@ describe('ErrorResponseModalComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should look up the unit in the archive search of the feature', () => {
+    const navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+    component.lookupUnit();
+
+    expect(matDialogRefSpy.close).toHaveBeenCalled();
+    expect(navigate).toHaveBeenCalledWith(['/feature/archive-search/tenant/', 1], { queryParams: { GUID: 'unitId' } });
   });
 });

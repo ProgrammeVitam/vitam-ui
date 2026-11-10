@@ -39,10 +39,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { AgencyService, InjectorModule, LoggerModule, SecurityService, WINDOW_LOCATION } from 'vitamui-library';
+import { AgencyService, APP_ROUTE_PREFIX, InjectorModule, LoggerModule, SecurityService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { AgencyComponent } from './agency.component';
 
@@ -90,6 +90,7 @@ describe('AgencyComponent', () => {
           },
         },
         { provide: WINDOW_LOCATION, useValue: window.location },
+        { provide: APP_ROUTE_PREFIX, useValue: '/feature' },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -103,5 +104,17 @@ describe('AgencyComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should open the edition page of the feature for the created agency', () => {
+    const navigateByUrl = vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
+    vi.spyOn(component.dialog, 'open').mockReturnValue({
+      afterClosed: () => of({ action: 'edit', agency: { identifier: 'agency123' } }),
+    } as any);
+    component.tenantIdentifier = 1;
+
+    component.openCreateAgencyDialog();
+
+    expect(navigateByUrl).toHaveBeenCalledWith('/feature/agency/tenant/1/agencies/agency123/edit');
   });
 });

@@ -38,6 +38,10 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 
+import { Router } from '@angular/router';
+import { of } from 'rxjs';
+import { APP_ROUTE_PREFIX, TenantSelectionService } from 'vitamui-library';
+import { PersistentIdentifierService } from '../persistent-identifier.service';
 import { PersistentIdentifierSearchComponent } from './persistent-identifier-search.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
@@ -48,7 +52,19 @@ describe('PersistentIdentifierSearchComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MatDialogModule, PersistentIdentifierSearchComponent],
-      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+      providers: [
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+        { provide: APP_ROUTE_PREFIX, useValue: '/feature' },
+        { provide: TenantSelectionService, useValue: { getSelectedTenant: () => ({ identifier: 1 }) } },
+        {
+          provide: PersistentIdentifierService,
+          useValue: {
+            findUnitsByPersistentIdentifier: () => of({ $results: [{}] }),
+            findObjectsByPersistentIdentifier: () => of({}),
+          },
+        },
+      ],
     }).compileComponents();
   });
 
@@ -60,5 +76,15 @@ describe('PersistentIdentifierSearchComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should search the found unit in the archive search of the feature', () => {
+    const navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+
+    component.onSearch('ark:/123');
+
+    expect(navigate).toHaveBeenCalledWith(['/feature/archive-search/tenant/', 1], {
+      queryParams: { 'PersistentIdentifier.PersistentIdentifierContent': 'ark:/123' },
+    });
   });
 });
