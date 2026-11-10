@@ -3,6 +3,8 @@ package fr.gouv.vitamui.iam.server.user.service;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
@@ -23,7 +25,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -124,6 +128,71 @@ class UserServiceCustomerScopeTest extends AbstractLogbookIntegrationTest {
     @Test
     void history_of_another_customers_user_is_not_found() {
         assertThatThrownBy(() -> userService.findHistoryById(otherUserId)).isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void patching_a_generic_user_requires_the_generic_role() {
+        final User generic = IamServerUtilsTest.buildUser("generic", "generic@client-a.fr", "gA", CUSTOMER_A, LEVEL_A);
+        generic.setType(UserTypeEnum.GENERIC);
+        userRepository.save(generic);
+        withoutTheGenericRole();
+
+        assertThatThrownBy(() -> userService.patch(patchOf("generic", CUSTOMER_A, "firstname", "John")))
+            .isInstanceOf(ForbiddenException.class)
+            .hasMessageContaining(ServicesData.ROLE_GENERIC_USERS);
+    }
+
+    @Test
+    void patching_the_type_to_generic_requires_the_generic_role() {
+        withoutTheGenericRole();
+
+        assertThatThrownBy(() -> userService.patch(patchOf("callerA", CUSTOMER_A, "type", "GENERIC")))
+            .isInstanceOf(ForbiddenException.class)
+            .hasMessageContaining(ServicesData.ROLE_GENERIC_USERS);
+    }
+
+    @Test
+    void updating_a_generic_user_requires_the_generic_role() {
+        final User generic = IamServerUtilsTest.buildUser("generic", "generic@client-a.fr", "gA", CUSTOMER_A, LEVEL_A);
+        generic.setType(UserTypeEnum.GENERIC);
+        userRepository.save(generic);
+        withoutTheGenericRole();
+        final UserDto dto = new UserDto();
+        dto.setId("generic");
+        dto.setCustomerId(CUSTOMER_A);
+        dto.setType(UserTypeEnum.NOMINATIVE);
+
+        assertThatThrownBy(() -> userService.update(dto))
+            .isInstanceOf(ForbiddenException.class)
+            .hasMessageContaining(ServicesData.ROLE_GENERIC_USERS);
+    }
+
+    @Test
+    void the_type_of_another_customers_user_is_not_revealed_by_a_patch() {
+        withoutTheGenericRole();
+
+        // The user of the other customer is not found, whatever its type.
+        assertThatThrownBy(() -> userService.patch(patchOf(otherUserId, CUSTOMER_B, "type", "GENERIC")))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("is not allowed");
+    }
+
+    private void withoutTheGenericRole() {
+        Mockito.when(securityServiceMock.hasRole(ServicesData.ROLE_GENERIC_USERS)).thenReturn(false);
+        Mockito.lenient().when(securityServiceMock.isLevelAllowed(Mockito.any())).thenReturn(true);
+    }
+
+    private static Map<String, Object> patchOf(
+        final String id,
+        final String customerId,
+        final String key,
+        final Object value
+    ) {
+        final Map<String, Object> partialDto = new HashMap<>();
+        partialDto.put("id", id);
+        partialDto.put("customerId", customerId);
+        partialDto.put(key, value);
+        return partialDto;
     }
 
     private Optional<String> startsWith(final String field, final String value) {
