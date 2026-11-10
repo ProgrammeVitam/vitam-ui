@@ -1,6 +1,11 @@
 package fr.gouv.vitamui.iam.server.idp.service;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
+import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
@@ -17,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 
 import java.util.Arrays;
@@ -91,6 +97,40 @@ class IdentityProviderServiceTest {
         when(identityProviderRepository.existsById(any())).thenReturn(true);
 
         Mockito.when(sequenceGeneratorService.getNextSequenceId(any(), anyInt())).thenReturn(1);
+    }
+
+    @Test
+    void patch_and_entity_logs_do_not_hold_the_secrets() {
+        prepareServices();
+        final Logger logger = (Logger) LoggerFactory.getLogger(VitamUICrudService.class);
+        final Level previousLevel = logger.getLevel();
+        final ListAppender<ILoggingEvent> appender = new ListAppender<>();
+        logger.setLevel(Level.DEBUG);
+        appender.start();
+        logger.addAppender(appender);
+        try {
+            final Map<String, Object> partialDto = new HashMap<>();
+            partialDto.put("id", "idp");
+            partialDto.put("customerId", buildIdentityProviderDto().getCustomerId());
+            partialDto.put("clientSecret", "client-secret-value");
+            partialDto.put("keystorePassword", "keystore-pass-value");
+            try {
+                service.patch(partialDto);
+            } catch (final RuntimeException e) {
+                // Only the logs matter here.
+            }
+        } finally {
+            logger.detachAppender(appender);
+            logger.setLevel(previousLevel);
+        }
+
+        assertThat(appender.list)
+            .extracting(ILoggingEvent::getFormattedMessage)
+            .isNotEmpty()
+            .noneMatch(message -> message.contains("client-secret-value") || message.contains("keystore-pass-value"));
+        final IdentityProvider provider = buildIdentityProvider();
+        provider.setClientSecret("client-secret-value");
+        assertThat(provider.toString()).doesNotContain("client-secret-value");
     }
 
     @Test
