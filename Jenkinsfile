@@ -2,7 +2,7 @@ def IMPORTANT_BRANCH_OR_TAG = (env.BRANCH_NAME =~ /(develop|master_.*)/).matches
 
 pipeline {
     agent {
-        label 'build'
+        label 'build-vitamui'
     }
 
     environment {
