@@ -70,15 +70,3 @@ export const copyNodeWithoutChildren = (node: FilingHoldingSchemeNode): FilingHo
     canLoadMoreMatchingChildren: true,
   };
 };
-
-export function recursiveCheck(nodes: FilingHoldingSchemeNode[], show: boolean) {
-  if (!nodes || nodes.length === 0) {
-    return;
-  }
-  for (const node of nodes) {
-    node.hidden = false;
-    node.checked = show;
-    node.count = null;
-    this.recursiveCheck(node.children, show);
-  }
-}

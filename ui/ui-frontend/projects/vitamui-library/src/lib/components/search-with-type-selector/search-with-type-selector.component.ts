@@ -41,7 +41,7 @@ import { LowerCasePipe } from '@angular/common';
 import { FormErrorsComponent } from '../form-errors/form-errors.component';
 import { AbstractFormInputDirective } from '../abstract-form-input.directive';
 
-export const SEARCH_WITH_TYPE_SELECTOR_VALUE_ACCESSOR: any = {
+const SEARCH_WITH_TYPE_SELECTOR_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => SearchWithTypeSelectorComponent),
   multi: true,

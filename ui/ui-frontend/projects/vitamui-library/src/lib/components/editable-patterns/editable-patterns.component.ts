@@ -43,7 +43,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { EditableFieldComponent } from '../../../app/modules/components/editable-field/editable-field.component';
 import { PatternComponent } from '../pattern/pattern.component';
 
-export const EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR: any = {
+const EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
 
   useExisting: forwardRef(() => EditablePatternsComponent),

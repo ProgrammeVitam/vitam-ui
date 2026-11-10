@@ -43,7 +43,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NgClass } from '@angular/common';
 import { TruncatePipe } from '../../pipes/truncate.pipe';
 
-export const MULTIPLE_INPUT_VALUE_ACCESSOR: any = {
+const MULTIPLE_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => VitamuiMultiInputsComponent),
   multi: true,

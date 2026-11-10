@@ -57,13 +57,6 @@ export enum ReferentialTypes {
   RULE = 'rule',
 }
 
-export interface ImportError {
-  line: number;
-  column: string;
-  error: string;
-  data: string;
-}
-
 /**
  * Raised when the imported file was rejected by the backend before any operation was created
  * (e.g. invalid XML/CSV). `detail` holds the backend error message.

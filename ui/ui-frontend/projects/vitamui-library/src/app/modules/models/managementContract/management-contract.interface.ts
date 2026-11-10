@@ -92,8 +92,3 @@ export enum IntermediaryVersionEnum {
   LAST = 'LAST',
   NONE = 'NONE',
 }
-
-export enum ManagementContractStatus {
-  ACTIVE = 'ACTIVE',
-  INACTIVE = 'INACTIVE',
-}

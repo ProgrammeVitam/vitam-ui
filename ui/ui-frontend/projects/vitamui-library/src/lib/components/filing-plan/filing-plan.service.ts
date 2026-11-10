@@ -36,7 +36,7 @@
  */
 
 import { inject, Injectable, LOCALE_ID } from '@angular/core';
-import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+
 import { Observable, of, switchMap } from 'rxjs';
 import { catchError, map, shareReplay, tap } from 'rxjs/operators';
 import { FileType } from '../../../app/modules/file-type.enum';
@@ -50,12 +50,6 @@ import { Node } from '../../models/node.interface';
 
 import { getKeywordValue } from '../../utils/keyword.util';
 import { HttpHeaders } from '@angular/common/http';
-
-export enum ExpandLevel {
-  NONE,
-  ROOT_ONLY,
-  ALL,
-}
 
 export enum FilingPlanMode {
   SOLO,
@@ -156,18 +150,4 @@ function byTitle(locale: string): (a: Node, b: Node) => number {
 
 export function fetchTitle(title: string, titleInLanguages: any) {
   return title ? title : titleInLanguages ? (titleInLanguages.fr ? titleInLanguages.fr : titleInLanguages.en) : titleInLanguages.en;
-}
-
-/** Required at least one node in included */
-export function oneIncludedNodeRequired(): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const nodes: { included: string[]; excluded: string[] } = control.value;
-    if (!nodes) {
-      return { missingNodes: { value: 'nodes required' } };
-    }
-    if (!nodes.included || nodes.included.length < 1) {
-      return { missingIncludedNodes: { value: 'included nodes required' } };
-    }
-    return null;
-  };
 }

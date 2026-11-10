@@ -42,7 +42,7 @@ import { EllipsisDirective, InputComponent } from 'vitamui-library';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 
-export const UNITS_FORM_VALUE_ACCESSOR: any = {
+const UNITS_FORM_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => UnitsFormComponent),
   multi: true,

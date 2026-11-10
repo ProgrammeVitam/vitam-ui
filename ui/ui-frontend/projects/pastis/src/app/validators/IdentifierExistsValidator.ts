@@ -42,7 +42,7 @@ import { ProfileService } from '../core/services/profile.service';
 import { ArchivalProfileUnit } from '../models/archival-profile-unit';
 import { Profile } from '../models/profile';
 
-export const IDENTIFIER_EXIST_ERROR_KEY = 'identifierExist';
+const IDENTIFIER_EXIST_ERROR_KEY = 'identifierExist';
 
 @Injectable({
   providedIn: 'root',

@@ -3,6 +3,11 @@
   // Setup files of the @angular/build:unit-test builder (angular.json "setupFiles"),
   // not detected by the knip Angular plugin.
   "entry": ["test.ts", "projects/*/test.ts"],
+  "rules": {
+    // Enums mirror backend contracts (roles, statuses, action types) and some are
+    // iterated with Object.values(), which knip does not see (e.g. PreservationUsage).
+    "enumMembers": "off"
+  },
   "husky": {
     "config": ["../../.husky/pre-commit"]
   },

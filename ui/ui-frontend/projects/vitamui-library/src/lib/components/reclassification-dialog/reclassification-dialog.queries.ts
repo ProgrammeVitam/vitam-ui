@@ -38,14 +38,14 @@ import { CriteriaDataType, CriteriaOperator } from '../../../app/modules/models/
 import { CriteriaValue, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../../app/modules/models/criteria/search-criteria.interface';
 import { Direction } from '../../../app/modules/vitamui-table/direction.enum';
 
-export function deepCopy<T>(object: T): T {
+function deepCopy<T>(object: T): T {
   return JSON.parse(JSON.stringify(object));
 }
 export function dedupe<T>(list: T[]): T[] {
   return [...new Set(list)];
 }
 
-export const computeChildrenCountQuery = (ids: string[], options: Partial<SearchCriteriaDto>): SearchCriteriaDto => {
+const computeChildrenCountQuery = (ids: string[], options: Partial<SearchCriteriaDto>): SearchCriteriaDto => {
   return {
     criteriaList: [
       {

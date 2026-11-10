@@ -44,7 +44,7 @@ export class Event {
   }
 }
 
-export class EventData {
+class EventData {
   evId: string;
   evParentId?: string;
   evType: string;

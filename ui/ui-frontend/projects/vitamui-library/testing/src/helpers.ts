@@ -34,16 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { DebugElement } from '@angular/core';
-
 export function input(elInput: HTMLInputElement, value: string) {
   elInput.value = value;
   const customEvent = document.createEvent('CustomEvent');
   customEvent.initCustomEvent('input', false, false, null);
   elInput.dispatchEvent(customEvent);
-}
-
-export function submit(form: DebugElement) {
-  // Calling nativeElement.submit() causes the test page to refresh indefinitely so we have to use triggerEventHandler() instead
-  form.triggerEventHandler('submit', null);
 }

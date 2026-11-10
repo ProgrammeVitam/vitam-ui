@@ -35,16 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { InjectionToken } from '@angular/core';
-import { Observable } from 'rxjs';
 
-export const APP_ID = new InjectionToken<string>('APP_ID');
 export const BASE_URL = new InjectionToken<string>('BASE_URL');
-export const VITAMUI_TOOLTIP_MESSAGE = new InjectionToken<VitamUITooltipMessage>('VITAMUI_TOOLTIP_MESSAGE');
+
 export const ENVIRONMENT = new InjectionToken<any>('ENVIRONMENT');
 export const SUBROGRATION_REFRESH_RATE_MS = new InjectionToken<number>('SUBROGRATION_REFRESH_RATE_MS');
 export const WINDOW_LOCATION = new InjectionToken<Location>('WINDOW_LOCATION');
-
-export interface VitamUITooltipMessage {
-  message: string;
-  tooltipClass: Observable<string>;
-}

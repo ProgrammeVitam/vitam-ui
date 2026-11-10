@@ -55,7 +55,7 @@ import { NodeComponent } from './node.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { FormErrorsComponent } from '../form-errors/form-errors.component';
 
-export const NODE_SELECT_VALUE_ACCESSOR: any = {
+const NODE_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => FilingPlanComponent),
   multi: true,

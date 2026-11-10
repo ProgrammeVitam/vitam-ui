@@ -38,7 +38,7 @@ import { NgModule, provideAppInitializer, inject } from '@angular/core';
 import { AuthenticatorService, AuthService } from 'vitamui-library';
 import { NoAuthenticatorService } from './no-authenticator.service';
 
-export function initializeApp() {
+function initializeApp() {
   return (): Promise<any> => Promise.resolve(true);
 }
 
