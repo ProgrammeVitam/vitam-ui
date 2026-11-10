@@ -276,9 +276,9 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         givenLoginInfoInSessionForDeleguatedAuthn();
         when(providersService.getProviders()).thenReturn(new ArrayList<>());
-        when(
-            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
-        ).thenReturn(Optional.of(provider));
+        when(identityProviderHelper.findByTechnicalName(providersService.getProviders(), PROVIDER_NAME)).thenReturn(
+            Optional.of(provider)
+        );
 
         final var principal = resolver.resolve(
             new ClientCredential(null, PROVIDER_NAME),
@@ -311,9 +311,9 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             )
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         givenLoginInfoInSessionForDeleguatedAuthn();
-        when(
-            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
-        ).thenReturn(Optional.of(provider));
+        when(identityProviderHelper.findByTechnicalName(providersService.getProviders(), PROVIDER_NAME)).thenReturn(
+            Optional.of(provider)
+        );
 
         final var princAttributes = new HashMap<String, List<Object>>();
         princAttributes.put(MAIL, Collections.singletonList(USERNAME));
@@ -342,9 +342,9 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         provider.setCustomerId(CUSTOMER_ID);
         provider.setId(PROVIDER_ID);
         provider.setMailAttribute(MAIL);
-        when(
-            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
-        ).thenReturn(Optional.of(provider));
+        when(identityProviderHelper.findByTechnicalName(providersService.getProviders(), PROVIDER_NAME)).thenReturn(
+            Optional.of(provider)
+        );
 
         //  l'IdP retourne "USER@test.com"
         final var princAttributes = new HashMap<String, List<Object>>();
@@ -390,9 +390,9 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             )
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         givenLoginInfoInSessionForDeleguatedAuthn();
-        when(
-            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
-        ).thenReturn(Optional.of(provider));
+        when(identityProviderHelper.findByTechnicalName(providersService.getProviders(), PROVIDER_NAME)).thenReturn(
+            Optional.of(provider)
+        );
 
         final var princAttributes = new HashMap<String, List<Object>>();
         princAttributes.put(IDENTIFIER, Collections.singletonList(IDENTIFIER_VALUE));
@@ -427,9 +427,9 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             )
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         givenLoginInfoInSessionForDeleguatedAuthn();
-        when(
-            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
-        ).thenReturn(Optional.of(provider));
+        when(identityProviderHelper.findByTechnicalName(providersService.getProviders(), PROVIDER_NAME)).thenReturn(
+            Optional.of(provider)
+        );
 
         final var princAttributes = new HashMap<String, List<Object>>();
         princAttributes.put(MAIL, Collections.emptyList());
@@ -464,9 +464,9 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             )
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         givenLoginInfoInSessionForDeleguatedAuthn();
-        when(
-            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
-        ).thenReturn(Optional.of(provider));
+        when(identityProviderHelper.findByTechnicalName(providersService.getProviders(), PROVIDER_NAME)).thenReturn(
+            Optional.of(provider)
+        );
 
         final var princAttributes = new HashMap<String, List<Object>>();
         princAttributes.put(IDENTIFIER, Collections.emptyList());
@@ -533,9 +533,9 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             infoProfile(UserStatusEnum.ENABLED, ADMIN_ID)
         );
         givenSubrogationInfoInSessionForDeleguatedAuthn();
-        when(
-            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
-        ).thenReturn(Optional.of(providerOfCustomer(ADMIN_CUSTOMER_ID)));
+        when(identityProviderHelper.findByTechnicalName(providersService.getProviders(), PROVIDER_NAME)).thenReturn(
+            Optional.of(providerOfCustomer(ADMIN_CUSTOMER_ID))
+        );
 
         final var principal = resolver.resolve(
             new ClientCredential(null, PROVIDER_NAME),
@@ -556,9 +556,9 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     public void testResolveAuthnDelegationSurrogateRefusesAProviderOfAnotherCustomer() throws Throwable {
         givenSubrogationInfoInSessionForDeleguatedAuthn();
         // The provider belongs to the customer of the surrogated user, not to the one of the initiating account.
-        when(
-            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
-        ).thenReturn(Optional.of(providerOfCustomer(CUSTOMER_ID)));
+        when(identityProviderHelper.findByTechnicalName(providersService.getProviders(), PROVIDER_NAME)).thenReturn(
+            Optional.of(providerOfCustomer(CUSTOMER_ID))
+        );
 
         final var principal = resolver.resolve(
             new ClientCredential(null, PROVIDER_NAME),
@@ -574,9 +574,9 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     @Test
     public void testResolveAuthnDelegationRefusesAProviderOfAnotherCustomer() throws Throwable {
         givenLoginInfoInSessionForDeleguatedAuthn();
-        when(
-            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
-        ).thenReturn(Optional.of(providerOfCustomer(ADMIN_CUSTOMER_ID)));
+        when(identityProviderHelper.findByTechnicalName(providersService.getProviders(), PROVIDER_NAME)).thenReturn(
+            Optional.of(providerOfCustomer(ADMIN_CUSTOMER_ID))
+        );
 
         final var principal = resolver.resolve(
             new ClientCredential(null, PROVIDER_NAME),
@@ -607,9 +607,9 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         final var provider = new IdentityProviderDto();
         provider.setCustomerId(ADMIN_CUSTOMER_ID);
         provider.setMailAttribute(MAIL);
-        when(
-            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
-        ).thenReturn(Optional.of(provider));
+        when(identityProviderHelper.findByTechnicalName(providersService.getProviders(), PROVIDER_NAME)).thenReturn(
+            Optional.of(provider)
+        );
 
         final var princAttributes = new HashMap<String, List<Object>>();
         princAttributes.put(MAIL, Collections.singletonList(ADMIN));
@@ -647,9 +647,9 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         final var provider = new IdentityProviderDto();
         provider.setCustomerId(ADMIN_CUSTOMER_ID);
         provider.setMailAttribute(MAIL);
-        when(
-            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
-        ).thenReturn(Optional.of(provider));
+        when(identityProviderHelper.findByTechnicalName(providersService.getProviders(), PROVIDER_NAME)).thenReturn(
+            Optional.of(provider)
+        );
 
         // No mail attribute on the surrogated user's profile: CAS forwards the raw profile and IAM refuses the
         // subrogation. A refusal results in a null principal.
