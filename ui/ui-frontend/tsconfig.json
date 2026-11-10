@@ -17,10 +17,10 @@
     "noFallthroughCasesInSwitch": true,
     "paths": {
       "vitamui-library": [
-        "dist/vitamui-library"
+        "projects/vitamui-library/src/public-api.ts"
       ],
       "vitamui-library/testing": [
-        "dist/vitamui-library/testing"
+        "projects/vitamui-library/testing/src/public_api.ts"
       ]
     },
     "noUnusedLocals": true,
