@@ -52,10 +52,23 @@ export function appRouterPath(url: string, uiUrl: string): string | undefined {
   if (!url || !uiUrl) {
     return undefined;
   }
-  const appUrl = uiUrl.replace(/\/+$/, '');
-  const targetUrl = url.replace(/\/+$/, '');
+  const appUrl = trimSlashes(uiUrl, 'end');
+  const targetUrl = trimSlashes(url, 'end');
   if (targetUrl !== appUrl && !targetUrl.startsWith(`${appUrl}/`)) {
     return undefined;
   }
-  return '/' + targetUrl.substring(appUrl.length).replace(/^\/+/, '');
+  return '/' + trimSlashes(targetUrl.substring(appUrl.length), 'start');
+}
+
+/** Removes the slashes at the start or at the end of the given string (without a regular expression, which may backtrack). */
+function trimSlashes(value: string, side: 'start' | 'end'): string {
+  let start = 0;
+  let end = value.length;
+  while (side === 'start' && start < end && value[start] === '/') {
+    start++;
+  }
+  while (side === 'end' && end > start && value[end - 1] === '/') {
+    end--;
+  }
+  return value.substring(start, end);
 }
