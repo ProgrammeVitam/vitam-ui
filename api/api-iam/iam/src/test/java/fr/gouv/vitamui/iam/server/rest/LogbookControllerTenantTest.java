@@ -3,8 +3,11 @@ package fr.gouv.vitamui.iam.server.rest;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitamui.commons.api.domain.GroupDto;
+import fr.gouv.vitamui.commons.api.domain.ProfileDto;
+import fr.gouv.vitamui.commons.api.domain.Role;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
-import fr.gouv.vitamui.commons.api.domain.TenantInformationDto;
 import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
@@ -15,7 +18,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,14 +27,15 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * The optional {@code vitamTenantIdentifier} of the logbook operations search must be one of the tenants
- * available to the current user.
+ * The optional {@code vitamTenantIdentifier} of the logbook operations search must be the header tenant or a tenant
+ * on which the current user holds ROLE_LOGBOOKS.
  */
 class LogbookControllerTenantTest {
 
     private static final int HEADER_TENANT = 10;
     private static final int PROOF_TENANT = 1;
-    private static final int USER_TENANT = 11;
+    private static final int LOGBOOKS_TENANT = 11;
+    private static final int OTHER_ROLE_TENANT = 12;
     private static final int OTHER_TENANT = 99;
 
     private final LogbookService logbookService = mock(LogbookService.class);
@@ -52,12 +55,15 @@ class LogbookControllerTenantTest {
             mock(SignedDownloadTokenService.class)
         );
 
-        final TenantDto userTenant = new TenantDto();
-        userTenant.setIdentifier(USER_TENANT);
-        final TenantInformationDto tenantsOfApp = new TenantInformationDto();
-        tenantsOfApp.setTenants(Set.of(userTenant));
+        final GroupDto group = new GroupDto();
+        group.setProfiles(
+            List.of(
+                profile(LOGBOOKS_TENANT, ServicesData.ROLE_LOGBOOKS),
+                profile(OTHER_ROLE_TENANT, ServicesData.ROLE_GET_USERS)
+            )
+        );
         final AuthUserDto user = new AuthUserDto();
-        user.setTenantsByApp(List.of(tenantsOfApp));
+        user.setProfileGroup(group);
 
         when(securityService.getUser()).thenReturn(user);
         when(securityService.getProofTenantIdentifier()).thenReturn(PROOF_TENANT);
@@ -67,27 +73,45 @@ class LogbookControllerTenantTest {
         when(logbookService.selectOperations(any(), any())).thenThrow(new IllegalStateException("search done"));
     }
 
-    @Test
-    void a_tenant_not_available_to_the_user_is_refused() throws Exception {
-        assertThatThrownBy(() -> controller.findOperations(HEADER_TENANT, select, OTHER_TENANT)).isInstanceOf(
-            ForbiddenException.class
-        );
-        verify(logbookService, never()).selectOperations(any(), any());
+    private static ProfileDto profile(final int tenant, final String role) {
+        final ProfileDto profile = new ProfileDto();
+        profile.setTenantIdentifier(tenant);
+        profile.setEnabled(true);
+        profile.setRoles(List.of(new Role(role)));
+        return profile;
     }
 
     @Test
-    void one_of_the_users_tenants_is_accepted() throws Exception {
-        assertSearchUses(USER_TENANT);
+    void a_tenant_not_available_to_the_user_is_refused_before_the_tenant_lookup() throws Exception {
+        assertRefused(OTHER_TENANT);
+        verify(tenantService, never()).findByIdentifier(any());
     }
 
     @Test
-    void the_proof_tenant_is_accepted() throws Exception {
-        assertSearchUses(PROOF_TENANT);
+    void a_tenant_without_the_logbooks_role_is_refused() throws Exception {
+        assertRefused(OTHER_ROLE_TENANT);
+    }
+
+    @Test
+    void the_proof_tenant_without_the_logbooks_role_is_refused() throws Exception {
+        assertRefused(PROOF_TENANT);
+    }
+
+    @Test
+    void a_tenant_with_the_logbooks_role_is_accepted() throws Exception {
+        assertSearchUses(LOGBOOKS_TENANT);
     }
 
     @Test
     void the_header_tenant_is_accepted() throws Exception {
         assertSearchUses(HEADER_TENANT);
+    }
+
+    private void assertRefused(final int tenant) throws Exception {
+        assertThatThrownBy(() -> controller.findOperations(HEADER_TENANT, select, tenant)).isInstanceOf(
+            ForbiddenException.class
+        );
+        verify(logbookService, never()).selectOperations(any(), any());
     }
 
     private void assertSearchUses(final int tenant) throws Exception {
