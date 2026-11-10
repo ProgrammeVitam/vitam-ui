@@ -37,7 +37,7 @@
 import { Observable, switchMap, takeWhile, throwError, timer } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
 
-export interface PollingOptions<T> {
+interface PollingOptions<T> {
   until: (item: T) => boolean;
   period: number; // milliseconds between polls
   maxRetries: number; // number of retry attempts

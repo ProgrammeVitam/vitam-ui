@@ -46,11 +46,6 @@ export interface ReclassificationAction {
   $pull?: ReclassificationQueryActionType;
 }
 
-export interface ReclassificationQueryActionType {
+interface ReclassificationQueryActionType {
   '#unitups': string[];
-}
-
-export enum ReclassificationToggle {
-  RECLASSIFICATION_TOGGLE_TREE_PLAN = 'RECLASSIFICATION_TOGGLE_TREE_PLAN',
-  RECLASSIFICATION_TOGGLE_UA_ID = 'RECLASSIFICATION_TOGGLE_UA_ID',
 }

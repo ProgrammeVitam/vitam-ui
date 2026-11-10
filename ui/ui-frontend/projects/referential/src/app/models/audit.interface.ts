@@ -34,13 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export interface AuditOptions {
-  auditActions: AuditAction;
-  auditType: AuditType;
-  objectId: string;
-  query: any;
-}
-
 export enum AuditAction {
   AUDIT_FILE_EXISTING = 'AUDIT_FILE_EXISTING',
   AUDIT_FILE_INTEGRITY = 'AUDIT_FILE_INTEGRITY',
@@ -53,12 +46,6 @@ export enum AuditPerimeter {
   AUDIT_PERIMETER_INGEST_OPERATION_IDENTIFIER = 'AUDIT_PERIMETER_INGEST_OPERATION_IDENTIFIER',
   AUDIT_PERIMETER_ATTACHMENT_POSITION = 'AUDIT_PERIMETER_ATTACHMENT_POSITION',
   AUDIT_PERIMETER_INGEST_OPERATION_PERIOD = 'AUDIT_PERIMETER_INGEST_OPERATION_PERIOD',
-}
-
-export enum AuditType {
-  tenant = 'tenant',
-  originatingagency = 'originatingagency',
-  dsl = 'dsl',
 }
 
 export enum AuditOperation {

@@ -38,16 +38,16 @@ export interface ArchiveUnit extends ManagementMetadata, SystemMetadata, Descrip
   [key: string]: any;
 }
 
-export interface ManagementMetadata {
+interface ManagementMetadata {
   ArchiveUnitProfile?: string;
 }
 
-export interface SystemMetadata {
+interface SystemMetadata {
   '#id': string;
   '#unitups'?: string[];
 }
 
-export interface DescriptiveMetadata {
+interface DescriptiveMetadata {
   Title?: string;
   Description?: string;
 }

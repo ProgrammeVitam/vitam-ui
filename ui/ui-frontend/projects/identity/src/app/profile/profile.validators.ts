@@ -43,7 +43,7 @@ import { map, switchMap, take } from 'rxjs/operators';
 import { FieldPath, validateObservableWithParams } from '../shared/signal-forms/signal-form-validators';
 import { ProfileService } from './profile.service';
 
-export interface ProfileNameCheckParams {
+interface ProfileNameCheckParams {
   tenantIdentifier: number;
   level: string;
   applicationName: string;

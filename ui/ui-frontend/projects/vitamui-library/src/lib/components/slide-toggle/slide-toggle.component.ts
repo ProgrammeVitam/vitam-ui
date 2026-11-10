@@ -38,7 +38,7 @@ import { Component, forwardRef, input, model } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-export const SLIDE_TOGGLE_VALUE_ACCESSOR: any = {
+const SLIDE_TOGGLE_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => SlideToggleComponent),
   multi: true,

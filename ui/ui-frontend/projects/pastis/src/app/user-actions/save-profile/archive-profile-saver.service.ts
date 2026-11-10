@@ -43,7 +43,7 @@ import { FileNode } from '../../models/file-node';
 import { ProfileType } from '../../models/profile-type.enum';
 import { Injectable, inject } from '@angular/core';
 
-export interface FileUploadPayload {
+interface FileUploadPayload {
   profile: Profile;
   profileDescription: ProfileDescription;
   data: FileNode[];

@@ -60,7 +60,7 @@ export function levelRules<TPathKind extends PathKind = PathKind.Root>(path: Fie
   }
 }
 
-export interface ObservableWithParamsValidatorOptions<TValue, TParams, TResult, TPathKind extends PathKind> {
+interface ObservableWithParamsValidatorOptions<TValue, TParams, TResult, TPathKind extends PathKind> {
   /** Computes the parameters of the check: the check is run again (after the debounce time) each time they change. */
   readonly params: (ctx: FieldContext<TValue, TPathKind>) => TParams;
   /** Called with the parameters, once synchronous validators pass and after the debounce time. */

@@ -27,6 +27,9 @@ jobs:
       - name: Lint ui-frontend with ESLint # We run ESLint in that GitHub Action because it requires to install project's dependencies (Prettier is run in "lint" GitHub Action)
         working-directory: ui/ui-frontend
         run: npm run lint
+      - name: Check unused files, dependencies and exports in ui-frontend with knip
+        working-directory: ui/ui-frontend
+        run: npm run knip
       - name: Build ui-frontend apps
         working-directory: ui/ui-frontend
         run: npm run build:allModules

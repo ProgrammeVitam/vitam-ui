@@ -44,7 +44,7 @@ import { UserService } from '../user.service';
 import { GroupListComponent } from './group-list/group-list.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
-export const GROUP_ATTRIBUTION_VALUE_ACCESSOR: any = {
+const GROUP_ATTRIBUTION_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
 
   useExisting: forwardRef(() => GroupAttributionComponent),

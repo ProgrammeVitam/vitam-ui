@@ -43,7 +43,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TooltipDirective } from '../../../app/modules/components/common-tooltip/tooltip.directive';
 
-export const INPUT_VALUE_ACCESSOR: any = {
+const INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => InputComponent),
   multi: true,

@@ -39,7 +39,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { BASE_URL } from '../injection-tokens';
 import { Observable } from 'rxjs';
 
-export interface ArchiveUnitProfile {
+interface ArchiveUnitProfile {
   id: string;
   identifier: string;
   name: string;

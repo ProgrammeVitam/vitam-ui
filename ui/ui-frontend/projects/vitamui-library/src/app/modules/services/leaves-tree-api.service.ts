@@ -52,8 +52,8 @@ import { FacetsUtils } from '../models/criteria/facets.utils';
 
 export const DEFAULT_UNIT_PAGE_SIZE = 10;
 export const DEFAULT_LEAVES_FIRST_PAGE_SIZE = 30;
-export const ONE_ELEMENT_COUNT = 1;
-export const FIRST_PAGE_INDEX = 0;
+const ONE_ELEMENT_COUNT = 1;
+const FIRST_PAGE_INDEX = 0;
 
 const ALLUNITSUPS = '#allunitups';
 const UNITSUPS = '#unitups';

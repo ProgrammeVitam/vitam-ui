@@ -47,7 +47,7 @@ import { Converter } from './converter';
 import { PersistentIdentifierPoliciesForm } from './management-contract-to-form-model-converter.service';
 
 /** Value of a management contract form (all the properties are optional, as each form only edits some of them) */
-export interface ManagementContractFormValue extends PersistentIdentifierPoliciesForm {
+interface ManagementContractFormValue extends PersistentIdentifierPoliciesForm {
   tenant?: number;
   version?: number;
   name?: string;

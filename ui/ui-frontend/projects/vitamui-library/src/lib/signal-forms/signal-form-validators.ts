@@ -88,7 +88,7 @@ export function ruleIdPattern<TPathKind extends PathKind = PathKind.Root>(path: 
   validate(path, ({ value }) => (RULE_ID_FORBIDDEN_CHARACTERS_REGEX.test(value()) ? { kind: RULE_ID_PATTERN_ERROR_KEY } : undefined));
 }
 
-export interface ObservableValidatorOptions<TValue, TResult, TPathKind extends PathKind> {
+interface ObservableValidatorOptions<TValue, TResult, TPathKind extends PathKind> {
   /** Called with the field value, once synchronous validators pass and after the debounce time. */
   readonly stream: (value: TValue) => Observable<TResult>;
   /** Maps the stream result to validation errors. */

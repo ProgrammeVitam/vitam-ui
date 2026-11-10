@@ -108,7 +108,7 @@ export enum SigningRoleType {
   ADDITIONAL_PROOF = 'AdditionalProof',
 }
 
-export interface InheritedRuleCategoryDto {
+interface InheritedRuleCategoryDto {
   Rules: UnitRuleDto[];
   Properties: InheritedPropertyDto[];
 }
@@ -153,7 +153,7 @@ export interface UpdateOperation {
   ArchiveUnitIdentifierKey?: ArchiveUnitIdentifierKey;
 }
 
-export interface ArchiveUnitIdentifierKey {
+interface ArchiveUnitIdentifierKey {
   MetadataName: string;
   MetadataValue: string;
 }
