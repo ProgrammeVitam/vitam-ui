@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
@@ -11,6 +13,7 @@ import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
+import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.commons.test.AbstractMongoTests;
 import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
@@ -168,6 +171,48 @@ public class CasServiceIntegrationTest extends AbstractMongoTests {
             .is(EventType.EXT_VITAMUI_LOGOUT_SURROGATE);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(1);
+    }
+
+    @Test
+    void a_surrogation_token_is_bound_to_the_subrogation() {
+        final UserDto surrogate = new UserDto();
+        surrogate.setId("surrogateId");
+        surrogate.setEmail("surrogate@vitamui.com");
+        surrogate.setCustomerId("surrogateCustomerId");
+        surrogate.setType(UserTypeEnum.NOMINATIVE);
+        surrogate.setStatus(UserStatusEnum.ENABLED);
+        final AuthUserDto authUser = new AuthUserDto();
+        authUser.setId(surrogate.getId());
+        authUser.setType(UserTypeEnum.NOMINATIVE);
+        final Subrogation subro = new Subrogation();
+        subro.setId("subrogationId");
+        subro.setSuperUser("superUser@vitamui.com");
+        subro.setSuperUserCustomerId("superUserCustomerId");
+        subro.setSurrogate(surrogate.getEmail());
+        subro.setSurrogateCustomerId(surrogate.getCustomerId());
+        Mockito.when(
+            userService.findUserByEmailAndCustomerId(surrogate.getEmail(), surrogate.getCustomerId())
+        ).thenReturn(surrogate);
+        Mockito.when(userService.loadGroupAndProfiles(surrogate)).thenReturn(authUser);
+        Mockito.when(
+            subrogationRepository.findOneBySurrogateAndSurrogateCustomerId(
+                surrogate.getEmail(),
+                surrogate.getCustomerId()
+            )
+        ).thenReturn(subro);
+
+        final AuthUserDto loggedUser = (AuthUserDto) casService.getUserByEmailAndCustomerId(
+            surrogate.getEmail(),
+            surrogate.getCustomerId(),
+            CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER
+        );
+
+        assertThat(tokenRepository.findById(loggedUser.getAuthToken()))
+            .get()
+            .satisfies(token -> {
+                assertThat(token.isSurrogation()).isTrue();
+                assertThat(token.getSubrogationId()).isEqualTo("subrogationId");
+            });
     }
 
     private User prepareUserPwd(final String pwd) {

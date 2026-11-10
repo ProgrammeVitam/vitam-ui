@@ -42,6 +42,7 @@ class IamUserAuthentificationServiceTokenTest {
     private static final String SECRET = "tokcas_secret_for_tests";
     private static final String TOKEN_VALUE = "TOK-still-valid";
     private static final String SUPER_USER_EMAIL = "support@example.com";
+    private static final String SUBROGATION_ID = "subrogation-id";
     private static final String SUPER_USER_CUSTOMER_ID = "support-customer";
 
     @Mock
@@ -110,6 +111,17 @@ class IamUserAuthentificationServiceTokenTest {
     }
 
     @Test
+    void a_subrogation_token_of_an_ended_subrogation_is_rejected_after_a_new_subrogation_of_the_surrogate() {
+        final Subrogation newSubrogation = subrogation(SubrogationStatusEnum.ACCEPTED, inMinutes(30));
+        newSubrogation.setId("new-subrogation-id");
+        givenSubrogationToken(newSubrogation);
+
+        assertThatThrownBy(() -> service.getUserFromHttpContext(callWithToken(TOKEN_VALUE))).isInstanceOf(
+            BadCredentialsException.class
+        );
+    }
+
+    @Test
     void a_subrogation_token_of_a_disabled_super_user_is_rejected() {
         givenSubrogationToken(subrogation(SubrogationStatusEnum.ACCEPTED, inMinutes(30)));
         final UserDto superUser = new UserDto();
@@ -126,6 +138,7 @@ class IamUserAuthentificationServiceTokenTest {
         token.setId(TOKEN_VALUE);
         token.setRefId("account-id");
         token.setSurrogation(true);
+        token.setSubrogationId(SUBROGATION_ID);
         when(tokenRepository.findById(TOKEN_VALUE)).thenReturn(Optional.of(token));
 
         final UserDto user = new UserDto();
@@ -145,6 +158,7 @@ class IamUserAuthentificationServiceTokenTest {
 
     private static Subrogation subrogation(final SubrogationStatusEnum status, final Date date) {
         final Subrogation subrogation = new Subrogation();
+        subrogation.setId(SUBROGATION_ID);
         subrogation.setStatus(status);
         subrogation.setDate(date);
         subrogation.setSuperUser(SUPER_USER_EMAIL);

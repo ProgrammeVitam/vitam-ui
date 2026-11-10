@@ -73,4 +73,10 @@ public class Token extends IdDocument {
     private String refId;
 
     private boolean surrogation;
+
+    /**
+     * Id of the subrogation the token was issued for, only for a surrogation token. The token is only valid while
+     * this very subrogation is active: another subrogation of the same surrogate does not make it valid again.
+     */
+    private String subrogationId;
 }
