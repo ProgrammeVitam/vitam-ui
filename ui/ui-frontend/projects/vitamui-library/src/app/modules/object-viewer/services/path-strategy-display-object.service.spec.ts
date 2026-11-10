@@ -470,7 +470,7 @@ describe('PathStrategyDisplayObjectService', () => {
             type: DisplayObjectType.GROUP,
             path: '',
             key: '',
-            value: { id: '1', name: 'core', tags: ['low', 'medium', 'high'], Generalities: { name: 'core' } },
+            value: { id: '1', tags: ['low', 'medium', 'high'], Generalities: { name: 'core' } },
             component: 'group',
             children: [
               {
@@ -544,30 +544,6 @@ describe('PathStrategyDisplayObjectService', () => {
                     open: true,
                     display: true,
                     label: 'id',
-                  },
-                },
-              },
-              {
-                type: DisplayObjectType.PRIMITIVE,
-                path: 'name',
-                key: 'name',
-                value: 'core',
-                component: 'textfield',
-                children: [],
-                favoriteKeys: [],
-                open: true,
-                displayRule: {
-                  Path: 'name',
-                  ui: {
-                    Path: 'name',
-                    component: 'textfield',
-                    layout: {
-                      columns: 1,
-                      size: 'small',
-                    },
-                    open: true,
-                    display: true,
-                    label: 'name',
                   },
                 },
               },

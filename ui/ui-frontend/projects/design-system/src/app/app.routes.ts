@@ -66,6 +66,7 @@ import { SnackbarComponent } from './components/organisms/snackbar/snackbar.comp
 import { SlideToggleComponent } from './components/atoms/slide-toggle/slide-toggle.component';
 import { DesignSystemRadioComponent } from './components/molecules/inputs/radio/design-system-radio.component';
 import { DesignSystemDiscussionComponent } from './components/organisms/discussion/design-system-discussion.component';
+import { DesignSystemObjectViewerComponent } from './components/organisms/object-viewer/design-system-object-viewer.component';
 
 export interface RouteData {
   // Alternative search terms
@@ -129,6 +130,11 @@ export const routes: Routes = [
       { path: '', redirectTo: 'table', pathMatch: 'full' },
       { path: 'dialog', component: DialogComponent },
       { path: 'discussion', component: DesignSystemDiscussionComponent },
+      {
+        path: 'object-viewer',
+        component: DesignSystemObjectViewerComponent,
+        data: { altSearch: { _: ['Object editor', 'DisplayObject', 'EditObject'] } } satisfies RouteData,
+      },
       { path: 'snackbar', component: SnackbarComponent },
       { path: 'table', component: TableComponent },
       { path: 'tab-group', component: TabGroupComponent },
