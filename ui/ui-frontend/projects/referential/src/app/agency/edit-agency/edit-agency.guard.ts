@@ -34,15 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ApplicationId, Role, SecurityService, TenantSelectionService } from 'vitamui-library';
+import { APP_ROUTE_PREFIX, ApplicationId, Role, SecurityService, TenantSelectionService } from 'vitamui-library';
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ERROR_MESSAGES, ROUTES } from './edit-agency.constants';
 
-const accessDenied = (router: Router): Observable<boolean> => {
-  router.navigateByUrl(ROUTES.ACCESS_DENIED);
+const accessDenied = (router: Router, routePrefix: string): Observable<boolean> => {
+  router.navigateByUrl(routePrefix + ROUTES.ACCESS_DENIED);
   return of(false);
 };
 
@@ -50,6 +50,7 @@ export const EditAgencyGuard: CanActivateFn = (route, _state): Observable<boolea
   const securityService = inject(SecurityService);
   const tenantSelectionService = inject(TenantSelectionService);
   const router = inject(Router);
+  const routePrefix = inject(APP_ROUTE_PREFIX);
 
   const tenantIdentifier = +route.paramMap.get('tenantIdentifier') || tenantSelectionService.getSelectedTenant()?.identifier;
   const agencyIdentifier = route.paramMap.get('agencyIdentifier');
@@ -57,18 +58,18 @@ export const EditAgencyGuard: CanActivateFn = (route, _state): Observable<boolea
   if (!tenantIdentifier) console.error(ERROR_MESSAGES.MISSING_TENANT);
   if (!agencyIdentifier) console.error(ERROR_MESSAGES.MISSING_AGENCY);
   if (!tenantIdentifier || !agencyIdentifier) {
-    return accessDenied(router);
+    return accessDenied(router, routePrefix);
   }
 
   // Vérification des permissions
   return securityService.hasRole$(ApplicationId.AGENCIES_APP, Role.ROLE_UPDATE_AGENCIES, tenantIdentifier).pipe(
     map((hasPermission) => {
-      if (!hasPermission) router.navigateByUrl(ROUTES.AGENCY_DETAILS(tenantIdentifier, agencyIdentifier)).then();
+      if (!hasPermission) router.navigateByUrl(routePrefix + ROUTES.AGENCY_DETAILS(tenantIdentifier, agencyIdentifier)).then();
       return hasPermission;
     }),
     catchError((error) => {
       console.error(ERROR_MESSAGES.PERMISSION_CHECK, error);
-      return accessDenied(router);
+      return accessDenied(router, routePrefix);
     }),
   );
 };
