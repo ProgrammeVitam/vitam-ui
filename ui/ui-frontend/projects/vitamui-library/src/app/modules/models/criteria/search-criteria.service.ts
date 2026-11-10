@@ -84,6 +84,7 @@ import { SearchWithTypeSelectorValue } from '../../../../lib/components/search-w
 import { SchemaService } from '../../schema/schema.service';
 import { Collection } from '../schema/collection.enum';
 import { Schema } from '../schema/schema.interface';
+import { SchemaElement } from '../schema/schema-element.model';
 import { firstValueFrom } from 'rxjs';
 
 const SEPARATOR = '|';
@@ -95,6 +96,9 @@ export class SearchCriteriaService {
   private readonly splittableValues = ['guid', 'guidopi'];
   private readonly schemaPromise: Promise<Schema>;
   private schema: Schema;
+  // Lazily built once the schema resolves: Path -> SchemaElement, used to resolve the display
+  // label of EXTERNAL (tenant-defined vocabulary) fields, which have no static i18n translation.
+  private schemaElementsByPathPromise: Promise<Map<string, SchemaElement>>;
 
   constructor() {
     const schemaService = inject(SchemaService);
@@ -108,6 +112,24 @@ export class SearchCriteriaService {
 
   getSchema(): Schema {
     return this.schema;
+  }
+
+  private getSchemaElementsByPath(): Promise<Map<string, SchemaElement>> {
+    if (!this.schemaElementsByPathPromise) {
+      this.schemaElementsByPathPromise = this.schemaPromise.then((schema) => new Map(schema.map((element) => [element.Path, element])));
+    }
+    return this.schemaElementsByPathPromise;
+  }
+
+  private async getExternalKeyLabel(key: string): Promise<string | undefined> {
+    const elementsByPath = await this.getSchemaElementsByPath();
+    const element = elementsByPath.get(key);
+    if (element?.Origin !== 'EXTERNAL') return undefined;
+
+    const parentPath = key.split('.').slice(0, -1).join('.');
+    const parent = elementsByPath.get(parentPath);
+    const parentSuffix = parent?.ShortName ? ` (${parent.ShortName})` : '';
+    return `${element.ShortName}${parentSuffix}`;
   }
 
   async toSearchCriteria(
@@ -195,9 +217,12 @@ export class SearchCriteriaService {
           ...getSearchCriteriaConfig(fragment, key),
         } as SearchCriteriaAddAction;
 
+        const keyLabel = await this.getExternalKeyLabel(completeCriteriaConfig.keyElt);
+
         return {
           ...completeCriteriaConfig,
           valueTranslated: this.isValueTranslated(completeCriteriaConfig.keyElt),
+          ...(keyLabel ? { keyLabel } : {}),
         } as SearchCriteriaAddAction;
       }),
     );

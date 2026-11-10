@@ -54,7 +54,12 @@ import { SearchCriteriaService } from './search-criteria.service';
 describe('SearchCriteriaService', () => {
   let service: SearchCriteriaService;
   let schemaServiceMock: { getSchema: ReturnType<typeof vi.fn> };
-  const schema = [{ Path: 'Title' }] as unknown as Schema;
+  const schema = [
+    { Path: 'Title' },
+    { Path: 'Extended', Origin: 'INTERNAL', ShortName: 'Extension' },
+    { Path: 'Extended.Ext1', Origin: 'EXTERNAL', ShortName: 'My external field' },
+    { Path: 'Internal1', Origin: 'INTERNAL', ShortName: 'InternalShort' },
+  ] as unknown as Schema;
 
   beforeEach(() => {
     schemaServiceMock = { getSchema: vi.fn().mockReturnValue(of(schema)) };
@@ -349,6 +354,20 @@ describe('SearchCriteriaService', () => {
         virtualNodeRealParentTitle: 'Parent title',
       });
       expect(criterion.labelElt).toEqual('/Folder/Sub folder/parent-id/Parent title');
+    });
+
+    it('should resolve a keyLabel from the ShortName of an EXTERNAL schema element and its parent', async () => {
+      const criterion = await single({ 'Extended.Ext1': 'value' });
+
+      expect(criterion.keyElt).toEqual('Extended.Ext1');
+      expect(criterion.keyLabel).toEqual('My external field (Extension)');
+    });
+
+    it('should not set a keyLabel for an INTERNAL schema element', async () => {
+      const criterion = await single({ Internal1: 'value' });
+
+      expect(criterion.keyElt).toEqual('Internal1');
+      expect(criterion.keyLabel).toBeUndefined();
     });
   });
 });

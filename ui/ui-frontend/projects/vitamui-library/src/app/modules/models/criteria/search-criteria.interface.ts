@@ -75,6 +75,9 @@ export interface SearchCriteriaAddAction {
   keyElt: string;
   valueElt: CriteriaValue;
   labelElt: string;
+  // Literal, already-translated display label for the key, used instead of the i18n-key-lookup
+  // mechanism (keyElt/keyTranslated) for keys that have no static translation, e.g. external MDD fields.
+  keyLabel?: string;
   keyTranslated: boolean;
   operator: string;
   category: SearchCriteriaTypeEnum;
@@ -90,6 +93,7 @@ export interface SearchCriteriaRemoveAction {
 
 export interface CriteriaSearchCriteria {
   key: string;
+  keyLabel?: string;
   operator: string;
   category: SearchCriteriaTypeEnum;
   values: SearchCriteriaValue[];

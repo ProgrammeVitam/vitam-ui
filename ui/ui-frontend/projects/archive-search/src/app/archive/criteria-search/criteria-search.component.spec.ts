@@ -39,9 +39,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import {
+  CriteriaSearchCriteria,
   InjectorModule,
   LoggerModule,
+  SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
+  SearchCriteriaValue,
   TranslateWithOptionalTypeSuffixPipe,
   WINDOW_LOCATION,
 } from 'vitamui-library';
@@ -78,5 +81,36 @@ describe('CriteriaSearchComponent', () => {
     const response = 'ACCESS_RULE';
     expect(component.getCategoryName(SearchCriteriaTypeEnum.ACCESS_RULE)).not.toBeNull();
     expect(component.getCategoryName(SearchCriteriaTypeEnum.ACCESS_RULE)).toEqual(response);
+  });
+
+  describe('getCriteriaKeyLabel', () => {
+    const criteriaValue: SearchCriteriaValue = {
+      status: SearchCriteriaStatusEnum.NOT_INCLUDED,
+      keyTranslated: true,
+      valueTranslated: false,
+    };
+
+    it('should return the keyLabel directly when set, without going through translation', () => {
+      fixture.componentRef.setInput('criteriaVal', {
+        key: 'Extended.Ext1',
+        keyLabel: 'My external field (Extension)',
+        keyTranslated: true,
+        category: SearchCriteriaTypeEnum.FIELDS,
+        values: [],
+      } as CriteriaSearchCriteria);
+
+      expect(component.getCriteriaKeyLabel(criteriaValue)).toEqual('My external field (Extension)');
+    });
+
+    it('should fall back to the raw key when no keyLabel is set and the value is not translated', () => {
+      fixture.componentRef.setInput('criteriaVal', {
+        key: 'ACCESS_RULE',
+        keyTranslated: false,
+        category: SearchCriteriaTypeEnum.ACCESS_RULE,
+        values: [],
+      } as CriteriaSearchCriteria);
+
+      expect(component.getCriteriaKeyLabel({ ...criteriaValue, keyTranslated: false })).toEqual('ACCESS_RULE');
+    });
   });
 });

@@ -218,9 +218,10 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   }
 
   private addCriteriaFromParams(params: Params) {
-    Object.entries(params).forEach(async ([key, value]) =>
-      this.archiveExchangeDataService.addSimpleSearchCriteriaSubjects(await this.searchCriteriaService.toSearchCriteria({ [key]: value })),
-    );
+    Object.entries(params).forEach(async ([key, value]) => {
+      const criteriaList = await this.searchCriteriaService.toSearchCriteria({ [key]: value });
+      this.archiveExchangeDataService.addSimpleSearchCriteriaSubjects(criteriaList);
+    });
   }
 
   ngOnInit() {
