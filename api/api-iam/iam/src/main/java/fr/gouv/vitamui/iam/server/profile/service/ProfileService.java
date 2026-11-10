@@ -179,7 +179,7 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
 
         checkSetReadonly(dto.isReadonly(), message);
         checkCustomer(dto.getCustomerId(), message);
-        checkName(dto.getName(), dto.getTenantIdentifier(), dto.getLevel(), dto.getApplicationName(), message);
+        checkName(null, dto.getName(), dto.getTenantIdentifier(), dto.getLevel(), dto.getApplicationName(), message);
         checkLevel(dto.getLevel(), message);
         checkTenant(dto.getTenantIdentifier(), message);
         checkRoles(dto.getRoles(), dto.getLevel(), message);
@@ -255,7 +255,15 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
         if (name != null || level != null) {
             name = name == null ? profile.getName() : name;
             level = level == null ? profile.getLevel() : level;
-            checkName(name, profile.getTenantIdentifier(), level, profile.getApplicationName(), message);
+            // The patched profile itself is excluded, so sending back its current name is accepted.
+            checkName(
+                profile.getId(),
+                name,
+                profile.getTenantIdentifier(),
+                level,
+                profile.getApplicationName(),
+                message
+            );
         }
 
         final Boolean enabled = CastUtils.toBoolean(partialDto.get("enabled"));
@@ -442,7 +450,13 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
         Assert.isTrue(customer.get().isEnabled(), message + ": customer must be enabled");
     }
 
+    /**
+     * Checks that no other profile has the same name, level and application on the tenant.
+     *
+     * @param excludedId id of the patched profile, null on creation
+     */
     private void checkName(
+        final String excludedId,
         final String name,
         final Integer tenantIdentifier,
         final String level,
@@ -457,6 +471,9 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
             .is(appName)
             .and("tenantIdentifier")
             .is(tenantIdentifier);
+        if (excludedId != null) {
+            criteria.and("id").ne(excludedId);
+        }
         Assert.isTrue(!getRepository().exists(criteria), message + ": profile already exists");
     }
 

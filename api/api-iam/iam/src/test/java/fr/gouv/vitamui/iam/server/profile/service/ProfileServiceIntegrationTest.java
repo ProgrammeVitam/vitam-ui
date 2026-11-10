@@ -467,6 +467,34 @@ public class ProfileServiceIntegrationTest extends AbstractLogbookIntegrationTes
     }
 
     @Test
+    void patch_acceptsTheCurrentNameButRefusesTheNameOfAnotherProfile() {
+        final ProfileDto profile = createProfile(Collections.singletonList(new Role(ServicesData.ROLE_CREATE_USERS)));
+        final ProfileDto otherProfile = IamServerUtilsTest.buildProfileDto();
+        otherProfile.setId(null);
+        otherProfile.setName("otherName");
+        otherProfile.setCustomerId(profile.getCustomerId());
+        otherProfile.setTenantIdentifier(TENANT_IDENTIFIER);
+        otherProfile.setRoles(profile.getRoles());
+        service.create(otherProfile);
+        when(securityService.getLevel()).thenReturn(ApiIamConstants.ADMIN_LEVEL);
+        final Map<String, Object> partialDto = new HashMap<>();
+        partialDto.put("customerId", profile.getCustomerId());
+        partialDto.put("id", profile.getId());
+        partialDto.put("tenantIdentifier", TENANT_IDENTIFIER);
+
+        // The whole form is sent back, with an unchanged name
+        partialDto.put("name", profile.getName());
+        partialDto.put("description", "descriptionTest");
+        service.patch(partialDto);
+        assertThat(repository.findById(profile.getId())).get().extracting("description").isEqualTo("descriptionTest");
+
+        partialDto.put("name", "otherName");
+        assertThatThrownBy(() -> service.patch(partialDto))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("profile already exists");
+    }
+
+    @Test
     void testCreateProfile() {
         final ProfileDto profile = createProfile(Collections.singletonList(new Role(ServicesData.ROLE_CREATE_USERS)));
         assertThat(profile.getIdentifier()).isNotBlank();
