@@ -50,9 +50,11 @@ import fr.gouv.vitamui.cas.webflow.login.actions.I18NSendPasswordResetInstructio
 import fr.gouv.vitamui.cas.webflow.login.actions.InitializeSubrogationAction;
 import fr.gouv.vitamui.cas.webflow.login.actions.ListCustomersAction;
 import fr.gouv.vitamui.cas.webflow.login.actions.TriggerChangePasswordAction;
+import fr.gouv.vitamui.cas.webflow.mfa.MfaAttempts;
 import fr.gouv.vitamui.cas.webflow.mfa.VitamMfaWebflowConfigurer;
 import fr.gouv.vitamui.cas.webflow.mfa.actions.CheckMfaTokenAction;
 import fr.gouv.vitamui.cas.webflow.mfa.actions.CustomSendTokenAction;
+import fr.gouv.vitamui.cas.webflow.mfa.actions.ResetMfaAttemptsAction;
 import fr.gouv.vitamui.cas.x509.CustomRequestHeaderX509CertificateExtractor;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
@@ -440,12 +442,21 @@ public class WebflowConfig {
     }
 
     @Bean
-    public Action checkMfaTokenAction(
-        final TicketRegistry ticketRegistry,
+    public MfaAttempts mfaAttempts(
         @Value("${vitamui.mfa.max-failed-attempts:5}") final int maxFailedAttempts,
         @Value("${vitamui.mfa.failed-attempts-retention:PT15M}") final Duration failedAttemptsRetention
     ) {
-        return new CheckMfaTokenAction(ticketRegistry, maxFailedAttempts, failedAttemptsRetention);
+        return new MfaAttempts(maxFailedAttempts, failedAttemptsRetention);
+    }
+
+    @Bean
+    public Action checkMfaTokenAction(final TicketRegistry ticketRegistry, final MfaAttempts mfaAttempts) {
+        return new CheckMfaTokenAction(ticketRegistry, mfaAttempts);
+    }
+
+    @Bean
+    public Action resetMfaAttemptsAction(final MfaAttempts mfaAttempts) {
+        return new ResetMfaAttemptsAction(mfaAttempts);
     }
 
     @Bean
