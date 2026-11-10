@@ -29,12 +29,12 @@ La nouvelle variable `vitamui_proxy_ssl_verify` (`environments/group_vars/all/vi
 
 | Composant | Service amont vérifié | Vérification du nom |
 |-----------|-----------------------|---------------------|
-| Frontends (nginx) | API gateway | Non |
+| Frontends (nginx) | API gateway | Oui (`vitamui-api-gateway.service.<consul_domain>`) |
 | Reverse proxy nginx | Serveur CAS | Oui (`vitamui-cas-server.service.<consul_domain>`) |
 | Reverse proxy apache | Tous les backends HTTPS : serveur CAS et UIs en `secure: true` | Non (backends adressés par IP) |
 
 * Les certificats de l'API gateway et du serveur CAS (et, avec le reverse apache, des UIs en `secure: true`) doivent être émis par une CA présente dans `environments/certs/vitamui-services/ca/`. C'est le cas des certificats générés par la PKI de VitamUI (`pki/scripts/generate_certs.sh`).
-* Avec le reverse proxy nginx, le certificat du serveur CAS doit contenir le nom `vitamui-cas-server.service.<consul_domain>` (SAN). C'est le cas des certificats générés par la PKI de VitamUI.
+* Le certificat de l'API gateway doit contenir le nom `vitamui-api-gateway.service.<consul_domain>` et, avec le reverse proxy nginx, celui du serveur CAS le nom `vitamui-cas-server.service.<consul_domain>` (SAN). C'est le cas des certificats générés par la PKI de VitamUI.
 * Le déploiement échoue si `environments/certs/vitamui-services/ca/` ne contient aucun fichier `*.crt`.
 * Symptôme d'un certificat non reconnu : erreurs HTTP 502 sur l'appel concerné et erreur de vérification du certificat amont dans les logs nginx / apache.
 * Pour conserver l'ancien comportement (certificats amont non vérifiés) : positionner `vitamui_proxy_ssl_verify: false`.
