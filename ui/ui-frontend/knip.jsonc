@@ -1,0 +1,22 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema-jsonc.json",
+  // Setup files of the @angular/build:unit-test builder (angular.json "setupFiles"),
+  // not detected by the knip Angular plugin.
+  "entry": ["test.ts", "projects/*/test.ts"],
+  "husky": {
+    "config": ["../../.husky/pre-commit"]
+  },
+  "ignoreDependencies": [
+    // ESLint plugins and parsers loaded by name through FlatCompat in eslint.config.mjs.
+    "@angular-eslint/eslint-plugin",
+    "@angular-eslint/eslint-plugin-template",
+    "@angular-eslint/template-parser",
+    "@typescript-eslint/eslint-plugin",
+    "@typescript-eslint/parser",
+    // Schematic collection declared in angular.json (cli.schematicCollections).
+    "@angular-eslint/schematics",
+    // Imported from SCSS (@use), which knip does not analyse.
+    "bootstrap",
+    "material-design-icons-iconfont"
+  ]
+}
