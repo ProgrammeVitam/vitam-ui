@@ -100,6 +100,17 @@ public class ExternalParamProfileService {
     private static final String BULK_OPERATIONS_THRESHOLD = "bulkOperationsThreshold";
     private static final String ID_PROFILE = "idProfile";
     private static final String EXTERNAL_PARAM_PROFILE = "externalparamprofile";
+    /**
+     * Keys a caller may filter the list on.
+     */
+    private static final List<String> SEARCHABLE_KEYS = List.of(
+        NAME,
+        DESCRIPTION,
+        ENABLED,
+        "identifier",
+        "applicationName",
+        "tenantIdentifier"
+    );
 
     public ExternalParamProfileService(
         final ExternalParametersService externalParametersService,
@@ -127,11 +138,20 @@ public class ExternalParamProfileService {
         final DirectionDto direction
     ) {
         final Integer tenantIdentifier = securityService.getTenantIdentifier();
-        // The tenant restriction is the root AND query, so the operator of the requested criteria
-        // only applies inside it.
+        final QueryDto requestedQuery = QueryDto.fromJson(criteria);
+        requestedQuery.keyFilter(SEARCHABLE_KEYS);
+        // The tenant and level restrictions are in the root AND query, so the operator of the requested
+        // criteria only applies inside it.
         final QueryDto queryDto = QueryDto.andQuery()
             .addCriterion("tenantIdentifier", tenantIdentifier, CriterionOperator.EQUALS);
-        queryDto.addQuery(QueryDto.fromJson(criteria));
+        if (!securityService.userIsRootLevel()) {
+            // Same level restriction as the profile reads (ProfileService): sub-levels or the user's own profiles.
+            final QueryDto levelQuery = QueryDto.orQuery()
+                .addCriterion("level", securityService.getLevel() + ".", CriterionOperator.STARTWITH)
+                .addCriterion("_id", securityService.getUser().getProfileGroup().getProfileIds(), CriterionOperator.IN);
+            queryDto.addQuery(levelQuery);
+        }
+        queryDto.addQuery(requestedQuery);
         return externalParamProfileRepository.getAllPaginated(page, size, queryDto.toJson(), orderBy, direction);
     }
 
