@@ -1,0 +1,57 @@
+# MCP servers exposed by the vitamui-mcp-gateway container (see README.md).
+# Each server runs in its own container, started by the gateway for each tool call.
+version: 2
+name: vitam-ui
+displayName: Vitam-UI
+registry:
+  sonarcloud:
+    title: SonarCloud
+    description: SonarCloud (SonarQube Cloud), organization programmevitam-1, read-only
+    type: server
+    image: mcp/sonarqube
+    # SONARQUBE_* variables are the ones expected by the mcp/sonarqube image
+    secrets:
+      - name: sonarcloud.token
+        env: SONARQUBE_TOKEN
+    env:
+      - name: SONARQUBE_ORG
+        value: programmevitam-1
+      - name: SONARQUBE_READ_ONLY
+        value: 'true'
+      # Without the "analysis" toolset: no analyzers to download, the server starts faster
+      - name: SONARQUBE_TOOLSETS
+        value: issues,projects,quality-gates,measures,rules,security-hotspots,duplications,coverage,sources
+      - name: JAVA_TOOL_OPTIONS
+        value: -XX:TieredStopAtLevel=1 -XX:+UseSerialGC
+  angular-cli:
+    title: Angular CLI
+    description: Angular CLI MCP server of the ui/ui-frontend workspace
+    type: server
+    image: node:22-slim
+    user: '{{angular-cli.user}}'
+    # Mounted at the same path as on the host, so that the paths given by Claude Code are valid in the container
+    volumes:
+      - '{{angular-cli.workspace}}:{{angular-cli.workspace}}'
+    env:
+      - name: HOME
+        value: /tmp
+      - name: NG_CLI_ANALYTICS
+        value: 'false'
+    command:
+      - sh
+      - -c
+      - 'cd {{angular-cli.workspace}}/ui/ui-frontend && exec node ../../tools/docker/mcp/angular-mcp.mjs'
+    config:
+      - name: angular-cli
+        description: Angular CLI MCP server configuration
+        type: object
+        properties:
+          workspace:
+            type: string
+            description: Absolute path of the vitam-ui repository on the host
+          user:
+            type: string
+            description: uid:gid used to run the server, so that generated files belong to the developer
+        required:
+          - workspace
+          - user
