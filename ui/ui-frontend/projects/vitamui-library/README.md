@@ -1,6 +1,12 @@
 # VitamuiLibrary
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.2.14.
+Shared Angular library used by all the VITAM-UI front-end applications.
+
+It is never built nor published on its own: the `vitamui-library` and `vitamui-library/testing` path aliases of the root
+`tsconfig.json` point to its sources (`src/public-api.ts` and `testing/src/public_api.ts`), which each application
+compiles directly. No build or watch of the library is needed before starting or building an application.
+
+Applications must import it only through these public entry points (enforced by ESLint).
 
 ## Code scaffolding
 
@@ -8,18 +14,10 @@ Run `ng generate component component-name --project vitamui-library` to generate
 
 > Note: Don't forget to add `--project vitamui-library` or else it will be added to the default project in your `angular.json` file.
 
-## Build
-
-Run `ng build vitamui-library` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Publishing
-
-After building your library with `ng build vitamui-library`, go to the dist folder `cd dist/vitamui-library` and run `npm publish`.
-
 ## Running unit tests
 
-Run `ng test vitamui-library` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `npm run test:vitamui-library` to execute the unit tests.
 
-## Further help
+## Linting
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Run `npm run lint:vitamui-library`.

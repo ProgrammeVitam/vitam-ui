@@ -1,0 +1,32 @@
+.col-3 .originating-agency-ellipsis.originating-agency-ellipsis {
+  display: inline-block;
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.batch-error-icon {
+  font-size: 20px;
+}
+
+.status-badge-green,
+.status-badge-orange,
+.status-badge-red {
+  &:after {
+    margin-left: -10px;
+    margin-top: -10px;
+    width: 10px;
+    height: 10px;
+  }
+}
+
+.table-filter-icon {
+  display: flex;
+  align-items: center;
+
+  i {
+    margin-right: 8px;
+  }
+}

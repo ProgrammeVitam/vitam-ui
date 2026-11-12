@@ -36,7 +36,7 @@
  */
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { concat, firstValueFrom, map, merge, Observable, scan, Subject } from 'rxjs';
+import { concat, firstValueFrom, map, merge, Observable, of, scan, Subject } from 'rxjs';
 import { EventSource } from 'eventsource';
 import { OAuthStorage } from 'angular-oauth2-oidc';
 import { AuthService } from '../../../app/modules/auth.service';
@@ -97,6 +97,19 @@ export class DiscussionService {
   private readonly apiUrl = `${inject(BASE_URL)}/discussions`;
 
   readonly #updateDiscussion = new Subject<DiscussionUpdate>();
+
+  /**
+   * Emits whenever the current user marks a discussion as read/unread (e.g. from the discussion panel),
+   * so other views relying on a cached unread status can refresh themselves.
+   */
+  readonly readStatusChanged: Observable<void> = this.#updateDiscussion.asObservable().pipe(map((): void => undefined));
+
+  findEntityIdsWithUnreadDiscussions(entityType: string, entityIds: string[]): Observable<string[]> {
+    if (entityIds.length === 0) {
+      return of([]);
+    }
+    return this.httpClient.post<string[]>(`${this.apiUrl}/unread`, { entityType, entityIds });
+  }
 
   findDiscussions(entity: DiscussionEntity): Observable<DiscussionDto[]> {
     const initialData$ = this.httpClient.get<DiscussionDto[]>(`${this.apiUrl}?entityType=${entity.type}&entityId=${entity.id}`);

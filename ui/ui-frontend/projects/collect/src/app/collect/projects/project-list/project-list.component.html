@@ -1,16 +1,6 @@
 <div class="row">
-  <div class="col mb-2">
-    <h5>{{ 'COLLECT.PROJECT_LIST_TITLE' | translate }}</h5>
-  </div>
-</div>
-
-<div class="row">
   <div class="col">
     <div vitamuiCommonInfiniteScroll>
-      <div class="sup-header text large bold">
-        {{ 'COLLECT.NB_ENTRIES' | translate: { nb: dataSource()?.length } }}
-      </div>
-
       <table>
         <thead>
           <tr class="vitamui-table-rows">
@@ -21,7 +11,7 @@
             <th>
               <!-- inttitulé -->
               <div class="row flex-nowrap">
-                <span class="no-wrap">{{ 'COLLECT.FIELD_MESSAGE_IDENTIFIER' | translate }}</span>
+                <span class="no-wrap">{{ 'COLLECT.FIELD_PROJECT_TITLE' | translate }}</span>
                 <vitamui-order-by-button
                   [orderByKey]="messageIdentifier"
                   [(direction)]="direction"
@@ -91,12 +81,21 @@
                 <i class="vitamui-icon {{ getProjectIcon(project) }}"></i>
               </td>
               <td>{{ project.messageIdentifier }}</td>
-              <td>{{ project.submissionAgencyIdentifier }}</td>
+              <td>
+                <span class="agency-ellipsis" [vitamuiTooltip]="getAgencyFullLabel(project)" [outline]="true" vitamuiTooltipClass="primary">
+                  {{ project.submissionAgencyIdentifier }}
+                  @if (getAgencyName(project.submissionAgencyIdentifier)) {
+                    - {{ getAgencyName(project.submissionAgencyIdentifier) }}
+                  }
+                </span>
+              </td>
               <td>
                 <div>{{ project.createdOn | dateTime: 'dd/MM/yyyy' | empty }}</div>
+                <span class="text normal light">{{ project.createdOn | dateTime: 'HH:mm:ss' }}</span>
               </td>
               <td>
                 <div>{{ project.lastModifyOn | dateTime: 'dd/MM/yyyy' | empty }}</div>
+                <span class="text normal light">{{ project.lastModifyOn | dateTime: 'HH:mm:ss' }}</span>
               </td>
               <td>
                 <vitamui-menu-button
@@ -105,9 +104,6 @@
                   menuButtonSize="medium"
                   (click)="stopPropagation($event)"
                 >
-                  <button mat-menu-item (click)="searchArchiveUnitsByProject(project)">
-                    {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.SHOW_PROJECT_ARCHIVE_UNITS' | translate }}
-                  </button>
                   <button mat-menu-item (click)="searchTransactions(project)">
                     {{ 'COLLECT.PROJECT_TRANSACTION_PREVIEW.ACTIONS.SHOW_TRANSACTIONS' | translate }}
                   </button>

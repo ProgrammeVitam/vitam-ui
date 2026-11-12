@@ -41,6 +41,8 @@ import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.download.DownloadClaims;
 import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
@@ -71,6 +73,7 @@ import reactor.core.publisher.Mono;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ABORT_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.DOWNLOAD_SIP_PATH;
@@ -100,10 +103,46 @@ public class TransactionController {
     private static final String SIGNED_DOWNLOAD_TRANSACTION_SIP_PATH =
         RestApi.TRANSACTIONS + SIGNED_DOWNLOAD_SIP_ENDPOINT;
     private static final String ID_PARAMETER = "id";
+    // Caps the page size against forged requests (front end always asks for 20).
+    private static final int MAX_PAGE_SIZE = 100;
 
     private final TransactionService transactionService;
     private final ExternalParametersService externalParametersService;
     private final SignedDownloadTokenService signedDownloadTokenService;
+
+    @Operation(summary = "Search transactions, for every project of the tenant, paginated")
+    @Secured(ServicesData.ROLE_GET_TRANSACTIONS)
+    @GetMapping(value = "/paginated", params = { "page", "size" })
+    public PaginatedValuesDto<CollectTransactionDto> searchTransactionsPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) throws PreconditionFailedException {
+        direction.ifPresent(SanityChecker::sanitizeCriteria);
+        orderBy.ifPresent(SanityChecker::checkSecureParameter);
+        SanityChecker.sanitizeCriteria(criteria);
+        if (size == null || size <= 0 || size > MAX_PAGE_SIZE) {
+            throw new BadRequestException("The size parameter must be between 1 and " + MAX_PAGE_SIZE);
+        }
+        LOGGER.debug(
+            "searchTransactionsPaginated page={}, size={}, criteria={}, orderBy={}, direction={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
+        return transactionService.searchTransactionsPaginated(
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
+    }
 
     @Secured(ServicesData.ROLE_SEND_TRANSACTIONS)
     @PutMapping(CommonConstants.PATH_ID + SEND_PATH)

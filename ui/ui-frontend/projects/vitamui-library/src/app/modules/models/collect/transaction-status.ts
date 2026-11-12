@@ -44,5 +44,20 @@ export enum TransactionStatus {
   ACK_OK = 'ACK_OK',
   ACK_WARNING = 'ACK_WARNING',
   ACK_KO = 'ACK_KO',
+  ACK_WAITING = 'ACK_WAITING',
   ABORTED = 'ABORTED',
+}
+
+export function transactionStatusVisualColor(status: TransactionStatus): 'green' | 'orange' | 'red' | undefined {
+  switch (status) {
+    case TransactionStatus.ACK_OK:
+      return 'green';
+    case TransactionStatus.ACK_WARNING:
+      return 'orange';
+    case TransactionStatus.ACK_KO:
+    case TransactionStatus.KO:
+      return 'red';
+    default:
+      return undefined;
+  }
 }

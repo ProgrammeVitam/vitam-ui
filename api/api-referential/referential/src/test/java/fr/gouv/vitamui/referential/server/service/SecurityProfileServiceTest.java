@@ -58,6 +58,7 @@ import fr.gouv.vitamui.referential.server.service.securityprofile.SecurityProfil
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -69,6 +70,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -389,6 +391,29 @@ class SecurityProfileServiceTest {
         assertThatCode(() -> {
             securityProfileService.patch(vitamContext, partialDto);
         }).doesNotThrowAnyException();
+    }
+
+    @Test
+    void patch_should_send_name_to_vitam_when_name_is_updated() throws VitamClientException {
+        VitamContext vitamContext = new VitamContext(0);
+        Map<String, Object> partialDto = new HashMap<>();
+        partialDto.put("identifier", "identifier");
+        partialDto.put("name", "newName");
+
+        ArgumentCaptor<JsonNode> queryCaptor = ArgumentCaptor.forClass(JsonNode.class);
+
+        when(
+            vitamSecurityProfileCommonService.patchSecurityProfile(
+                any(VitamContext.class),
+                any(String.class),
+                queryCaptor.capture()
+            )
+        ).thenReturn(new RequestResponseOK().setHttpCode(200));
+
+        securityProfileService.patch(vitamContext, partialDto);
+
+        JsonNode setNode = queryCaptor.getValue().get("$action").get(0).get("$set");
+        assertThat(setNode.get("Name").asText()).isEqualTo("newName");
     }
 
     @Test

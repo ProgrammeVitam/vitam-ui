@@ -31,14 +31,12 @@
     "build:pastis": "export NODE_OPTIONS=--max_old_space_size=2048; ng build pastis --configuration production --base-href=/pastis/ --deploy-url=/pastis/",
     "build:portal": "export NODE_OPTIONS=--max_old_space_size=2048; ng build portal --configuration production",
     "build:referential": "export NODE_OPTIONS=--max_old_space_size=2048; ng build referential --configuration production --base-href=/referential/ --deploy-url=/referential/",
-    "build:vitamui-library": "ng build vitamui-library",
     "check:archive-search": "npm run lint:archive-search && npm run test:archive-search && npm run build:archive-search",
     "check:collect": "npm run lint:collect && npm run test:collect && npm run build:collect",
     "check:identity": "npm run lint:identity && npm run test:identity && npm run build:identity",
     "check:portal": "npm run lint:portal && npm run test:portal && npm run build:portal",
     "check:referential": "npm run lint:referential && npm run test:referential && npm run build:referential",
     "ci:test": "concurrently --max-processes 4 'npm:test:* -- --reporters=junit --coverage --coverage-reporters=lcov'",
-    "copy-scss:vitamui-library": "mkdir -p dist/ && cp -a ./projects/vitamui-library/src/sass ./dist/",
     "extract:i18n": "ngx-translate-extract --input ./projects --output ./i18n.json --sort --format namespaced-json --key-as-default-value",
     "lint": "ng lint --format=stylish",
     "lint:archive-search": "ng lint archive-search --format=stylish",
@@ -74,7 +72,6 @@
     "start:design-system": "npm run start -- design-system",
     "start:pastis-standalone": "npm run start -- pastis --configuration=standalone",
     "start:vitamui": "npm run start -- portal",
-    "start:vitamui-library": "ng build vitamui-library --configuration development --watch",
     "test": "ng test",
     "test:archive-search": "ng test archive-search",
     "test:collect": "ng test collect",
@@ -84,8 +81,7 @@
     "test:pastis": "ng test pastis",
     "test:portal": "ng test portal",
     "test:referential": "ng test referential",
-    "test:vitamui-library": "ng test vitamui-library",
-    "wait-on:vitamui-library": "wait-on dist/vitamui-library/package.json"
+    "test:vitamui-library": "ng test vitamui-library"
   },
   "private": true,
   "dependencies": {
@@ -157,11 +153,9 @@
     "husky": "9.1.7",
     "jsdom": "^28.0.0",
     "lint-staged": "17.0.5",
-    "ng-packagr": "21.2.5",
     "prettier": "3.8.3",
     "typescript": "~5.9.3",
-    "vitest": "^4.1.11",
-    "wait-on": "9.0.10"
+    "vitest": "^4.1.11"
   },
   "lint-staged": {
     "*": "prettier --write --ignore-unknown",

@@ -21,6 +21,7 @@ import reactor.core.publisher.Flux;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Controller for Discussion API.
@@ -43,6 +44,11 @@ public class DiscussionController {
     @GetMapping
     public List<DiscussionDto> findDiscussions(@RequestParam String entityId, @RequestParam EntityType entityType) {
         return discussionService.findDiscussions(entityId, entityType);
+    }
+
+    @PostMapping("/unread")
+    public Set<String> findEntityIdsWithUnreadDiscussions(@RequestBody FindUnreadDiscussionsRequest request) {
+        return discussionService.findEntityIdsWithUnreadDiscussions(request.getEntityType(), request.getEntityIds());
     }
 
     @PostMapping
@@ -123,6 +129,14 @@ public class DiscussionController {
     public static class RenameDiscussionRequest {
 
         private String title;
+    }
+
+    @Getter
+    @Setter
+    public static class FindUnreadDiscussionsRequest {
+
+        private EntityType entityType;
+        private List<String> entityIds;
     }
 
     @Getter
