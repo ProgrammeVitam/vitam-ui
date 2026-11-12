@@ -7,6 +7,8 @@ pipeline {
 
     environment {
         M2_REPO = "${HOME}/.m2"
+        DOCKER_HOST = 'unix:///dind/docker.sock'
+        TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE = '/dind/docker.sock'
         CI = credentials("app-jenkins")
 
         SERVICE_GIT_URL = credentials("service-gitlab-url")
@@ -30,11 +32,6 @@ pipeline {
     parameters {
         choice(name: 'GOAL', choices: ['publish', 'deploy', 'build'], description: '- "build" only builds the artifacts\n- "deploy" builds and pushes the artifacts in Nexus\n- "publish" deploys and pushes the .deb/.rpm to the repository')
         booleanParam(name: 'DO_CHECKS_AND_TESTS', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Tick the box to run checks and tests')
-    }
-
-    tools {
-        jdk 'java21' // java11 || java17 || java21
-        maven 'maven-3.9' // maven-3.8 || maven-3.9
     }
 
     stages {
@@ -85,20 +82,6 @@ pipeline {
                 echo "DO_CHECKS_AND_TESTS = ${env.DO_CHECKS_AND_TESTS}"
                 echo "MVN_COMMAND = ${env.MVN_COMMAND}"
                 echo "POM_VERSION = ${env.POM_VERSION}"
-            }
-        }
-
-        stage('Upgrade build context') {
-            steps {
-                sh 'sudo apt install -y build-essential make ruby ruby-dev rubygems jq'
-                sh 'sudo timedatectl set-timezone Europe/Paris'
-                sh 'sudo gem install fpm'
-                nvm('v26.4.0') { // We're installing correct Node version through NVM then update the path to make it available. Do NOT wrap your code in `nvm('...') {}` as it would override the whole PATH and then break tools (jdk, maven) configurations
-                    script {
-                        nvmPath = sh(script: 'dirname $(which node)', returnStdout: true).trim()
-                        env.PATH = "${nvmPath}:${env.PATH}"
-                    }
-                }
             }
         }
 
