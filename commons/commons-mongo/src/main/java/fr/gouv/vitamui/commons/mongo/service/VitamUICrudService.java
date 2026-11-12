@@ -81,7 +81,7 @@ public abstract class VitamUICrudService<D extends IdDto, E extends BaseIdDocume
      */
     @Override
     public D create(final D dto) {
-        LOGGER.debug("Create {} with {}", getObjectName(), dto);
+        LOGGER.debug("Create {}", getObjectName());
         Assert.isNull(dto.getId(), "The DTO identifier must be null for creation.");
         beforeCreate(dto);
         dto.setId(generateSuperId());
@@ -104,10 +104,9 @@ public abstract class VitamUICrudService<D extends IdDto, E extends BaseIdDocume
      */
     @Override
     public D update(final D dto) {
-        LOGGER.debug("Update {} {}", getObjectName(), dto);
+        LOGGER.debug("Update {} {}", getObjectName(), dto.getId());
         beforeUpdate(dto);
         final E entity = convertFromDtoToEntity(dto);
-        LOGGER.debug("Update entity {} {}", getObjectName(), entity);
         Assert.isTrue(entity != null, "Unable to update " + getObjectName() + ": entity is null");
         Assert.isTrue(
             getRepository().existsById(entity.getId()),
@@ -128,7 +127,7 @@ public abstract class VitamUICrudService<D extends IdDto, E extends BaseIdDocume
      */
     @Override
     public D patch(final Map<String, Object> partialDto) {
-        LOGGER.debug("Patch {} with {}", getObjectName(), partialDto);
+        LOGGER.debug("Patch {} with fields {}", getObjectName(), partialDto.keySet());
         final E entity = beforePatch(partialDto);
         processPatch(entity, partialDto);
         Assert.isTrue(
