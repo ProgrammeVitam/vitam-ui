@@ -36,15 +36,11 @@
         ></vitamui-datepicker>
       </div>
       <div class="col-1 form-control">
-        <button
-          class="validate-date-small-button"
-          *ngIf="!endDateInterval && accessRuleCriteriaForm.get('accessRuleStartDate').value"
-          type="button"
-          mat-mini-fab
-          (click)="addBeginDtAccessRuleCriteria()"
-        >
-          <i class="material-icons">check</i>
-        </button>
+        @if (!endDateInterval && accessRuleCriteriaForm.get('accessRuleStartDate').value) {
+          <button class="btn btn-circle secondary small" type="button" (click)="addBeginDtAccessRuleCriteria()">
+            <i class="material-icons">check</i>
+          </button>
+        }
       </div>
 
       <div class="col-4 form-control">
@@ -64,24 +60,22 @@
         }
       </div>
       <div class="col-1 form-control">
-        <button
-          class="validate-date-small-button"
-          *ngIf="
-            endDateInterval &&
-            accessRuleCriteriaForm.get('accessRuleStartDate').value &&
-            accessRuleCriteriaForm.get('accessRuleEndDate').value
-          "
-          type="button"
-          mat-mini-fab
-          (click)="addIntervalDtAccessRuleCriteria()"
-        >
-          <i class="material-icons">check</i>
-        </button>
+        @if (
+          endDateInterval &&
+          accessRuleCriteriaForm.get('accessRuleStartDate').value &&
+          accessRuleCriteriaForm.get('accessRuleEndDate').value
+        ) {
+          <button class="btn btn-circle secondary small" type="button" (click)="addIntervalDtAccessRuleCriteria()">
+            <i class="material-icons">check</i>
+          </button>
+        }
       </div>
       <div class="col-1 form-control">
-        <p *ngIf="endDateInterval" class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(false)">
-          {{ 'COLLECT.SEARCH_CRITERIA_FILTER.ACCESS_RULE.DELETE_INTERVAL' | translate }}
-        </p>
+        @if (endDateInterval) {
+          <p class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(false)">
+            {{ 'COLLECT.SEARCH_CRITERIA_FILTER.ACCESS_RULE.DELETE_INTERVAL' | translate }}
+          </p>
+        }
       </div>
     </div>
 

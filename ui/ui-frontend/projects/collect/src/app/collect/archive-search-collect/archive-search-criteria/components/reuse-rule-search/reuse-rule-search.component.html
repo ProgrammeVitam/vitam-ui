@@ -36,15 +36,11 @@
         ></vitamui-datepicker>
       </div>
       <div class="col-1 form-control">
-        <button
-          class="validate-date-small-button"
-          *ngIf="!endDateInterval && reuseRuleCriteriaForm.get('reuseRuleStartDate').value"
-          type="button"
-          mat-mini-fab
-          (click)="addBeginDtReuseRuleCriteria()"
-        >
-          <i class="material-icons">check</i>
-        </button>
+        @if (!endDateInterval && reuseRuleCriteriaForm.get('reuseRuleStartDate').value) {
+          <button class="btn btn-circle secondary small" type="button" (click)="addBeginDtReuseRuleCriteria()">
+            <i class="material-icons">check</i>
+          </button>
+        }
       </div>
 
       <div class="col-4 form-control">
@@ -64,22 +60,20 @@
         }
       </div>
       <div class="col-1 form-control">
-        <button
-          class="validate-date-small-button"
-          *ngIf="
-            endDateInterval && reuseRuleCriteriaForm.get('reuseRuleStartDate').value && reuseRuleCriteriaForm.get('reuseRuleEndDate').value
-          "
-          type="button"
-          mat-mini-fab
-          (click)="addIntervalDtReuseRuleCriteria()"
-        >
-          <i class="material-icons">check</i>
-        </button>
+        @if (
+          endDateInterval && reuseRuleCriteriaForm.get('reuseRuleStartDate').value && reuseRuleCriteriaForm.get('reuseRuleEndDate').value
+        ) {
+          <button class="btn btn-circle secondary small" type="button" (click)="addIntervalDtReuseRuleCriteria()">
+            <i class="material-icons">check</i>
+          </button>
+        }
       </div>
       <div class="col-1 form-control">
-        <p *ngIf="endDateInterval" class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(false)">
-          {{ 'COLLECT.SEARCH_CRITERIA_FILTER.REUSE_RULE.DELETE_INTERVAL' | translate }}
-        </p>
+        @if (endDateInterval) {
+          <p class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(false)">
+            {{ 'COLLECT.SEARCH_CRITERIA_FILTER.REUSE_RULE.DELETE_INTERVAL' | translate }}
+          </p>
+        }
       </div>
     </div>
 
