@@ -39,6 +39,11 @@ ORIGIN="https://$SERVER_NAME:$HTTPS_PORT"
 PROJECT_MAIN=vitamui-nginx-test
 PROJECT_STUB=vitamui-nginx-test-upstreams
 
+# Response markers of the stub upstreams (stubs/): tell which one served a request.
+PORTAL_DIST_MARKER="VITAMUI-DIST-MARKER:portal"
+DESIGN_SYSTEM_DIST_MARKER="VITAMUI-DIST-MARKER:design-system"
+GATEWAY_MARKER='"stub":"api-gateway"'
+
 # Docker container names are machine-global, even across compose projects.
 export VITAMUI_CONTAINER_NAME=vitamui-nginx-under-test
 
@@ -248,14 +253,14 @@ test_application_routing() {
   check "ROUTING portal is served at the root" \
     200 "$(get_status "$ORIGIN/")"
   check_contains "ROUTING the root serves the portal dist" \
-    "VITAMUI-DIST-MARKER:portal" "$(get_body "$ORIGIN/")"
+    "$PORTAL_DIST_MARKER" "$(get_body "$ORIGIN/")"
 
   check "ROUTING /design-system/ answers 200" \
     200 "$(get_status "$ORIGIN/design-system/")"
   check_contains "ROUTING /design-system/ serves its own dist" \
-    "VITAMUI-DIST-MARKER:design-system" "$(get_body "$ORIGIN/design-system/")"
+    "$DESIGN_SYSTEM_DIST_MARKER" "$(get_body "$ORIGIN/design-system/")"
   check_contains "ROUTING /design-system without a trailing slash serves its dist" \
-    "VITAMUI-DIST-MARKER:design-system" "$(get_body "$ORIGIN/design-system")"
+    "$DESIGN_SYSTEM_DIST_MARKER" "$(get_body "$ORIGIN/design-system")"
 
   # Every feature is a route of the portal: a direct access or a reload must
   # get the portal's index.html, never a 404.
@@ -263,7 +268,7 @@ test_application_routing() {
     check "ROUTING /$feature answers 200" \
       200 "$(get_status "$ORIGIN/$feature")"
     check_contains "ROUTING /$feature is served by the portal" \
-      "VITAMUI-DIST-MARKER:portal" "$(get_body "$ORIGIN/$feature")"
+      "$PORTAL_DIST_MARKER" "$(get_body "$ORIGIN/$feature")"
   done
 }
 
@@ -302,13 +307,13 @@ test_deep_routes() {
 
   # The exact URL shapes of the feature routes.
   check_contains "DEEP-ROUTE archive-search/tenant/1 falls back to the portal" \
-    "VITAMUI-DIST-MARKER:portal" "$(get_body "$ORIGIN/archive-search/tenant/1")"
+    "$PORTAL_DIST_MARKER" "$(get_body "$ORIGIN/archive-search/tenant/1")"
   check_contains "DEEP-ROUTE ingest/tenant/2/holding falls back to the portal" \
-    "VITAMUI-DIST-MARKER:portal" "$(get_body "$ORIGIN/ingest/tenant/2/holding")"
+    "$PORTAL_DIST_MARKER" "$(get_body "$ORIGIN/ingest/tenant/2/holding")"
   check_contains "DEEP-ROUTE a portal route stays on the portal" \
-    "VITAMUI-DIST-MARKER:portal" "$(get_body "$ORIGIN/tenant/1")"
+    "$PORTAL_DIST_MARKER" "$(get_body "$ORIGIN/tenant/1")"
   check_contains "DEEP-ROUTE a design-system route falls back to its index.html" \
-    "VITAMUI-DIST-MARKER:design-system" "$(get_body "$ORIGIN/design-system/components/button")"
+    "$DESIGN_SYSTEM_DIST_MARKER" "$(get_body "$ORIGIN/design-system/components/button")"
 }
 
 test_assets() {
@@ -346,7 +351,7 @@ test_apis_mtls() {
     body="$(get_body "$ORIGIN/$app-api/v1/ping")"
 
     check_contains "API /$app-api reaches the api-gateway" \
-      '"stub":"api-gateway"' "$body"
+      "$GATEWAY_MARKER" "$body"
     check_contains "API /$app-api presents the ${EXPECTED_CN[$app]} certificate" \
       "CN=${EXPECTED_CN[$app]}" "$body"
     check_contains "API /$app-api is validated by the gateway" \
@@ -357,13 +362,13 @@ test_apis_mtls() {
 
   # The -api prefix must win over the asset location.
   check_contains "API the -api prefix wins over the asset location" \
-    '"stub":"api-gateway"' "$(get_body "$ORIGIN/archive-search-api/foo.json")"
+    "$GATEWAY_MARKER" "$(get_body "$ORIGIN/archive-search-api/foo.json")"
 
   # identity-admin: the identity API, with the admin security context.
   local admin
   admin="$(get_body "$ORIGIN/identity-admin-api/users?page=1")"
   check_contains "API /identity-admin-api reaches the api-gateway" \
-    '"stub":"api-gateway"' "$admin"
+    "$GATEWAY_MARKER" "$admin"
   check_contains "API /identity-admin-api is rewritten to /identity-api" \
     '"uri":"/identity-api/users?page=1"' "$admin"
   check_contains "API /identity-admin-api presents the ${EXPECTED_CN[identity-admin]} certificate" \
@@ -374,7 +379,7 @@ test_apis_mtls() {
   # The single application calls its APIs in absolute form only: the
   # former /<app>/<app>-api form is now a feature route of the portal.
   check_contains "API the former base-href-relative form is no longer relayed" \
-    "VITAMUI-DIST-MARKER:portal" "$(get_body "$ORIGIN/archive-search/archive-search-api/security")"
+    "$PORTAL_DIST_MARKER" "$(get_body "$ORIGIN/archive-search/archive-search-api/security")"
 }
 
 test_cas() {
@@ -421,14 +426,14 @@ test_live_mode() {
 
   # An app without a running dev server keeps being served from its dist.
   check_contains "LIVE the design system stays on its dist" \
-    "VITAMUI-DIST-MARKER:design-system" "$(get_body "$ORIGIN/design-system/")"
+    "$DESIGN_SYSTEM_DIST_MARKER" "$(get_body "$ORIGIN/design-system/")"
 
   # nginx keeps the hand on API calls, live or not: the dev server never
   # sees them.
   check_contains "LIVE the APIs stay routed to the gateway" \
-    '"stub":"api-gateway"' "$(get_body "$ORIGIN/archive-search-api/v1/ping")"
+    "$GATEWAY_MARKER" "$(get_body "$ORIGIN/archive-search-api/v1/ping")"
   check_contains "LIVE the identity-admin API stays routed to the gateway" \
-    '"stub":"api-gateway"' "$(get_body "$ORIGIN/identity-admin-api/v1/ping")"
+    "$GATEWAY_MARKER" "$(get_body "$ORIGIN/identity-admin-api/v1/ping")"
   check_contains "LIVE CAS stays routed to cas-server" \
     '"stub":"cas"' "$(get_body "$ORIGIN/cas/login")"
 
@@ -440,15 +445,15 @@ test_live_mode() {
   check_contains "LIVE a design-system asset goes through the dev server" \
     '"stub":"ng-serve"' "$(get_body "$ORIGIN/design-system/main.js")"
   check_contains "LIVE the portal then stays on its dist" \
-    "VITAMUI-DIST-MARKER:portal" "$(get_body "$ORIGIN/identity")"
+    "$PORTAL_DIST_MARKER" "$(get_body "$ORIGIN/identity")"
 
   # Back to a stack with no dev server at all: everything on dist again.
   start_stack || return 1
 
   check_contains "LIVE stopping the dev server falls back to the dist" \
-    "VITAMUI-DIST-MARKER:portal" "$(get_body "$ORIGIN/archive-search")"
+    "$PORTAL_DIST_MARKER" "$(get_body "$ORIGIN/archive-search")"
   check_contains "LIVE the design system falls back to its dist too" \
-    "VITAMUI-DIST-MARKER:design-system" "$(get_body "$ORIGIN/design-system/")"
+    "$DESIGN_SYSTEM_DIST_MARKER" "$(get_body "$ORIGIN/design-system/")"
 }
 
 main() {
