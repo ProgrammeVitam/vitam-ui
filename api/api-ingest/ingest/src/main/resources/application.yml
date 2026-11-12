@@ -32,5 +32,3 @@ swagger:
   layer: api-external
   file-path: file:../../../tools/swagger/docs/api-external/ingest/swagger.json
 
-gateway:
-  enabled: true

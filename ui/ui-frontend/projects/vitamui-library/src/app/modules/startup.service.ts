@@ -36,7 +36,7 @@
  */
 import { inject, Injectable } from '@angular/core';
 import { combineLatest, Observable, Subject } from 'rxjs';
-import { switchMap, take, tap } from 'rxjs/operators';
+import { map, switchMap, take, tap } from 'rxjs/operators';
 import { ApplicationApiService } from './api/application-api.service';
 import { BaseUserInfoApiService } from './api/base-user-info-api.service';
 import { SecurityApiService } from './api/security-api.service';
@@ -47,7 +47,6 @@ import { ConfigService } from './config.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { Logger } from './logger/logger';
 import { AppConfiguration } from './models/app.configuration.interface';
-import { AttachmentType } from './models/customer/theme/attachmentType.enum';
 import { AuthUser } from './models/user/auth-user.interface';
 import { UserInfo } from './models/user/user-info.interface';
 import { ThemeService } from './theme.service';
@@ -93,40 +92,24 @@ export class StartupService {
       tap((_) => {
         this.applicationService.list().pipe(take(1)).subscribe();
       }),
-      switchMap((_) => {
-        let logosObservable: Observable<any>;
-        if (this.configurationData.GATEWAY_ENABLED) {
-          logosObservable = combineLatest([
-            this.applicationApi.getLocalAsset(this.configurationData.HEADER_LOGO),
-            this.applicationApi.getLocalAsset(this.configurationData.FOOTER_LOGO),
-            this.applicationApi.getLocalAsset(this.configurationData.PORTAL_LOGO),
-            this.applicationApi.getLocalAsset(this.configurationData.USER_LOGO),
-          ]).pipe(
-            tap(([header, footer, portal, user]) => {
-              // We change the LOGO variables to put base64 image instead of .png reference for the themeService.init()
-              this.configurationData.HEADER_LOGO = header;
-              this.configurationData.FOOTER_LOGO = footer;
-              this.configurationData.PORTAL_LOGO = portal;
-              this.configurationData.LOGO = portal;
-              this.configurationData.USER_LOGO = user;
-            }),
-            take(1),
-          );
-        } else {
-          logosObservable = this.applicationApi
-            .getAsset([AttachmentType.Header, AttachmentType.Footer, AttachmentType.User, AttachmentType.Portal])
-            .pipe(
-              tap((data) => {
-                this.configurationData.HEADER_LOGO = data[AttachmentType.Header];
-                this.configurationData.FOOTER_LOGO = data[AttachmentType.Footer];
-                this.configurationData.PORTAL_LOGO = data[AttachmentType.Portal];
-                this.configurationData.USER_LOGO = data[AttachmentType.User];
-                this.configurationData.LOGO = data[AttachmentType.Portal];
-              }),
-              take(1),
-            );
-        }
-        return logosObservable;
+      switchMap((authUser: AuthUser) => {
+        return combineLatest([
+          this.applicationApi.getLocalAsset(this.configurationData.HEADER_LOGO),
+          this.applicationApi.getLocalAsset(this.configurationData.FOOTER_LOGO),
+          this.applicationApi.getLocalAsset(this.configurationData.PORTAL_LOGO),
+          this.applicationApi.getLocalAsset(this.configurationData.USER_LOGO),
+        ]).pipe(
+          tap(([header, footer, portal, user]) => {
+            // We change the LOGO variables to put base64 image instead of .png reference for the themeService.init()
+            this.configurationData.HEADER_LOGO = header;
+            this.configurationData.FOOTER_LOGO = footer;
+            this.configurationData.PORTAL_LOGO = portal;
+            this.configurationData.LOGO = portal;
+            this.configurationData.USER_LOGO = user;
+          }),
+          take(1),
+          map(() => authUser),
+        );
       }),
       tap((_) => {
         const graphicIdentity = this.authService.user.basicCustomer.graphicIdentity;

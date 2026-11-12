@@ -42,8 +42,6 @@ import { AuthService } from '../auth.service';
 import { ConfigService } from '../config.service';
 import { WINDOW_LOCATION } from '../injection-tokens';
 import { AuthenticationInterceptor } from './authentication-interceptor';
-import { AuthenticatorService } from './services/authenticator.service';
-import { CasAuthenticatorService } from './services/cas-authenticator.service';
 import { OidcAuthenticatorService } from './services/oidc-authenticator.service';
 
 @NgModule({
@@ -76,23 +74,11 @@ export class AuthenticationModule {
       .pipe(
         first((config) => !!config),
         tap(() => {
-          let authenticatorService: AuthenticatorService;
-          const config = this.configService.config;
-          if (config.GATEWAY_ENABLED) {
-            const oidcConfig = config.OIDC_CONFIG;
-            oidcConfig.redirectUri = this.parseUri(oidcConfig.redirectUri);
-            oidcConfig.postLogoutRedirectUri = this.parseUri(oidcConfig.postLogoutRedirectUri);
-            this.oAuthService.configure(oidcConfig);
-            authenticatorService = new OidcAuthenticatorService(this.oAuthService, this.location);
-          } else {
-            authenticatorService = new CasAuthenticatorService(
-              this.location,
-              config.CAS_URL,
-              config.CAS_LOGOUT_URL,
-              config.LOGOUT_REDIRECT_UI_URL,
-            );
-          }
-          authService.configure(authenticatorService);
+          const oidcConfig = this.configService.config.OIDC_CONFIG;
+          oidcConfig.redirectUri = this.parseUri(oidcConfig.redirectUri);
+          oidcConfig.postLogoutRedirectUri = this.parseUri(oidcConfig.postLogoutRedirectUri);
+          this.oAuthService.configure(oidcConfig);
+          authService.configure(new OidcAuthenticatorService(this.oAuthService, this.location));
         }),
       )
       .toPromise();
