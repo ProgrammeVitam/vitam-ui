@@ -67,9 +67,6 @@ npm run test:identity
 npm run lint:portal
 npm run lint:identity
 # etc.
-
-# Build shared library
-npm run build:vitamui-library
 ```
 
 ## Architecture
@@ -99,7 +96,7 @@ Root modules:
 - `projects/collect/` - Collection management
 - `projects/pastis/` - PASTIS app
 - `projects/design-system/` - Component documentation
-- `projects/vitamui-library/` - Shared Angular component library (built separately with `ng build vitamui-library`)
+- `projects/vitamui-library/` - Shared Angular component library, never built on its own: the `vitamui-library` and `vitamui-library/testing` path aliases (root `tsconfig.json`) point to its sources, which each app compiles directly
 
 ### Key Patterns
 
@@ -194,5 +191,5 @@ npm run test:identity -- --watch
 - Frontend apps run on HTTPS with self-signed certs in dev. Browser must trust certs from `dev-deployment/environments/certs/`.
 - Backend APIs expect `dev.vitamui.com` hostname (configure in `/etc/hosts`).
 - CAS server must be running before other backend services (it handles authentication).
-- The `vitamui-library` must be built before running frontend apps that depend on it: `npm run build:vitamui-library`
+- `vitamui-library` needs no separate build or watch: apps compile its sources directly. Apps must import it only through its public entry points (`vitamui-library`, `vitamui-library/testing`), which is enforced by ESLint (`eslint-plugin-boundaries`).
 - Angular apps use `--openssl-legacy-provider` flag for Node.js compatibility.

@@ -27,9 +27,6 @@ jobs:
       - name: Lint ui-frontend with ESLint # We run ESLint in that GitHub Action because it requires to install project's dependencies (Prettier is run in "lint" GitHub Action)
         working-directory: ui/ui-frontend
         run: npm run lint
-      - name: Build vitamui-library
-        working-directory: ui/ui-frontend
-        run: npm run build:vitamui-library
       - name: Build ui-frontend apps
         working-directory: ui/ui-frontend
         run: npm run build:allModules
@@ -50,9 +47,6 @@ jobs:
       - name: Install ui-frontend dependencies
         working-directory: ui/ui-frontend
         run: npm ci --ignore-scripts
-      - name: Build vitamui-library
-        working-directory: ui/ui-frontend
-        run: npm run build:vitamui-library
       - name: Run tests on ui-frontend apps
         working-directory: ui/ui-frontend
         run: npm run ci:test

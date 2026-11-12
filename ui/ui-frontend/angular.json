@@ -383,21 +383,6 @@
       "sourceRoot": "projects/vitamui-library/src",
       "prefix": "vitamui",
       "architect": {
-        "build": {
-          "builder": "@angular/build:ng-packagr",
-          "options": {
-            "project": "projects/vitamui-library/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/vitamui-library/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/vitamui-library/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
@@ -406,7 +391,19 @@
               "test.ts",
               "projects/vitamui-library/test.ts"
             ],
-            "outputFile": "junit/vitamui-library.xml"
+            "outputFile": "junit/vitamui-library.xml",
+            "buildTarget": "vitamui-library:test-build"
+          }
+        },
+        "test-build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "tsConfig": "projects/vitamui-library/tsconfig.spec.json",
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "projects/vitamui-library/src/sass"
+              ]
+            }
           }
         },
         "lint": {
