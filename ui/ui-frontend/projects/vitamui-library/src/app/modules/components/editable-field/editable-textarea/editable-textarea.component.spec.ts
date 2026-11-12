@@ -85,8 +85,15 @@ describe('EditableTextareaComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OverlayModule, FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, NoopAnimationsModule],
-      declarations: [TesthostComponent, EditableTextareaComponent, VitamUIFieldErrorStubComponent],
+      imports: [
+        OverlayModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatProgressSpinnerModule,
+        NoopAnimationsModule,
+        VitamUIFieldErrorStubComponent,
+      ],
+      declarations: [TesthostComponent, EditableTextareaComponent],
     }).compileComponents();
 
     inject([OverlayContainer], (oc: OverlayContainer) => {
