@@ -90,7 +90,7 @@ export default defineConfig([
           {
             // ...except its public entry points, which the 'vitamui-library' path
             // aliases resolve to (declared last so that it overrides the policy above).
-            from: { element: { type: 'app' } },
+            from: { element: { type: ['app', 'feature-routes'] } },
             allow: {
               to: [{ element: { type: 'library' }, file: { categories: 'public-api' } }]
             }
