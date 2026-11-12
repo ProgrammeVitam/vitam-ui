@@ -47,10 +47,9 @@
       </div>
       <div class="col-1 form-control">
         <button
-          class="validate-date-small-button"
+          class="btn btn-circle secondary small"
           *ngIf="!endDateInterval && appraisalRuleCriteriaForm.get('appraisalRuleStartDate').value"
           type="button"
-          mat-mini-fab
           (click)="addBeginDtDuaCriteria()"
         >
           <i class="material-icons">check</i>
@@ -75,14 +74,13 @@
       </div>
       <div class="col-1 form-control">
         <button
-          class="validate-date-small-button"
+          class="btn btn-circle secondary small"
           *ngIf="
             endDateInterval &&
             appraisalRuleCriteriaForm.get('appraisalRuleStartDate').value &&
             appraisalRuleCriteriaForm.get('appraisalRuleEndDate').value
           "
           type="button"
-          mat-mini-fab
           (click)="addIntervalDtDuaCriteria()"
         >
           <i class="material-icons">check</i>

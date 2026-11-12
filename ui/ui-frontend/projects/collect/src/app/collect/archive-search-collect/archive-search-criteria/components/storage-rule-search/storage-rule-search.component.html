@@ -37,10 +37,9 @@
       </div>
       <div class="col-1 form-control">
         <button
-          class="validate-action-button"
+          class="btn btn-circle secondary small"
           *ngIf="!endDateInterval && storageRuleCriteriaForm.get('storageRuleStartDate').value"
           type="button"
-          mat-mini-fab
           (click)="addBeginDtDucCriteria()"
         >
           <i class="material-icons">check</i>
@@ -65,14 +64,13 @@
       </div>
       <div class="col-1 form-control">
         <button
-          class="validate-date-small-button"
+          class="btn btn-circle secondary small"
           *ngIf="
             endDateInterval &&
             storageRuleCriteriaForm.get('storageRuleStartDate').value &&
             storageRuleCriteriaForm.get('storageRuleEndDate').value
           "
           type="button"
-          mat-mini-fab
           (click)="addIntervalDtDucCriteria()"
         >
           <i class="material-icons">check</i>
