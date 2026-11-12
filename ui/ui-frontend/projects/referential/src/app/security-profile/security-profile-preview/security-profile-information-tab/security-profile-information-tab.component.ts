@@ -72,10 +72,20 @@ export class SecurityProfileInformationTabComponent {
   private _securityProfile: SecurityProfile;
 
   previousValue = (): any => {
+<<<<<<< HEAD
     return (Object.keys(this.form.controls || {}) as (keyof SecurityProfile)[]).reduce((acc: any, key) => {
       acc[key] = this._securityProfile[key];
       return acc;
     }, {} as Partial<SecurityProfile>);
+=======
+    return FORM_KEYS.reduce(
+      (acc: any, key) => {
+        acc[key] = this.securityProfile()[key];
+        return acc;
+      },
+      { id: this.securityProfile()?.id } as Partial<SecurityProfile>,
+    );
+>>>>>>> 2a488fad9 (Bug #15694: [Security Profiles && Application Contexts] “DTO identifier” error when editing a security profile)
   };
 
   @Input()
