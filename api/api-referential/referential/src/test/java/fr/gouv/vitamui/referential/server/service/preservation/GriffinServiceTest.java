@@ -27,9 +27,11 @@
 
 package fr.gouv.vitamui.referential.server.service.preservation;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
+import fr.gouv.vitam.common.LocalDateUtil;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
@@ -40,6 +42,8 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -110,5 +114,78 @@ class GriffinServiceTest {
         ArgumentCaptor<List<Griffin>> captor = ArgumentCaptor.forClass(List.class);
         verify(service).put(captor.capture());
         assertThat(captor.getValue()).isEmpty();
+    }
+
+    @Test
+    void importGriffins_should_keep_existing_creation_date_when_missing_in_file()
+        throws VitamClientException, AccessExternalClientException, IOException {
+        Griffin existing = GRIFFIN_1.withCreationDate("2019-01-01T00:00:00.000");
+        doReturn(List.of(existing, GRIFFIN_2)).when(service).getAll();
+        doReturn(ResponseEntity.accepted().build()).when(service).put(anyList());
+
+        service.importGriffins(List.of(GRIFFIN_1));
+
+        ArgumentCaptor<List<Griffin>> captor = ArgumentCaptor.forClass(List.class);
+        verify(service).put(captor.capture());
+        assertThat(captor.getValue()).containsExactly(existing);
+    }
+
+    @Test
+    void importGriffins_from_json_file_without_creation_date_should_send_a_creation_date_computed_by_the_system()
+        throws VitamClientException, AccessExternalClientException, IOException {
+        // Given
+        List<Griffin> griffinsFromFile = new ObjectMapper()
+            .readValue(
+                """
+                [ { "Identifier": "GRI-000010", "Name": "Griffin sans date", "ExecutableName": "imagemagick", "ExecutableVersion": "1.0" } ]
+                """,
+                new TypeReference<>() {}
+            );
+        doReturn(List.of()).when(service).getAll();
+        doReturn(ResponseEntity.accepted().build()).when(service).put(anyList());
+        LocalDateTime before = LocalDateUtil.now().truncatedTo(ChronoUnit.MILLIS);
+
+        // When
+        service.importGriffins(griffinsFromFile);
+
+        // Then
+        LocalDateTime after = LocalDateUtil.now();
+        ArgumentCaptor<List<Griffin>> captor = ArgumentCaptor.forClass(List.class);
+        verify(service).put(captor.capture());
+        assertThat(captor.getValue())
+            .singleElement()
+            .satisfies(griffin -> {
+                assertThat(griffin.identifier()).isEqualTo("GRI-000010");
+                assertThat(griffin.creationDate()).isNotBlank();
+                assertThat(LocalDateUtil.parseMongoFormattedDate(griffin.creationDate())).isBetween(before, after);
+            });
+    }
+
+    @Test
+    void importGriffins_from_json_file_with_creation_date_should_send_the_creation_date_of_the_file()
+        throws VitamClientException, AccessExternalClientException, IOException {
+        // Given
+        List<Griffin> griffinsFromFile = new ObjectMapper()
+            .readValue(
+                """
+                [ { "Identifier": "GRI-000011", "Name": "Griffin avec date", "CreationDate": "2018-11-20T15:34:21.542" } ]
+                """,
+                new TypeReference<>() {}
+            );
+        doReturn(List.of()).when(service).getAll();
+        doReturn(ResponseEntity.accepted().build()).when(service).put(anyList());
+
+        // When
+        service.importGriffins(griffinsFromFile);
+
+        // Then
+        ArgumentCaptor<List<Griffin>> captor = ArgumentCaptor.forClass(List.class);
+        verify(service).put(captor.capture());
+        assertThat(captor.getValue())
+            .singleElement()
+            .satisfies(griffin -> {
+                assertThat(griffin.identifier()).isEqualTo("GRI-000011");
+                assertThat(griffin.creationDate()).isEqualTo("2018-11-20T15:34:21.542");
+            });
     }
 }

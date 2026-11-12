@@ -30,6 +30,7 @@ package fr.gouv.vitamui.referential.server.service.preservation;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
+import fr.gouv.vitam.common.LocalDateUtil;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
@@ -52,6 +53,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.X_REQUEST_ID_HEADER;
 
@@ -82,6 +85,31 @@ public class GriffinService extends AbstractService {
         );
 
         return payload.getResults().stream().map(result -> objectMapper.convertValue(result, Griffin.class)).toList();
+    }
+
+    public ResponseEntity<OperationIdDto> importGriffins(List<Griffin> griffins)
+        throws VitamClientException, IOException, AccessExternalClientException {
+        Map<String, String> existingCreationDates = getAll()
+            .stream()
+            .filter(griffin -> griffin.creationDate() != null)
+            .collect(Collectors.toMap(Griffin::identifier, Griffin::creationDate));
+
+        return this.put(
+                griffins
+                    .stream()
+                    .map(
+                        griffin ->
+                            griffin.creationDate() != null
+                                ? griffin
+                                : griffin.withCreationDate(
+                                    existingCreationDates.getOrDefault(
+                                        griffin.identifier(),
+                                        LocalDateUtil.nowFormatted()
+                                    )
+                                )
+                    )
+                    .toList()
+            );
     }
 
     public ResponseEntity<OperationIdDto> put(List<Griffin> griffins)

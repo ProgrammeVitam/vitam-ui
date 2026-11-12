@@ -77,7 +77,7 @@ public class GriffinController {
     @Secured(ROLE_UPDATE_GRIFFINS)
     public ResponseEntity<OperationIdDto> putGriffins(@RequestBody List<Griffin> griffins)
         throws AccessExternalClientException, VitamClientException, IOException {
-        return this.griffinService.put(griffins);
+        return this.griffinService.importGriffins(griffins);
     }
 
     @PostMapping

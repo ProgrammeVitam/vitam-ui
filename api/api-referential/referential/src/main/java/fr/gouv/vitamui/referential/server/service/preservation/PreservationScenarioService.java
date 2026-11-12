@@ -30,6 +30,7 @@ package fr.gouv.vitamui.referential.server.service.preservation;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
+import fr.gouv.vitam.common.LocalDateUtil;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -48,6 +49,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.X_REQUEST_ID_HEADER;
 
@@ -83,6 +86,31 @@ public class PreservationScenarioService extends AbstractService {
             .stream()
             .map(result -> objectMapper.convertValue(result, PreservationScenario.class))
             .toList();
+    }
+
+    public ResponseEntity<OperationIdDto> importScenarios(List<PreservationScenario> scenarios)
+        throws VitamClientException, IOException, AccessExternalClientException, InvalidCreateOperationException {
+        Map<String, String> existingCreationDates = getAll()
+            .stream()
+            .filter(scenario -> scenario.creationDate() != null)
+            .collect(Collectors.toMap(PreservationScenario::identifier, PreservationScenario::creationDate));
+
+        return this.put(
+                scenarios
+                    .stream()
+                    .map(
+                        scenario ->
+                            scenario.creationDate() != null
+                                ? scenario
+                                : scenario.withCreationDate(
+                                    existingCreationDates.getOrDefault(
+                                        scenario.identifier(),
+                                        LocalDateUtil.nowFormatted()
+                                    )
+                                )
+                    )
+                    .toList()
+            );
     }
 
     public ResponseEntity<OperationIdDto> put(List<PreservationScenario> scenarios)
