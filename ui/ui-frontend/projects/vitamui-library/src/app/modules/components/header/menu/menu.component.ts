@@ -217,8 +217,11 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     this.searchBar().onFocus();
   }
 
+  /** Closes the menu once its fade-out animation is over. */
   public close(): void {
-    this.state = 'close';
+    this.state = 'void';
+    // Zoneless: render the fade-out right away
+    this.cdrRef.markForCheck();
     setTimeout(() => this.dialogRef.close(), 500);
   }
 
@@ -228,13 +231,14 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     const application: Application = event?.options?.at(0)?.value;
     if (!application) throw Error('No application found in event');
 
+    // Close the menu at once rather than after a fade-out: the page changes at the same time
+    this.dialogRef.close();
     this.applicationService.openApplication(
       application,
       this.router,
       this.startupService.getConfigStringValue('UI_URL'),
       this.selectedTenant.value.identifier,
     );
-    this.close();
   }
 
   public changeTabFocus(value?: MatTabChangeEvent): void {

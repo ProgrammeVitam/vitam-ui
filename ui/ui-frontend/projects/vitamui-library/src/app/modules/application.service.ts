@@ -48,6 +48,7 @@ import { Category } from './models/application/category.interface';
 import { Tenant } from './models/customer/tenant.interface';
 import { ApplicationAnalytics } from './models/user/application-analytics.interface';
 import { TenantSelectionService } from './tenant-selection.service';
+import { appRouterPath } from './route-path';
 
 @Injectable({
   providedIn: 'root',
@@ -147,9 +148,16 @@ export class ApplicationService {
 
   public openApplication(app: Application, router: Router, uiUrl: string, tenantId?: number): void {
     this.tenantService.saveTenantIdentifier(tenantId).subscribe(async (savedTenantId: number) => {
+      const hasTenant = app.hasTenantList;
+      const path = appRouterPath(app.url, uiUrl);
+      if (path !== undefined) {
+        // The application is a feature of this (single) application: no page reload.
+        await router.navigateByUrl(hasTenant ? `${path.replace(/\/$/, '')}/tenant/${savedTenantId}` : path);
+        return;
+      }
+
       const isSameService = app.serviceId.includes(uiUrl);
       const isHomePage = router.url === '/';
-      const hasTenant = app.hasTenantList;
       const baseUrl = app.url.replace(uiUrl, '');
 
       if (isSameService && !isHomePage) {

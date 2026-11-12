@@ -38,6 +38,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AccountComponent, ActiveTenantGuard, AnalyticsResolver, AppGuard, AuthGuard } from 'vitamui-library';
 import { AppComponent } from './app.component';
+import { IDENTITY_ROUTES } from './identity.routes';
 
 const routes: Routes = [
   {
@@ -53,80 +54,7 @@ const routes: Routes = [
     resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'ACCOUNTS_APP' },
   },
-  // =====================================================
-  //                      Customers
-  // =====================================================
-  {
-    path: 'customer',
-    loadChildren: () => import('./customer/customer.module').then((m) => m.CustomerModule),
-    canActivate: [AuthGuard, AppGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'CUSTOMERS_APP' },
-  },
-
-  // =====================================================
-  //                      User
-  // =====================================================
-  {
-    path: 'user',
-    loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
-    canActivate: [AuthGuard, AppGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'USERS_APP' },
-  },
-  // =====================================================
-  //                      Groups
-  // =====================================================
-  {
-    path: 'group',
-    loadChildren: () => import('./group/group.module').then((m) => m.GroupModule),
-    canActivate: [AuthGuard, AppGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'GROUPS_APP' },
-  },
-  // =====================================================
-  //                      Profile
-  // =====================================================
-  {
-    path: 'profile',
-    loadChildren: () => import('./profile/profile.module').then((m) => m.ProfileModule),
-    canActivate: [AuthGuard, AppGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'PROFILES_APP' },
-  },
-  // =====================================================
-  //                      Hierarchy
-  // =====================================================
-  {
-    path: 'profile-hierarchy',
-    loadChildren: () => import('./hierarchy/hierarchy.module').then((m) => m.HierarchyModule),
-    canActivate: [AuthGuard, AppGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'HIERARCHY_PROFILE_APP' },
-  },
-  // =====================================================
-  //                      Subrogation
-  // =====================================================
-  {
-    path: 'subrogation',
-    loadChildren: () => import('./subrogation/subrogation.module').then((m) => m.SubrogationModule),
-    canActivate: [AuthGuard, AppGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'SUBROGATIONS_APP' },
-  },
-  // =====================================================
-  //                      Profile
-  // =====================================================
-  {
-    path: 'externalparamprofile',
-    loadChildren: () => import('./external-param-profile/external-param-profile.module').then((m) => m.ExternalParamProfileModule),
-    canActivate: [AuthGuard, AppGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'EXTERNAL_PARAM_PROFILE_APP' },
-  },
-  // =====================================================
-  //                      unknown path
-  // =====================================================
+  ...IDENTITY_ROUTES,
   { path: '**', redirectTo: '' },
 ];
 

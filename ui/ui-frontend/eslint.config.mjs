@@ -22,6 +22,8 @@ export default defineConfig([
     settings: {
       'boundaries/elements': [
         { type: 'library', pattern: 'projects/vitamui-library/**/*' },
+        // Entry point of a feature (former application) of the single application: its routes.
+        { type: 'feature-routes', pattern: 'projects/!(vitamui-library|portal)/src/app/*.routes.ts', mode: 'file', capture: ['project'] },
         { type: 'app', pattern: 'projects/!(vitamui-library)/**/*', capture: ['project'] }
       ],
       // Public entry points of the library: the only library files apps may import,
@@ -49,10 +51,24 @@ export default defineConfig([
             allow: {
               // Same project only (captured folder must match).
               to: [
-                { element: { type: 'app', captured: { project: '{{ from.element.captured.project }}' } } }
+                { element: { type: 'app', captured: { project: '{{ from.element.captured.project }}' } } },
+                { element: { type: 'feature-routes', captured: { project: '{{ from.element.captured.project }}' } } }
               ]
             },
             message: 'Cross-project imports are forbidden: apps can only import their own project or vitamui-library (found "{{ to.element.captured.project }}").'
+          },
+          {
+            // The single application (portal) lazy loads the features through their routes only.
+            from: { element: { type: 'app', captured: { project: 'portal' } } },
+            allow: {
+              to: [{ element: { type: 'feature-routes' } }]
+            }
+          },
+          {
+            from: { element: { type: 'feature-routes' } },
+            allow: {
+              to: [{ element: { type: 'app', captured: { project: '{{ from.element.captured.project }}' } } }]
+            }
           },
           {
             from: { element: { type: 'library' } },
@@ -74,7 +90,7 @@ export default defineConfig([
           {
             // ...except its public entry points, which the 'vitamui-library' path
             // aliases resolve to (declared last so that it overrides the policy above).
-            from: { element: { type: 'app' } },
+            from: { element: { type: ['app', 'feature-routes'] } },
             allow: {
               to: [{ element: { type: 'library' }, file: { categories: 'public-api' } }]
             }

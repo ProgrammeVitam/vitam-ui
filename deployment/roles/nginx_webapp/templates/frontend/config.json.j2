@@ -33,6 +33,9 @@
   "PORTAL_URL": "{{ vitamui.ui_portal.base_url | default(url_prefix+'/') }}",
   {% if vitamui_struct.vitamui_component == 'ui-identity-admin' %}
   "ALLOWED_URLS": ["/identity-api"],
+  {% elif vitamui_struct.vitamui_component == 'ui-portal' %}
+  {# The single frontend application calls the APIs of all its features #}
+  "ALLOWED_URLS": ["/portal-api", "/identity-api", "/identity-admin-api", "/referential-api", "/ingest-api", "/archive-search-api", "/collect-api", "/pastis-api"],
   {% else %}
   "ALLOWED_URLS": ["/{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }}-api"],
   {% endif %}
@@ -62,21 +65,23 @@
       "order": {{ category.order }}
     }{{ ", " if not loop.last else "" }}
     {% endfor %}
-  {% if vitamui_struct.vitamui_component == "ui-referential" %}
+  {% if vitamui_struct.vitamui_component in ["ui-referential", "ui-portal"] %}
   ],
   "VITAM_ADMIN_TENANT": {{ vitamui_platform_informations.vitam_admin_tenant | default(1) }}
   {% else %}
   ]
   {% endif %}
-  {% if (vitamui_struct.vitamui_component == "ui-collect") and (vitamui.collect.offline_services | default([]) | length > 0) %}
-  "COLLECT": {
+  {% if (vitamui_struct.vitamui_component in ["ui-collect", "ui-portal"]) and (vitamui.collect.offline_services | default([]) | length > 0) %}
+  ,"COLLECT": {
     "OFFLINE_SERVICES": {{ vitamui.ui_collect.offline_services | to_json(indent=2, sort_keys=True) }}
   }
   {% endif %}
-  {% if (vitamui_struct.vitamui_component == "ui-archive-search") %}
+  {% if (vitamui_struct.vitamui_component in ["ui-archive-search", "ui-portal"]) %}
   ,"REASSIGNMENT_ENABLED": {{ vitamui.ui_archive_search.reassignment_enabled | default(false) | bool | lower }}
   {% endif %}
   {% if (vitamui_struct.vitamui_component in ["ui-archive-search", "ui-collect"]) %}
   ,"NON_SORTABLE_FIELDS": {{ vitamui_struct.query_non_sortable_fields | default(default_non_sortable_fields) | to_json }}
+  {% elif vitamui_struct.vitamui_component == "ui-portal" %}
+  ,"NON_SORTABLE_FIELDS": {{ vitamui.ui_archive_search.query_non_sortable_fields | default(vitamui.ui_collect.query_non_sortable_fields | default(default_non_sortable_fields)) | to_json }}
   {% endif %}
 }
