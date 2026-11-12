@@ -127,7 +127,7 @@ import java.util.Random;
 @Service
 public class PastisService {
 
-    public static final String DEFAULT_SEDA_VERSION = "2.3";
+    public static final String DEFAULT_SEDA_VERSION = "2.4";
     private static final Logger LOGGER = LoggerFactory.getLogger(PastisService.class);
     private final MetaModelService metaModelService;
     private final ResourceLoader resourceLoader;

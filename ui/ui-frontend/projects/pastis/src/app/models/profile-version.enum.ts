@@ -43,10 +43,12 @@ export enum ProfileVersion {
   VERSION_2_1 = '2.1',
   VERSION_2_2 = '2.2',
   VERSION_2_3 = '2.3',
+  VERSION_2_4 = '2.4',
 }
 
 export const ProfileVersionOptions: ProfileVersionOption[] = [
   { version: ProfileVersion.VERSION_2_1, label: 'SEDA 2.1' },
   { version: ProfileVersion.VERSION_2_2, label: 'SEDA 2.2' },
   { version: ProfileVersion.VERSION_2_3, label: 'SEDA 2.3' },
+  { version: ProfileVersion.VERSION_2_4, label: 'SEDA 2.4' },
 ];

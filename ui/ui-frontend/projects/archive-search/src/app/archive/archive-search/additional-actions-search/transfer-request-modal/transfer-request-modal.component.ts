@@ -160,7 +160,7 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
   readonly step2Form = form(
     signal<TransferExportParametersForm>({
       includeLifeCycleLogs: true,
-      sedaVersion: '2.3',
+      sedaVersion: '2.4',
       includeObjects: UsageVersionEnum.ALL,
       usages: [{ usage: ObjectQualifierType.BINARYMASTER, version: 'FIRST' }],
     }),
