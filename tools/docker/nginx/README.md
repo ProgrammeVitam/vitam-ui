@@ -1,8 +1,11 @@
 # Development reverse proxy
 
-All VitamUI applications under a single origin, as in deployed environments:
-portal at `https://dev.vitamui.com/`, the other apps under `/<app>/`, the APIs
-under `/<app>-api/` (api-gateway, mTLS), CAS under `/cas/`.
+VitamUI under a single origin, as in deployed environments: the single
+frontend application (Angular project `portal`) at `https://dev.vitamui.com/`,
+with every feature as one of its routes (`/identity`, `/identity-admin`,
+`/referential`, `/ingest`, `/archive-search`, `/collect`, `/pastis`), the
+design system under `/design-system/`, the APIs under `/<app>-api/`
+(api-gateway, mTLS), CAS under `/cas/`.
 
 ## Prerequisites
 
@@ -28,7 +31,7 @@ Overrides: copy `.env.example` to `.env` (git-ignored).
 
 ```bash
 cd ui/ui-frontend
-npm run build:allModulesDev      # ✔ all apps — or one: npm run build:identity:dev
+npm run build:allModulesDev      # ✔ portal + design-system — or one: npm run build:portal:dev
 npm run build:allModules         # ✘ NOT for local use (production build)
 ```
 
@@ -37,8 +40,8 @@ A production build (`build:allModules`, `build:<app>`) excludes
 environments). Served locally it fails like this:
 
 ```
-GET https://dev.vitamui.com/<app>/assets/config.json      404
-GET https://dev.vitamui.com/<app>/<app>-api/...           401
+GET https://dev.vitamui.com/assets/config.json      404
+GET https://dev.vitamui.com/<app>-api/...           401
 ```
 
 If you see this, rebuild with the `:dev` script. `./vitamui-nginx.sh up` also
@@ -49,20 +52,27 @@ warns about it (`dist/ without config-dev.json`).
 Each application can be served from two sources, and nginx picks one
 automatically on every request:
 
-- **live** — the app's Angular dev server (`npm run start:<app>`) is running:
-  nginx proxies to it, with hot reload;
+- **live** — the app's Angular dev server is running (`npm run start:vitamui`
+  on port 4200, `npm run start:design-system` on port 4242): nginx proxies to
+  it, with hot reload;
 - **dist** — no dev server on the app's port: nginx serves the built files
-  from `ui/ui-frontend/dist/<app>/`.
+  from `ui/ui-frontend/dist/portal/` or `ui/ui-frontend/dist/design-system/`.
 
 Nothing to configure or toggle — start a dev server and the app goes live at
 the next page load, stop it (Ctrl+C) and it falls back to its dist:
 
 ```bash
-cd ui/ui-frontend && npm run start:archive-search   # archive-search goes live
+cd ui/ui-frontend && npm run start:vitamui   # the application and all its features go live
 ```
 
-The URL never changes, other apps are unaffected, and API calls are always
-routed by nginx to the api-gateway (the dev server never sees them).
+The URL never changes, and API calls are always routed by nginx to the
+api-gateway (the dev server never sees them), each with the client
+certificate of its security context as in `frontend_apis`
+(`deployment/roles/nginx_webapp/defaults/main.yml`). `/identity-admin-api` is
+rewritten to `/identity-api` and presents `ui-identity-admin`. One difference
+with deployed environments: `/identity-api` presents `ui-identity-admin` too,
+since the dev database registers no certificate for the `ui-identity` context
+(`tools/docker/mongo/hosts`).
 `./vitamui-nginx.sh status` shows the current mode of each app: `live (:port)`,
 `dist`, or `no dist (404)` when the app has neither.
 
@@ -71,5 +81,5 @@ routed by nginx to the api-gateway (the dev server never sees them).
 Non-regression tests, to run when modifying the nginx configuration:
 
 ```bash
-./tests/run-tests.sh            # isolated stack + stub upstreams, ~104 checks
+./tests/run-tests.sh            # isolated stack + stub upstreams, ~94 checks
 ```
