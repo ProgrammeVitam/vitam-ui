@@ -51,6 +51,8 @@ external_archiving_systems:
   #    access_external:
   #      host: <host_name>
   #      port: <port>
+  #      # Check that the server certificate matches the host (default: ssl_hostname_verification, true)
+  #      hostname_verification: true
   #  ...
 
   ## By default, users have only access to referential configuration from the current Vitam instance and only for active tenant

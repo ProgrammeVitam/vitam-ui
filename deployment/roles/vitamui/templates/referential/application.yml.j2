@@ -115,6 +115,7 @@ referential:
           truststore:
             key-path: {{ vitamui_folder_conf }}/truststore_external_archiving_system_{{ clientConfig.archiving_system_id }}.p12
             key-password: {{ external_archiving_systems.truststore_password[clientConfig.archiving_system_id] }}
+          hostname-verification: {{ clientConfig.access_external.hostname_verification | default(ssl_hostname_verification) | bool | lower }}
     {% endfor %}
   {% endif %}
 
