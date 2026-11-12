@@ -121,7 +121,7 @@ Root modules:
 
 1. Start MongoDB: `cd tools/docker/mongo && ./restart_dev.sh`
 2. Start SMTP (optional): `cd tools/docker/mail && ./start.sh`
-3. Start CAS: `cd cas/cas-server && ./run.sh`
+3. Start CAS: `cd cas/cas-server && ./run.sh` — or, to log in with an email and no password, the dev-only mock `tools/cas-mock/start.sh` (see its README)
 4. Start backend APIs (in order): security → iam → others
 5. Start frontend apps: `npm run start:<app>`
 
