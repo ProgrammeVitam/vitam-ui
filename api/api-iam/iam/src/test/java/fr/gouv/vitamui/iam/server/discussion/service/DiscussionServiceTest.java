@@ -22,6 +22,7 @@ import org.springframework.data.mongodb.core.ReactiveChangeStreamOperation;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import reactor.core.publisher.Flux;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -135,6 +136,120 @@ class DiscussionServiceTest {
             "transaction-id",
             EntityType.TRANSACTION
         );
+    }
+
+    @Test
+    void findEntityIdsWithUnreadDiscussionsReturnsOnlyEntitiesWithAnUnreadDiscussion() {
+        Discussion unreadDiscussion = discussion(TENANT, entity(EntityType.TRANSACTION, "transaction-unread"));
+        unreadDiscussion.setId("discussion-unread");
+        unreadDiscussion.setLastMessageAt(Instant.now());
+        Discussion readDiscussion = discussion(TENANT, entity(EntityType.TRANSACTION, "transaction-read"));
+        readDiscussion.setId("discussion-read");
+        readDiscussion.setLastMessageAt(Instant.now().minusSeconds(60));
+
+        when(securityService.hasRole(EntityType.TRANSACTION.getRole())).thenReturn(true);
+        when(securityService.getTenantIdentifier()).thenReturn(TENANT);
+        when(securityService.getUser()).thenReturn(authenticatedUser());
+        when(
+            discussionRepository.findByTenantAndEntitiesEntityTypeAndEntitiesEntityIdIn(
+                TENANT,
+                EntityType.TRANSACTION,
+                List.of("transaction-unread", "transaction-read")
+            )
+        ).thenReturn(List.of(unreadDiscussion, readDiscussion));
+
+        DiscussionRead readStatus = new DiscussionRead();
+        readStatus.setDiscussionId("discussion-read");
+        readStatus.setLastReadAt(Instant.now());
+        when(
+            discussionReadRepository.findByUserIdAndDiscussionIdIn(
+                USER_ID,
+                List.of("discussion-unread", "discussion-read")
+            )
+        ).thenReturn(List.of(readStatus));
+
+        assertThat(
+            discussionService.findEntityIdsWithUnreadDiscussions(
+                EntityType.TRANSACTION,
+                List.of("transaction-unread", "transaction-read")
+            )
+        ).containsExactly("transaction-unread");
+    }
+
+    @Test
+    void findEntityIdsWithUnreadDiscussionsOnlyReturnsRequestedEntityType() {
+        Discussion discussion = new Discussion();
+        discussion.setId("discussion-multi");
+        discussion.setTenant(TENANT);
+        discussion.setLastMessageAt(Instant.now());
+        discussion.setEntities(
+            List.of(entity(EntityType.TRANSACTION, "transaction-id"), entity(EntityType.PROJECT, "transaction-id"))
+        );
+
+        when(securityService.hasRole(EntityType.TRANSACTION.getRole())).thenReturn(true);
+        when(securityService.getTenantIdentifier()).thenReturn(TENANT);
+        when(securityService.getUser()).thenReturn(authenticatedUser());
+        when(
+            discussionRepository.findByTenantAndEntitiesEntityTypeAndEntitiesEntityIdIn(
+                TENANT,
+                EntityType.TRANSACTION,
+                List.of("transaction-id")
+            )
+        ).thenReturn(List.of(discussion));
+        when(discussionReadRepository.findByUserIdAndDiscussionIdIn(USER_ID, List.of("discussion-multi"))).thenReturn(
+            List.of()
+        );
+
+        assertThat(
+            discussionService.findEntityIdsWithUnreadDiscussions(EntityType.TRANSACTION, List.of("transaction-id"))
+        ).containsExactly("transaction-id");
+    }
+
+    @Test
+    void findEntityIdsWithUnreadDiscussionsNoLongerReturnsTheEntityOnceTheDiscussionHasBeenRead() {
+        Discussion discussion = discussion(TENANT, entity(EntityType.TRANSACTION, "transaction-id"));
+        discussion.setId("discussion-id");
+        discussion.setLastMessageAt(Instant.now());
+
+        when(securityService.hasRole(EntityType.TRANSACTION.getRole())).thenReturn(true);
+        when(securityService.getTenantIdentifier()).thenReturn(TENANT);
+        when(securityService.getUser()).thenReturn(authenticatedUser());
+        when(
+            discussionRepository.findByTenantAndEntitiesEntityTypeAndEntitiesEntityIdIn(
+                TENANT,
+                EntityType.TRANSACTION,
+                List.of("transaction-id")
+            )
+        ).thenReturn(List.of(discussion));
+
+        when(discussionReadRepository.findByUserIdAndDiscussionIdIn(USER_ID, List.of("discussion-id"))).thenReturn(
+            List.of()
+        );
+        assertThat(
+            discussionService.findEntityIdsWithUnreadDiscussions(EntityType.TRANSACTION, List.of("transaction-id"))
+        ).containsExactly("transaction-id");
+
+        DiscussionRead readStatus = new DiscussionRead();
+        readStatus.setDiscussionId("discussion-id");
+        readStatus.setLastReadAt(Instant.now().plusSeconds(1));
+        when(discussionReadRepository.findByUserIdAndDiscussionIdIn(USER_ID, List.of("discussion-id"))).thenReturn(
+            List.of(readStatus)
+        );
+        assertThat(
+            discussionService.findEntityIdsWithUnreadDiscussions(EntityType.TRANSACTION, List.of("transaction-id"))
+        ).isEmpty();
+    }
+
+    @Test
+    void findEntityIdsWithUnreadDiscussionsIsForbiddenWithoutEntityRole() {
+        when(securityService.hasRole(EntityType.TRANSACTION.getRole())).thenReturn(false);
+
+        assertThatThrownBy(
+            () ->
+                discussionService.findEntityIdsWithUnreadDiscussions(EntityType.TRANSACTION, List.of("transaction-id"))
+        ).isInstanceOf(ForbiddenException.class);
+
+        verifyNoInteractions(discussionRepository);
     }
 
     @Test

@@ -50,8 +50,10 @@ import { CreateProjectComponent } from './create-project/create-project.componen
 import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectsService } from './projects.service';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
-import { NgClass } from '@angular/common';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { I18nPluralPipe, NgClass } from '@angular/common';
 import { ProjectPreviewComponent } from './project-preview/project-preview.component';
+import { TransactionsToProcessListComponent } from '../transactions/transactions-to-process-list/transactions-to-process-list.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -67,7 +69,11 @@ import { TranslatePipe } from '@ngx-translate/core';
     VitamuiTitleBreadcrumbComponent,
     VitamuiBannerComponent,
     ProjectListComponent,
+    TransactionsToProcessListComponent,
+    MatTabGroup,
+    MatTab,
     TranslatePipe,
+    I18nPluralPipe,
   ],
 })
 export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
@@ -77,8 +83,15 @@ export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
   projectId: string;
   isLPExtended = false;
   createDialogSub: Subscription;
+  selectedTabIndex = 1;
+
+  readonly transactionsToProcessTabLabelMap: { [k: string]: string } = {
+    '=1': 'COLLECT.TRANSACTIONS_TO_PROCESS.SINGLE_TRANSACTION',
+    other: 'COLLECT.TRANSACTIONS_TO_PROCESS.TAB_LABEL',
+  };
 
   readonly projectListComponent = viewChild(ProjectListComponent);
+  readonly transactionsToProcessListComponent = viewChild(TransactionsToProcessListComponent);
 
   constructor() {
     const projectsService = inject(ProjectsService);
@@ -106,6 +119,7 @@ export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
 
     this.createDialogSub = dialogRef.afterClosed().subscribe(() => {
       this.projectListComponent().search(new PageRequest(0, DEFAULT_PAGE_SIZE, 'archivalAgreement', Direction.ASCENDANT));
+      this.transactionsToProcessListComponent()?.searchTransactions();
     });
   }
 
@@ -131,5 +145,6 @@ export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
 
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'archivalAgreement', Direction.ASCENDANT, criteria);
     this.projectListComponent().search(pageRequest);
+    this.transactionsToProcessListComponent()?.searchByQuery(event);
   }
 }

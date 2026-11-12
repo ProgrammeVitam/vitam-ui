@@ -24,10 +24,10 @@ public class DiscussionDto {
     public DiscussionDto(Discussion discussion, Instant lastReadAt) {
         this.discussion = discussion;
         this.lastReadAt = lastReadAt;
-        this.isUnread = calculateUnread(discussion, lastReadAt);
+        this.isUnread = isUnread(discussion, lastReadAt);
     }
 
-    private boolean calculateUnread(Discussion discussion, Instant lastReadAt) {
+    public static boolean isUnread(Discussion discussion, Instant lastReadAt) {
         if (discussion.getLastMessageAt() == null) {
             return false;
         }

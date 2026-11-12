@@ -29,10 +29,15 @@
 
 package fr.gouv.vitamui.collect.server.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import fr.gouv.vitam.collect.common.dto.BatchDto;
+import fr.gouv.vitam.collect.common.dto.BatchStatusDto;
+import fr.gouv.vitam.collect.common.dto.CriteriaTransactionDto;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.collect.common.enums.TransactionValidationMode;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -44,10 +49,13 @@ import fr.gouv.vitam.common.model.ProcessState;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.StatusCode;
+import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.collect.common.dto.CollectOperationStatusDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.server.service.converters.TransactionConverter;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationCommonService;
@@ -66,7 +74,15 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.mapRequestToDslQuery;
 
@@ -90,8 +106,40 @@ public class TransactionService {
 
     private static final String ACTION = "$action";
 
+    public static final int MAX_RESULTS = 10000;
+    public static final String UNABLE_TO_RETRIEVE_TRANSACTIONS = "Unable to retrieve transactions";
+    private static final Set<String> TERMINATED_STATUSES_HIDDEN_ONCE_PURGED = Set.of(
+        "ACK_OK",
+        "ACK_WARNING",
+        "ABORTED"
+    );
+    // Statuses counted as "to process" for the tab counter (CA01), excluding terminated transactions
+    // (ACK_OK, ACK_WARNING, ABORTED) that are still listed only because they are not yet purged.
+    private static final Set<String> STATUSES_TO_PROCESS = Set.of(
+        "OPEN",
+        "READY",
+        "VALIDATED",
+        "SENDING",
+        "SENT",
+        "ACK_KO",
+        "KO"
+    );
+    // Maps the orderBy keys this UI sends to the keys Vitam's
+    // TransactionRepository.SORTABLE_FIELDS expects. Keep in sync with transactions-to-process-list.component.ts.
+    private static final Map<String, String> VITAM_ORDER_BY_FIELDS = Map.of(
+        "messageIdentifier",
+        "MessageIdentifier",
+        "originatingAgencyIdentifier",
+        "OriginatingAgencyIdentifier",
+        "status",
+        "Status",
+        "lastUpdate",
+        "LastUpdate"
+    );
+
     private final CollectService collectService;
     private final VitamOperationCommonService vitamOperationCommonService;
+    private final ExternalParametersService externalParametersService;
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -164,6 +212,129 @@ public class TransactionService {
         } catch (VitamClientException | InvalidParseOperationException e) {
             throw new VitamClientException("Unable to find transaction : ", e);
         }
+    }
+
+    /**
+     * Search transactions to process, for every project of the tenant.
+     */
+    public PaginatedValuesDto<CollectTransactionDto> searchTransactionsPaginated(
+        Integer page,
+        Integer size,
+        Optional<String> criteria,
+        Optional<String> orderBy,
+        Optional<DirectionDto> direction,
+        VitamContext vitamContext
+    ) {
+        if (page == null || page < 0 || size == null || size <= 0) {
+            throw new BadRequestException("Invalid page or size parameter");
+        }
+        try {
+            final CriteriaTransactionDto criteriaTransactionDto = new CriteriaTransactionDto();
+
+            final AccessContractModel accessContractModel = externalParametersService.retrieveAccessContract();
+            if (accessContractModel == null) {
+                return new PaginatedValuesDto<>(Collections.emptyList(), 0, 0, false);
+            }
+            final ArrayList<String> originatingAgencies = Optional.of(accessContractModel)
+                .filter(accessContract -> !Boolean.TRUE.equals(accessContract.getEveryOriginatingAgency()))
+                .map(accessContract -> new ArrayList<>(accessContract.getOriginatingAgencies()))
+                .orElse(null);
+            if (originatingAgencies != null && originatingAgencies.isEmpty()) {
+                return new PaginatedValuesDto<>(Collections.emptyList(), 0, 0, false);
+            }
+            criteriaTransactionDto.setOriginatingAgencies(originatingAgencies);
+            // Vitam's transaction search (vitam/vitam!11359) now accepts offset/limit/sorting and returns
+            // a real total in $hits.total, but it still doesn't filter on automaticIngest or purge status,
+            // so that filtering - and therefore the page actually returned below - still have to happen in
+            // memory here. Beyond MAX_RESULTS (10 000) transactions, the page is silently truncated with no
+            // warning to the caller; a follow-up ticket should be opened to port these filters to Vitam so
+            // pagination can be fully delegated to it.
+            criteriaTransactionDto.setLimit(MAX_RESULTS);
+            criteriaTransactionDto.setOrderBy(VITAM_ORDER_BY_FIELDS.get(orderBy.orElse("lastUpdate")));
+            criteriaTransactionDto.setOrderDirection(direction.orElse(DirectionDto.DESC).getValue());
+
+            List<Boolean> automaticIngestValues = Collections.emptyList();
+            if (criteria.isPresent()) {
+                final HashMap<String, Object> vitamCriteria = mapper.readValue(
+                    criteria.get(),
+                    new TypeReference<>() {}
+                );
+                criteriaTransactionDto.setQuery((String) vitamCriteria.get("query"));
+                Optional.ofNullable(vitamCriteria.get("statuses"))
+                    .map(statuses -> mapper.convertValue(statuses, new TypeReference<List<String>>() {}))
+                    .ifPresent(criteriaTransactionDto::setStatuses);
+                automaticIngestValues = Optional.ofNullable(vitamCriteria.get("automaticIngestValues"))
+                    .map(values -> mapper.convertValue(values, new TypeReference<List<Boolean>>() {}))
+                    .orElse(Collections.emptyList());
+            }
+
+            final RequestResponse<JsonNode> requestResponse = collectService.searchTransactions(
+                vitamContext,
+                criteriaTransactionDto
+            );
+
+            if (requestResponse == null || !requestResponse.isOk()) {
+                throw new VitamClientException("Error occurs when retrieving transactions!");
+            }
+            final RequestResponseOK<JsonNode> okResponse = (RequestResponseOK<JsonNode>) requestResponse;
+            final List<JsonNode> results = okResponse.getResults();
+            List<TransactionDto> transactionDtos = new ArrayList<>();
+            for (JsonNode result : results) {
+                transactionDtos.add(mapper.treeToValue(result, TransactionDto.class));
+            }
+
+            final List<Boolean> finalAutomaticIngestValues = automaticIngestValues;
+            List<CollectTransactionDto> collectTransactionDtos = TransactionConverter.toVitamuiDtos(transactionDtos)
+                .stream()
+                .filter(
+                    dto ->
+                        finalAutomaticIngestValues.isEmpty() ||
+                        finalAutomaticIngestValues.contains(Boolean.TRUE.equals(dto.getAutomaticIngest()))
+                )
+                .filter(dto -> !isTerminatedAndPurged(dto))
+                .limit(MAX_RESULTS)
+                .collect(Collectors.toList());
+
+            final int localSize = collectTransactionDtos.size();
+            final int fromIndex = Math.min(page * size, localSize);
+            final int toIndex = Math.min(fromIndex + size, localSize);
+            final List<CollectTransactionDto> pageValues = collectTransactionDtos.subList(fromIndex, toIndex);
+
+            final int totalElements = (int) collectTransactionDtos
+                .stream()
+                .filter(dto -> STATUSES_TO_PROCESS.contains(dto.getStatus()))
+                .count();
+
+            return new PaginatedValuesDto<>(
+                pageValues,
+                page,
+                size,
+                totalElements,
+                toIndex < localSize,
+                Map.of("totalResults", totalElements)
+            );
+        } catch (VitamClientException e) {
+            LOGGER.debug(UNABLE_TO_RETRIEVE_TRANSACTIONS, e);
+            throw new InternalServerException(UNABLE_TO_RETRIEVE_TRANSACTIONS, e);
+        } catch (JsonProcessingException e) {
+            LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE, e);
+            throw new InternalServerException(UNABLE_TO_PROCESS_RESPONSE, e);
+        }
+    }
+
+    /**
+     * A terminated transaction (ACK_OK, ACK_WARNING, ABORTED) is "fully purged" once Vitam has cleaned up
+     * all its ingest batches; it then has nothing left to process, so it should no longer be listed among
+     * the transactions to process (see CA01).
+     */
+    private static boolean isTerminatedAndPurged(CollectTransactionDto dto) {
+        List<BatchDto> batches = dto.getBatches();
+        return (
+            TERMINATED_STATUSES_HIDDEN_ONCE_PURGED.contains(dto.getStatus()) &&
+            batches != null &&
+            !batches.isEmpty() &&
+            batches.stream().allMatch(batch -> BatchStatusDto.PURGED.equals(batch.getBatchStatus()))
+        );
     }
 
     /**
