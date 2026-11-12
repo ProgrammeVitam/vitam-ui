@@ -43,15 +43,9 @@ mvn clean spring-boot:run -Pdev
 # Install dependencies
 cd ui/ui-frontend && npm install
 
-# Start individual apps (requires SSL certs in dev-deployment/)
-npm run start:portal        # Port 4200
-npm run start:identity       # Port 4201
-npm run start:ingest         # Port 4202
-npm run start:archive-search # Port 4203
-npm run start:referential    # Port 4204
-npm run start:collect        # Port 4205
-npm run start:pastis         # Port 4206
-npm run start:design-system  # Port 4207
+# Start the apps (requires SSL certs in dev-deployment/)
+npm run start:vitamui        # Port 4200 — the single app (project `portal`), every feature included
+npm run start:design-system  # Port 4242
 
 # Build individual apps
 npm run build:portal
@@ -91,7 +85,7 @@ Root modules:
 ### Frontend Structure
 
 `ui/ui-frontend/` is an Angular multi-project workspace:
-- `projects/portal/` - Main portal app
+- `projects/portal/` - The single frontend application (`npm run start:vitamui`): hosts every feature project below as a lazy-loaded route
 - `projects/identity/` - User/identity management
 - `projects/ingest/` - Archive ingestion
 - `projects/archive-search/` - Archive search
@@ -123,7 +117,7 @@ Root modules:
 2. Start SMTP (optional): `cd tools/docker/mail && ./start.sh`
 3. Start CAS: `cd cas/cas-server && ./run.sh`
 4. Start backend APIs (in order): security → iam → others
-5. Start frontend apps: `npm run start:<app>`
+5. Start the frontend: `npm run start:vitamui` (and `npm run start:design-system` if needed)
 
 ### Prerequisites for Dev
 

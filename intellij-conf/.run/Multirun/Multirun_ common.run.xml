@@ -7,7 +7,7 @@
     <runConfiguration name="API gateway" type="Spring Boot" />
     <runConfiguration name="CAS" type="JAR Application" />
     <runConfiguration name="referential" type="Spring Boot" />
-    <runConfiguration name="Angular: portal" type="npm" />
+    <runConfiguration name="Angular: vitamui" type="npm" />
     <method v="2" />
   </configuration>
 </component>
