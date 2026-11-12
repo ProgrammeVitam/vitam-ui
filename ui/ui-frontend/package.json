@@ -165,10 +165,8 @@
     "karma-junit-reporter": "2.0.1",
     "karma-spec-reporter": "0.0.36",
     "lint-staged": "15.4.3",
-    "ng-packagr": "^19.2.0",
     "prettier": "3.5.3",
-    "typescript": "~5.8.2",
-    "wait-on": "8.0.3"
+    "typescript": "~5.8.2"
   },
   "lint-staged": {
     "*": "prettier --write --ignore-unknown",
