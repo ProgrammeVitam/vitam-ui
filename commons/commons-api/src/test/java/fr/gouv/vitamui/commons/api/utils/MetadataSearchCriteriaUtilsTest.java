@@ -183,6 +183,57 @@ public class MetadataSearchCriteriaUtilsTest {
         );
     }
 
+    @Test
+    void shouldNotComputeFacetsWhenNoneRequested() throws Exception {
+        SearchCriteriaDto searchQuery = searchQueryWithTitleCriteria();
+        searchQuery.setComputeMgtRulesFacets(true);
+
+        SelectMultiQuery selectMultiQuery = MetadataSearchCriteriaUtils.createDslQueryWithFacets(searchQuery);
+
+        JsonNode facetNode = selectMultiQuery.getFinalSelect().get("$facets");
+        Assertions.assertTrue(facetNode == null || facetNode.isEmpty());
+    }
+
+    @Test
+    void shouldComputeOnlyRequestedFacets() throws Exception {
+        SearchCriteriaDto searchQuery = searchQueryWithTitleCriteria();
+        searchQuery.setFacets(List.of(new TermsFacet("COUNT_BY_NODE", "#allunitups", 1000, FacetOrder.ASC)));
+
+        SelectMultiQuery selectMultiQuery = MetadataSearchCriteriaUtils.createDslQueryWithFacets(searchQuery);
+
+        Assertions.assertEquals(
+            "[{\"$name\":\"COUNT_BY_NODE\",\"$terms\":{\"$field\":\"#allunitups\",\"$size\":1000,\"$order\":\"ASC\"}}]",
+            selectMultiQuery.getFinalSelect().get("$facets").toString()
+        );
+    }
+
+    @Test
+    void shouldIgnoreDuplicateFacetNames() throws Exception {
+        SearchCriteriaDto searchQuery = searchQueryWithTitleCriteria();
+        searchQuery.setFacets(
+            List.of(
+                new TermsFacet("COUNT_BY_NODE", "#allunitups", 1000, FacetOrder.ASC),
+                new TermsFacet("COUNT_BY_NODE", "#allunitups", 1000, FacetOrder.ASC)
+            )
+        );
+
+        SelectMultiQuery selectMultiQuery = MetadataSearchCriteriaUtils.createDslQueryWithFacets(searchQuery);
+
+        Assertions.assertEquals(1, selectMultiQuery.getFinalSelect().get("$facets").size());
+    }
+
+    private SearchCriteriaDto searchQueryWithTitleCriteria() {
+        SearchCriteriaEltDto criteria = new SearchCriteriaEltDto()
+            .setCriteria("Title")
+            .setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS)
+            .setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name())
+            .setValues(List.of(new CriteriaValue().setValue("Some title")))
+            .setDataType(ArchiveSearchConsts.CriteriaDataType.STRING.name());
+        SearchCriteriaDto searchQuery = new SearchCriteriaDto();
+        searchQuery.setCriteriaList(List.of(criteria));
+        return searchQuery;
+    }
+
     private SearchCriteriaDto searchQuerySortedBy(final String sortField) {
         SearchCriteriaEltDto criteria = new SearchCriteriaEltDto()
             .setCriteria("Title")
