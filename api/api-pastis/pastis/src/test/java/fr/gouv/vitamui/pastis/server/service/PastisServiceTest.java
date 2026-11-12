@@ -29,7 +29,9 @@
 
 package fr.gouv.vitamui.pastis.server.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.api.exception.InvalidFileSanitizeException;
+import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.profiles.Notice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileResponse;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileType;
@@ -84,5 +86,18 @@ class PastisServiceTest {
         Notice notice = new Notice();
         notice.setPath("unknown.rng");
         Assertions.assertThrows(TechnicalException.class, () -> pastisService.loadProfile(notice));
+    }
+
+    @Test
+    void getArchiveProfile_should_fail_when_root_element_has_no_name() throws Exception {
+        final ElementProperties profile = new ObjectMapper()
+            .readValue(new ClassPathResource("rng/ProfileJson.json").getInputStream(), ElementProperties.class);
+        Assertions.assertFalse(pastisService.getArchiveProfile(profile, ProfileVersion.VERSION_2_1).isEmpty());
+
+        final ElementProperties namelessProfile = new ElementProperties();
+        Assertions.assertThrows(
+            TechnicalException.class,
+            () -> pastisService.getArchiveProfile(namelessProfile, ProfileVersion.VERSION_2_1)
+        );
     }
 }
