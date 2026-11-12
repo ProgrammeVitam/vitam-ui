@@ -76,7 +76,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { EMPTY, filter, mergeMap, Observable, of, Subscription } from 'rxjs';
-import { ApplicationId, SnackBarService, StartupService } from 'vitamui-library';
+import { APP_ROUTE_PREFIX, ApplicationId, SnackBarService, StartupService } from 'vitamui-library';
 import { environment } from '../../../environments/environment';
 import { FileService } from '../../core/services/file.service';
 import { NoticeService } from '../../core/services/notice.service';
@@ -133,6 +133,7 @@ function constantToTranslate(edit: boolean) {
 })
 export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   private readonly profileService = inject(ProfileService);
+  private readonly routePrefix = inject(APP_ROUTE_PREFIX);
   private readonly popupService = inject(PopupService);
   private readonly fileService = inject(FileService);
   private readonly startupService = inject(StartupService);
@@ -350,7 +351,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
     });
     // sleep 3 sec before return pastishome
     setTimeout(() => {
-      this.router.navigate(['pastis']);
+      this.router.navigate([`${this.routePrefix}/pastis`]);
     }, 3000);
   }
 

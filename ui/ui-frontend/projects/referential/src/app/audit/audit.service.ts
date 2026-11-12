@@ -56,9 +56,7 @@ import { OperationApiService } from '../core/api/operation-api.service';
 import { TranslateService } from '@ngx-translate/core';
 import { TraceabilityChainAuditRequest } from '../models/audit.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AuditService extends SearchService<Event> {
   private readonly operationApiService: OperationApiService;
   private readonly logbookApiService = inject(LogbookApiService);

@@ -42,9 +42,7 @@ import { map, take } from 'rxjs/operators';
 import { Group } from 'vitamui-library';
 import { GroupService } from './group.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class GroupResolver {
   private readonly groupService = inject(GroupService);
   private readonly router = inject(Router);

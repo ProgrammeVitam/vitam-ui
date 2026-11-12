@@ -42,9 +42,7 @@ import { Profile } from '../models/profile/profile.interface';
 import { CriteriaSearchQuery } from '../models/criteria/criteria.interface';
 import { PaginatedHttpClient } from '../paginated-http-client';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ProfileApiService extends PaginatedHttpClient<Profile> {
   constructor() {
     const http = inject(HttpClient);

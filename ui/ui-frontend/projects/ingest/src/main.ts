@@ -35,19 +35,29 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { enableProdMode, importProvidersFrom, LOCALE_ID, provideZonelessChangeDetection } from '@angular/core';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { bootstrapApplication, BrowserModule, Title } from '@angular/platform-browser';
 
 import { environment } from './environments/environment';
-import { AuthenticationModule, BytesPipe, provideI18n, VitamUICommonModule, VitamUILibraryModule, WINDOW_LOCATION } from 'vitamui-library';
+import {
+  AuthenticationModule,
+  BytesPipe,
+  ENVIRONMENT,
+  InjectorModule,
+  LoggerModule,
+  provideI18n,
+  provideVitamuiFeature,
+  VitamUICommonModule,
+  VitamUILibraryModule,
+  WINDOW_LOCATION,
+} from 'vitamui-library';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { DatePipe, registerLocaleData } from '@angular/common';
 import { default as localeFr } from '@angular/common/locales/fr';
-import { CoreModule } from './app/core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app/app-routing.module';
-import { IngestModule } from './app/ingest/ingest.module';
-import { HoldingFillingSchemeModule } from './app/holding-filling-scheme/holding-filling-scheme.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { provideIngestServices } from './app/ingest.providers';
 import { AppComponent } from './app/app.component';
 
 registerLocaleData(localeFr, 'fr');
@@ -61,13 +71,12 @@ bootstrapApplication(AppComponent, {
     provideZonelessChangeDetection(),
     importProvidersFrom(
       AuthenticationModule.forRoot(),
-      CoreModule,
+      InjectorModule,
+      LoggerModule.forRoot(),
       BrowserAnimationsModule,
       BrowserModule,
       VitamUICommonModule.forRoot(),
       AppRoutingModule,
-      IngestModule,
-      HoldingFillingSchemeModule,
       ServiceWorkerModule.register('ngsw-worker.js', {
         enabled: environment.production,
         // Register the ServiceWorker as soon as the application is stable
@@ -76,10 +85,13 @@ bootstrapApplication(AppComponent, {
       }),
       VitamUILibraryModule, // For Material tokens
     ),
+    provideHttpClient(withInterceptorsFromDi()),
     provideI18n(),
     provideNativeDateAdapter(),
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
+    provideVitamuiFeature({ baseUrl: './ingest-api' }, provideIngestServices()),
+    { provide: ENVIRONMENT, useValue: environment },
     {
       provide: WINDOW_LOCATION,
       useValue: window.location,

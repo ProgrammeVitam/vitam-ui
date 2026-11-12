@@ -41,9 +41,7 @@ import { map, tap } from 'rxjs/operators';
 import { BASE_URL, Event, PageRequest, PaginatedHttpClient, PaginatedResponse, VitamuiHttpHeaders } from 'vitamui-library';
 import { TraceabilityChainAuditRequest } from '../../models/audit.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class OperationApiService extends PaginatedHttpClient<Event> {
   private readonly baseUrl: string;
 

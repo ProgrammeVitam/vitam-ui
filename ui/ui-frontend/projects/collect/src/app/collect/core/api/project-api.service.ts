@@ -50,9 +50,7 @@ import {
   VitamuiHttpHeaders,
 } from 'vitamui-library';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ProjectsApiService extends PaginatedHttpClient<any> {
   baseUrl: string;
   urlTransaction: string;

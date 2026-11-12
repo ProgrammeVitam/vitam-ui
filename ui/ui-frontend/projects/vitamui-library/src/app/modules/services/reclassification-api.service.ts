@@ -45,9 +45,7 @@ import { ReclassificationCriteriaDto } from './reclassification.interface';
 import { PaginatedHttpClient } from '../paginated-http-client';
 import { tap } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ReclassificationApiService extends PaginatedHttpClient<any> {
   baseUrl: string;
 

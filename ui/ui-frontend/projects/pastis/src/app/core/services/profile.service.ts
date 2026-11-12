@@ -90,9 +90,7 @@ import { PastisConfiguration } from '../classes/pastis-configuration';
 import { ArchivalProfileUnitApiService } from './archival-profile-unit-api.service';
 import { ArchiveProfileApiService } from './archive-profile-api.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ProfileService implements OnDestroy {
   private readonly apiService = inject(PastisApiService);
   private readonly pastisConfig = inject(PastisConfiguration);

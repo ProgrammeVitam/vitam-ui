@@ -44,9 +44,7 @@ import { TenantsByApplication } from './models/user/tenants-by-application.inter
 import { StartupService } from './startup.service';
 import { TenantSelectionService } from './tenant-selection.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ActiveTenantGuard {
   private readonly authService = inject(AuthService);
   private readonly startupService = inject(StartupService);

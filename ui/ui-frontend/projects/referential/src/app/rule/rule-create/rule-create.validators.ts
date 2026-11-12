@@ -39,9 +39,7 @@ import { SchemaPath } from '@angular/forms/signals';
 import { Observable, of } from 'rxjs';
 import { RuleService, validateObservable } from 'vitamui-library';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class RuleCreateValidators {
   private readonly ruleService: RuleService;
 

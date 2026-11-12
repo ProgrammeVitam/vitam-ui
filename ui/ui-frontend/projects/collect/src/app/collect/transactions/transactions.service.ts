@@ -53,9 +53,7 @@ import { TransactionApiService } from '../core/api/transaction-api.service';
 import { pollUntil } from './polling';
 import { TransactionValidationMode } from '../models/transaction-validation-mode.enum';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class TransactionsService extends SearchService<Transaction> {
   private readonly transactionApiService: TransactionApiService;
   private readonly projectApiService = inject(ProjectsApiService);

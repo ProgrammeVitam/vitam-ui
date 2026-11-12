@@ -87,9 +87,7 @@ export interface DiscussionEntity {
   main?: boolean;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class DiscussionService {
   private readonly configService = inject(ConfigService);
   private readonly httpClient = inject(HttpClient);

@@ -42,9 +42,7 @@ import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat, SearchService, SnackBarService
 
 import { FileFormatApiService } from '../core/api/file-format-api.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class FileFormatService extends SearchService<FileFormat> {
   private readonly fileFormatApiService: FileFormatApiService;
   private readonly snackBarService = inject(SnackBarService);

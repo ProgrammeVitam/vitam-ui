@@ -34,25 +34,31 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { inject, NgModule } from '@angular/core';
+import { Provider } from '@angular/core';
+import { ArchiveProfileApiService } from './core/services/archive-profile-api.service';
+import { ProfileService } from './core/services/profile.service';
+import { PastisApiService } from './core/api/api.pastis.service';
+import { ArchivalProfileUnitApiService } from './core/services/archival-profile-unit-api.service';
+import { FileService } from './core/services/file.service';
+import { NoticeService } from './core/services/notice.service';
+import { ArchiveProfileSaverService } from './user-actions/save-profile/archive-profile-saver.service';
+import { ArchiveUnitProfileSaverService } from './user-actions/save-profile/archive-unit-profile-saver.service';
+import { IdentifierExistsValidator } from './validators/IdentifierExistsValidator';
 
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, throwIfAlreadyLoaded, VitamUICommonModule } from 'vitamui-library';
-import { environment } from '../../environments/environment';
-
-@NgModule({
-  exports: [VitamUICommonModule],
-  imports: [VitamUICommonModule, InjectorModule, LoggerModule.forRoot()],
-  providers: [
-    { provide: BASE_URL, useValue: './identity-api' },
-    { provide: ENVIRONMENT, useValue: environment },
-    provideHttpClient(withInterceptorsFromDi()),
-  ],
-})
-export class CoreModule {
-  constructor() {
-    const parentModule = inject(CoreModule, { optional: true, skipSelf: true });
-
-    throwIfAlreadyLoaded(parentModule, 'CoreModule');
-  }
+/**
+ * Services of the pastis feature whose HTTP calls depend on BASE_URL, directly or through another service.
+ * They are not provided in root: they must be provided with the feature's BASE_URL (see provideVitamuiFeature).
+ */
+export function providePastisServices(): Provider[] {
+  return [
+    ArchiveProfileApiService,
+    ProfileService,
+    ArchivalProfileUnitApiService,
+    ArchiveProfileSaverService,
+    ArchiveUnitProfileSaverService,
+    FileService,
+    IdentifierExistsValidator,
+    NoticeService,
+    PastisApiService,
+  ];
 }

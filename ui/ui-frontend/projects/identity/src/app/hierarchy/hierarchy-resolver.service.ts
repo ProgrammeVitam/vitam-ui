@@ -42,9 +42,7 @@ import { map, take } from 'rxjs/operators';
 import { Profile } from 'vitamui-library';
 import { HierarchyService } from './hierarchy.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class HierarchyResolver {
   private readonly hierarchyService = inject(HierarchyService);
   private readonly router = inject(Router);

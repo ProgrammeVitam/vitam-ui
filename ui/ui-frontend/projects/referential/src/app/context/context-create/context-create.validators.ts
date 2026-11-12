@@ -44,9 +44,7 @@ type FieldPath<TValue, TPathKind extends PathKind> = SchemaPath<TValue, SchemaPa
 
 const ALLOWED_NAME_REGEX = /^[a-zA-Z0-9+=@_-]*$/;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ContextCreateValidators {
   private readonly contextService: ContextService;
 

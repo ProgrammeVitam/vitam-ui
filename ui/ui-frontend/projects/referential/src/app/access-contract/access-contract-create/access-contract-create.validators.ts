@@ -41,9 +41,7 @@ import { AccessContractService, validateObservable } from 'vitamui-library';
 
 type FieldPath<TValue, TPathKind extends PathKind> = SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AccessContractCreateValidators {
   private readonly accessContractService: AccessContractService;
 

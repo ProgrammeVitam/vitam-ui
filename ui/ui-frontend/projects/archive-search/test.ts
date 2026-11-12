@@ -35,18 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { TestBed } from '@angular/core/testing';
+import { provideArchiveSearchServices } from './src/app/archive-search.providers';
 
-import { CoreModule } from './core.module';
-
-describe('CoreModule', () => {
-  let coreModule: CoreModule;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    coreModule = TestBed.runInInjectionContext(() => new CoreModule());
-  });
-
-  it('should create an instance', () => {
-    expect(coreModule).toBeTruthy();
-  });
-});
+/**
+ * The archive-search services are not provided in root (they depend on the feature BASE_URL): provide them in every test.
+ */
+const configureTestingModule = TestBed.configureTestingModule.bind(TestBed);
+TestBed.configureTestingModule = ((moduleDef: any) =>
+  configureTestingModule({
+    ...moduleDef,
+    providers: [provideArchiveSearchServices(), ...(moduleDef?.providers ?? [])],
+  })) as typeof TestBed.configureTestingModule;

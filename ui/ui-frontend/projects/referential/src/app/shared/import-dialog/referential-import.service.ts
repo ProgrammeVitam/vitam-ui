@@ -41,9 +41,7 @@ import { ReferentialImportInvalidFileError, ReferentialTypes } from './import-di
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ReferentialImportService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = inject(BASE_URL);

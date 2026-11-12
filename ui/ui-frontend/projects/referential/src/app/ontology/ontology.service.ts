@@ -40,9 +40,7 @@ import { tap } from 'rxjs/operators';
 import { Ontology, SearchService, SnackBarService } from 'vitamui-library';
 import { OntologyApiService } from '../core/api/ontology-api.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class OntologyService extends SearchService<Ontology> {
   private readonly ontologyApiService: OntologyApiService;
   private readonly snackBarService = inject(SnackBarService);

@@ -38,9 +38,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { BaseHttpClient, BASE_URL, Tenant } from 'vitamui-library';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class TenantApiService extends BaseHttpClient<Tenant> {
   constructor() {
     const http = inject(HttpClient);

@@ -1,21 +1,13 @@
 {
   "COMMON": {
-    "CANCEL": "Cancel",
-    "BACK": "Back",
-    "SUBMIT": "Confirm",
     "TERMINATE": "Terminate",
-    "UPDATE": "Update",
-    "APPLY_UPDATE": "Apply changes",
-    "REQUIRED": "Required field",
     "MIN_LENGTH": "Minimum length is {{minlength.requiredLength}}, currently {{minlength.actualLength}}",
     "MAX_LENGTH": "Maximum length is {{maxlength.requiredLength}}, currently {{maxlength.actualLength}}",
     "EDIT": "Edit",
-    "SAVE": "Save",
     "NAME_ALREADY_EXISTS": "Name already in use",
     "DESCRIPTION": "Description",
     "NAME": "Name",
     "SEARCH": "Search",
-    "COPY": "Copy",
     "DELETE": "Delete"
   },
   "IMPORT_DIALOG": {

@@ -47,9 +47,7 @@ import { pollUntil } from '../transactions/polling';
  * As long as the import operation of a transaction is not COMPLETED, the transaction must not be
  * validated, otherwise Vitam raises a technical error.
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SipImportTrackingService {
   private readonly transactionApiService = inject(TransactionApiService);
   private readonly logger = inject(Logger);

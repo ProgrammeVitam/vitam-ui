@@ -39,9 +39,7 @@ import { Observable } from 'rxjs';
 import { OntologyApiService } from '../api/ontology-api.service';
 import { IOntology } from '../models/ontology/ontology.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class OntologyService {
   private readonly ontologyApiService = inject(OntologyApiService);
 

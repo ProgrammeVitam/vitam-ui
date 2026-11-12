@@ -45,9 +45,7 @@ import { Group } from '../models/group/group.interface';
 import { Subrogation } from '../models/subrogation/subrogation.interface';
 import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SubrogationApiService extends BaseHttpClient<Subrogation> {
   private readonly authService = inject(AuthService);
 

@@ -51,9 +51,7 @@ import {
   VitamuiHttpHeaders,
 } from 'vitamui-library';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ExternalParamProfileService extends SearchService<ExternalParamProfile> {
   private readonly externalParamProfileApi: ExternalParamProfileApiService;
   private readonly accessContractApiService = inject(AccessContractApiService);

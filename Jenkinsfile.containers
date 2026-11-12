@@ -62,14 +62,7 @@ pipeline {
                         '$SERVICE_DOCKER_PUSH_URL/vitamui/pastis',
                         '$SERVICE_DOCKER_PUSH_URL/vitamui/collect',
                         '$SERVICE_DOCKER_PUSH_URL/vitamui/api-gateway',
-                        '$SERVICE_DOCKER_PUSH_URL/vitamui/cas-server',
-                        '$SERVICE_DOCKER_PUSH_URL/vitamui/ui-portal',
-                        '$SERVICE_DOCKER_PUSH_URL/vitamui/ui-identity',
-                        '$SERVICE_DOCKER_PUSH_URL/vitamui/ui-ingest',
-                        '$SERVICE_DOCKER_PUSH_URL/vitamui/ui-archive-search',
-                        '$SERVICE_DOCKER_PUSH_URL/vitamui/ui-pastis',
-                        '$SERVICE_DOCKER_PUSH_URL/vitamui/ui-collect',
-                        '$SERVICE_DOCKER_PUSH_URL/vitamui/ui-referential'
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/cas-server'
                         // Add more images as needed
                     ]
                     dockerImages.each { image ->

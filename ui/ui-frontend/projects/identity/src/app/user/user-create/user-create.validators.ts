@@ -41,9 +41,7 @@ import { map, switchMap, take } from 'rxjs/operators';
 
 import { UserService } from '../user.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class UserCreateValidators {
   private readonly userService = inject(UserService);
 

@@ -44,6 +44,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
+  APP_ROUTE_PREFIX,
   FilingPlanService,
   LoggerModule,
   PaginatedResponse,
@@ -160,8 +161,9 @@ describe('ProjectPreviewComponent', () => {
             close: () => {},
           },
         },
-        { provide: ActivatedRoute, useValue: { params: of('11') } },
-        { provide: Router, useValue: {} },
+        { provide: ActivatedRoute, useValue: { params: of({ tenantIdentifier: '1' }) } },
+        { provide: Router, useValue: { navigate: vi.fn() } },
+        { provide: APP_ROUTE_PREFIX, useValue: '/feature' },
       ],
     })
       .overrideProvider(ProjectsService, { useValue: projectServiceMock })
@@ -230,5 +232,13 @@ describe('ProjectPreviewComponent', () => {
     component.update();
     component.updateProject(true);
     expect(projectServiceMock.updateProjectDescription).toHaveBeenCalled();
+  });
+
+  it('should search the archive units of the project in the collect feature', async () => {
+    await fixture.whenStable();
+
+    component.searchArchiveUnitsByProject();
+
+    expect(TestBed.inject(Router).navigate).toHaveBeenCalledWith(['/feature/collect/tenant/1/units', 'newId']);
   });
 });

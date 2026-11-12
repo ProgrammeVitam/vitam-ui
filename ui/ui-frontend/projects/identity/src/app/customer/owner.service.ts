@@ -41,9 +41,7 @@ import { CriteriaSearchQuery, Criterion, Operators, Owner, SnackBarService } fro
 import { inject, Injectable } from '@angular/core';
 import { OwnerApiService } from './owner-api.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class OwnerService {
   private readonly ownerApi = inject(OwnerApiService);
   private readonly snackBarService = inject(SnackBarService);

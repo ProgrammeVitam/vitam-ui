@@ -52,9 +52,7 @@ import {
 import { OperationStatus } from '../../models/operation-status.interface';
 import { TransactionValidationMode } from '../../models/transaction-validation-mode.enum';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class TransactionApiService extends PaginatedHttpClient<Transaction> {
   baseUrl: string;
 

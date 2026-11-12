@@ -40,9 +40,7 @@ import { Observable } from 'rxjs';
 import { BASE_URL, PaginatedHttpClient } from 'vitamui-library';
 import { OperationResponse } from '../../models/operation-response.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class LogbookManagementOperationApiService extends PaginatedHttpClient<any> {
   baseUrl: string;
 

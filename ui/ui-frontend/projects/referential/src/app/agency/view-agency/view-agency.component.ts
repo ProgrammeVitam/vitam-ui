@@ -40,6 +40,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
   Agency,
   AgencyService,
+  APP_ROUTE_PREFIX,
   ApplicationId,
   BreadCrumbData,
   TenantSelectionService,
@@ -57,6 +58,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [RouterModule, VitamUICommonModule, VitamUILibraryModule, TranslatePipe],
 })
 export class ViewAgencyComponent implements OnInit {
+  private readonly routePrefix = inject(APP_ROUTE_PREFIX);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly tenantSelectionService = inject(TenantSelectionService);
@@ -84,6 +86,6 @@ export class ViewAgencyComponent implements OnInit {
   }
 
   back() {
-    this.router.navigate(['/agency/tenant/', this.tenantSelectionService.getSelectedTenant().identifier]);
+    this.router.navigate([`${this.routePrefix}/agency/tenant/`, this.tenantSelectionService.getSelectedTenant().identifier]);
   }
 }

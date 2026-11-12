@@ -42,9 +42,7 @@ import { map, take } from 'rxjs/operators';
 import { Customer } from 'vitamui-library';
 import { CustomerService } from '../core/customer.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class CustomerResolver {
   private readonly customerService = inject(CustomerService);
   private readonly router = inject(Router);

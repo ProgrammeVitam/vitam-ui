@@ -44,9 +44,7 @@ import { map, switchMap, take } from 'rxjs/operators';
 import { FieldPath } from '../shared/signal-forms/signal-form-validators';
 import { GroupService } from './group.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class GroupValidators {
   private readonly groupService = inject(GroupService);
 

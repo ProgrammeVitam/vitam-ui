@@ -34,27 +34,44 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { inject, InjectionToken, NgModule } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { AgencyService, APP_ROUTE_PREFIX, TenantSelectionService } from 'vitamui-library';
+import { EditAgencyComponent } from './edit-agency.component';
 
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, throwIfAlreadyLoaded, VitamUICommonModule } from 'vitamui-library';
-import { environment } from '../../environments/environment';
+describe('EditAgencyComponent', () => {
+  let component: EditAgencyComponent;
+  let navigate: ReturnType<typeof vi.fn>;
 
-export declare const BASE_URL_IDENTITY: InjectionToken<string>;
+  beforeEach(() => {
+    TestBed.overrideComponent(EditAgencyComponent, { set: { template: '' } });
+    TestBed.configureTestingModule({
+      imports: [EditAgencyComponent],
+      providers: [
+        { provide: APP_ROUTE_PREFIX, useValue: '/feature' },
+        { provide: TenantSelectionService, useValue: { getSelectedTenant: () => ({ identifier: 1 }) } },
+        { provide: AgencyService, useValue: {} },
+      ],
+    });
+    component = TestBed.createComponent(EditAgencyComponent).componentInstance;
+    navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true) as any;
+  });
 
-@NgModule({
-  exports: [VitamUICommonModule],
-  imports: [VitamUICommonModule, InjectorModule, LoggerModule.forRoot()],
-  providers: [
-    { provide: BASE_URL, useValue: './referential-api' },
-    { provide: ENVIRONMENT, useValue: environment },
-    provideHttpClient(withInterceptorsFromDi()),
-  ],
-})
-export class CoreModule {
-  constructor() {
-    const parentModule = inject(CoreModule, { optional: true, skipSelf: true });
+  it('should go back to the agency list of the feature when cancelling an unchanged form', () => {
+    component.editObject.set({ control: { pristine: true } } as any);
 
-    throwIfAlreadyLoaded(parentModule, 'CoreModule');
-  }
-}
+    component.cancel();
+
+    expect(navigate).toHaveBeenCalledWith(['/feature/agency/tenant/', 1]);
+  });
+
+  it('should close the confirmation dialog and go back to the agency list of the feature', () => {
+    const close = vi.fn();
+    component.dialogRefToClose = { close } as any;
+
+    component.confirmCancel();
+
+    expect(close).toHaveBeenCalledWith(true);
+    expect(navigate).toHaveBeenCalledWith(['/feature/agency/tenant/', 1]);
+  });
+});

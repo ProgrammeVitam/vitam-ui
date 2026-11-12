@@ -41,6 +41,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 import { filter, map, shareReplay } from 'rxjs/operators';
 import {
+  APP_ROUTE_PREFIX,
   ApplicationId,
   BreadCrumbData,
   DialogHeaderComponent,
@@ -93,6 +94,7 @@ const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
   ],
 })
 export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
+  private readonly routePrefix = inject(APP_ROUTE_PREFIX);
   private readonly archiveService = inject(ArchiveService);
   private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
   dialog = inject(MatDialog);
@@ -408,7 +410,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
 
     if (this.criteriaSearchListToSave.length === 0) {
       this.initializeParameters();
-      this.router.navigate(['/archive-search/tenant/', this.tenantIdentifier]);
+      this.router.navigate([`${this.routePrefix}/archive-search/tenant/`, this.tenantIdentifier]);
     }
     this.resultNumberToShow = this.translate.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
   }

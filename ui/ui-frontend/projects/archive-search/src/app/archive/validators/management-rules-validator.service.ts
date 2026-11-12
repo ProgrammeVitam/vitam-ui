@@ -44,9 +44,7 @@ import { RuleCategoryAction } from '../models/ruleAction.interface';
 
 type RuleIdPath<TPathKind extends PathKind> = SchemaPath<string | null, SchemaPathRules.Supported, TPathKind>;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ManagementRulesValidatorService {
   private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
   private readonly ruleService = inject(RuleService);

@@ -41,9 +41,17 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { InjectorModule, LoggerModule, StartupService, Transaction, TransactionStatus, WINDOW_LOCATION } from 'vitamui-library';
+import {
+  APP_ROUTE_PREFIX,
+  InjectorModule,
+  LoggerModule,
+  StartupService,
+  Transaction,
+  TransactionStatus,
+  WINDOW_LOCATION,
+} from 'vitamui-library';
 import { environment } from '../../../../environments/environment';
 import { TransactionResolver } from '../transaction-resolver.service';
 import { TransactionsService } from '../transactions.service';
@@ -132,6 +140,7 @@ describe('TransactionListComponent', () => {
         },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: environment, useValue: environment },
+        { provide: APP_ROUTE_PREFIX, useValue: '/feature' },
       ],
     }).compileComponents();
   });
@@ -168,5 +177,14 @@ describe('TransactionListComponent', () => {
     const transactionService = TestBed.inject(TransactionsService);
     component.editTransaction(transaction);
     expect(transactionService.editTransaction).toHaveBeenCalled();
+  });
+
+  it('should search the archive units of the transaction in the collect feature', () => {
+    const navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+    component.tenantIdentifier = '1';
+
+    component.searchArchiveUnitsByTransaction(transaction);
+
+    expect(navigate).toHaveBeenCalledWith(['/feature/collect/tenant/1/units', 'projectId', 'transactionId']);
   });
 });

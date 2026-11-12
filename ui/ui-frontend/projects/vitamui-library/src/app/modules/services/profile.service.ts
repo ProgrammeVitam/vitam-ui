@@ -46,9 +46,7 @@ import { CriteriaSearchQuery } from '../models/criteria/criteria.interface';
 import { Operators } from '../vitamui-table/operators.enum';
 import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ProfileService {
   private readonly profileApi = inject(ProfileApiService);
 

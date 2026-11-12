@@ -74,7 +74,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
-import { LoggerModule, StartupService } from 'vitamui-library';
+import { Router } from '@angular/router';
+import { APP_ROUTE_PREFIX, LoggerModule, SnackBarService, StartupService } from 'vitamui-library';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 import { ProfileService } from '../../core/services/profile.service';
 import { FileTreeMetadataService } from '../../profile/edit-profile/file-tree-metadata/file-tree-metadata.service';
@@ -114,6 +115,8 @@ describe('UserActionOpenProfileComponent', () => {
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: StartupService, useValue: startUpServiceMock },
         { provide: PopupService, useValue: popupServiceMock },
+        { provide: SnackBarService, useValue: { open: vi.fn() } },
+        { provide: APP_ROUTE_PREFIX, useValue: '/feature' },
       ],
     }).compileComponents();
   });
@@ -126,5 +129,17 @@ describe('UserActionOpenProfileComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should go back to the profile list of the feature after a successful save', () => {
+    vi.useFakeTimers();
+    const navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+
+    component.success('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.CREATION_SUCCESS');
+    vi.advanceTimersByTime(3000);
+
+    expect(TestBed.inject(SnackBarService).open).toHaveBeenCalledWith({ message: 'PROFILE.LIST_PROFILE.PROFILE_PREVIEW.CREATION_SUCCESS' });
+    expect(navigate).toHaveBeenCalledWith(['/feature/pastis']);
+    vi.useRealTimers();
   });
 });

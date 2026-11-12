@@ -34,17 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { TemplateRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { of, Subscription } from 'rxjs';
+import { APP_ROUTE_PREFIX } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../archive.service';
 import { UpdateUnitManagementRuleService } from './update-unit-management-rule.service';
 
 describe('UpdateUnitManagementRuleService', () => {
   let service: UpdateUnitManagementRuleService;
-
-  const rule = '';
-  let ruleCategory = rule;
 
   const managementRulesSharedDataServiceMock = {
     getCriteriaSearchDSLQuery: () => of({}),
@@ -53,6 +54,9 @@ describe('UpdateUnitManagementRuleService', () => {
     getselectedItems: () => of(35),
     getCriteriaSearchListToSave: () => of({}),
     getRuleActions: () => of({}),
+    emitselectedItems: vi.fn(),
+    emitCriteriaSearchListToSave: vi.fn(),
+    emitCriteriaSearchDSLQuery: vi.fn(),
   };
 
   const archiveSearchServiceMock = {
@@ -60,20 +64,18 @@ describe('UpdateUnitManagementRuleService', () => {
     search: () => of([]),
     getAccessContractById: () => of({}),
     reclassification: () => of({}),
-    searchArchiveUnitsByCriteria: () => of({}),
+    searchArchiveUnitsByCriteria: () => of({ totalResults: 0 }),
     getTotalTrackHitsByCriteria: () => of({}),
     openSnackBarForWorkflow: () => of({}),
-  };
-
-  const updateUnitManagementRuleServiceMock = {
-    getRuleManagementCategory: () => ruleCategory,
   };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
-        { provide: UpdateUnitManagementRuleService, useValue: updateUnitManagementRuleServiceMock },
+        UpdateUnitManagementRuleService,
+        { provide: APP_ROUTE_PREFIX, useValue: '/feature' },
+        { provide: MatDialog, useValue: { open: () => ({ afterClosed: () => of(true) }) } },
         { provide: ArchiveService, useValue: archiveSearchServiceMock },
       ],
     });
@@ -86,7 +88,6 @@ describe('UpdateUnitManagementRuleService', () => {
 
   it('should return APPRAISAL_RULE', () => {
     // Given
-    ruleCategory = 'APPRAISAL_RULE';
     const expectedResponse = 'APPRAISAL_RULE';
     const ruleCategoryName = 'AppraisalRule';
 
@@ -96,5 +97,16 @@ describe('UpdateUnitManagementRuleService', () => {
     // Then
     expect(response).not.toBeNull();
     expect(response).toEqual(expectedResponse);
+  });
+
+  it('should navigate to the update rules page of the feature once confirmed when no holding unit is selected', () => {
+    const router = { navigate: vi.fn() } as unknown as Router;
+
+    service.goToUpdateManagementRule([], [], 0, 1, 0, router, 35, new Subscription(), {} as TemplateRef<any>, {} as TemplateRef<any>);
+
+    expect(managementRulesSharedDataServiceMock.emitselectedItems).toHaveBeenCalledWith(35);
+    expect(router.navigate).toHaveBeenCalledWith(['/feature/archive-search/update-rules/tenant/', 1], {
+      queryParamsHandling: 'preserve',
+    });
   });
 });

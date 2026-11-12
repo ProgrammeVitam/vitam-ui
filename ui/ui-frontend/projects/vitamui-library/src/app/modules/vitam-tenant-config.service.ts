@@ -40,9 +40,7 @@ import { ConfigurationsApiService, TenantConfiguration } from './services/config
 import { lastValueFrom, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class VitamTenantConfigService {
   private readonly logger = inject(Logger);
   private readonly configurationsApi = inject(ConfigurationsApiService);

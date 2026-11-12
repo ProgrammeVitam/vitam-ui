@@ -44,9 +44,7 @@ import { validateObservable } from '../../signal-forms/signal-form-validators';
 
 type FieldPath<TPathKind extends PathKind> = SchemaPath<string | null, SchemaPathRules.Supported, TPathKind>;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ReclassificationValidatorService {
   private readonly reclassificationService = inject(ReclassificationService);
 

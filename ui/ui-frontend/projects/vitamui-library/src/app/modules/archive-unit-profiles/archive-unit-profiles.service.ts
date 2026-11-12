@@ -45,9 +45,7 @@ export interface ArchiveUnitProfile {
   name: string;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ArchiveUnitProfilesService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = inject(BASE_URL);

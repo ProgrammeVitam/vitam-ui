@@ -49,9 +49,7 @@ export interface FileUploadPayload {
   data: FileNode[];
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ArchiveProfileSaverService {
   private readonly profileService = inject(ProfileService);
   private readonly toggleService = inject(ToggleSidenavService);

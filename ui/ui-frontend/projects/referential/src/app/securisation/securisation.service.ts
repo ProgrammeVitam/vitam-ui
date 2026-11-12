@@ -40,9 +40,7 @@ import { Event, SearchService, SnackBarService, VitamuiHttpHeaders } from 'vitam
 
 import { OperationApiService } from '../core/api/operation-api.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SecurisationService extends SearchService<Event> {
   private readonly operationApiService: OperationApiService;
   private readonly snackBarService = inject(SnackBarService);

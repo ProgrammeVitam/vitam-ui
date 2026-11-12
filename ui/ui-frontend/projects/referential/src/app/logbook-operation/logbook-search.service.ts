@@ -38,9 +38,7 @@ import { Injectable, inject } from '@angular/core';
 import { IEvent, LogbookApiService, PageRequest, SearchService, VitamSelectOperator, VitamSelectQuery } from 'vitamui-library';
 import { DateTime } from 'luxon';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class LogbookSearchService extends SearchService<IEvent> {
   constructor() {
     const logbookApi = inject(LogbookApiService);

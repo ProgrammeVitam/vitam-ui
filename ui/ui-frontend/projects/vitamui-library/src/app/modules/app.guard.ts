@@ -47,9 +47,7 @@ import { StartupService } from './startup.service';
 
 const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AppGuard {
   private readonly authService = inject(AuthService);
   private readonly startupService = inject(StartupService);

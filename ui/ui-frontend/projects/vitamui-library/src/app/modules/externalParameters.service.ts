@@ -40,9 +40,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BASE_URL } from './injection-tokens';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ExternalParametersService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = inject(BASE_URL);

@@ -34,27 +34,42 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { TestBed } from '@angular/core/testing';
+import { APP_ROUTE_PREFIX, TenantSelectionService } from 'vitamui-library';
+import { PastisConfiguration } from '../../../core/classes/pastis-configuration';
+import { PastisPopupMetadataLanguageService } from '../../pastis-popup-metadata-language/pastis-popup-metadata-language.service';
+import { PastisBreadcrumbComponent } from './pastis-breadcrumb.component';
 
-import { CommonModule } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { inject, NgModule } from '@angular/core';
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, throwIfAlreadyLoaded, VitamUICommonModule } from 'vitamui-library';
-import { environment } from '../../../environments/environment';
+describe('PastisBreadcrumbComponent', () => {
+  let component: PastisBreadcrumbComponent;
 
-@NgModule({
-  declarations: [],
-  exports: [VitamUICommonModule],
-  imports: [CommonModule, VitamUICommonModule, InjectorModule, LoggerModule.forRoot()],
-  providers: [
-    { provide: BASE_URL, useValue: './collect-api' },
-    { provide: ENVIRONMENT, useValue: environment },
-    provideHttpClient(withInterceptorsFromDi()),
-  ],
-})
-export class CoreModule {
-  constructor() {
-    const parentModule = inject(CoreModule, { optional: true, skipSelf: true });
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [PastisBreadcrumbComponent],
+      providers: [
+        { provide: APP_ROUTE_PREFIX, useValue: '/feature' },
+        { provide: TenantSelectionService, useValue: { getSelectedTenant: () => ({ identifier: 1 }) } },
+        { provide: PastisConfiguration, useValue: { pastisPathPrefix: '/pastis/tenant/' } },
+        { provide: PastisPopupMetadataLanguageService, useValue: {} },
+      ],
+    });
+    component = TestBed.createComponent(PastisBreadcrumbComponent).componentInstance;
+  });
 
-    throwIfAlreadyLoaded(parentModule, 'CoreModule');
-  }
-}
+  it('should emit the profile list url of the feature for the profile list item', () => {
+    const emit = vi.spyOn(component.selected, 'emit');
+    const item: any = { label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.CREER_ET_GERER_PROFIL' };
+
+    component.onClick(item, true);
+
+    expect(emit).toHaveBeenCalledWith({ ...item, url: '/feature/pastis/tenant/1' });
+  });
+
+  it('should not emit when the item is not clickable', () => {
+    const emit = vi.spyOn(component.selected, 'emit');
+
+    component.onClick({ label: 'OTHER' }, false);
+
+    expect(emit).not.toHaveBeenCalled();
+  });
+});

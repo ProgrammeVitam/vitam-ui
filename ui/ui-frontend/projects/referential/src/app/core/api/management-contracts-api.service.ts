@@ -72,9 +72,7 @@ import { BASE_URL, ManagementContract, PaginatedHttpClient } from 'vitamui-libra
 
 const HTTP_STATUS_OK = 200;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ManagementContractsApiService extends PaginatedHttpClient<ManagementContract> {
   constructor() {
     const http = inject(HttpClient);

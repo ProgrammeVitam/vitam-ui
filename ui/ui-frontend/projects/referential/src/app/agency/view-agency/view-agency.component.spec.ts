@@ -35,18 +35,39 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { TestBed } from '@angular/core/testing';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of } from 'rxjs';
+import { AgencyService, APP_ROUTE_PREFIX, TenantSelectionService } from 'vitamui-library';
+import { ViewAgencyComponent } from './view-agency.component';
 
-import { CoreModule } from './core.module';
-
-describe('CoreModule', () => {
-  let coreModule: CoreModule;
+describe('ViewAgencyComponent', () => {
+  let component: ViewAgencyComponent;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    coreModule = TestBed.runInInjectionContext(() => new CoreModule());
+    TestBed.overrideComponent(ViewAgencyComponent, { set: { template: '' } });
+    TestBed.configureTestingModule({
+      imports: [ViewAgencyComponent],
+      providers: [
+        { provide: APP_ROUTE_PREFIX, useValue: '/feature' },
+        { provide: TenantSelectionService, useValue: { getSelectedTenant: () => ({ identifier: 1 }) } },
+        { provide: AgencyService, useValue: { get: () => of({ identifier: 'agency123' }) } },
+        { provide: ActivatedRoute, useValue: { params: of({ agencyIdentifier: 'agency123' }) } },
+      ],
+    });
+    const fixture = TestBed.createComponent(ViewAgencyComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  it('should create an instance', () => {
-    expect(coreModule).toBeTruthy();
+  it('should load the agency of the route', () => {
+    expect(component.agency()).toEqual({ identifier: 'agency123' });
+  });
+
+  it('should go back to the agency list of the feature', () => {
+    const navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+
+    component.back();
+
+    expect(navigate).toHaveBeenCalledWith(['/feature/agency/tenant/', 1]);
   });
 });

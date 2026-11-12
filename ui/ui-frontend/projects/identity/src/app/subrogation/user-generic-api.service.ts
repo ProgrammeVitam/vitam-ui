@@ -39,9 +39,7 @@ import { Injectable, inject } from '@angular/core';
 
 import { BASE_URL, PaginatedHttpClient, SubrogationUser } from 'vitamui-library';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class UserGenericApiService extends PaginatedHttpClient<SubrogationUser> {
   constructor() {
     const http = inject(HttpClient);
