@@ -47,6 +47,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -412,6 +413,90 @@ public class ProfileServiceIntegrationTest extends AbstractLogbookIntegrationTes
 
         levels = service.getSubLevels("EDF", "customerId2");
         assertThat(levels).containsOnly("EDF.INFRA", "EDF.INFRA.DSI");
+    }
+
+    @Test
+    void getSubLevels_matchesTheLevelLiterally() {
+        repository.save(
+            IamServerUtilsTest.buildProfile(
+                "idChild",
+                "identifier1",
+                "child",
+                "customerId",
+                10,
+                CommonConstants.USERS_APPLICATIONS_NAME,
+                "EDF.RH.PARIS"
+            )
+        );
+        repository.save(
+            IamServerUtilsTest.buildProfile(
+                "idOther",
+                "identifier2",
+                "other",
+                "customerId",
+                10,
+                CommonConstants.USERS_APPLICATIONS_NAME,
+                "EDFXRH.PARIS"
+            )
+        );
+
+        assertThat(service.getSubLevels("EDF.RH", "customerId")).containsOnly("EDF.RH.PARIS");
+        // Delegable roles only come from the actual sub-levels.
+        final List<Role> subRoles = ReflectionTestUtils.invokeMethod(service, "getSubRoles", "EDF.RH", 10);
+        assertThat(subRoles).containsExactlyElementsOf(IamServerUtilsTest.ROLES);
+    }
+
+    @Test
+    void patch_cannotChangeTheExternalParameters() {
+        final ProfileDto profile = createProfile(Collections.singletonList(new Role(ServicesData.ROLE_CREATE_USERS)));
+        when(securityService.getLevel()).thenReturn(ApiIamConstants.ADMIN_LEVEL);
+        final Map<String, Object> partialDto = new HashMap<>();
+        partialDto.put("customerId", profile.getCustomerId());
+        partialDto.put("id", profile.getId());
+        partialDto.put("tenantIdentifier", TENANT_IDENTIFIER);
+        partialDto.put("description", "descriptionTest");
+
+        // Sending back the current value is accepted
+        partialDto.put("externalParamId", profile.getExternalParamId());
+        service.patch(partialDto);
+
+        partialDto.put("externalParamId", "otherExternalParamId");
+        assertThatThrownBy(() -> service.patch(partialDto))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("externalParamId cannot be modified");
+    }
+
+    @Test
+    void patch_acceptsTheCurrentNameButRefusesTheNameOfAnotherProfile() {
+        final ProfileDto profile = createProfile(Collections.singletonList(new Role(ServicesData.ROLE_CREATE_USERS)));
+        // Saved directly: the mocked sequence would give it the same identifier as the first profile.
+        repository.save(
+            IamServerUtilsTest.buildProfile(
+                "otherProfileId",
+                "otherProfileIdentifier",
+                "otherName",
+                profile.getCustomerId(),
+                TENANT_IDENTIFIER,
+                profile.getApplicationName(),
+                profile.getLevel()
+            )
+        );
+        when(securityService.getLevel()).thenReturn(ApiIamConstants.ADMIN_LEVEL);
+        final Map<String, Object> partialDto = new HashMap<>();
+        partialDto.put("customerId", profile.getCustomerId());
+        partialDto.put("id", profile.getId());
+        partialDto.put("tenantIdentifier", TENANT_IDENTIFIER);
+
+        // The whole form is sent back, with an unchanged name
+        partialDto.put("name", profile.getName());
+        partialDto.put("description", "descriptionTest");
+        service.patch(partialDto);
+        assertThat(repository.findById(profile.getId())).get().extracting("description").isEqualTo("descriptionTest");
+
+        partialDto.put("name", "otherName");
+        assertThatThrownBy(() -> service.patch(partialDto))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("profile already exists");
     }
 
     @Test

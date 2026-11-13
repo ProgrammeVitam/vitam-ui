@@ -63,7 +63,9 @@ import java.util.Map;
 @EqualsAndHashCode(callSuper = true)
 @ToString(
     callSuper = true,
-    exclude = { "keystoreBase64", "keystorePassword", "privateKeyPassword", "idpMetadata", "spMetadata" }
+    exclude = {
+        "keystoreBase64", "keystorePassword", "privateKeyPassword", "idpMetadata", "spMetadata", "clientSecret",
+    }
 )
 public class IdentityProvider extends CustomerIdDocument {
 

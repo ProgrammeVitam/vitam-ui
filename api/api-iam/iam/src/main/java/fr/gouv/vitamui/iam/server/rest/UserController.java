@@ -48,6 +48,8 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.download.DownloadClaims;
 import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
+import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
+import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.rest.CrudController;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
@@ -238,6 +240,9 @@ public class UserController implements CrudController<UserDto> {
             dto.getCustomerId(),
             "Unable to create user " + dto.getEmail() + " (" + dto.getCustomerId() + ")"
         );
+        // Checked here rather than in UserService.beforeCreate: the customer initialization creates generic users
+        // internally, whatever the roles of the caller. Updates and patches are checked by UserService.
+        checkGenericUserCreationAllowed(dto.getType(), "Unable to create user " + dto.getEmail());
         return userService.create(dto);
     }
 
@@ -322,5 +327,14 @@ public class UserController implements CrudController<UserDto> {
 
     private String buildUserExportFileName() {
         return "export-utilisateurs-%s.xlsx".formatted(EXPORT_FILE_DATE_TIME_FORMATTER.format(LocalDateTime.now()));
+    }
+
+    /**
+     * Generic users can only be created by callers holding ROLE_GENERIC_USERS.
+     */
+    private void checkGenericUserCreationAllowed(final UserTypeEnum requestedType, final String message) {
+        if (requestedType == UserTypeEnum.GENERIC && !securityService.hasRole(ServicesData.ROLE_GENERIC_USERS)) {
+            throw new ForbiddenException(message + ": generic users require " + ServicesData.ROLE_GENERIC_USERS);
+        }
     }
 }

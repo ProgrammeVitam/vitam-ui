@@ -224,6 +224,22 @@ public class CustomerService extends AbstractResourceClientService<CustomerDto, 
         checkCode(Optional.of(dto.getId()), dto.getCode());
         checkEmailDomains(dto.getEmailDomains(), customer.getId(), message);
         checkDefaultEmailDomains(dto.getDefaultEmailDomain(), dto.getEmailDomains(), message);
+        checkGdprSettingsUnchangedWhenReadonly(customer, dto, message);
+    }
+
+    private void checkGdprSettingsUnchangedWhenReadonly(
+        final Customer customer,
+        final CustomerDto dto,
+        final String message
+    ) {
+        if (
+            isGdprAlertReadonly() &&
+            (customer.isGdprAlert() != dto.isGdprAlert() || customer.getGdprAlertDelay() != dto.getGdprAlertDelay())
+        ) {
+            throw new IllegalArgumentException(
+                message + ": gdprAlert and gdprAlertDelay cannot be changed because the main setting is readOnly"
+            );
+        }
     }
 
     /**
@@ -231,8 +247,10 @@ public class CustomerService extends AbstractResourceClientService<CustomerDto, 
      */
     @Override
     public CustomerDto update(final CustomerDto dto) {
+        // The previous OTP policy is needed to detect a change and propagate it to the users.
+        final OtpEnum previousOtp = find(dto.getId(), "Unable to update customer").getOtp();
         final CustomerDto updatedCustomerDto = super.update(dto);
-        updateOtpforUsers(dto.getOtp(), updatedCustomerDto.getOtp(), updatedCustomerDto.getId());
+        updateOtpforUsers(previousOtp, updatedCustomerDto.getOtp(), updatedCustomerDto.getId());
         return updatedCustomerDto;
     }
 

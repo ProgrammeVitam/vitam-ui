@@ -49,6 +49,7 @@ import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.download.DownloadClaims;
 import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
@@ -151,6 +152,12 @@ public class LogbookController {
         SanityChecker.sanitizeCriteria(select);
         final VitamContext vitamContext;
         if (Objects.nonNull(vitamTenantIdentifier)) {
+            // Checked before the tenant lookup, so that the existence of a tenant is not revealed.
+            if (!isTenantAllowed(tenantId, vitamTenantIdentifier)) {
+                throw new ForbiddenException(
+                    "Tenant '%d' is not available for the current user".formatted(vitamTenantIdentifier)
+                );
+            }
             TenantDto requestedTenant = tenantService.findByIdentifier(vitamTenantIdentifier);
             if (Objects.isNull(requestedTenant)) {
                 throw new BadRequestException(
@@ -499,5 +506,18 @@ public class LogbookController {
         claims.setResource(resource);
         claims.setTenantId(tenantId);
         return claims;
+    }
+
+    /**
+     * The requested tenant must be the header tenant (ROLE_LOGBOOKS is already checked on it), or a tenant on which
+     * the user holds ROLE_LOGBOOKS.
+     */
+    private boolean isTenantAllowed(final Integer headerTenantId, final Integer requestedTenantId) {
+        if (requestedTenantId.equals(headerTenantId)) {
+            return true;
+        }
+        return SecurityService.getRoles(securityService.getUser(), requestedTenantId)
+            .stream()
+            .anyMatch(role -> ServicesData.ROLE_LOGBOOKS.equals(role.getName()));
     }
 }

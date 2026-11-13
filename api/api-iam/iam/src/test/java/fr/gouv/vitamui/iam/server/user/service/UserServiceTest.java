@@ -12,6 +12,7 @@ import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.RequestParamDto;
 import fr.gouv.vitamui.commons.api.domain.RequestParamGroupDto;
 import fr.gouv.vitamui.commons.api.domain.ResultsDto;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
@@ -609,6 +610,7 @@ public final class UserServiceTest {
     @Test
     void getLevels_whenProfilesExist_returnsLevels() {
         final Optional<String> criteria = Optional.empty();
+        stubSecurityContextForLevels();
         final List<Document> mappedResults = new ArrayList<>();
         final Document document = new Document("level", Arrays.asList("DEV", "TEST"));
         mappedResults.add(document);
@@ -626,6 +628,7 @@ public final class UserServiceTest {
     @Test
     void getLevels_whenNoProfile_returnsEmptyList() {
         final Optional<String> criteria = Optional.empty();
+        stubSecurityContextForLevels();
         final List<Document> mappedResults = new ArrayList<>();
         final Document rawResults = new Document();
         final AggregationResults<Document> value = new AggregationResults<>(mappedResults, rawResults);
@@ -634,6 +637,14 @@ public final class UserServiceTest {
         );
         final List<String> levels = userService.getLevels(criteria);
         assertThat(levels.size()).isZero();
+    }
+
+    // getLevels now runs its criteria through the authorization-aware construction (customer/level
+    // restrictions), so a minimal security context is required.
+    private void stubSecurityContextForLevels() {
+        when(securityService.userIsRootLevel()).thenReturn(true);
+        when(securityService.hasRole(ServicesData.ROLE_GENERIC_USERS)).thenReturn(true);
+        when(securityService.getCustomerId()).thenReturn("customerId");
     }
 
     @Test
