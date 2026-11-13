@@ -228,8 +228,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   listOfUAIdToInclude: CriteriaValue[] = [];
   listOfUAIdToExclude: CriteriaValue[] = [];
   nodeArray: FilingHoldingSchemeNode[] = [];
-  private filingPlanRootIds: string[] = [];
+  /** Root ids of the filing / holding scheme, null as long as the tree is not loaded. */
+  private filingPlanRootIds: string[] | null = null;
   private orphansCountRequested = false;
+  private orphansCountSubscription: Subscription;
   archiveUnits: Unit[];
   searchCriteriaHistory: SearchCriteriaHistory[] = [];
   criteriaSearchList: SearchCriteriaEltDto[] = [];
@@ -816,7 +818,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           return;
         }
         const rootIds = nodes.filter((node) => node.id && node.id !== ORPHANS_NODE_ID).map((node) => node.id);
-        if (rootIds.join() === this.filingPlanRootIds.join()) {
+        if (this.filingPlanRootIds !== null && rootIds.join() === this.filingPlanRootIds.join()) {
           return;
         }
         this.filingPlanRootIds = rootIds;
@@ -989,6 +991,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+    this.orphansCountSubscription?.unsubscribe();
     this.transferAcknowledgmentDialogSub?.unsubscribe();
     this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
   }
@@ -1540,32 +1543,14 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   /**
    * Counts the results that are not attached to the filing / holding scheme, i.e. that have none of its root units among their ancestors.
-   * Without any known root (tree not loaded yet), falls back on the results that have no parent at all.
+   * Only the latest request is taken into account.
    */
   existsArchiveUnitWithoutAttachment(): void {
     this.orphansCountRequested = true;
     const orphanCriteriaList = [...this.criteriaSearchList];
-    if (this.filingPlanRootIds.length) {
-      orphanCriteriaList.push({
-        criteria: '#allunitups',
-        values: this.filingPlanRootIds.map((id) => ({ id, value: id })),
-        category: 'FIELDS',
-        operator: CriteriaOperator.NOT_EQ,
-        dataType: 'STRING',
-      });
-    } else {
-      orphanCriteriaList.push({
-        criteria: '#unitups',
-        values: [
-          {
-            id: 'true',
-            value: 'true',
-          },
-        ],
-        category: 'FIELDS',
-        operator: 'MISSING',
-        dataType: 'STRING',
-      });
+    const withoutAttachmentCriteria = this.buildWithoutAttachmentCriteria();
+    if (withoutAttachmentCriteria) {
+      orphanCriteriaList.push(withoutAttachmentCriteria);
     }
     const searchCriteria = {
       criteriaList: orphanCriteriaList,
@@ -1575,12 +1560,33 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       computeMgtRulesFacets: false,
       includedFields: ['#id'],
     };
-    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria).subscribe((response: PagedResult) => {
+    this.orphansCountSubscription?.unsubscribe();
+    this.orphansCountSubscription = this.archiveService.searchArchiveUnitsByCriteria(searchCriteria).subscribe((response: PagedResult) => {
       let resultCount = 0;
       if (response?.results?.length) {
         resultCount = response.totalResults;
       }
       this.archiveSharedDataService.emitNumberOfAUsWithoutAttachment(resultCount);
     });
+  }
+
+  /**
+   * Tree not loaded yet: results without any parent. Loaded empty tree: no restriction, every result is without attachment.
+   * Otherwise: results having none of the tree roots among their ancestors.
+   */
+  private buildWithoutAttachmentCriteria(): SearchCriteriaEltDto | null {
+    if (this.filingPlanRootIds === null) {
+      return { criteria: '#unitups', values: [{ id: 'true', value: 'true' }], category: 'FIELDS', operator: 'MISSING', dataType: 'STRING' };
+    }
+    if (!this.filingPlanRootIds.length) {
+      return null;
+    }
+    return {
+      criteria: '#allunitups',
+      values: this.filingPlanRootIds.map((id) => ({ id, value: id })),
+      category: 'FIELDS',
+      operator: CriteriaOperator.NOT_EQ,
+      dataType: 'STRING',
+    };
   }
 }

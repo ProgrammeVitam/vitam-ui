@@ -48,7 +48,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import {
   BASE_URL,
   FilingHoldingSchemeNode,
@@ -589,6 +589,29 @@ describe('ArchiveSearchComponent', () => {
       archiveSharedDataService.emitFilingHoldingNodes([{ id: 'ROOT_1' }] as FilingHoldingSchemeNode[]);
 
       expect(lastOrphansCriteria().criteria).toEqual('#allunitups');
+    });
+
+    it('shouldCountAllResultsAsWithoutAttachmentWhenFilingPlanIsEmpty', () => {
+      archiveSharedDataService.emitFilingHoldingNodes([]);
+
+      component.existsArchiveUnitWithoutAttachment();
+
+      expect(lastOrphansCriteria()).toBeUndefined();
+    });
+
+    it('shouldIgnoreResponseOfSupersededWithoutAttachmentCount', () => {
+      const emitSpy = vi.spyOn(archiveSharedDataService, 'emitNumberOfAUsWithoutAttachment');
+      const firstResponse = new Subject<PagedResult>();
+      vi.mocked(archiveServiceStub.searchArchiveUnitsByCriteria as Mock)
+        .mockReturnValueOnce(firstResponse.asObservable())
+        .mockReturnValueOnce(of({ ...pagedResult, results: [{ '#id': 'AU_1' }], totalResults: 3 } as any));
+
+      component.existsArchiveUnitWithoutAttachment();
+      component.existsArchiveUnitWithoutAttachment();
+      firstResponse.next({ ...pagedResult, results: [{ '#id': 'AU_2' }], totalResults: 9 } as any);
+
+      expect(emitSpy).toHaveBeenCalledTimes(1);
+      expect(emitSpy).toHaveBeenCalledWith(3);
     });
   });
 });
