@@ -9,6 +9,7 @@ pipeline {
         M2_REPO = "${HOME}/.m2"
         DOCKER_HOST = 'unix:///dind/docker.sock'
         TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE = '/dind/docker.sock'
+        VITAM_CI_APPARMOR_PROFILE = 'cri-containerd.apparmor.d'
         CI = credentials("app-jenkins")
 
         SERVICE_GIT_URL = credentials("service-gitlab-url")
@@ -119,7 +120,14 @@ pipeline {
                 stage('Backend') {
                     steps {
                         // TODO: generate .deb/.rpm by running Makefile directly in the Jenkinsfile instead of being run by a maven plugin
-                        sh '${MVN_COMMAND} clean ${MVN_GOAL} -U -Pvitam,deb,rpm'
+                        script {
+                            if (env.DO_CHECKS_AND_TESTS == 'true') {
+                                sh 'mvn --settings "$WORKSPACE/.ci/settings.xml" --batch-mode --errors -f "$WORKSPACE/.ci/apparmor-helper/pom.xml" -Dmaven.test.skip=true package'
+                                sh '${MVN_COMMAND} -Dmaven.test.additionalClasspath="$WORKSPACE/.ci/apparmor-helper/target/vitam-testcontainers-apparmor.jar" clean ${MVN_GOAL} -U -Pvitam,deb,rpm'
+                            } else {
+                                sh '${MVN_COMMAND} clean ${MVN_GOAL} -U -Pvitam,deb,rpm'
+                            }
+                        }
                     }
                 }
             }
