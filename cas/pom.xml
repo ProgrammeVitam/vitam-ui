@@ -10,6 +10,8 @@
     <properties>
         <spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
         <spotless.check.skip>true</spotless.check.skip>
+        <pitest-maven-plugin.version>1.30.1</pitest-maven-plugin.version>
+        <pitest-junit5-plugin.version>1.2.3</pitest-junit5-plugin.version>
     </properties>
 
     <modules>
@@ -27,6 +29,65 @@
     </build>
 
     <profiles>
+        <!--
+            This profile is used to run mutation testing with PIT (https://pitest.org/).
+            CAS does not inherit from the root pom: keep this profile in sync with the "pitest" profile of the root pom
+            (except for target classes and tests).
+        -->
+        <profile>
+            <id>pitest</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.pitest</groupId>
+                        <artifactId>pitest-maven</artifactId>
+                        <version>${pitest-maven-plugin.version}</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.pitest</groupId>
+                                <artifactId>pitest-junit5-plugin</artifactId>
+                                <version>${pitest-junit5-plugin.version}</version>
+                            </dependency>
+                        </dependencies>
+                        <configuration>
+                            <!--
+                                Restricted to CAS packages: in a full reactor build, the classes of the other vitam-ui
+                                modules (built with Spring Boot 4) are on the classpath and make the PIT minion crash.
+                            -->
+                            <targetClasses>
+                                <param>fr.gouv.vitamui.cas.*</param>
+                            </targetClasses>
+                            <targetTests>
+                                <param>fr.gouv.vitamui.cas.*</param>
+                            </targetTests>
+                            <!-- Tests run by Failsafe ("*IntegrationTest" classes are run by Surefire and kept) -->
+                            <excludedTestClasses>
+                                <param>*IT</param>
+                            </excludedTestClasses>
+                            <outputFormats>
+                                <format>HTML</format>
+                                <format>XML</format>
+                            </outputFormats>
+                            <timestampedReports>false</timestampedReports>
+                            <threads>4</threads>
+                            <!-- Some modules have no tests or no mutable code: do not fail the build for them -->
+                            <failWhenNoMutations>false</failWhenNoMutations>
+                            <skipFailingTests>true</skipFailingTests>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>pitest</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>mutationCoverage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <profile>
             <!-- Profile to use for all Vitam internal developers -->
             <id>vitam</id>

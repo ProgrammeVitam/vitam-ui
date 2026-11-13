@@ -1,0 +1,103 @@
+name: Mutation testing
+run-name: Running mutation testing (PIT) on branch ${{ github.ref }}
+on:
+  pull_request: # on pull requests, only modules with modified Java files are analysed (all modules if PIT configuration changed)
+    paths:
+      - "**/*.java"
+      - "**/pom.xml"
+      - ".github/workflows/mutation-testing.yml"
+      - ".github/scripts/pit-summary.py"
+  push: # on protected branches, all modules are analysed
+    branches:
+      - develop
+      - master_*
+  schedule:
+    - cron: "0 2 * * 1" # every monday at 02:00 UTC, all modules are analysed
+  workflow_dispatch: # manual run, all modules are analysed
+concurrency:
+  group: mutation-testing-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  mutation-testing:
+    name: Mutation testing (PIT)
+    runs-on: ubuntu-22.04 # Same as "Build Backend" job: timezone configuration is not taken into account in Java on Ubuntu 24.04
+    timeout-minutes: 360
+    steps:
+      - uses: szenius/set-timezone@1f9716b0f7120e344f0c62bb7b1ee98819aefd42 # v2.0
+        with:
+          timezoneLinux: "Europe/Paris" # we set the timezone for Unit Tests to pass (we shouldn't need to, but it's currently required)
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # needed to compute modified files on pull requests
+      - uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+      - name: Restore maven cache # Same cache as "Build Backend" job, but read-only
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ~/.m2/repository/*/*/*
+            !~/.m2/repository/org/owasp/dependency-check-data
+          key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
+          restore-keys: maven-${{ runner.os }}-
+      - name: Find modules to analyse
+        id: modules
+        shell: bash
+        run: |
+          base="origin/${{ github.base_ref }}"
+          if [ "${{ github.event_name }}" != "pull_request" ] \
+            || ! git diff --quiet "$base...HEAD" -- pom.xml cas/pom.xml .github/workflows/mutation-testing.yml .github/scripts/pit-summary.py; then
+            echo "Analysing all modules"
+            echo "projects=!cots/vitamui-mongo-express" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # Maven modules (closest directory with a pom.xml) containing modified Java files and having tests
+          modules=$(git diff --name-only --diff-filter=d "$base...HEAD" -- '*.java' \
+            | while read -r file; do
+                dir=$(dirname "$file")
+                while [ "$dir" != "." ] && [ ! -f "$dir/pom.xml" ]; do dir=$(dirname "$dir"); done
+                if [ -d "$dir/src/test/java" ]; then echo "$dir"; fi
+              done | sort -u | paste -sd, -)
+          echo "Modules to analyse: ${modules:-none}"
+          echo "projects=$modules" >> "$GITHUB_OUTPUT"
+      - name: Build modules
+        if: steps.modules.outputs.projects != ''
+        run: >
+          mvn --settings .ci/github-actions-settings.xml
+          -Pvitam,no-cve-proxy
+          -Dspotless.check.skip
+          -Ddependency-check.skip
+          -DskipTests
+          --batch-mode --errors
+          --projects '${{ steps.modules.outputs.projects }}' --also-make
+          install
+        env:
+          SERVICE_NEXUS_URL: ${{ secrets.SERVICE_NEXUS_URL }}
+          CI_USR: ${{ secrets.CI_USR }}
+          CI_PSW: ${{ secrets.CI_PSW }}
+      - name: Run mutation testing
+        if: steps.modules.outputs.projects != ''
+        run: >
+          mvn --settings .ci/github-actions-settings.xml
+          -Pvitam,no-cve-proxy,pitest
+          -Dspotless.check.skip
+          -Ddependency-check.skip
+          -Djacoco.skip
+          --batch-mode --errors --fail-at-end
+          --projects '${{ steps.modules.outputs.projects }}'
+          test
+        env:
+          SERVICE_NEXUS_URL: ${{ secrets.SERVICE_NEXUS_URL }}
+          CI_USR: ${{ secrets.CI_USR }}
+          CI_PSW: ${{ secrets.CI_PSW }}
+      - name: Write mutation testing summary
+        if: always() && steps.modules.outputs.projects != ''
+        run: python3 .github/scripts/pit-summary.py >> "$GITHUB_STEP_SUMMARY"
+      - name: Save PIT reports as artifact
+        if: always() && steps.modules.outputs.projects != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: pit-reports
+          path: "**/target/pit-reports/**"
+          if-no-files-found: ignore
