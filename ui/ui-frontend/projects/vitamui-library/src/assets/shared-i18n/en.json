@@ -114,7 +114,10 @@
     },
     "DELIVERY_ADRESS": "Delivery address",
     "LEVEL": "Level",
-    "GROUP": "My profile group"
+    "GROUP": "My profile group",
+    "ERROR": {
+      "USER_NOT_ELIGIBLE_FOR_RESET_PASSWORD": "User is not eligible to change their password (external user or email does not match the organization's email pattern)"
+    }
   },
   "SUBROGATION": {
     "PREHOME": {
