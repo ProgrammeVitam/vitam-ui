@@ -216,4 +216,5 @@ vitam_reverse_external_dns=my-env.default-domain.fr
 vitamui_reverse_external_dns=my-env-ui.default-domain.fr
 
 ansible_become=true
-ansible_ssh_common_args='-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+# SSH host keys of the target servers are verified: add them to the known_hosts file of the deployment server.
+#ansible_ssh_common_args=

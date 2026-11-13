@@ -50,4 +50,4 @@
       enabled: yes
       state: started
 
-  when: extra | d(false)
+  when: extra | d(false) | bool

@@ -111,6 +111,22 @@
   with_fileglob:
     - "{{ inventory_dir }}/certs/vitamui-services/ca/*.crt"
 
+- name: Ensure CA certificates are available to verify the backend certificates
+  assert:
+    that: query('fileglob', inventory_dir + '/certs/vitamui-services/ca/*.crt') | length > 0
+    fail_msg: "No CA certificate found in {{ inventory_dir }}/certs/vitamui-services/ca/ to verify the backend certificates. Add the CA or set vitamui_proxy_ssl_verify to false."
+    quiet: true
+  when: vitamui_proxy_ssl_verify | default(true) | bool
+
+- name: Copy the CA bundle used to verify the backend certificates
+  copy:
+    content: "{% for ca in query('fileglob', inventory_dir + '/certs/vitamui-services/ca/*.crt') | sort %}{{ lookup('file', ca) }}\n{% endfor %}"
+    dest: "/etc/{{ apache_service }}/ca/{{ vitamui_site_name }}-bundle.crt"
+    owner: "{{ apache_user }}"
+    mode: 0400
+  when: vitamui_proxy_ssl_verify | default(true) | bool
+  notify: reload apache
+
 - name: copy httpd configuration template
   template:
     src: "apache/httpd_config"
