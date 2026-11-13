@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.cas.webflow.mfa;
 
+import fr.gouv.vitamui.cas.webflow.mfa.actions.CheckMfaTokenAction;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCredential;
 import org.apereo.cas.util.CollectionUtils;
@@ -97,7 +98,9 @@ public class VitamMfaWebflowConfigurer extends AbstractCasMultifactorWebflowConf
                 CasWebflowConstants.STATE_ID_SIMPLE_MFA_SEND_TOKEN
             );
             setStartState(flow, initLoginFormState);
-            createEndState(flow, CasWebflowConstants.STATE_ID_SUCCESS);
+            createEndState(flow, CasWebflowConstants.STATE_ID_SUCCESS)
+                .getEntryActionList()
+                .add(createEvaluateAction("resetMfaAttemptsAction"));
             createEndState(flow, CasWebflowConstants.STATE_ID_UNAVAILABLE);
 
             var sendSimpleToken = createActionState(
@@ -167,6 +170,12 @@ public class VitamMfaWebflowConfigurer extends AbstractCasMultifactorWebflowConf
                 CasWebflowConstants.STATE_ID_REAL_SUBMIT
             );
             createTransitionForState(intermediateSubmit, CasWebflowConstants.TRANSITION_ID_ERROR, "codeExpired");
+            createTransitionForState(
+                intermediateSubmit,
+                CheckMfaTokenAction.TRANSITION_ID_TOO_MANY_ATTEMPTS,
+                "tooManyAttempts"
+            );
+            createViewState(flow, "tooManyAttempts", "casSmsTooManyAttemptsView");
             var codeExpired = createViewState(flow, "codeExpired", "casSmsCodeExpiredView");
             createTransitionForState(
                 codeExpired,

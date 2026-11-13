@@ -47,7 +47,8 @@ public class CasBeanNamesTest {
         "dispatcherAction",
         "listCustomersAction",
         "customerSelectedAction",
-        "checkMfaTokenAction"
+        "checkMfaTokenAction",
+        "resetMfaAttemptsAction"
     );
 
     @Test

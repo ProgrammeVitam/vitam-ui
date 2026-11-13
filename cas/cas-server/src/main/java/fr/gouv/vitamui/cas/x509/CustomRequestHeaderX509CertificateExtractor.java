@@ -30,6 +30,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.adaptors.x509.authentication.X509CertificateExtractor;
+import org.springframework.security.web.util.matcher.IpAddressMatcher;
 
 import java.io.ByteArrayInputStream;
 import java.net.URLDecoder;
@@ -39,9 +40,18 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 
 /**
  * Custom certificate extractor from the request.
+ *
+ * <p>The certificate header is set by the reverse proxy that terminates the client TLS connection, so it is only read
+ * on requests whose connection comes from one of the configured trusted proxies (IP addresses or CIDR ranges). With
+ * no trusted proxy configured, the header is never read.
+ *
+ * <p>The address of the connection is the one exposed by {@link ConnectionPeerAddressValve}, not
+ * {@link HttpServletRequest#getRemoteAddr()}, which the {@code RemoteIpValve} takes from {@code X-Forwarded-For}.
+ * Without that address, the header is never read either.
  */
 @Slf4j
 public class CustomRequestHeaderX509CertificateExtractor implements X509CertificateExtractor {
@@ -53,12 +63,28 @@ public class CustomRequestHeaderX509CertificateExtractor implements X509Certific
 
     private final boolean x509AuthnMandatory;
 
+    private final List<IpAddressMatcher> trustedProxies;
+
     public CustomRequestHeaderX509CertificateExtractor(
         final String customCertificateHeader,
-        final boolean x509AuthnMandatory
+        final boolean x509AuthnMandatory,
+        final List<String> trustedProxies
     ) {
         this.customCertificateHeader = customCertificateHeader;
         this.x509AuthnMandatory = x509AuthnMandatory;
+        this.trustedProxies = trustedProxies
+            .stream()
+            .filter(StringUtils::isNotBlank)
+            .map(String::trim)
+            .map(IpAddressMatcher::new)
+            .toList();
+        if (this.trustedProxies.isEmpty()) {
+            LOGGER.warn(
+                "No trusted proxy configured (vitamui.authn.x509.trusted-proxies): the certificate header [{}] " +
+                "will be ignored",
+                customCertificateHeader
+            );
+        }
     }
 
     @Override
@@ -75,6 +101,15 @@ public class CustomRequestHeaderX509CertificateExtractor implements X509Certific
         final String certHeader = request.getHeader(customCertificateHeader);
         if (StringUtils.isBlank(certHeader)) {
             LOGGER.debug("Certificates not found via custom header: {}", customCertificateHeader);
+            return null;
+        }
+        final Object peerAddress = request.getAttribute(ConnectionPeerAddressValve.PEER_ADDRESS_ATTRIBUTE);
+        if (!(peerAddress instanceof final String connectionAddress) || !isTrustedProxy(connectionAddress)) {
+            LOGGER.warn(
+                "Certificate header [{}] ignored: the connection comes from [{}], which is not a trusted proxy",
+                customCertificateHeader,
+                peerAddress
+            );
             return null;
         }
 
@@ -103,6 +138,13 @@ public class CustomRequestHeaderX509CertificateExtractor implements X509Certific
             Arrays.toString(certificates)
         );
         return certificates;
+    }
+
+    private boolean isTrustedProxy(final String connectionAddress) {
+        return (
+            StringUtils.isNotBlank(connectionAddress) &&
+            trustedProxies.stream().anyMatch(proxy -> proxy.matches(connectionAddress))
+        );
     }
 
     // Nginx forwards the URL-encoded PEM, with tabs for line breaks and '+' turned into spaces.

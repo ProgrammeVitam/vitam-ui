@@ -57,6 +57,8 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -261,6 +263,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     @Test
     public void testResolveAuthnDelegation() throws Throwable {
         final var provider = new IdentityProviderDto();
+        provider.setCustomerId(CUSTOMER_ID);
         provider.setId(PROVIDER_ID);
         when(
             casApi.getUser(
@@ -273,9 +276,9 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         givenLoginInfoInSessionForDeleguatedAuthn();
         when(providersService.getProviders()).thenReturn(new ArrayList<>());
-        when(
-            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
-        ).thenReturn(Optional.of(provider));
+        when(identityProviderHelper.findByTechnicalName(providersService.getProviders(), PROVIDER_NAME)).thenReturn(
+            Optional.of(provider)
+        );
 
         final var principal = resolver.resolve(
             new ClientCredential(null, PROVIDER_NAME),
@@ -295,6 +298,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     @Test
     public void testResolveAuthnDelegationMailAttribute() throws Throwable {
         final var provider = new IdentityProviderDto();
+        provider.setCustomerId(CUSTOMER_ID);
         provider.setId(PROVIDER_ID);
         provider.setMailAttribute(MAIL);
         when(
@@ -307,9 +311,9 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             )
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         givenLoginInfoInSessionForDeleguatedAuthn();
-        when(
-            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
-        ).thenReturn(Optional.of(provider));
+        when(identityProviderHelper.findByTechnicalName(providersService.getProviders(), PROVIDER_NAME)).thenReturn(
+            Optional.of(provider)
+        );
 
         final var princAttributes = new HashMap<String, List<Object>>();
         princAttributes.put(MAIL, Collections.singletonList(USERNAME));
@@ -335,11 +339,12 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         givenLoginInfoInSessionForDeleguatedAuthn();
 
         final var provider = new IdentityProviderDto();
+        provider.setCustomerId(CUSTOMER_ID);
         provider.setId(PROVIDER_ID);
         provider.setMailAttribute(MAIL);
-        when(
-            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
-        ).thenReturn(Optional.of(provider));
+        when(identityProviderHelper.findByTechnicalName(providersService.getProviders(), PROVIDER_NAME)).thenReturn(
+            Optional.of(provider)
+        );
 
         //  l'IdP retourne "USER@test.com"
         final var princAttributes = new HashMap<String, List<Object>>();
@@ -372,6 +377,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     @Test
     public void testResolveAuthnDelegationIdentifierAttribute() throws Throwable {
         final var provider = new IdentityProviderDto();
+        provider.setCustomerId(CUSTOMER_ID);
         provider.setId(PROVIDER_ID);
         provider.setIdentifierAttribute(IDENTIFIER);
         when(
@@ -384,9 +390,9 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             )
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         givenLoginInfoInSessionForDeleguatedAuthn();
-        when(
-            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
-        ).thenReturn(Optional.of(provider));
+        when(identityProviderHelper.findByTechnicalName(providersService.getProviders(), PROVIDER_NAME)).thenReturn(
+            Optional.of(provider)
+        );
 
         final var princAttributes = new HashMap<String, List<Object>>();
         princAttributes.put(IDENTIFIER, Collections.singletonList(IDENTIFIER_VALUE));
@@ -408,6 +414,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     @Test
     public void testResolveAuthnDelegationMailAttributeNoValue() throws Throwable {
         final var provider = new IdentityProviderDto();
+        provider.setCustomerId(CUSTOMER_ID);
         provider.setId(PROVIDER_ID);
         provider.setMailAttribute(MAIL);
         when(
@@ -420,9 +427,9 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             )
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         givenLoginInfoInSessionForDeleguatedAuthn();
-        when(
-            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
-        ).thenReturn(Optional.of(provider));
+        when(identityProviderHelper.findByTechnicalName(providersService.getProviders(), PROVIDER_NAME)).thenReturn(
+            Optional.of(provider)
+        );
 
         final var princAttributes = new HashMap<String, List<Object>>();
         princAttributes.put(MAIL, Collections.emptyList());
@@ -444,6 +451,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     @Test
     public void testResolveAuthnDelegationIdentifierAttributeNoValue() throws Throwable {
         final var provider = new IdentityProviderDto();
+        provider.setCustomerId(CUSTOMER_ID);
         provider.setId(PROVIDER_ID);
         provider.setIdentifierAttribute(IDENTIFIER_ATTRIBUTE);
         when(
@@ -456,9 +464,9 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             )
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         givenLoginInfoInSessionForDeleguatedAuthn();
-        when(
-            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
-        ).thenReturn(Optional.of(provider));
+        when(identityProviderHelper.findByTechnicalName(providersService.getProviders(), PROVIDER_NAME)).thenReturn(
+            Optional.of(provider)
+        );
 
         final var princAttributes = new HashMap<String, List<Object>>();
         princAttributes.put(IDENTIFIER, Collections.emptyList());
@@ -525,9 +533,9 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             infoProfile(UserStatusEnum.ENABLED, ADMIN_ID)
         );
         givenSubrogationInfoInSessionForDeleguatedAuthn();
-        when(
-            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
-        ).thenReturn(Optional.of(new IdentityProviderDto()));
+        when(identityProviderHelper.findByTechnicalName(providersService.getProviders(), PROVIDER_NAME)).thenReturn(
+            Optional.of(providerOfCustomer(ADMIN_CUSTOMER_ID))
+        );
 
         final var principal = resolver.resolve(
             new ClientCredential(null, PROVIDER_NAME),
@@ -542,6 +550,43 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         assertEquals(List.of(ROLE_NAME), attributes.get(CommonConstants.ROLES_ATTRIBUTE));
         assertEquals(ADMIN, attributes.get(SUPER_USER_ATTRIBUTE).getFirst());
         assertEquals(ADMIN_CUSTOMER_ID, attributes.get(SUPER_USER_CUSTOMER_ID_ATTRIBUTE).getFirst());
+    }
+
+    @Test
+    public void testResolveAuthnDelegationSurrogateRefusesAProviderOfAnotherCustomer() throws Throwable {
+        givenSubrogationInfoInSessionForDeleguatedAuthn();
+        // The provider belongs to the customer of the surrogated user, not to the one of the initiating account.
+        when(identityProviderHelper.findByTechnicalName(providersService.getProviders(), PROVIDER_NAME)).thenReturn(
+            Optional.of(providerOfCustomer(CUSTOMER_ID))
+        );
+
+        final var principal = resolver.resolve(
+            new ClientCredential(null, PROVIDER_NAME),
+            Optional.of(principalFactory.createPrincipal(ADMIN)),
+            Optional.empty(),
+            Optional.empty()
+        );
+
+        assertNull(principal);
+        verify(casApi, never()).buildPrincipalAttributes(any());
+    }
+
+    @Test
+    public void testResolveAuthnDelegationRefusesAProviderOfAnotherCustomer() throws Throwable {
+        givenLoginInfoInSessionForDeleguatedAuthn();
+        when(identityProviderHelper.findByTechnicalName(providersService.getProviders(), PROVIDER_NAME)).thenReturn(
+            Optional.of(providerOfCustomer(ADMIN_CUSTOMER_ID))
+        );
+
+        final var principal = resolver.resolve(
+            new ClientCredential(null, PROVIDER_NAME),
+            Optional.of(principalFactory.createPrincipal(USERNAME)),
+            Optional.empty(),
+            Optional.empty()
+        );
+
+        assertNull(principal);
+        verify(casApi, never()).buildPrincipalAttributes(any());
     }
 
     @Test
@@ -560,10 +605,11 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         );
         givenSubrogationInfoInSessionForDeleguatedAuthn();
         final var provider = new IdentityProviderDto();
+        provider.setCustomerId(ADMIN_CUSTOMER_ID);
         provider.setMailAttribute(MAIL);
-        when(
-            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
-        ).thenReturn(Optional.of(provider));
+        when(identityProviderHelper.findByTechnicalName(providersService.getProviders(), PROVIDER_NAME)).thenReturn(
+            Optional.of(provider)
+        );
 
         final var princAttributes = new HashMap<String, List<Object>>();
         princAttributes.put(MAIL, Collections.singletonList(ADMIN));
@@ -599,10 +645,11 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         );
         givenSubrogationInfoInSessionForDeleguatedAuthn();
         final var provider = new IdentityProviderDto();
+        provider.setCustomerId(ADMIN_CUSTOMER_ID);
         provider.setMailAttribute(MAIL);
-        when(
-            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
-        ).thenReturn(Optional.of(provider));
+        when(identityProviderHelper.findByTechnicalName(providersService.getProviders(), PROVIDER_NAME)).thenReturn(
+            Optional.of(provider)
+        );
 
         // No mail attribute on the surrogated user's profile: CAS forwards the raw profile and IAM refuses the
         // subrogation. A refusal results in a null principal.
@@ -814,5 +861,11 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         when(sessionStore.get(any(JEEContext.class), eq(Constants.FLOW_SURROGATE_CUSTOMER_ID))).thenReturn(
             Optional.of(CUSTOMER_ID)
         );
+    }
+
+    private static IdentityProviderDto providerOfCustomer(final String customerId) {
+        final var provider = new IdentityProviderDto();
+        provider.setCustomerId(customerId);
+        return provider;
     }
 }
