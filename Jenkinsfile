@@ -120,7 +120,6 @@ pipeline {
                                 if (env.DO_CHECKS_AND_TESTS == 'true') {
                                     sh 'npm run lint'
                                 }
-                                sh 'npm run build:vitamui-library'
                                 sh 'npm run build:allModules'
                                 if (env.DO_CHECKS_AND_TESTS == 'true') {
                                     sh 'npm run ci:test'
