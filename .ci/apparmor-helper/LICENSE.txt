@@ -1,0 +1,4 @@
+Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program
+
+This software is governed by the CeCILL 2.1 license under French law.
+See https://cecill.info for the license terms.

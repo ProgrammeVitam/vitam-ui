@@ -181,6 +181,7 @@
                         <include>**/*.ts</include>
                     </includes>
                     <excludes>
+                        <exclude>.ci/apparmor-helper/src/main/java/**</exclude>
                         <exclude>**/org/apereo/cas/**</exclude>
                         <exclude>**/node_modules/**</exclude>
                         <exclude>**/target/**</exclude>
@@ -198,6 +199,18 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
+                    </execution>
+                    <execution>
+                        <id>check-apparmor-helper-license</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration combine.self="override">
+                            <header>.ci/apparmor-helper/LICENSE.txt</header>
+                            <includes>
+                                <include>.ci/apparmor-helper/src/main/java/**</include>
+                            </includes>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
