@@ -309,6 +309,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   listOfUAIdToInclude: CriteriaValue[] = [];
   listOfUAIdToExclude: CriteriaValue[] = [];
   nodeArray: FilingHoldingSchemeNode[] = [];
+  private filingPlanRootIds: string[] = [];
+  private orphansCountRequested = false;
   archiveUnits: Unit[];
   searchCriteriaHistory: SearchCriteriaHistory[] = [];
   criteriaSearchList: SearchCriteriaEltDto[] = [];
@@ -564,6 +566,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     searchCriteriaChange.subscribe(() => {
       this.submit(true);
     });
+
+    this.subscribeFilingPlanRootIds();
 
     this.checkUserHasRole(VitamuiRoles.ROLE_EXPORT_DIP, +this.tenantIdentifier);
     this.checkUserHasRole(VitamuiRoles.ROLE_TRANSFER_REQUEST, +this.tenantIdentifier);
@@ -912,6 +916,25 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       if (result) {
       }
     });
+  }
+
+  /** Keeps the filing plan root ids up to date: the tree may be loaded after the first search, in which case the orphans count is refreshed. */
+  private subscribeFilingPlanRootIds() {
+    this.subscriptions.add(
+      this.archiveSharedDataService.getFilingHoldingNodes().subscribe((nodes) => {
+        if (!nodes) {
+          return;
+        }
+        const rootIds = nodes.filter((node) => node.id && node.id !== ORPHANS_NODE_ID).map((node) => node.id);
+        if (rootIds.join() === this.filingPlanRootIds.join()) {
+          return;
+        }
+        this.filingPlanRootIds = rootIds;
+        if (this.orphansCountRequested && this.hasSearchCriteria()) {
+          this.existsArchiveUnitWithoutAttachment();
+        }
+      }),
+    );
   }
 
   // TODO: it may add multiple subscription for each clear criteria
@@ -1628,20 +1651,35 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     return unit['#id'];
   }
 
+  /**
+   * Counts the results that are not attached to the filing / holding scheme, i.e. that have none of its root units among their ancestors.
+   * Without any known root (tree not loaded yet), falls back on the results that have no parent at all.
+   */
   existsArchiveUnitWithoutAttachment(): void {
-    let orphanCriteriaList = [...this.criteriaSearchList];
-    orphanCriteriaList.push({
-      criteria: '#unitups',
-      values: [
-        {
-          id: 'true',
-          value: 'true',
-        },
-      ],
-      category: 'FIELDS',
-      operator: 'MISSING',
-      dataType: 'STRING',
-    });
+    this.orphansCountRequested = true;
+    const orphanCriteriaList = [...this.criteriaSearchList];
+    if (this.filingPlanRootIds.length) {
+      orphanCriteriaList.push({
+        criteria: '#allunitups',
+        values: this.filingPlanRootIds.map((id) => ({ id, value: id })),
+        category: 'FIELDS',
+        operator: CriteriaOperator.NOT_EQ,
+        dataType: 'STRING',
+      });
+    } else {
+      orphanCriteriaList.push({
+        criteria: '#unitups',
+        values: [
+          {
+            id: 'true',
+            value: 'true',
+          },
+        ],
+        category: 'FIELDS',
+        operator: 'MISSING',
+        dataType: 'STRING',
+      });
+    }
     const searchCriteria = {
       criteriaList: orphanCriteriaList,
       pageNumber: 0,
