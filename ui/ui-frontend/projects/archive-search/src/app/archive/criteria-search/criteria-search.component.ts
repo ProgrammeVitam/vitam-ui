@@ -98,6 +98,9 @@ export class CriteriaSearchComponent {
   }
 
   getCriteriaKeyLabel(criteriaValue: SearchCriteriaValue): string {
+    if (this.criteriaVal().keyLabel) {
+      return this.criteriaVal().keyLabel;
+    }
     if (criteriaValue.keyTranslated) {
       const translationKey = `ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.${this.getCategoryName(this.criteriaVal().category)}.${this.criteriaVal().key}`;
       return this.translateWithOptionalTypeSuffixPipe.transform(translationKey);

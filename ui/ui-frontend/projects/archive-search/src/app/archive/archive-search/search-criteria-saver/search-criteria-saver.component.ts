@@ -259,9 +259,10 @@ export class SearchCriteriaSaverComponent implements OnDestroy {
     }
     return [...searchCriteriaMap.values()]
       .map((searchCriteria) => {
-        const { dataType, category, keyTranslated, key, values } = searchCriteria;
+        const { dataType, category, keyTranslated, key, keyLabel, values } = searchCriteria;
         const categoryName = this.getCategoryName(category);
-        const label = keyTranslated ? this.translatePipe.transform(`ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.${categoryName}.${key}`) : key;
+        const label =
+          keyLabel ?? (keyTranslated ? this.translatePipe.transform(`ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.${categoryName}.${key}`) : key);
         const tooltip = label;
 
         return values.map((searchCriteriaValue) => {

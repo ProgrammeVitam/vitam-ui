@@ -467,6 +467,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       criteria.valueTranslated,
       criteria.dataType,
       false,
+      criteria.keyLabel,
     );
   }
 
@@ -1603,6 +1604,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     valueTranslated: boolean,
     dataType: string,
     emit: boolean,
+    keyLabel?: string,
   ) {
     this.archiveHelperService.addCriteria(
       this.searchCriterias,
@@ -1617,6 +1619,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       valueTranslated,
       dataType,
       emit,
+      keyLabel,
     );
     // The helper mutates the keys array in place: publish a new reference so zoneless change detection re-renders the chips.
     this.searchCriteriaKeys.set([...this.searchCriteriaKeys()]);
