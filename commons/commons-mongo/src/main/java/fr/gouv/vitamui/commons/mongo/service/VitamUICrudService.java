@@ -38,6 +38,7 @@ package fr.gouv.vitamui.commons.mongo.service;
 
 import fr.gouv.vitamui.commons.api.domain.BaseIdDocument;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.service.BaseCrudService;
 import fr.gouv.vitamui.commons.mongo.CustomSequencesConstants;
 import org.slf4j.Logger;
@@ -47,6 +48,7 @@ import org.springframework.util.Assert;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Function;
 
 /**
  * A service to read, create, update and delete an object with identifier.
@@ -79,7 +81,7 @@ public abstract class VitamUICrudService<D extends IdDto, E extends BaseIdDocume
      */
     @Override
     public D create(final D dto) {
-        LOGGER.debug("Create {} with {}", getObjectName(), dto);
+        LOGGER.debug("Create {}", getObjectName());
         Assert.isNull(dto.getId(), "The DTO identifier must be null for creation.");
         beforeCreate(dto);
         dto.setId(generateSuperId());
@@ -102,10 +104,9 @@ public abstract class VitamUICrudService<D extends IdDto, E extends BaseIdDocume
      */
     @Override
     public D update(final D dto) {
-        LOGGER.debug("Update {} {}", getObjectName(), dto);
+        LOGGER.debug("Update {} {}", getObjectName(), dto.getId());
         beforeUpdate(dto);
         final E entity = convertFromDtoToEntity(dto);
-        LOGGER.debug("Update entity {} {}", getObjectName(), entity);
         Assert.isTrue(entity != null, "Unable to update " + getObjectName() + ": entity is null");
         Assert.isTrue(
             getRepository().existsById(entity.getId()),
@@ -126,7 +127,7 @@ public abstract class VitamUICrudService<D extends IdDto, E extends BaseIdDocume
      */
     @Override
     public D patch(final Map<String, Object> partialDto) {
-        LOGGER.debug("Patch {} with {}", getObjectName(), partialDto);
+        LOGGER.debug("Patch {} with fields {}", getObjectName(), partialDto.keySet());
         final E entity = beforePatch(partialDto);
         processPatch(entity, partialDto);
         Assert.isTrue(
@@ -188,6 +189,24 @@ public abstract class VitamUICrudService<D extends IdDto, E extends BaseIdDocume
      * @param id Id of the entity.
      */
     protected void beforeDelete(final String id) {}
+
+    /**
+     * Checks that the entity, if it exists, belongs to the given user.
+     * An entity owned by another user is reported as not found, to avoid disclosing its existence.
+     * @param id Id of the entity.
+     * @param userId Identifier of the user expected to own the entity.
+     * @param ownerGetter Getter of the owner identifier of the entity.
+     * @throws NotFoundException If the entity belongs to another user.
+     */
+    protected void checkOwnedBy(final String id, final String userId, final Function<E, String> ownerGetter) {
+        final boolean ownedByAnotherUser = getRepository()
+            .findById(id)
+            .map(entity -> !userId.equals(ownerGetter.apply(entity)))
+            .orElse(false);
+        if (ownedByAnotherUser) {
+            throw new NotFoundException("No " + getObjectName() + " found with id: " + id);
+        }
+    }
 
     /**
      * Method allowing to generate the next value of the sequence.

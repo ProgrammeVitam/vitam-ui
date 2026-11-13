@@ -15,8 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.StringWriter;
 
 public class PastisGetJsonTree {
 
@@ -56,7 +56,7 @@ public class PastisGetJsonTree {
         marshallerObj.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         marshallerObj.setProperty(PastisMarshaller.CHAR_ESCAPE_HANDLER, new PastisCustomCharacterEscapeHandler());
 
-        marshallerObj.marshal(eparentRng, new FileOutputStream("generated_test.xml"));
+        marshallerObj.marshal(eparentRng, new StringWriter());
 
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = "";

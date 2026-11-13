@@ -86,6 +86,14 @@ public class BaliseXML {
     }
 
     /**
+     * Forgets the tree built by a previous call to {@link #buildBaliseXMLTree}.
+     * Must be called once before building a new tree, not during the recursive build.
+     */
+    public static void reset() {
+        baliseXMLStatic = null;
+    }
+
+    /**
      * @param node node représentant l'arbre ElementProperties correspondant au json reçu du front
      * @param profondeur profondeur du noeud utile pour le front angular
      * @param parentNode noeud parent utilisé dans la récursivité pour lié parent & children

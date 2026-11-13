@@ -94,6 +94,18 @@ public class SearchCriteriaHistoryService
         }
     }
 
+    @Override
+    protected void beforeUpdate(final SearchCriteriaHistoryDto dto) {
+        final String userId = securityService.getUser().getIdentifier();
+        checkOwnedBy(dto.getId(), userId, SearchCriteriaHistoryCollect::getUserId);
+        dto.setUserId(userId);
+    }
+
+    @Override
+    protected void beforeDelete(final String id) {
+        checkOwnedBy(id, securityService.getUser().getIdentifier(), SearchCriteriaHistoryCollect::getUserId);
+    }
+
     /**
      * {@inheritDoc}
      */

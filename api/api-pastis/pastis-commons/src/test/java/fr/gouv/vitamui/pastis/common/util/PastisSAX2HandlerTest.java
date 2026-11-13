@@ -1,0 +1,77 @@
+/*
+Copyright © CINES - Centre Informatique National pour l'Enseignement Supérieur (2021)
+
+[dad@cines.fr]
+
+This software is a computer program whose purpose is to provide
+a web application to create, edit, import and export archive
+profiles based on the french SEDA standard
+(https://redirect.francearchives.fr/seda/).
+
+
+This software is governed by the CeCILL-C  license under French law and
+abiding by the rules of distribution of free software.  You can  use,
+modify and/ or redistribute the software under the terms of the CeCILL-C
+license as circulated by CEA, CNRS and INRIA at the following URL
+"http://www.cecill.info".
+
+As a counterpart to the access to the source code and  rights to copy,
+modify and redistribute granted by the license, users are provided only
+with a limited warranty  and the software's author,  the holder of the
+economic rights,  and the successive licensors  have only  limited
+liability.
+
+In this respect, the user's attention is drawn to the risks associated
+with loading,  using,  modifying and/or developing or reproducing the
+software by the user in light of its specific status of free software,
+that may mean  that it is complicated to manipulate,  and  that  also
+therefore means  that it is reserved for developers  and  experienced
+professionals having in-depth computer knowledge. Users are therefore
+encouraged to load and test the software's suitability as regards their
+requirements in conditions enabling the security of their systems and/or
+data to be ensured and,  more generally, to use and operate it in the
+same conditions as regards security.
+
+The fact that you are presently reading this means that you have had
+knowledge of the CeCILL-C license and that you accept its terms.
+*/
+package fr.gouv.vitamui.pastis.common.util;
+
+import fr.gouv.vitamui.pastis.common.dto.ElementRNG;
+import org.junit.jupiter.api.Test;
+import org.xml.sax.helpers.AttributesImpl;
+
+import java.time.Duration;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
+
+class PastisSAX2HandlerTest {
+
+    @Test
+    void should_keep_whole_documentation_split_in_many_chunks() {
+        final int chunkCount = 300_000;
+        final PastisSAX2Handler handler = new PastisSAX2Handler();
+        final char[] chunk = { 'a' };
+
+        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> {
+            handler.startDocument();
+            handler.startElement("", "element", "rng:element", attributes("Title"));
+            handler.startElement("", "documentation", "xsd:documentation", new AttributesImpl());
+            for (int i = 0; i < chunkCount; i++) {
+                handler.characters(chunk, 0, 1);
+            }
+            handler.endElement("", "documentation", "xsd:documentation");
+            handler.endElement("", "element", "rng:element");
+        });
+
+        final ElementRNG documentation = handler.getElementRNGRoot().getChildren().get(0).getChildren().get(0);
+        assertThat(documentation.getValue()).hasSize(chunkCount);
+    }
+
+    private static AttributesImpl attributes(final String name) {
+        final AttributesImpl attributes = new AttributesImpl();
+        attributes.addAttribute("", "name", "name", "CDATA", name);
+        return attributes;
+    }
+}

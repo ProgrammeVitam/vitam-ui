@@ -44,4 +44,8 @@ provisioning-client:
             hostname-verification: false
 ```
 
+The truststore is mandatory: it must contain the issuer of the provisioning server certificate, even with
+`hostname-verification: false`. This option only skips the check that the certificate matches the host name;
+the certificate chain is always verified. `hostname-verification` defaults to `true`.
+
 Please note that the configuration take a list in input
