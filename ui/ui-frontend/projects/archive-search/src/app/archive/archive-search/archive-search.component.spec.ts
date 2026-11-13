@@ -51,6 +51,7 @@ import { environment } from 'projects/archive-search/src/environments/environmen
 import { Observable, of } from 'rxjs';
 import {
   BASE_URL,
+  FilingHoldingSchemeNode,
   InjectorModule,
   LoggerModule,
   PagedResult,
@@ -541,6 +542,53 @@ describe('ArchiveSearchComponent', () => {
 
       expect('someRealParentId').toEqual(virtualValues[0].value.virtualNodeRealParentId);
       expect('someRealParentTitle').toEqual(virtualValues[0].value.virtualNodeRealParentTitle);
+    });
+  });
+
+  describe('existsArchiveUnitWithoutAttachment', () => {
+    const lastOrphansCriteria = () => {
+      const calls = vi.mocked(archiveServiceStub.searchArchiveUnitsByCriteria as Mock).mock.calls;
+      return calls[calls.length - 1][0].criteriaList.find((c: any) => c.criteria === '#allunitups' || c.criteria === '#unitups');
+    };
+
+    beforeEach(async () => {
+      await setupTest({});
+      vi.mocked(archiveServiceStub.searchArchiveUnitsByCriteria as Mock).mockClear();
+    });
+
+    it('shouldCountResultsOutsideFilingPlanAsWithoutAttachment', () => {
+      const emitSpy = vi.spyOn(archiveSharedDataService, 'emitNumberOfAUsWithoutAttachment');
+      vi.mocked(archiveServiceStub.searchArchiveUnitsByCriteria as Mock).mockReturnValueOnce(
+        of({ ...pagedResult, results: [{ '#id': 'AU_1' }], totalResults: 7 } as any),
+      );
+      archiveSharedDataService.emitFilingHoldingNodes([{ id: 'ROOT_1' }, { id: 'ROOT_2' }] as FilingHoldingSchemeNode[]);
+
+      component.existsArchiveUnitWithoutAttachment();
+
+      const criteria = lastOrphansCriteria();
+      expect(criteria.criteria).toEqual('#allunitups');
+      expect(criteria.operator).toEqual('NOT_EQ');
+      expect(criteria.category).toEqual('FIELDS');
+      expect(criteria.values.map((v: any) => v.value)).toEqual(['ROOT_1', 'ROOT_2']);
+      expect(emitSpy).toHaveBeenCalledWith(7);
+    });
+
+    it('shouldFallbackOnMissingUnitupsWhenNoFilingPlanRoot', () => {
+      component.existsArchiveUnitWithoutAttachment();
+
+      const criteria = lastOrphansCriteria();
+      expect(criteria.criteria).toEqual('#unitups');
+      expect(criteria.operator).toEqual('MISSING');
+    });
+
+    it('shouldRecomputeWithoutAttachmentCountWhenFilingPlanLoadedAfterSearch', () => {
+      component.criteriaSearchList = [{ criteria: 'opi', values: ['1234'], operator: 'EQ', category: 'FIELDS' } as any];
+      component.existsArchiveUnitWithoutAttachment();
+      expect(lastOrphansCriteria().criteria).toEqual('#unitups');
+
+      archiveSharedDataService.emitFilingHoldingNodes([{ id: 'ROOT_1' }] as FilingHoldingSchemeNode[]);
+
+      expect(lastOrphansCriteria().criteria).toEqual('#allunitups');
     });
   });
 });
