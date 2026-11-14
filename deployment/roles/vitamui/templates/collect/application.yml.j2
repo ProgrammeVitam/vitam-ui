@@ -110,14 +110,3 @@ ontologies_file_path: {{ vitamui_folder_data }}/external_ontology_fields.json
 
 query:
   non-sortable-fields: {{ vitamui_struct.query_non_sortable_fields | default(default_non_sortable_fields) | to_json }}
-
-{% if opentracing.jaeger.enabled | default(false) | bool %}
-opentracing:
-  jaeger:
-    enabled: {{ opentracing.jaeger.enabled }}
-    logSpans: {{ opentracing.jaeger.log_spans }}
-    expandExceptionLogs: {{ opentracing.jaeger.expand_exception_logs }}
-    udp-sender:
-      host: {{ opentracing.jaeger.udp_sender.host }}
-      port: {{ opentracing.jaeger.udp_sender.port }}
-{% endif %}

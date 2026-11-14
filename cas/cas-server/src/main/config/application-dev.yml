@@ -113,16 +113,6 @@ vitamui:
 
 cas_secret_token: tokcas_ie6UZsEcHIWrfv2x
 
-# Root: opentracing - Jaeger distributed tracing
-opentracing:
-  jaeger:
-    enabled: true
-    logSpans: true
-    expandExceptionLogs: true
-    udp-sender:
-      host: localhost
-      port: 6831
-
 # Root: logging - Logback and logging levels
 logging:
   config: src/main/config/logback-dev.xml

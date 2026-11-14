@@ -69,16 +69,6 @@ pastis:
         key-password: changeme
       hostname-verification: false
 
-# Jaeger
-opentracing:
-  jaeger:
-    enabled: true
-    logSpans: true
-    expandExceptionLogs: true
-    udp-sender:
-      host: localhost
-      port: 6831
-
 logging:
   level:
     fr.gouv.vitamui: DEBUG
