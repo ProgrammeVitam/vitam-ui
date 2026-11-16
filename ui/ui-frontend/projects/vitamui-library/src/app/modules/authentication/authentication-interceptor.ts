@@ -53,15 +53,13 @@ export class AuthenticationInterceptor implements HttpInterceptor {
 
   public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     /**
-     * Manage uri that are charged before the configuration is loaded
-     * and should not be impacted by security.
-     * Like configurations and assets.
+     * Translation assets are loaded before the configuration and must not wait for it.
      *
      * /!\ Http request that are not triggered may be due to this.
      * /!\ Check if the request is triggered in a module initialization.
      */
     const url = req.url.toLowerCase();
-    if (url.endsWith('/conf') || url.includes('assets/shared-i18n/') || url.includes('assets/i18n/')) {
+    if (url.includes('assets/shared-i18n/') || url.includes('assets/i18n/')) {
       return next.handle(req);
     }
 
