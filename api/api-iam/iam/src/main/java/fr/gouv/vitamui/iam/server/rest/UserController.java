@@ -320,6 +320,21 @@ public class UserController implements CrudController<UserDto> {
         return userService.patchAnalytics(partialDto);
     }
 
+    /**
+     * Trigger a password reset for a user.
+     *
+     * @param id from user to target.
+     */
+    @Operation(operationId = "send-reset-password-mail", summary = "Triggers a password reset for a user")
+    @PostMapping("/{id}/password-reset")
+    @Secured(ServicesData.ROLE_UPDATE_USERS)
+    public ResponseEntity<Void> resetPassword(@PathVariable final String id) {
+        SanityChecker.sanitizeCriteria(id);
+
+        this.userService.sendResetPasswordEmail(id);
+        return ResponseEntity.noContent().build();
+    }
+
     private String buildUserExportFileName() {
         return "export-utilisateurs-%s.xlsx".formatted(EXPORT_FILE_DATE_TIME_FORMATTER.format(LocalDateTime.now()));
     }
