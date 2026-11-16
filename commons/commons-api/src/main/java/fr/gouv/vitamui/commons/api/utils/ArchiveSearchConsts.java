@@ -28,6 +28,7 @@
 package fr.gouv.vitamui.commons.api.utils;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -307,5 +308,10 @@ public class ArchiveSearchConsts {
         entry(ORIGINATING_AGENCY_LABEL_FIELD, "originating_agency_label"),
         entry("ARCHIVE_UNIT_HOLDING_UNIT", ALL_ARCHIVE_UNIT_TYPES),
         entry(RULES_COMPUTED, MetadataSearchCriteriaUtils.WAITING_TO_COMPUTE_RULES_STATUS)
+    );
+
+    public static final Map<String, List<String>> SORT_FIELDS_MAPPING = Map.of(
+        ALL_ARCHIVE_UNIT_TYPES_CRITERIA,
+        List.of(ALL_ARCHIVE_UNIT_TYPES, ARCHIVE_UNIT_OBJECTS)
     );
 }
