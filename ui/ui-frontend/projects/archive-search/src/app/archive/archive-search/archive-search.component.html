@@ -237,8 +237,12 @@
         />
       </ng-container>
       <ng-container buttons>
-        <button class="btn btn-circle large tertiary" [disabled]="!(totalResults > 0 && selectedItemCount > 0)">
-          <i class="vitamui-icon vitamui-icon-import-csv" (click)="exportArchiveUnitsToCsvFile()"></i>
+        <button
+          class="btn btn-circle large tertiary"
+          [disabled]="!(totalResults > 0 && selectedItemCount > 0)"
+          (click)="exportArchiveUnitsToCsvFile()"
+        >
+          <i class="vitamui-icon vitamui-icon-import-csv"></i>
         </button>
         <vitamui-menu-button menuButtonSize="medium" class="ml-2" [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
           <button mat-menu-item (click)="launchExportDipModal()" [disabled]="selectedItemCount === 0 || !hasDipExportRole">
@@ -643,7 +647,12 @@
 <ng-template #type>
   <span>
     {{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.TYPE' | translate }}
-    <vitamui-order-by-button orderByKey="#unitType" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()" />
+    <vitamui-order-by-button
+      orderByKey="ALL_ARCHIVE_UNIT_TYPES"
+      [(orderBy)]="orderBy"
+      [(direction)]="direction"
+      (orderChange)="emitOrderChange()"
+    />
   </span>
 </ng-template>
 <ng-template #name_description>
