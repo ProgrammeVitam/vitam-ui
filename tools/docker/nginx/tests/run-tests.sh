@@ -406,8 +406,8 @@ test_http_redirect() {
   # Clear-text HTTP on purpose: this checks that the plain port redirects to HTTPS.
   local url="http://$SERVER_NAME:$HTTP_PORT/archive-search/"
   local status location
-  status="$(get_status "$url")" # NOSONAR
-  location="$(get_header "$url" | tr 'A-Z' 'a-z')" # NOSONAR
+  status="$(get_status "$url")"
+  location="$(get_header "$url" | tr 'A-Z' 'a-z')"
   check "HTTP the plain port redirects with 301" 301 "$status"
   check_contains "HTTP the redirect preserves the path" "location: $ORIGIN/archive-search/" "$location"
 }
