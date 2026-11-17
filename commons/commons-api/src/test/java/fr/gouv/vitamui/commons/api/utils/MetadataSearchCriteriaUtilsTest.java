@@ -334,4 +334,29 @@ public class MetadataSearchCriteriaUtilsTest {
 
         Assertions.assertEquals(List.of("#unitType"), orderByFields(orderBy));
     }
+
+    @Test
+    void mergeValidComputedInheritenceCriteriaWithMgtRulesCriteria_shouldNotFailOnImmutableValuesList() {
+        // Given: an existing origin criterion with an immutable values list, as built by facet computations
+        // (e.g. List.of(ORIGIN_HAS_NO_ONE)).
+        SearchCriteriaEltDto originCriteria = new SearchCriteriaEltDto()
+            .setCriteria(ArchiveSearchConsts.RULE_ORIGIN_CRITERIA)
+            .setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE)
+            .setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name())
+            .setValues(
+                List.of(new CriteriaValue().setValue(ArchiveSearchConsts.RuleOriginValues.ORIGIN_HAS_NO_ONE.name()))
+            )
+            .setDataType(ArchiveSearchConsts.CriteriaDataType.STRING.name());
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>(List.of(originCriteria));
+
+        // When / Then: used to throw UnsupportedOperationException when adding to the immutable values list.
+        Assertions.assertDoesNotThrow(
+            () ->
+                MetadataSearchCriteriaUtils.mergeValidComputedInheritenceCriteriaWithMgtRulesCriteria(
+                    criteriaList,
+                    ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE
+                )
+        );
+        Assertions.assertEquals(2, originCriteria.getValues().size());
+    }
 }
