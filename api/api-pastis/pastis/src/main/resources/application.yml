@@ -27,5 +27,3 @@ swagger:
   file-path: file:../../../tools/swagger/docs/api-external/pastis/swagger.json
 cors.allowed-origins: https://dev.vitamui.com:4251,https://localhost
 
-gateway:
-  enabled: true

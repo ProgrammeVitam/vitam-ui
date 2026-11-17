@@ -4,9 +4,6 @@ pki_dir: "{{lookup('env','PWD')}}/../../../dev-deployment/environments/certs"
 
 hide_passwords_during_deploy: false
 
-gateway:
-  enabled: true
-
 vitamui_defaults:
   folder:
     root_path: "{{lookup('env','PWD')}}/mongo-entrypoint"

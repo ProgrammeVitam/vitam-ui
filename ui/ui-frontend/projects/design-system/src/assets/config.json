@@ -1,5 +1,4 @@
 {
-  "GATEWAY_ENABLED": true,
   "REFERENTIAL_URL": "https://dev.vitamui.com:4202",
   "VERSION_RELEASE": "8.1-SNAPSHOT",
   "PLATFORM_NAME": "VITAM-UI",

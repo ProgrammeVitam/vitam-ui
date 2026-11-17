@@ -28,5 +28,3 @@ metrics:
   reporterIntervalUnit: MINUTES
   index: metrics-vitam-jvm
 
-gateway:
-  enabled: true

@@ -76,9 +76,6 @@ management:
       application: ${spring.application.name}
       hostname: {{ inventory_hostname }}
 
-gateway:
-  enabled: true
-
 collect:
   security-client:
     server-host: {{ vitamui.security.host }}

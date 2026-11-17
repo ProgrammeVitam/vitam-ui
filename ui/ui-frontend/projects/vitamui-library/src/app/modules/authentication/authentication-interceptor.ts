@@ -53,38 +53,30 @@ export class AuthenticationInterceptor implements HttpInterceptor {
 
   public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     /**
-     * Manage uri that are charged before the configuration is loaded
-     * and should not be impacted by security.
-     * Like configurations and assets.
+     * Translation assets are loaded before the configuration and must not wait for it.
      *
      * /!\ Http request that are not triggered may be due to this.
      * /!\ Check if the request is triggered in a module initialization.
      */
     const url = req.url.toLowerCase();
-    if (url.endsWith('/conf') || url.includes('assets/shared-i18n/') || url.includes('assets/i18n/')) {
+    if (url.includes('assets/shared-i18n/') || url.includes('assets/i18n/')) {
       return next.handle(req);
     }
 
     /**
      * Wait for the configuration to be loaded and add OAuth bearer token header.
-     * Only if the url is in the list of allowed urls and Gateway is enabled.
+     * Only if the url is in the list of allowed urls.
      */
     return this.configService.config$.pipe(
       first((config) => !!config),
       switchMap((_) => {
-        const sendAccessToken = this.configService.config?.GATEWAY_ENABLED;
-        const authorizationHeaderName = this.configService.config?.AUTHORIZATION_HEADER_NAME || 'Authorization';
-        if (sendAccessToken) {
-          if (!this.checkUrl(url)) {
-            return next.handle(req);
-          }
-          const token = this.authStorage.getItem('access_token');
-          const header = 'Bearer ' + token;
-          const headers = req.headers.set(authorizationHeaderName, header);
-          req = req.clone({ headers });
+        if (!this.checkUrl(url)) {
+          return next.handle(req);
         }
-
-        return next.handle(req);
+        const authorizationHeaderName = this.configService.config?.AUTHORIZATION_HEADER_NAME || 'Authorization';
+        const token = this.authStorage.getItem('access_token');
+        const headers = req.headers.set(authorizationHeaderName, 'Bearer ' + token);
+        return next.handle(req.clone({ headers }));
       }),
     );
   }

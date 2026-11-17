@@ -55,7 +55,6 @@ export interface AppConfiguration {
   LOGO: string;
   PLATFORM_NAME: string;
   CUSTOMER: string;
-  GATEWAY_ENABLED: boolean;
   AUTHORIZATION_HEADER_NAME: string;
   ALLOWED_URLS: string[];
   OIDC_CONFIG: any;

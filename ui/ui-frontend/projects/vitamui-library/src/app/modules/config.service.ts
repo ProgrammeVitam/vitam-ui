@@ -40,7 +40,6 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import { HttpBackend, HttpClient } from '@angular/common/http';
 import { inject, Injectable, OnDestroy } from '@angular/core';
 
-import { ApplicationApiService } from './api/application-api.service';
 import { Logger } from './logger/logger';
 import { AppConfiguration } from './models/app.configuration.interface';
 
@@ -49,7 +48,6 @@ import { AppConfiguration } from './models/app.configuration.interface';
 })
 export class ConfigService implements OnDestroy {
   private readonly logger = inject(Logger);
-  private readonly applicationApi = inject(ApplicationApiService);
 
   private readonly http: HttpClient;
 
@@ -68,13 +66,6 @@ export class ConfigService implements OnDestroy {
 
   load(configUrls: string[]): Observable<boolean> {
     return this.loadFrontendConfig(configUrls).pipe(
-      switchMap((frontendConfig: AppConfiguration) => {
-        if (frontendConfig && frontendConfig.GATEWAY_ENABLED) {
-          return of(frontendConfig);
-        } else {
-          return this.loadBackendConfig();
-        }
-      }),
       switchMap((config: AppConfiguration) => {
         this.config = config;
         this.config$.next(config);
@@ -85,10 +76,6 @@ export class ConfigService implements OnDestroy {
         return of(false);
       }),
     );
-  }
-
-  private loadBackendConfig(): Observable<AppConfiguration> {
-    return this.applicationApi.getConfiguration();
   }
 
   private loadFrontendConfig(configUrls: string[]): Observable<AppConfiguration> {

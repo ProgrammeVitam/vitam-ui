@@ -32,5 +32,3 @@ swagger:
 # internal ontology file path
 internal_ontology_file_path: "src/main/resources/internal-ontology/internal_ontology_fields.json"
 
-gateway:
-  enabled: true

@@ -53,7 +53,6 @@ import org.springframework.security.web.authentication.preauth.AbstractPreAuthen
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.X_USER_TOKEN_HEADER;
@@ -71,7 +70,6 @@ import static org.springframework.http.HttpMethod.PUT;
 @Setter
 public abstract class ApiWebSecurityConfig {
 
-    private static final String GATEWAY_ENABLED = "gateway.enabled";
     private static final String CAS_TENANT_IDENTIFIER = "cas.tenant.identifier";
 
     private static final String CLIENT_CERTIFICATE_HEADER_NAME = "server.ssl.client-certificate-header-name";
@@ -80,7 +78,6 @@ public abstract class ApiWebSecurityConfig {
     protected RestExceptionHandler restExceptionHandler;
     protected SecurityService securityService;
     protected Environment env;
-    private final boolean isGatewayEnabled;
     private final Integer casTenantIdentifier;
 
     public ApiWebSecurityConfig(
@@ -94,7 +91,6 @@ public abstract class ApiWebSecurityConfig {
         this.securityService = securityService;
         this.env = env;
 
-        this.isGatewayEnabled = env.getProperty(GATEWAY_ENABLED, Boolean.class, false);
         this.casTenantIdentifier = env.getProperty(CAS_TENANT_IDENTIFIER, Integer.class, -1);
     }
 
@@ -173,26 +169,15 @@ public abstract class ApiWebSecurityConfig {
         return new TenantHeaderFilter(securityService, casTenantIdentifier);
     }
 
-    // This is a temporary patch to allow mTLS authentication behind reverse proxy or full mTLS during migration
     private List<X509CertificateExtractor> getX509CertificateExtractors() {
-        final List<X509CertificateExtractor> x509CertificateExtractors = new ArrayList<>();
-        x509CertificateExtractors.add(X509CertificateExtractor.requestAttributeX509CertificateExtractor());
-        if (isGatewayEnabled) {
-            final String certificateHeaderName = env.getProperty(CLIENT_CERTIFICATE_HEADER_NAME);
-            x509CertificateExtractors.add(
-                X509CertificateExtractor.requestHeaderX509CertificateExtractor(certificateHeaderName)
-            );
-        }
-        return x509CertificateExtractors;
+        final String certificateHeaderName = env.getProperty(CLIENT_CERTIFICATE_HEADER_NAME);
+        return List.of(
+            X509CertificateExtractor.requestAttributeX509CertificateExtractor(),
+            X509CertificateExtractor.requestHeaderX509CertificateExtractor(certificateHeaderName)
+        );
     }
 
-    // This is a temporary patch to get authentication token when service is behind a gateway during migration
     private List<TokenExtractor> getTokenExtractors() {
-        final List<TokenExtractor> tokenExtractors = new ArrayList<>();
-        tokenExtractors.add(TokenExtractor.headerExtractor(X_USER_TOKEN_HEADER));
-        if (isGatewayEnabled) {
-            tokenExtractors.add(TokenExtractor.bearerExtractor());
-        }
-        return tokenExtractors;
+        return List.of(TokenExtractor.headerExtractor(X_USER_TOKEN_HEADER), TokenExtractor.bearerExtractor());
     }
 }
