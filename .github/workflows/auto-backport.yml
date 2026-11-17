@@ -65,7 +65,7 @@ jobs:
       fail-fast: false # Prevents a failure on branch 9.1 from canceling branch 9.2
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0 # Fetches all history for all branches and tags (required for cherry-picking)
       - name: Backport Action

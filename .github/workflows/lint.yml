@@ -6,7 +6,7 @@ jobs:
     name: Lint Frontend
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           node-version: "26.4.0"
@@ -23,7 +23,7 @@ jobs:
     name: Lint Backend
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-java@v4
         with:
           distribution: "temurin"
@@ -45,13 +45,13 @@ jobs:
     name: Check colors
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Check colors
         run: ./tools/check-colors.sh
   check-shadows:
     name: Check shadows
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Check shadows
         run: ./tools/check-shadows.sh
