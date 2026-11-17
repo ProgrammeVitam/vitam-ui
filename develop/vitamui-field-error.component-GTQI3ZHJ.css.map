@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/components/vitamui-field-error/vitamui-field-error.component.scss"],
+  "sourcesContent": [":host {\n  display: block;\n}\n// .slide-down-enter defined in sass/_animations.scss\n"],
+  "mappings": "AAAA,MACE,QAAA",
+  "names": []
+}
