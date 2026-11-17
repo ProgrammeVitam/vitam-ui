@@ -403,11 +403,13 @@ test_cas() {
 test_http_redirect() {
   section "HTTP redirect"
 
+  # Clear-text HTTP on purpose: this checks that the plain port redirects to HTTPS.
   local url="http://$SERVER_NAME:$HTTP_PORT/archive-search/"
-  check "HTTP the plain port redirects with 301" \
-    301 "$(get_status "$url")"
-  check_contains "HTTP the redirect preserves the path" \
-    "location: $ORIGIN/archive-search/" "$(get_header "$url" | tr 'A-Z' 'a-z')"
+  local status location
+  status="$(get_status "$url")" # NOSONAR
+  location="$(get_header "$url" | tr 'A-Z' 'a-z')" # NOSONAR
+  check "HTTP the plain port redirects with 301" 301 "$status"
+  check_contains "HTTP the redirect preserves the path" "location: $ORIGIN/archive-search/" "$location"
 }
 
 # Live mode: the ng-serve stub plays the role of a running portal dev server
