@@ -42,7 +42,10 @@
               <i class="vitamui-icon vitamui-icon-releve" [ngClass]="value | eventTypeBadgeClass"></i>
             </div>
             <div class="col-3" vitamuiCommonEllipsis>{{ value.id }}</div>
-            <div class="col-2" vitamuiCommonEllipsis>{{ value.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
+            <div class="col-2">
+              <div class="text normal bold">{{ value.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
+              <div class="text normal light">{{ value.dateTime | dateTime: 'HH:mm:ss' }}</div>
+            </div>
             <div class="col-2" vitamuiCommonEllipsis [ngClass]="value | eventTypeColorClass">
               {{ (value | lastEvent).outcome }}
             </div>
