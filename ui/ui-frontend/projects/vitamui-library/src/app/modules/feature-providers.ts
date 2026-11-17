@@ -81,7 +81,7 @@ import { SubrogationService } from './subrogation/subrogation.service';
 import { TenantSelectionGuard } from './tenant-selection.guard';
 import { VitamTenantConfigService } from './vitam-tenant-config.service';
 
-export interface VitamuiFeatureConfig {
+interface VitamuiFeatureConfig {
   /** Prefix of the API calls of the feature (e.g. './identity-api'). It selects the gateway routes and the security context. */
   baseUrl: string;
   /** Prefix of the feature routes, used for absolute navigations ('' while each feature is a separate application). */
@@ -92,7 +92,7 @@ export interface VitamuiFeatureConfig {
  * Library services whose HTTP calls depend on BASE_URL, directly or through another service.
  * They are not provided in root: each feature provides its own instances, bound to its own BASE_URL.
  */
-export function provideVitamuiApiServices(): Provider[] {
+function provideVitamuiApiServices(): Provider[] {
   return [
     AccessContractApiService,
     AccessContractService,
