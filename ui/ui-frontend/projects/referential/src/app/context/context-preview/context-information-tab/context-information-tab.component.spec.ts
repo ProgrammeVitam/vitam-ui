@@ -40,15 +40,42 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { of } from 'rxjs';
+import { Context } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { SecurityProfileService } from '../../../security-profile/security-profile.service';
 import { ContextService } from '../../context.service';
 import { ContextInformationTabComponent } from './context-information-tab.component';
 
+<<<<<<< HEAD
 // TODO fix tests
 xdescribe('ContextInformationTabComponent', () => {
+=======
+describe('ContextInformationTabComponent', () => {
+>>>>>>> 2a488fad9 (Bug #15694: [Security Profiles && Application Contexts] “DTO identifier” error when editing a security profile)
   let component: ContextInformationTabComponent;
   let fixture: ComponentFixture<ContextInformationTabComponent>;
+  let patchedData: Partial<Context>;
+
+  const context: Context = {
+    id: 'vitam_id',
+    identifier: 'CT-000001',
+    name: 'Name',
+    status: 'ACTIVE',
+    creationDate: '2024-01-01T00:00:00.000Z',
+    lastUpdate: '2024-01-01T00:00:00.000Z',
+    activationDate: '2024-01-01T00:00:00.000Z',
+    deactivationDate: '',
+    enableControl: true as unknown as string,
+    securityProfile: 'SP-000001',
+    permissions: [],
+  };
+
+  const contextServiceMock = {
+    patch: (data: Partial<Context>) => {
+      patchedData = data;
+      return of(null);
+    },
+  };
 
   beforeEach(async () => {
     const securityProfileServiceMock = {
@@ -61,19 +88,29 @@ xdescribe('ContextInformationTabComponent', () => {
       providers: [
         FormBuilder,
         { provide: SecurityProfileService, useValue: securityProfileServiceMock },
-        { provide: ContextService, useValue: {} },
+        { provide: ContextService, useValue: contextServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
+    patchedData = undefined;
     fixture = TestBed.createComponent(ContextInformationTabComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('context', context);
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should send id, identifier and name when patching', () => {
+    component.form.name().value.set('New Name');
+
+    component.prepareSubmit().subscribe();
+
+    expect(patchedData).toEqual({ id: 'vitam_id', identifier: 'CT-000001', name: 'New Name' });
   });
 });

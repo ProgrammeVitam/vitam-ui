@@ -59,6 +59,7 @@ import fr.gouv.vitamui.referential.server.service.context.ContextService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -66,6 +67,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.io.IOException;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -321,7 +323,31 @@ public class ContextInternalServiceTest {
     }
 
     @Test
+<<<<<<< HEAD:api/api-referential/referential/src/test/java/fr/gouv/vitamui/referential/server/service/ContextInternalServiceTest.java
     public void patch_should_return_ok_when_vitamclient_400()
+=======
+    void patch_should_send_name_to_vitam_when_name_is_updated()
+        throws InvalidParseOperationException, AccessExternalClientException {
+        VitamContext vitamContext = new VitamContext(0);
+        ContextDto partialDto = new ContextDto();
+        partialDto.setIdentifier("identifier");
+        partialDto.setName("newName");
+
+        ArgumentCaptor<JsonNode> queryCaptor = ArgumentCaptor.forClass(JsonNode.class);
+
+        when(
+            vitamContextCommonService.patchContext(any(VitamContext.class), any(String.class), queryCaptor.capture())
+        ).thenReturn(new RequestResponseOK().setHttpCode(200));
+
+        contextService.patch(vitamContext, partialDto);
+
+        JsonNode setNode = queryCaptor.getValue().get("$action").get(0).get("$set");
+        assertThat(setNode.get("Name").asText()).isEqualTo("newName");
+    }
+
+    @Test
+    void patch_should_return_ok_when_vitamclient_400()
+>>>>>>> 2a488fad9 (Bug #15694: [Security Profiles && Application Contexts] “DTO identifier” error when editing a security profile):api/api-referential/referential/src/test/java/fr/gouv/vitamui/referential/server/service/ContextServiceTest.java
         throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto partialDto = new ContextDto();
