@@ -108,6 +108,18 @@ public class SearchCriteriaHistoryService extends VitamUICrudService<SearchCrite
         );
     }
 
+    @Override
+    protected void beforeUpdate(final SearchCriteriaHistoryDto dto) {
+        final String userId = securityService.getUser().getIdentifier();
+        checkOwnedBy(dto.getId(), userId, SearchCriteriaHistory::getUserId);
+        dto.setUserId(userId);
+    }
+
+    @Override
+    protected void beforeDelete(final String id) {
+        checkOwnedBy(id, securityService.getUser().getIdentifier(), SearchCriteriaHistory::getUserId);
+    }
+
     /**
      * {@inheritDoc}
      */

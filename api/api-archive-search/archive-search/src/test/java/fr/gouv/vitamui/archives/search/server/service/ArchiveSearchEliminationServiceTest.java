@@ -41,7 +41,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.json.JsonHandler;
+import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.vitam.api.access.EliminationService;
 import fr.gouv.vitamui.iam.security.service.ExternalParametersService;
 import org.assertj.core.api.Assertions;
@@ -52,7 +54,11 @@ import org.mockito.InjectMocks;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
 class ArchiveSearchEliminationServiceTest {
@@ -100,5 +106,21 @@ class ArchiveSearchEliminationServiceTest {
 
         JsonNode resultExpected = JsonHandler.getFromFile(PropertiesUtils.findFile(ELIMINATION_ANALYSIS_FINAL_QUERY));
         Assertions.assertThat(eliminationRequestBody2.getDslRequest()).isEqualTo(resultExpected);
+    }
+
+    @Test
+    void startEliminationAction_should_use_profile_threshold() throws Exception {
+        final SearchCriteriaDto searchQuery = new SearchCriteriaDto();
+        searchQuery.setThreshold(1_000_000L);
+        doReturn(Optional.of(100L)).when(archiveSearchThresholdService).retrieveProfilThresholds();
+        doReturn(JsonHandler.getFromFile(PropertiesUtils.findFile(ELIMINATION_ANALYSIS_QUERY)))
+            .when(archiveSearchService)
+            .prepareDslQuery(any(), any());
+        doReturn(new RequestResponseOK<JsonNode>()).when(eliminationService).startEliminationAction(any(), any());
+
+        archiveSearchEliminationService.startEliminationAction(searchQuery);
+
+        Assertions.assertThat(searchQuery.getThreshold()).isEqualTo(100L);
+        verify(objectMapper).convertValue(100L, JsonNode.class);
     }
 }

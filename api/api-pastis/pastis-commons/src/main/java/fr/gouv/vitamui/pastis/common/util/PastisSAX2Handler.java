@@ -125,6 +125,9 @@ public class PastisSAX2Handler extends DefaultHandler {
     public void endElement(String nameSpace, String localName, String qName) {
         if (qName.equalsIgnoreCase("xsd:documentation")) {
             isInDocumentationTag = false;
+            if (!documentationContent.isEmpty()) {
+                stackRNG.lastElement().setValue(documentationContent.toString());
+            }
         }
         if (!stackRNG.isEmpty()) {
             stackRNG.pop();
@@ -148,8 +151,7 @@ public class PastisSAX2Handler extends DefaultHandler {
     @Override
     public void characters(char[] caracteres, int start, int length) {
         if (isInDocumentationTag) {
-            documentationContent.append(new String(caracteres, start, length));
-            stackRNG.lastElement().setValue(documentationContent.toString());
+            documentationContent.append(caracteres, start, length);
         }
         if (isValue) {
             String valueContent = new String(caracteres, start, length);
