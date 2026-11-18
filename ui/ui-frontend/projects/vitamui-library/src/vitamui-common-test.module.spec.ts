@@ -1,0 +1,129 @@
+/*
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
+ * and the signatories of the "VITAM - Accord du Contributeur" agreement.
+ *
+ * contact@programmevitam.fr
+ *
+ * This software is a computer program whose purpose is to implement
+ * implement a digital archiving front-office system for the secure and
+ * efficient high volumetry VITAM solution.
+ *
+ * This software is governed by the CeCILL-C license under French law and
+ * abiding by the rules of distribution of free software.  You can  use,
+ * modify and/ or redistribute the software under the terms of the CeCILL-C
+ * license as circulated by CEA, CNRS and INRIA at the following URL
+ * "http://www.cecill.info".
+ *
+ * As a counterpart to the access to the source code and  rights to copy,
+ * modify and redistribute granted by the license, users are provided only
+ * with a limited warranty  and the software's author,  the holder of the
+ * economic rights,  and the successive licensors  have only  limited
+ * liability.
+ *
+ * In this respect, the user's attention is drawn to the risks associated
+ * with loading,  using,  modifying and/or developing or reproducing the
+ * software by the user in light of its specific status of free software,
+ * that may mean  that it is complicated to manipulate,  and  that  also
+ * therefore means  that it is reserved for developers  and  experienced
+ * professionals having in-depth computer knowledge. Users are therefore
+ * encouraged to load and test the software's suitability as regards their
+ * requirements in conditions enabling the security of their systems and/or
+ * data to be ensured and,  more generally, to use and operate it in the
+ * same conditions as regards security.
+ *
+ * The fact that you are presently reading this means that you have had
+ * knowledge of the CeCILL-C license and that you accept its terms.
+ */
+import { Component, NgModule } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+
+import {
+  RowCollapseStubDirective,
+  RowCollapseTriggerForStubDirective,
+  StepperStubComponent,
+  VitamUICommonTestModule,
+  VitamUIEditableButtonToggleStubComponent,
+  VitamUIEditableEmailInputStubComponent,
+  VitamUIEditableOptionStubComponent,
+  VitamUIInputPositiveNumberStubComponent,
+  VitamUIInputStubComponent,
+  VitamUISlideToggleStubComponent,
+  VitamUITextareaStubComponent,
+} from 'vitamui-library/testing';
+
+@Component({
+  selector: 'vitamui-test-host',
+  template: '<vitamui-slide-toggle [formControl]="control"></vitamui-slide-toggle>',
+  standalone: false,
+})
+class TestHostComponent {
+  control = new FormControl(true);
+}
+
+@Component({
+  selector: 'vitamui-test-inputs-host',
+  template: `
+    <vitamui-stepper [selectedIndex]="1"></vitamui-stepper>
+    <vitamui-common-input placeholder="input"></vitamui-common-input>
+    <vitamui-common-input-positive-number placeholder="number"></vitamui-common-input-positive-number>
+    <vitamui-common-textarea placeholder="textarea"></vitamui-common-textarea>
+    <vitamui-common-editable-email-input [domains]="['example.com']"></vitamui-common-editable-email-input>
+    <vitamui-common-editable-option value="option" content="Option" [disabled]="true"></vitamui-common-editable-option>
+    <vitamui-common-editable-button-toggle value="toggle"></vitamui-common-editable-button-toggle>
+    <div vitamuiCommonRowCollapse [vitamuiCommonCollapse]="true" [vitamuiCommonRowCollapseTriggerFor]="'row'"></div>
+  `,
+  imports: [
+    RowCollapseStubDirective,
+    RowCollapseTriggerForStubDirective,
+    StepperStubComponent,
+    VitamUIEditableButtonToggleStubComponent,
+    VitamUIEditableEmailInputStubComponent,
+    VitamUIEditableOptionStubComponent,
+    VitamUIInputPositiveNumberStubComponent,
+    VitamUIInputStubComponent,
+    VitamUITextareaStubComponent,
+  ],
+})
+class TestInputsHostComponent {}
+
+// Only read by the AOT compiler, which needs an NgModule to compile the template of the non-standalone
+// TestHostComponent (without it, the build fails with NG8002 on [formControl]). It does NOT import the
+// stubs, so at runtime the slide toggle stub can only come from the TestBed imports: this is what the
+// test checks. The test therefore never uses this module.
+@NgModule({ declarations: [TestHostComponent], imports: [ReactiveFormsModule] })
+class TestHostModule {}
+
+describe('VitamUICommonTestModule', () => {
+  it('should provide its stubs to the components declared in the testing module', () => {
+    TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule, VitamUICommonTestModule],
+      declarations: [TestHostComponent],
+    });
+
+    const fixture = TestBed.createComponent(TestHostComponent);
+    fixture.detectChanges();
+
+    const stub = fixture.debugElement.query(By.directive(VitamUISlideToggleStubComponent));
+    expect(stub).toBeTruthy();
+    expect(stub.componentInstance.value).toBe(true);
+  });
+
+  it('should pass the bound inputs to the stubs', () => {
+    const fixture = TestBed.createComponent(TestInputsHostComponent);
+    fixture.detectChanges();
+    const stub = <T>(type: new (...args: any[]) => T): T => fixture.debugElement.query(By.directive(type)).injector.get(type);
+
+    expect(stub(StepperStubComponent).selectedIndex()).toBe(1);
+    expect(stub(VitamUIInputStubComponent).placeholder()).toBe('input');
+    expect(stub(VitamUIInputPositiveNumberStubComponent).placeholder()).toBe('number');
+    expect(stub(VitamUITextareaStubComponent).placeholder()).toBe('textarea');
+    expect(stub(VitamUIEditableEmailInputStubComponent).domains()).toEqual(['example.com']);
+    const option = stub(VitamUIEditableOptionStubComponent);
+    expect([option.value(), option.content(), option.disabled()]).toEqual(['option', 'Option', true]);
+    expect(stub(VitamUIEditableButtonToggleStubComponent).value()).toBe('toggle');
+    expect(stub(RowCollapseStubDirective).vitamuiCommonCollapse()).toBe(true);
+    expect(stub(RowCollapseTriggerForStubDirective).vitamuiCommonRowCollapseTriggerFor()).toBe('row');
+  });
+});
