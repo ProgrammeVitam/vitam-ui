@@ -1,9 +1,15 @@
 package fr.gouv.vitamui.iam.server.externalparamprofile.service;
 
+import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
+import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
+import fr.gouv.vitamui.commons.api.domain.QueryDto;
+import fr.gouv.vitamui.commons.api.domain.QueryOperator;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
@@ -24,18 +30,25 @@ import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -161,5 +174,116 @@ class ExternalParamProfileServiceTest {
             "profileIdentifier",
             "idExternalParam"
         );
+    }
+
+    @Test
+    void getAllPaginated_keeps_the_tenant_restriction_whatever_the_criteria_operator() {
+        when(securityService.getTenantIdentifier()).thenReturn(10);
+        when(securityService.userIsRootLevel()).thenReturn(true);
+        final QueryDto criteria = QueryDto.orQuery();
+        criteria.addCriterion("name", "any", CriterionOperator.EQUALS);
+
+        externalParamProfileService.getAllPaginated(0, 20, criteria.toJson(), null, null);
+
+        final ArgumentCaptor<String> jsonCaptor = ArgumentCaptor.forClass(String.class);
+        verify(externalParamProfileRepository).getAllPaginated(any(), any(), jsonCaptor.capture(), any(), any());
+        final QueryDto sent = QueryDto.fromJson(jsonCaptor.getValue());
+        assertThat(sent.getQueryOperator()).isEqualTo(QueryOperator.AND);
+        assertThat(sent.find("tenantIdentifier")).hasValueSatisfying(c -> assertThat(c.getValue()).isEqualTo(10));
+        assertThat(sent.getSubQueries())
+            .singleElement()
+            .satisfies(q -> assertThat(q.getQueryOperator()).isEqualTo(QueryOperator.OR));
+    }
+
+    @Test
+    void getAllPaginated_applies_the_level_restriction_to_non_root_users() {
+        when(securityService.getTenantIdentifier()).thenReturn(10);
+        when(securityService.userIsRootLevel()).thenReturn(false);
+        when(securityService.getLevel()).thenReturn("DEV");
+        final AuthUserDto user = new AuthUserDto();
+        final GroupDto group = new GroupDto();
+        group.setProfileIds(List.of("ownProfileId"));
+        user.setProfileGroup(group);
+        when(securityService.getUser()).thenReturn(user);
+
+        externalParamProfileService.getAllPaginated(0, 20, null, null, null);
+
+        final ArgumentCaptor<String> jsonCaptor = ArgumentCaptor.forClass(String.class);
+        verify(externalParamProfileRepository).getAllPaginated(any(), any(), jsonCaptor.capture(), any(), any());
+        final QueryDto levelQuery = QueryDto.fromJson(jsonCaptor.getValue()).getSubQueries().get(0);
+        assertThat(levelQuery.getQueryOperator()).isEqualTo(QueryOperator.OR);
+        assertThat(levelQuery.find("level")).hasValueSatisfying(c -> {
+            assertThat(c.getValue()).isEqualTo("DEV.");
+            assertThat(c.getOperator()).isEqualTo(CriterionOperator.STARTWITH);
+        });
+        assertThat(levelQuery.find("_id")).hasValueSatisfying(
+            c -> assertThat(c.getValue()).isEqualTo(List.of("ownProfileId"))
+        );
+    }
+
+    @Test
+    void getAllPaginated_refuses_criteria_on_other_keys() {
+        when(securityService.getTenantIdentifier()).thenReturn(10);
+        when(securityService.userIsRootLevel()).thenReturn(true);
+        final QueryDto criteria = QueryDto.criteria("roles.name", "ROLE_X", CriterionOperator.EQUALS);
+
+        assertThatThrownBy(
+            () -> externalParamProfileService.getAllPaginated(0, 20, criteria.toJson(), null, null)
+        ).isInstanceOf(ForbiddenException.class);
+        verify(externalParamProfileRepository, never()).getAllPaginated(any(), any(), any(), any(), any());
+    }
+
+    @Test
+    void getOne_requires_read_access_to_the_profile() {
+        when(profileService.getOne("profileId")).thenThrow(new NotFoundException("not found"));
+
+        assertThatThrownBy(() -> externalParamProfileService.getOne("profileId")).isInstanceOf(NotFoundException.class);
+        verify(externalParamProfileRepository, never()).findByIdProfile(any());
+    }
+
+    @Test
+    void findHistoryById_requires_read_access_to_the_profile() throws Exception {
+        when(profileService.getOne("profileId")).thenThrow(new NotFoundException("not found"));
+
+        assertThatThrownBy(() -> externalParamProfileService.findHistoryById("profileId")).isInstanceOf(
+            NotFoundException.class
+        );
+        verify(logbookService, never()).findEventsByIdentifierAndCollectionNames(any(), any(), any(), any());
+    }
+
+    @Test
+    void patch_requires_the_right_to_modify_the_profile() {
+        when(profileService.checkCanBeModified(any(), any())).thenThrow(new IllegalArgumentException("readonly"));
+        final Map<String, Object> partialDto = new HashMap<>();
+        partialDto.put("idProfile", "profileId");
+        partialDto.put("accessContract", "AC-2");
+
+        assertThatThrownBy(() -> externalParamProfileService.patch(partialDto)).isInstanceOf(
+            IllegalArgumentException.class
+        );
+        verify(externalParametersService, never()).update(any(), any());
+    }
+
+    @Test
+    void patch_of_the_profile_fields_uses_the_profile_patch() throws Exception {
+        final ProfileDto profile = new ProfileDto();
+        profile.setId("profileId");
+        profile.setCustomerId("customerId");
+        profile.setTenantIdentifier(10);
+        when(profileService.checkCanBeModified(any(), any())).thenReturn(profile);
+        final ExternalParamProfileDto stored = new ExternalParamProfileDto();
+        stored.setIdExternalParam("externalParamId");
+        when(externalParamProfileRepository.findByIdProfile("profileId")).thenReturn(stored);
+        when(externalParametersService.getOneByPassSecurity(any(), any())).thenReturn(new ExternalParametersDto());
+        final Map<String, Object> partialDto = new HashMap<>();
+        partialDto.put("idProfile", "profileId");
+        partialDto.put("name", "new name");
+
+        externalParamProfileService.patch(partialDto);
+
+        verify(profileService).patch(
+            Map.of("id", "profileId", "customerId", "customerId", "tenantIdentifier", 10, "name", "new name")
+        );
+        verify(profileService, never()).update(any());
     }
 }

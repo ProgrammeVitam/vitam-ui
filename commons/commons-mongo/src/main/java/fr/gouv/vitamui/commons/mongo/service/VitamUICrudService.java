@@ -126,7 +126,8 @@ public abstract class VitamUICrudService<D extends IdDto, E extends BaseIdDocume
      */
     @Override
     public D patch(final Map<String, Object> partialDto) {
-        LOGGER.debug("Patch {} with {}", getObjectName(), partialDto);
+        // Only the patched keys: the values may hold secrets (identity provider passwords, keystores...).
+        LOGGER.debug("Patch {} with keys {}", getObjectName(), partialDto.keySet());
         final E entity = beforePatch(partialDto);
         processPatch(entity, partialDto);
         Assert.isTrue(
