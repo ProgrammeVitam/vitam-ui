@@ -413,8 +413,15 @@ const components = [
 ];
 
 @NgModule({
-  imports: [...components],
-  exports: [...components],
   providers: [provideTranslateService({ fallbackLang: 'fr' })],
 })
-export class VitamUICommonTestModule {}
+export class VitamUICommonTestProvidersModule {}
+
+/**
+ * Stubs of the vitamui-library components, to put in the TestBed (or a test NgModule) `imports`.
+ *
+ * It is a plain array of standalone components rather than an NgModule re-exporting them: the tests
+ * are compiled AOT, where the runtime scope of NgModules compiled from sources is stripped, so TestBed
+ * could not see the components an NgModule exports.
+ */
+export const VitamUICommonTestModule = [VitamUICommonTestProvidersModule, ...components];
