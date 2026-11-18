@@ -122,24 +122,26 @@ class PreservationScenarioControllerTest {
 
     @Test
     void putPreservationScenarios_should_delegate_to_service()
-        throws VitamClientException, AccessExternalClientException, IOException {
+        throws VitamClientException, AccessExternalClientException, IOException, InvalidCreateOperationException {
         // Given
         List<PreservationScenario> scenarios = List.of(buildScenario("id-1"), buildScenario("id-2"));
-        when(preservationScenarioService.put(scenarios)).thenReturn(ResponseEntity.ok(new OperationIdDto("42")));
+        when(preservationScenarioService.importScenarios(scenarios)).thenReturn(
+            ResponseEntity.ok(new OperationIdDto("42"))
+        );
 
         // When / Then
         assertThatCode(
             () -> preservationScenarioController.putPreservationScenarios(scenarios)
         ).doesNotThrowAnyException();
-        verify(preservationScenarioService).put(scenarios);
+        verify(preservationScenarioService).importScenarios(scenarios);
     }
 
     @Test
     void putPreservationScenarios_should_propagate_VitamClientException()
-        throws VitamClientException, AccessExternalClientException, IOException {
+        throws VitamClientException, AccessExternalClientException, IOException, InvalidCreateOperationException {
         // Given
         List<PreservationScenario> scenarios = List.of(buildScenario("id-1"));
-        doThrow(new VitamClientException("Vitam error")).when(preservationScenarioService).put(scenarios);
+        doThrow(new VitamClientException("Vitam error")).when(preservationScenarioService).importScenarios(scenarios);
 
         // When / Then
         assertThatCode(() -> preservationScenarioController.putPreservationScenarios(scenarios)).isInstanceOf(
@@ -149,10 +151,10 @@ class PreservationScenarioControllerTest {
 
     @Test
     void putPreservationScenarios_should_propagate_IOException()
-        throws VitamClientException, AccessExternalClientException, IOException {
+        throws VitamClientException, AccessExternalClientException, IOException, InvalidCreateOperationException {
         // Given
         List<PreservationScenario> scenarios = List.of(buildScenario("id-1"));
-        doThrow(new IOException("IO error")).when(preservationScenarioService).put(scenarios);
+        doThrow(new IOException("IO error")).when(preservationScenarioService).importScenarios(scenarios);
 
         // When / Then
         assertThatCode(() -> preservationScenarioController.putPreservationScenarios(scenarios)).isInstanceOf(

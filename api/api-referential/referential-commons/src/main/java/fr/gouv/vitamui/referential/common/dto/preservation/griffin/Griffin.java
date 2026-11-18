@@ -42,4 +42,19 @@ public record Griffin(
     @JsonProperty("ExecutableVersion") String executableVersion,
     @JsonProperty("CreationDate") String creationDate,
     @JsonProperty("LastUpdate") String lastUpdateDate
-) {}
+) {
+    public Griffin withCreationDate(String creationDate) {
+        return new Griffin(
+            id,
+            tenant,
+            version,
+            identifier,
+            name,
+            description,
+            executableName,
+            executableVersion,
+            creationDate,
+            lastUpdateDate
+        );
+    }
+}

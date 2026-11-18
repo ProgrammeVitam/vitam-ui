@@ -105,11 +105,11 @@ class GriffinControllerTest {
         throws VitamClientException, AccessExternalClientException, IOException {
         // Given
         List<Griffin> griffins = List.of(buildGriffin("id-1"), buildGriffin("id-2"));
-        when(griffinService.put(griffins)).thenReturn(ResponseEntity.ok(new OperationIdDto("42")));
+        when(griffinService.importGriffins(griffins)).thenReturn(ResponseEntity.ok(new OperationIdDto("42")));
 
         // When / Then
         assertThatCode(() -> griffinController.putGriffins(griffins)).doesNotThrowAnyException();
-        verify(griffinService).put(griffins);
+        verify(griffinService).importGriffins(griffins);
     }
 
     @Test
@@ -117,7 +117,7 @@ class GriffinControllerTest {
         throws VitamClientException, AccessExternalClientException, IOException {
         // Given
         List<Griffin> griffins = List.of(buildGriffin("id-1"));
-        doThrow(new VitamClientException("Vitam error")).when(griffinService).put(griffins);
+        doThrow(new VitamClientException("Vitam error")).when(griffinService).importGriffins(griffins);
 
         // When / Then
         assertThatCode(() -> griffinController.putGriffins(griffins)).isInstanceOf(VitamClientException.class);
@@ -128,7 +128,7 @@ class GriffinControllerTest {
         throws VitamClientException, AccessExternalClientException, IOException {
         // Given
         List<Griffin> griffins = List.of(buildGriffin("id-1"));
-        doThrow(new IOException("IO error")).when(griffinService).put(griffins);
+        doThrow(new IOException("IO error")).when(griffinService).importGriffins(griffins);
 
         // When / Then
         assertThatCode(() -> griffinController.putGriffins(griffins)).isInstanceOf(IOException.class);
