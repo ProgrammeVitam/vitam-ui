@@ -186,6 +186,6 @@ npm run test:identity -- --watch
 
 - Frontend apps run on HTTPS with self-signed certs in dev. Browser must trust certs from `dev-deployment/environments/certs/`.
 - Backend APIs expect `dev.vitamui.com` hostname (configure in `/etc/hosts`).
-- CAS server must be running before other backend services (it handles authentication).
+- Authentication needs cas-server or, in development, the CAS mock (`tools/cas-mock/`): both listen on port 8080, start only one.
 - `vitamui-library` needs no separate build or watch: apps compile its sources directly. Apps must import it only through its public entry points (`vitamui-library`, `vitamui-library/testing`), which is enforced by ESLint (`eslint-plugin-boundaries`).
 - Angular apps use `--openssl-legacy-provider` flag for Node.js compatibility.
