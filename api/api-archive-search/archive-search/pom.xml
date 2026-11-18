@@ -117,10 +117,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.opentracing.contrib</groupId>
-            <artifactId>opentracing-spring-jaeger-web-starter</artifactId>
-        </dependency>
         <!-- Metrics -->
         <dependency>
             <groupId>io.micrometer</groupId>

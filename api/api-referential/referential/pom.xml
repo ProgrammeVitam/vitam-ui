@@ -108,11 +108,6 @@
             <artifactId>spring-boot-starter-aspectj</artifactId>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>io.opentracing.contrib</groupId>
-            <artifactId>opentracing-spring-jaeger-web-starter</artifactId>
-        </dependency>
-
 
         <!-- Metrics -->
         <dependency>

@@ -278,15 +278,5 @@ ssl_setting:
   enabled_protocols: TLSv1.2,TLSv1.3
   ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
 
-# Jaeger
-opentracing:
-  jaeger:
-    enabled: false
-    log_spans: true
-    expand_exception_logs: true
-    udp_sender:
-      host: changeme
-      port: changeme
-
 syslog:
   name: filebeat # or rsyslog
