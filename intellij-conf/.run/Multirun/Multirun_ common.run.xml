@@ -1,6 +1,5 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Multirun: common" type="Multirun" separateTabs="false" reuseTabsWithFailures="false" startOneByOne="true" markFailedProcess="true" hideSuccessProcess="false" delayTime="0.0">
-    <runConfiguration name="Angular: vitamui-library" type="npm" />
     <runConfiguration name="Start Mongo" type="Docker" />
     <runConfiguration name="security" type="Spring Boot" />
     <runConfiguration name="IAM" type="Spring Boot" />
