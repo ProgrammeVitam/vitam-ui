@@ -32,6 +32,7 @@ import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOper
 import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.database.facet.model.FacetOrder;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
@@ -41,8 +42,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -322,5 +326,63 @@ public class MetadataSearchCriteriaUtilsTest {
         JsonNode orderBy = selectMultiQuery.getFinalSelect().get("$filter").get("$orderby");
         Assertions.assertNotNull(orderBy);
         Assertions.assertTrue(orderBy.has("StartDate"));
+    }
+
+    private SearchCriteriaDto searchQuerySortedBy(final String sortField, final DirectionDto direction) {
+        SearchCriteriaDto searchQuery = searchQuerySortedBy(sortField);
+        searchQuery.getSortingCriteria().setSorting(direction);
+        return searchQuery;
+    }
+
+    private static List<String> orderByFields(final JsonNode orderBy) {
+        List<String> fields = new ArrayList<>();
+        orderBy.fieldNames().forEachRemaining(fields::add);
+        return fields;
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "ASC, 1", "DESC, -1" })
+    void shouldSortOnUnitTypeThenObjectWhenSortingOnArchiveUnitTypes(final DirectionDto direction, final int way)
+        throws VitamClientException {
+        JsonNode orderBy = MetadataSearchCriteriaUtils.mapRequestToSelectMultiQuery(
+            searchQuerySortedBy("ALL_ARCHIVE_UNIT_TYPES", direction)
+        )
+            .getFinalSelect()
+            .get("$filter")
+            .get("$orderby");
+
+        Assertions.assertEquals(List.of("#unitType", "#object"), orderByFields(orderBy));
+        Assertions.assertEquals(way, orderBy.get("#unitType").asInt());
+        Assertions.assertEquals(way, orderBy.get("#object").asInt());
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "ASC, 1", "DESC, -1" })
+    void getBasicQuery_shouldSortOnUnitTypeThenObjectWhenSortingOnArchiveUnitTypes(
+        final DirectionDto direction,
+        final int way
+    ) throws VitamClientException {
+        JsonNode orderBy = MetadataSearchCriteriaUtils.getBasicQuery(
+            searchQuerySortedBy("ALL_ARCHIVE_UNIT_TYPES", direction)
+        )
+            .getFinalSelect()
+            .get("$filter")
+            .get("$orderby");
+
+        Assertions.assertEquals(List.of("#unitType", "#object"), orderByFields(orderBy));
+        Assertions.assertEquals(way, orderBy.get("#unitType").asInt());
+        Assertions.assertEquals(way, orderBy.get("#object").asInt());
+    }
+
+    @Test
+    void shouldSortOnRawFieldWhenSortKeyIsNotMapped() throws VitamClientException {
+        JsonNode orderBy = MetadataSearchCriteriaUtils.mapRequestToSelectMultiQuery(
+            searchQuerySortedBy("#unitType", DirectionDto.DESC)
+        )
+            .getFinalSelect()
+            .get("$filter")
+            .get("$orderby");
+
+        Assertions.assertEquals(List.of("#unitType"), orderByFields(orderBy));
     }
 }
