@@ -121,7 +121,7 @@ Root modules:
 
 1. Start MongoDB: `cd tools/docker/mongo && ./restart_dev.sh`
 2. Start SMTP (optional): `cd tools/docker/mail && ./start.sh`
-3. Start CAS: `cd cas/cas-server && ./run.sh`
+3. Start CAS: `cd cas/cas-server && ./run.sh` — or, to log in with an email and no password, the dev-only mock `tools/cas-mock/start.sh` (see its README)
 4. Start backend APIs (in order): security → iam → others
 5. Start frontend apps: `npm run start:<app>`
 
@@ -189,6 +189,6 @@ npm run test:identity -- --watch
 
 - Frontend apps run on HTTPS with self-signed certs in dev. Browser must trust certs from `dev-deployment/environments/certs/`.
 - Backend APIs expect `dev.vitamui.com` hostname (configure in `/etc/hosts`).
-- CAS server must be running before other backend services (it handles authentication).
+- Authentication needs cas-server or, in development, the CAS mock (`tools/cas-mock/`): both listen on port 8080, start only one.
 - The `vitamui-library` must be built before running frontend apps that depend on it: `npm run build:vitamui-library`
 - Angular apps use `--openssl-legacy-provider` flag for Node.js compatibility.
