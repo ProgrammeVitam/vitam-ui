@@ -66,9 +66,37 @@ export class ContextInformationTabComponent {
 
   rules: Option[] = RULE_TYPES;
 
+<<<<<<< HEAD
   previousValue = (): any => {
     return (Object.keys(this.form.controls || {}) as (keyof Context)[]).reduce((acc: any, key) => {
       acc[key] = this._context[key] ?? null;
+=======
+  previousValue = (): any => ({
+    ...this.toFormValue(this._context),
+    id: this._context?.id,
+    identifier: this._context?.identifier,
+  });
+
+  readonly context = input<Context>(undefined);
+
+  readonly readOnly = input<boolean>(undefined);
+
+  constructor() {
+    this.securityProfileService.getAll().subscribe((securityProfiles) => {
+      this.securityProfiles = securityProfiles.map((x) => ({ label: x.name, key: x.identifier }));
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['context']) {
+      this.setContext(this.context());
+    }
+  }
+
+  private toFormValue(context: Context): ContextInformationForm {
+    return FORM_KEYS.reduce((acc: any, key) => {
+      acc[key] = (context as any)[key] ?? null;
+>>>>>>> 2a488fad9 (Bug #15694: [Security Profiles && Application Contexts] “DTO identifier” error when editing a security profile)
       return acc;
     }, {} as Partial<Context>);
   };
