@@ -54,6 +54,7 @@ import { ThemeService } from '../../theme.service';
 import { MenuOption } from '../../models/menu-option.interface';
 import { ApplicationId } from './../../application-id.enum';
 import { SubrogationService } from './../../subrogation/subrogation.service';
+import { featurePagePath } from '../../feature-routes';
 import { TENANT_SELECTION_URL_CONDITION, TenantSelectionService } from './../../tenant-selection.service';
 import { MenuOverlayService } from './menu/menu-overlay.service';
 import { SelectTenantDialogComponent } from './select-tenant-dialog/select-tenant-dialog.component';
@@ -192,6 +193,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.menuOverlayService.open();
   }
 
+  /** Opens the portal with the router when it is served by this (single) application, to avoid reloading the page. */
+  public openPortal(event: MouseEvent): void {
+    const portalPath = this.startupService.getPortalRouterPath();
+    const opensInNewTab = event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey;
+    if (portalPath !== undefined && !opensInNewTab) {
+      event.preventDefault();
+      this.router.navigateByUrl(portalPath);
+    }
+  }
+
   /**
    * Init tenant selection feature & listeners if the current opened application requires it.
    */
@@ -303,7 +314,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private changeTenant(tenantIdentifier: number): void {
-    this.router.navigate([this.route.firstChild.snapshot.routeConfig.path + TENANT_SELECTION_URL_CONDITION, tenantIdentifier], {
+    this.router.navigate([featurePagePath(this.route.firstChild) + TENANT_SELECTION_URL_CONDITION, tenantIdentifier], {
       relativeTo: this.route,
     });
   }

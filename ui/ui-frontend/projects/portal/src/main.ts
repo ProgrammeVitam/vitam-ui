@@ -35,12 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { enableProdMode, importProvidersFrom, LOCALE_ID, TransferState, provideZonelessChangeDetection } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { bootstrapApplication, BrowserModule, Title } from '@angular/platform-browser';
 
 import { ApplicationSvgLoaderFactory } from './app/app.module';
 import { environment } from './environments/environment';
 import {
   AuthenticationModule,
+  BytesPipe,
   ENVIRONMENT,
   InjectorModule,
   LoggerModule,
@@ -91,11 +94,15 @@ bootstrapApplication(AppComponent, {
       }),
       VitamUILibraryModule, // For Material tokens
     ),
-    provideI18n(),
+    // Translations of the portal and of every feature (no key is defined differently by two features).
+    provideI18n(['i18n/portal', 'i18n/identity', 'i18n/referential', 'i18n/ingest', 'i18n/archive-search', 'i18n/collect', 'i18n/pastis']),
+    provideNativeDateAdapter(),
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
     provideVitamuiFeature({ baseUrl: '/portal-api' }),
     { provide: ENVIRONMENT, useValue: environment },
     { provide: WINDOW_LOCATION, useValue: window.location },
+    BytesPipe,
+    DatePipe,
   ],
 }).catch((err) => console.log(err));

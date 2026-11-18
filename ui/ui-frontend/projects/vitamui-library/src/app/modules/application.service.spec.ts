@@ -45,12 +45,16 @@ import { ConfigService } from './config.service';
 import { Application } from './models/application/application.interface';
 import { StartupService } from './startup.service';
 import { Category } from './models/application/category.interface';
+import { TenantSelectionService } from './tenant-selection.service';
+import { of } from 'rxjs';
 
 describe('ApplicationService', () => {
   let httpTestingController: HttpTestingController;
   let appService: ApplicationService;
   const routerSpy = {
     navigate: vi.fn().mockName('Router.navigate'),
+    navigateByUrl: vi.fn().mockName('Router.navigateByUrl'),
+    url: '/',
   };
 
   beforeEach(() => {
@@ -74,6 +78,7 @@ describe('ApplicationService', () => {
         { provide: LOCALE_ID, useValue: 'fr' },
         { provide: StartupService, useValue: startupServiceStub },
         { provide: ConfigService, useValue: configServiceStub },
+        { provide: TenantSelectionService, useValue: { saveTenantIdentifier: (id: number) => of(id) } },
       ],
     });
 
@@ -136,5 +141,35 @@ describe('ApplicationService', () => {
         throw e;
       },
     );
+  });
+
+  describe('openApplication', () => {
+    const app = (url: string, hasTenantList: boolean) =>
+      ({ url, hasTenantList, serviceId: '^https://vitamui.com/identity/.*' }) as Application;
+
+    beforeEach(() => vi.clearAllMocks());
+
+    it('should navigate inside the single application when the application is one of its features', () => {
+      appService.openApplication(app('https://vitamui.com/identity/user', true), routerSpy as unknown as Router, 'https://vitamui.com/', 4);
+
+      expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('/identity/user/tenant/4');
+    });
+
+    it('should navigate inside the single application when its URL has no trailing slash', () => {
+      appService.openApplication(app('https://vitamui.com/account', false), routerSpy as unknown as Router, 'https://vitamui.com', 4);
+
+      expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('/account');
+    });
+
+    it('should not take an application whose path only starts like the current one for one of its features', () => {
+      appService.openApplication(
+        app('https://vitamui.com/identity-admin/customer', false),
+        routerSpy as unknown as Router,
+        'https://vitamui.com/identity',
+        4,
+      );
+
+      expect(routerSpy.navigateByUrl).not.toHaveBeenCalled();
+    });
   });
 });

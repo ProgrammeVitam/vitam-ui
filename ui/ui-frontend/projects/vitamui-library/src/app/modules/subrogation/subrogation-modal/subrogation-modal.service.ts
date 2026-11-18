@@ -39,9 +39,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { SubrogationModalComponent } from './subrogation-modal.component';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SubrogationModalService {
   private readonly dialog = inject(MatDialog);
 

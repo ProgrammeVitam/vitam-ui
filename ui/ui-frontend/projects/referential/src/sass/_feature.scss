@@ -1,0 +1,90 @@
+vitamui-slide-toggle {
+  padding-bottom: 15px;
+}
+
+.form-control {
+  > vitamui-common-input,
+  > vitamui-common-textarea,
+  > mat-form-field {
+    width: 100% !important;
+  }
+}
+
+.preview-tab-group {
+  height: 100%;
+}
+
+.btn.cancel {
+  background-color: transparent;
+  color: var(--vitamui-grey-900);
+  border: 1px solid transparent;
+}
+
+.btn.back {
+  background-color: transparent;
+  color: var(--vitamui-primary);
+  border: transparent;
+}
+
+.title-text {
+  font-family: Mulish, sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.1px;
+  color: var(--vitamui-primary);
+}
+
+.head-title {
+  font-family: Mulish, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  text-transform: uppercase;
+  line-height: 22px;
+  display: flex;
+  justify-content: flex-end;
+  letter-spacing: 0.1px;
+  color: var(--vitamui-secondary);
+  cursor: pointer;
+}
+
+.card-criteria {
+  background: var(--vitamui-white);
+  border: 1px solid var(--vitamui-grey-400);
+  box-sizing: border-box;
+  border-radius: 5px;
+  margin-top: 20px;
+  margin-right: 20px;
+  padding: 40px 50px;
+}
+
+.circle {
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 13px;
+  position: static;
+  width: 50px;
+  height: 50px;
+  left: 0;
+  top: 0;
+
+  background: var(--vitamui-secondary);
+  border-radius: 50px;
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  border: none;
+}
+
+.circle:focus {
+  border: none;
+  outline: -webkit-focus-ring-color auto 0;
+  outline-color: -webkit-focus-ring-color;
+  outline-style: auto;
+}

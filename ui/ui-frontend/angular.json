@@ -144,7 +144,110 @@
             "browser": "projects/portal/src/main.ts",
             "tsConfig": "projects/portal/tsconfig.app.json",
             "assets": [
-              "projects/portal/src/assets",
+              {
+                "glob": "**/*",
+                "input": "projects/portal/src/assets/",
+                "ignore": [
+                  "i18n/**",
+                  "i18n-old/**"
+                ],
+                "output": "/assets"
+              },
+              {
+                "glob": "*.json",
+                "input": "projects/portal/src/assets/i18n",
+                "output": "/assets/i18n/portal"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/identity/src/assets/",
+                "ignore": [
+                  "i18n/**",
+                  "i18n-old/**",
+                  "config-dev.json"
+                ],
+                "output": "/assets"
+              },
+              {
+                "glob": "*.json",
+                "input": "projects/identity/src/assets/i18n",
+                "output": "/assets/i18n/identity"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/referential/src/assets/",
+                "ignore": [
+                  "i18n/**",
+                  "i18n-old/**",
+                  "config-dev.json"
+                ],
+                "output": "/assets"
+              },
+              {
+                "glob": "*.json",
+                "input": "projects/referential/src/assets/i18n",
+                "output": "/assets/i18n/referential"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/ingest/src/assets/",
+                "ignore": [
+                  "i18n/**",
+                  "i18n-old/**",
+                  "config-dev.json"
+                ],
+                "output": "/assets"
+              },
+              {
+                "glob": "*.json",
+                "input": "projects/ingest/src/assets/i18n",
+                "output": "/assets/i18n/ingest"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/archive-search/src/assets/",
+                "ignore": [
+                  "i18n/**",
+                  "i18n-old/**",
+                  "config-dev.json"
+                ],
+                "output": "/assets"
+              },
+              {
+                "glob": "*.json",
+                "input": "projects/archive-search/src/assets/i18n",
+                "output": "/assets/i18n/archive-search"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/collect/src/assets/",
+                "ignore": [
+                  "i18n/**",
+                  "i18n-old/**",
+                  "config-dev.json"
+                ],
+                "output": "/assets"
+              },
+              {
+                "glob": "*.json",
+                "input": "projects/collect/src/assets/i18n",
+                "output": "/assets/i18n/collect"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/pastis/src/assets/",
+                "ignore": [
+                  "i18n/**",
+                  "i18n-old/**",
+                  "config-dev.json"
+                ],
+                "output": "/assets"
+              },
+              {
+                "glob": "*.json",
+                "input": "projects/pastis/src/assets/i18n",
+                "output": "/assets/i18n/pastis"
+              },
               "projects/portal/src/favicon.ico",
               "projects/portal/src/manifest.webmanifest",
               {
@@ -171,6 +274,10 @@
                 {
                   "replace": "projects/portal/src/environments/environment.ts",
                   "with": "projects/portal/src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "projects/pastis/src/environments/environment.ts",
+                  "with": "projects/pastis/src/environments/environment.prod.ts"
                 }
               ],
               "assets": [
@@ -178,9 +285,112 @@
                   "glob": "**/*",
                   "input": "projects/portal/src/assets/",
                   "ignore": [
+                    "i18n/**",
+                    "i18n-old/**",
                     "config-dev.json"
                   ],
                   "output": "/assets"
+                },
+                {
+                  "glob": "*.json",
+                  "input": "projects/portal/src/assets/i18n",
+                  "output": "/assets/i18n/portal"
+                },
+                {
+                  "glob": "**/*",
+                  "input": "projects/identity/src/assets/",
+                  "ignore": [
+                    "i18n/**",
+                    "i18n-old/**",
+                    "config-dev.json",
+                    "config-dev.json"
+                  ],
+                  "output": "/assets"
+                },
+                {
+                  "glob": "*.json",
+                  "input": "projects/identity/src/assets/i18n",
+                  "output": "/assets/i18n/identity"
+                },
+                {
+                  "glob": "**/*",
+                  "input": "projects/referential/src/assets/",
+                  "ignore": [
+                    "i18n/**",
+                    "i18n-old/**",
+                    "config-dev.json",
+                    "config-dev.json"
+                  ],
+                  "output": "/assets"
+                },
+                {
+                  "glob": "*.json",
+                  "input": "projects/referential/src/assets/i18n",
+                  "output": "/assets/i18n/referential"
+                },
+                {
+                  "glob": "**/*",
+                  "input": "projects/ingest/src/assets/",
+                  "ignore": [
+                    "i18n/**",
+                    "i18n-old/**",
+                    "config-dev.json",
+                    "config-dev.json"
+                  ],
+                  "output": "/assets"
+                },
+                {
+                  "glob": "*.json",
+                  "input": "projects/ingest/src/assets/i18n",
+                  "output": "/assets/i18n/ingest"
+                },
+                {
+                  "glob": "**/*",
+                  "input": "projects/archive-search/src/assets/",
+                  "ignore": [
+                    "i18n/**",
+                    "i18n-old/**",
+                    "config-dev.json",
+                    "config-dev.json"
+                  ],
+                  "output": "/assets"
+                },
+                {
+                  "glob": "*.json",
+                  "input": "projects/archive-search/src/assets/i18n",
+                  "output": "/assets/i18n/archive-search"
+                },
+                {
+                  "glob": "**/*",
+                  "input": "projects/collect/src/assets/",
+                  "ignore": [
+                    "i18n/**",
+                    "i18n-old/**",
+                    "config-dev.json",
+                    "config-dev.json"
+                  ],
+                  "output": "/assets"
+                },
+                {
+                  "glob": "*.json",
+                  "input": "projects/collect/src/assets/i18n",
+                  "output": "/assets/i18n/collect"
+                },
+                {
+                  "glob": "**/*",
+                  "input": "projects/pastis/src/assets/",
+                  "ignore": [
+                    "i18n/**",
+                    "i18n-old/**",
+                    "config-dev.json",
+                    "config-dev.json"
+                  ],
+                  "output": "/assets"
+                },
+                {
+                  "glob": "*.json",
+                  "input": "projects/pastis/src/assets/i18n",
+                  "output": "/assets/i18n/pastis"
                 },
                 "projects/portal/src/favicon.ico",
                 {

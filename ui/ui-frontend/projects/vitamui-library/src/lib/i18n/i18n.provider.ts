@@ -41,15 +41,19 @@ import { HttpBackend } from '@angular/common/http';
 import { ConfigService } from '../../app/modules/config.service';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 
-function httpLoaderFactory(httpBackend: HttpBackend, configService: ConfigService): TranslateLoader {
+function httpLoaderFactory(httpBackend: HttpBackend, configService: ConfigService, folders: string[]): TranslateLoader {
   const version = configService.config && configService.config['VERSION_RELEASE'];
   return new MultiTranslateHttpLoader(httpBackend, [
     { prefix: './assets/shared-i18n/', suffix: `.json?v=${version}` },
-    { prefix: './assets/i18n/', suffix: `.json?v=${version}` },
+    ...folders.map((folder) => ({ prefix: `./assets/${folder}/`, suffix: `.json?v=${version}` })),
   ]);
 }
 
-export function provideI18n(): Provider[] {
+/**
+ * Translations: the shared ones, then those of each folder of `assets` (later ones override earlier ones).
+ * An application has its own in `assets/i18n`; the single application loads those of every feature.
+ */
+export function provideI18n(folders: string[] = ['i18n']): Provider[] {
   return provideTranslateService({
     missingTranslationHandler: {
       provide: MissingTranslationHandler,
@@ -58,7 +62,7 @@ export function provideI18n(): Provider[] {
     fallbackLang: 'fr',
     loader: {
       provide: TranslateLoader,
-      useFactory: httpLoaderFactory,
+      useFactory: (httpBackend: HttpBackend, configService: ConfigService) => httpLoaderFactory(httpBackend, configService, folders),
       deps: [HttpBackend, ConfigService],
     },
   });

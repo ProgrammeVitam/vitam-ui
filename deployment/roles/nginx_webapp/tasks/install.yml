@@ -13,7 +13,7 @@
 
 - name: Install static ressources for ui-identity-admin - Copy folder
   command:
-    cmd: cp -va "{{ frontend_data_dir }}/ui-identity/." "{{ frontend_data_dir }}/ui-identity-admin"
+    cmd: cp -va "{{ frontend_data_dir }}/ui-portal/." "{{ frontend_data_dir }}/ui-identity-admin"
   when: vitamui_struct.vitamui_component == "ui-identity-admin"
 
 - name: Get package facts
@@ -52,17 +52,14 @@
     mode: "{{ vitam_defaults.folder.conf_permission }}"
   notify: reload nginx
 
-- name: "Add client certificates for {{ vitamui_struct.vitamui_component }}"
+- name: "Add client certificates for the APIs relayed by {{ vitamui_struct.vitamui_component }}"
   copy:
-    src: "{{ inventory_dir }}/certs/vitamui-services/clients/{{ vitamui_struct.vitamui_component }}/{{ vitamui_struct.vitamui_component }}.{{ item }}"
-    dest: "{{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}_client.{{ item }}"
+    src: "{{ inventory_dir }}/certs/vitamui-services/clients/{{ item.0 }}/{{ item.0 }}.{{ item.1 }}"
+    dest: "{{ nginx_ssl_dir }}/{{ item.0 }}_client.{{ item.1 }}"
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"
     mode: "{{ vitam_defaults.folder.conf_permission }}"
-  loop:
-    - crt
-    - key
-  when: vitamui_struct.vitamui_component != "ui-design-system"
+  loop: "{{ frontend_apis[vitamui_struct.vitamui_component] | default([]) | map(attribute='certificate') | unique | product(['crt', 'key']) | list }}"
   tags: update_vitamui_certificates
   notify: reload nginx
 

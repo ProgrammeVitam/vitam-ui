@@ -1,6 +1,6 @@
 <mat-toolbar color="primary" class="header">
   <div class="header-logo">
-    <a class="d-flex" href="{{ portalUrl }}">
+    <a class="d-flex" [href]="portalUrl" (click)="openPortal($event)">
       <img alt="header logo" [src]="headerLogoUrl()" />
     </a>
   </div>
