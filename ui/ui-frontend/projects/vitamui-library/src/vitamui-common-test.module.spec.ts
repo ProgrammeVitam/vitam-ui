@@ -39,7 +39,19 @@ import { TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { VitamUICommonTestModule, VitamUISlideToggleStubComponent } from 'vitamui-library/testing';
+import {
+  RowCollapseStubDirective,
+  RowCollapseTriggerForStubDirective,
+  StepperStubComponent,
+  VitamUICommonTestModule,
+  VitamUIEditableButtonToggleStubComponent,
+  VitamUIEditableEmailInputStubComponent,
+  VitamUIEditableOptionStubComponent,
+  VitamUIInputPositiveNumberStubComponent,
+  VitamUIInputStubComponent,
+  VitamUISlideToggleStubComponent,
+  VitamUITextareaStubComponent,
+} from 'vitamui-library/testing';
 
 @Component({
   selector: 'vitamui-test-host',
@@ -49,6 +61,32 @@ import { VitamUICommonTestModule, VitamUISlideToggleStubComponent } from 'vitamu
 class TestHostComponent {
   control = new FormControl(true);
 }
+
+@Component({
+  selector: 'vitamui-test-inputs-host',
+  template: `
+    <vitamui-stepper [selectedIndex]="1"></vitamui-stepper>
+    <vitamui-common-input placeholder="input"></vitamui-common-input>
+    <vitamui-common-input-positive-number placeholder="number"></vitamui-common-input-positive-number>
+    <vitamui-common-textarea placeholder="textarea"></vitamui-common-textarea>
+    <vitamui-common-editable-email-input [domains]="['example.com']"></vitamui-common-editable-email-input>
+    <vitamui-common-editable-option value="option" content="Option" [disabled]="true"></vitamui-common-editable-option>
+    <vitamui-common-editable-button-toggle value="toggle"></vitamui-common-editable-button-toggle>
+    <div vitamuiCommonRowCollapse [vitamuiCommonCollapse]="true" [vitamuiCommonRowCollapseTriggerFor]="'row'"></div>
+  `,
+  imports: [
+    RowCollapseStubDirective,
+    RowCollapseTriggerForStubDirective,
+    StepperStubComponent,
+    VitamUIEditableButtonToggleStubComponent,
+    VitamUIEditableEmailInputStubComponent,
+    VitamUIEditableOptionStubComponent,
+    VitamUIInputPositiveNumberStubComponent,
+    VitamUIInputStubComponent,
+    VitamUITextareaStubComponent,
+  ],
+})
+class TestInputsHostComponent {}
 
 // Declaring module that does NOT import the stubs: they can only come from the TestBed module,
 // so this checks that the VitamUICommonTestModule scope is available at runtime to TestBed.
@@ -69,5 +107,22 @@ describe('VitamUICommonTestModule', () => {
     expect(stub).toBeTruthy();
     expect(stub.componentInstance.value).toBe(true);
     expect(TestHostModule).toBeDefined();
+  });
+
+  it('should pass the bound inputs to the stubs', () => {
+    const fixture = TestBed.createComponent(TestInputsHostComponent);
+    fixture.detectChanges();
+    const stub = <T>(type: new (...args: any[]) => T): T => fixture.debugElement.query(By.directive(type)).injector.get(type);
+
+    expect(stub(StepperStubComponent).selectedIndex()).toBe(1);
+    expect(stub(VitamUIInputStubComponent).placeholder()).toBe('input');
+    expect(stub(VitamUIInputPositiveNumberStubComponent).placeholder()).toBe('number');
+    expect(stub(VitamUITextareaStubComponent).placeholder()).toBe('textarea');
+    expect(stub(VitamUIEditableEmailInputStubComponent).domains()).toEqual(['example.com']);
+    const option = stub(VitamUIEditableOptionStubComponent);
+    expect([option.value(), option.content(), option.disabled()]).toEqual(['option', 'Option', true]);
+    expect(stub(VitamUIEditableButtonToggleStubComponent).value()).toBe('toggle');
+    expect(stub(RowCollapseStubDirective).vitamuiCommonCollapse()).toBe(true);
+    expect(stub(RowCollapseTriggerForStubDirective).vitamuiCommonRowCollapseTriggerFor()).toBe('row');
   });
 });
