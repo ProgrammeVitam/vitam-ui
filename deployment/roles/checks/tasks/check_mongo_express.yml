@@ -1,29 +1,28 @@
 ---
 
-- name: Check if mongo_express is enabled on any host in the group
-  set_fact:
-    mongo_express_enabled_on_a_host: "{{ groups['hosts_vitamui_mongod'] | map('extract', hostvars, 'mongo_express_enabled') | select('defined') | map('bool') | list | sum > 0 }}"
-
+# Settings are checked for each host where mongo_express is enabled, as they can be overridden per host
 - name: Check mongo_express configuration
   fail:
-    msg: "mongo_express should not be deployed in production without, at least, a dedicated user/password and readonly mode."
+    msg: "mongo_express should not be deployed in production without, at least, a dedicated user/password and readonly mode (host: {{ item }})."
   when: >
-    mongo_express_enabled_on_a_host
+    hostvars[item].mongo_express_enabled | default(false) | bool
     and (
-      mongo_express.basicauth.username == ''
-      or mongo_express.basicauth.password == ''
-      or mongo_express.readonly | default(true) | bool == false
+      hostvars[item].mongo_express.basicauth.username | default('') == ''
+      or hostvars[item].mongo_express.basicauth.password | default('') == ''
+      or hostvars[item].mongo_express.readonly | default(true) | bool == false
     )
+  loop: "{{ groups['hosts_vitamui_mongod'] }}"
   ignore_errors: "{{ true if deployment_mode | default('prod') == 'dev' else false }}"
 
 - name: Fail if mongo_express.basicauth.password is not properly updated for production deployment
   fail:
-    msg: "mongo_express.basicauth.password is not secured for production deployement."
+    msg: "mongo_express.basicauth.password is not secured for production deployement (host: {{ item }})."
   when: >
-    mongo_express_enabled_on_a_host
+    hostvars[item].mongo_express_enabled | default(false) | bool
     and (
-      mongo_express.basicauth.password is search('^changeit')
-      or mongo_express.basicauth.password is search('1234$')
+      hostvars[item].mongo_express.basicauth.password | default('') is search('^changeit')
+      or hostvars[item].mongo_express.basicauth.password | default('') is search('1234$')
     )
+  loop: "{{ groups['hosts_vitamui_mongod'] }}"
   ignore_errors: "{{ true if deployment_mode | default('prod') == 'dev' else false }}"
   no_log: "{{ hide_passwords_during_deploy }}"

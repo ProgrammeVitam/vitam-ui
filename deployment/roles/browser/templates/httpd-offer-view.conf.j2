@@ -1,9 +1,20 @@
-<Directory "{{vitamui_defaults.folder.root_path | default('/vitamui')}}">
+{% set browse_root = vitamui_defaults.folder.root_path | default('/vitamui') %}
+<Directory "{{ browse_root }}">
     Options Indexes FollowSymLinks
 	Require all granted
+	# Keystores, private keys and password files are not served
+	<FilesMatch "\.(jks|p12|pfx|key|key_pass|pass|pwd)$">
+		Require all denied
+	</FilesMatch>
 </Directory>
 
-Alias /browse "{{vitamui_defaults.folder.root_path | default('/vitamui')}}"
+# Only the data and log directories (and the theme) are served:
+# conf, app, script, tmp... contain passwords (application.yml, mongo scripts...)
+<DirectoryMatch "^{{ browse_root | regex_escape }}/(?!(data|log|\.theme)/)[^/]+/">
+	Require all denied
+</DirectoryMatch>
+
+Alias /browse "{{ browse_root }}"
 
 # mod_autoindex configuration : https://httpd.apache.org/docs/2.2/mod/mod_autoindex.html
 

@@ -141,6 +141,13 @@ server {
 
   location ~ ^/cas/(login|logout|webjars|css|icons|favicon|images|js|serviceValidate|oauth2.0|clientredirect|oidc) {
     proxy_pass {{ 'https' if vitamui.cas_server.secure | default(secure) | bool else 'http' }}://CAS;
+    {% if vitamui.cas_server.secure | default(secure) | bool and vitamui_proxy_ssl_verify | default(true) | bool %}
+    proxy_ssl_verify on;
+    proxy_ssl_verify_depth 3;
+    proxy_ssl_trusted_certificate {{ nginx_ssl_dir }}/vitamui-ca.crt;
+    proxy_ssl_name vitamui-{{ vitamui.cas_server.vitamui_component }}.service.{{ consul_domain }};
+    proxy_ssl_server_name on;
+    {% endif %}
     include {{ nginx_conf_dir }}/proxy_params;
   }
 

@@ -66,6 +66,31 @@
   tags: update_vitamui_certificates
   notify: reload nginx
 
+- name: Ensure CA certificates are available to verify the API gateway certificate
+  assert:
+    that: query('fileglob', inventory_dir + '/certs/vitamui-services/ca/*.crt') | length > 0
+    fail_msg: "No CA certificate found in {{ inventory_dir }}/certs/vitamui-services/ca/ to verify the API gateway certificate. Add the CA or set vitamui_proxy_ssl_verify to false."
+    quiet: true
+  when:
+    - vitamui_struct.vitamui_component != "ui-design-system"
+    - vitamui.api_gateway.secure | default(secure) | bool
+    - vitamui_proxy_ssl_verify | default(true) | bool
+  tags: update_vitamui_certificates
+
+- name: Add CA bundle used to verify the API gateway certificate
+  copy:
+    content: "{% for ca in query('fileglob', inventory_dir + '/certs/vitamui-services/ca/*.crt') | sort %}{{ lookup('file', ca) }}\n{% endfor %}"
+    dest: "{{ nginx_ssl_dir }}/vitamui-ca.crt"
+    group: "{{ frontend_group }}"
+    owner: "{{ frontend_user }}"
+    mode: "{{ vitam_defaults.folder.conf_permission }}"
+  when:
+    - vitamui_struct.vitamui_component != "ui-design-system"
+    - vitamui.api_gateway.secure | default(secure) | bool
+    - vitamui_proxy_ssl_verify | default(true) | bool
+  tags: update_vitamui_certificates
+  notify: reload nginx
+
 - name: Put ssl configuration when secure is enabled
   template:
     src: ssl-ui.conf.j2

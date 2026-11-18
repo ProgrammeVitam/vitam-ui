@@ -1,6 +1,6 @@
 {
   "bip": "{{ docker_opts.docker_bip }}",
-  {% if container_repository.registry_url | default('') != '' %}
+  {% if container_repository.registry_url | default('') != '' and not container_repository.tls_verify | default(true) | bool %}
   "insecure-registries" : [ "{{ container_repository.registry_url }}" ],
   {% endif %}
   "default-address-pools": [
