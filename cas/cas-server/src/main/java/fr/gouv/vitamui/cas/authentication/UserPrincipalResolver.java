@@ -266,6 +266,17 @@ public class UserPrincipalResolver implements PrincipalResolver {
             sessionStore.set(webContext, Constants.FLOW_LOGIN_EMAIL, null);
             sessionStore.set(webContext, Constants.FLOW_LOGIN_CUSTOMER_ID, null);
 
+            // The provider that authenticated the user must belong to the customer of the account logging in (the
+            // initiating account when subrogating): matching emails does not tie a provider to a customer.
+            if (!StringUtils.equals(provider.getCustomerId(), loginCustomerIdFromSession)) {
+                LOGGER.warn(
+                    "Provider [{}] does not belong to customer [{}]: login refused",
+                    providerName,
+                    loginCustomerIdFromSession
+                );
+                return null;
+            }
+
             if (surrogateEmailFromSession != null && surrogateCustomerIdFromSession != null) {
                 userProviderId = null;
                 technicalUserId = Optional.empty();

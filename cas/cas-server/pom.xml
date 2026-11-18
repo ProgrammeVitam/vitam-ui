@@ -595,6 +595,18 @@
             <artifactId>jakarta.servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
+        <!-- Tomcat is shipped by the cas-server-webapp-tomcat overlay; it is only needed here to compile a valve. -->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.tomcat</groupId>
+                    <artifactId>tomcat-annotations-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
         <!-- ========================================================== -->
         <!-- Utilities (Jackson, Mongo-Driver, Logging, etc.)           -->

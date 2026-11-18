@@ -273,10 +273,21 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
      */
     private static final Set<String> SENSITIVE_HEADERS = sensitiveHeaders();
 
+    /** Header carrying the new password on the IAM password change call ({@code CasApi.changePassword}). */
+    private static final String PASSWORD_HEADER = "password";
+
     private static Set<String> sensitiveHeaders() {
         // HTTP header names are case-insensitive, so the lookup must be too.
         final Set<String> names = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        names.addAll(List.of(X_USER_TOKEN_HEADER, X_XSRF_TOKEN_HEADER, HttpHeaders.AUTHORIZATION, HttpHeaders.COOKIE));
+        names.addAll(
+            List.of(
+                X_USER_TOKEN_HEADER,
+                X_XSRF_TOKEN_HEADER,
+                HttpHeaders.AUTHORIZATION,
+                HttpHeaders.COOKIE,
+                PASSWORD_HEADER
+            )
+        );
         return Collections.unmodifiableSet(names);
     }
 
@@ -287,7 +298,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
      * @param headers the outgoing request headers.
      * @return a copy safe to log.
      */
-    private static HttpHeaders maskSensitiveHeaders(final HttpHeaders headers) {
+    static HttpHeaders maskSensitiveHeaders(final HttpHeaders headers) {
         final HttpHeaders masked = new HttpHeaders();
         headers.forEach(
             (name, values) ->
