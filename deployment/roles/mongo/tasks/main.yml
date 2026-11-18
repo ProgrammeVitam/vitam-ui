@@ -172,6 +172,40 @@
     state: absent
   when: mongodb.logrotate | default('enabled') | lower == 'disabled'
 
+# The pending restart is kept on disk until the member has been restarted: a run
+# failing before that (consul reload, wait for another member) would otherwise
+# leave it running the previous configuration, the next run seeing nothing changed.
+- name: Look for a restart left pending by a previous run
+  stat:
+    path: "{{ mongo_config_path }}/restart_pending"
+  register: mongod_restart_pending
+  tags: update_mongodb_configuration
+
+# mongod_package and mongod_service_file are untagged, hence undefined under --tags.
+- name: Check whether vitamui-mongod must be restarted
+  set_fact:
+    mongod_restart_required: >-
+      {{ mongod_restart_pending.stat.exists
+         or (mongod_package is defined and mongod_package is changed)
+         or (mongod_service_file is defined and mongod_service_file is changed)
+         or mongod_directories is changed
+         or mongod_db_directory is changed
+         or mongod_keyfile is changed
+         or mongod_configuration is changed }}
+  tags: update_mongodb_configuration
+
+- name: Record that vitamui-mongod must be restarted
+  file:
+    path: "{{ mongo_config_path }}/restart_pending"
+    state: touch
+    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: 0600
+    access_time: preserve
+    modification_time: preserve
+  when: mongod_restart_required | bool
+  tags: update_mongodb_configuration
+
 #### Consul configuration ####
 
 - name: Ensure consul config dir is OK
@@ -205,18 +239,6 @@
 
 #### Rolling restart ####
 # One member at a time, to keep the replica set quorum.
-
-# mongod_package and mongod_service_file are untagged, hence undefined under --tags.
-- name: Check whether vitamui-mongod must be restarted
-  set_fact:
-    mongod_restart_required: >-
-      {{ (mongod_package is defined and mongod_package is changed)
-         or (mongod_service_file is defined and mongod_service_file is changed)
-         or mongod_directories is changed
-         or mongod_db_directory is changed
-         or mongod_keyfile is changed
-         or mongod_configuration is changed }}
-  tags: update_mongodb_configuration
 
 # Secondaries first, primary last: a single election during the rolling restart.
 - name: Look for the replica set primary
