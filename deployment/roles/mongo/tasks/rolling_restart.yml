@@ -26,6 +26,56 @@
   changed_when: false
   when: mongod_member_restart_required | bool
 
+# A probe that failed (mongod down) or answered without setName (possibly STARTUP)
+# does not tell whether the member belongs to a replica set: ask the other members,
+# whose db.hello() lists the replica set members without authentication.
+# Only a member with a setName knows the replica set config:
+# "member" / "not_member": such a member lists it / does not list it;
+# "not_initiated": every other member answered without setName (replica set not
+# initiated yet, e.g. first installation interrupted);
+# "unknown": anything else (members down, or only some of them answered without setName).
+# A member still loading its config (STARTUP) also answers without setName, so
+# "not_initiated" is asked again a few times to make sure it is stable.
+- name: "Ask the other members whether {{ mongod_member }} belongs to the replica set"
+  vars:
+    mongod_member_peers: >-
+      {{ groups['hosts_vitamui_mongod'] | reject('equalto', mongod_member)
+         | map('extract', hostvars, 'ip_service') | product([mongodb.mongod_port | string])
+         | map('join', ':') | list }}
+  command: >-
+    mongosh --nodb --quiet --eval 'const self = "{{ hostvars[mongod_member]['ip_service'] }}:{{ mongodb.mongod_port }}";
+    const peers = {{ mongod_member_peers | to_json }};
+    function peersView() {
+      let withoutConfig = 0;
+      let withConfig = false;
+      for (const peer of peers) {
+        try {
+          const hello = new Mongo("mongodb://" + peer + "/?directConnection=true&serverSelectionTimeoutMS=5000").getDB("admin").hello();
+          if (!hello.setName) {
+            withoutConfig++;
+          } else if ([].concat(hello.hosts || [], hello.passives || [], hello.arbiters || []).includes(self)) {
+            return "member";
+          } else {
+            withConfig = true;
+          }
+        } catch (e) {}
+      }
+      return withConfig ? "not_member" : peers.length > 0 && withoutConfig === peers.length ? "not_initiated" : "unknown";
+    }
+    let view = peersView();
+    for (let attempt = 0; attempt < 3 && view === "not_initiated"; attempt++) {
+      sleep(5000);
+      view = peersView();
+    }
+    print(view)'
+  delegate_to: "{{ mongod_member }}"
+  register: mongod_member_peers_view
+  failed_when: false
+  changed_when: false
+  when:
+    - mongod_member_restart_required | bool
+    - mongod_member_before_restart.stdout | default('') != 'true'
+
 - name: "Restart vitamui-mongod on {{ mongod_member }}"
   # No rs.stepDown() needed: a clean shutdown hands the primary role over.
   systemd:
@@ -46,9 +96,19 @@
 - name: "Wait for {{ mongod_member }} to be back in the replica set"
   # db.hello() needs no authentication. No setName is accepted only when the
   # member had none before the restart: replica set not initiated yet (first installation).
+  # When the probe did not answer "true", the other members decide; when they cannot
+  # tell ("unknown"), a member whose probe failed is assumed to belong to the replica
+  # set if it holds MongoDB data (a running member always does, so not after "false").
+  vars:
+    mongod_member_was_in_replica_set: >-
+      {{ mongod_member_before_restart.stdout | default('') == 'true'
+         or mongod_member_peers_view.stdout | default('') == 'member'
+         or (mongod_member_before_restart.rc | default(0) != 0
+             and mongod_member_peers_view.stdout | default('') not in ['not_member', 'not_initiated']
+             and hostvars[mongod_member]['mongod_data_directory'].stat.exists | default(false)) }}
   command: >-
     mongosh --host {{ hostvars[mongod_member]['ip_service'] }} --port {{ mongodb.mongod_port }}
-    --quiet --eval 'const wasMember = {{ (mongod_member_before_restart.stdout | default('') == 'true') | ternary('true', 'false') }};
+    --quiet --eval 'const wasMember = {{ mongod_member_was_in_replica_set | bool | ternary('true', 'false') }};
     const member = db.hello();
     quit((!wasMember && !member.setName) || member.isWritablePrimary || member.secondary || member.arbiterOnly ? 0 : 1)'
   delegate_to: "{{ mongod_member }}"
@@ -57,4 +117,11 @@
   retries: "{{ vitamui_defaults.services.status_retries_number | default(60) }}"
   delay: "{{ vitamui_defaults.services.status_retries_delay | default(5) }}"
   changed_when: false
+  when: mongod_member_restart_required | bool
+
+- name: "Clear the pending restart of {{ mongod_member }}"
+  file:
+    path: "{{ mongo_config_path }}/restart_pending"
+    state: absent
+  delegate_to: "{{ mongod_member }}"
   when: mongod_member_restart_required | bool
