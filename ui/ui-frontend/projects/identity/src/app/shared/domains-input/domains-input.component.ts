@@ -41,7 +41,7 @@ import { form, FormField, pattern, required } from '@angular/forms/signals';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';
 
-export const DOMAINS_INPUT_ACCESSOR: any = {
+const DOMAINS_INPUT_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
 
   useExisting: forwardRef(() => DomainsInputComponent),

@@ -44,7 +44,7 @@ import { DomainsInputComponent } from '../../domains-input/domains-input.compone
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';
 
-export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
+const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
 
   useExisting: forwardRef(() => EditableDomainInputComponent),

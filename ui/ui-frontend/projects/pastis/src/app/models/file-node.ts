@@ -155,7 +155,7 @@ export interface FileNode {
 }
 
 // for debug purpose
-export function nodeToString(node: FileNode): string {
+function nodeToString(node: FileNode): string {
   if (!node) {
     return undefined;
   }
@@ -174,7 +174,7 @@ export function nodeToString(node: FileNode): string {
 }
 
 // for debug purpose
-export function nodesToString(nodes: FileNode[]): string {
+function nodesToString(nodes: FileNode[]): string {
   if (!nodes || nodes.length < 1) {
     return '[]';
   }

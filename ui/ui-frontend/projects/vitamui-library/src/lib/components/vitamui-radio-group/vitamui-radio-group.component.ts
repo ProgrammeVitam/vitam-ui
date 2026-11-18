@@ -40,7 +40,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { VitamUIRadioComponent } from '../vitamui-radio/vitamui-radio.component';
 import { VitamUIRadioGroupService } from './vitamui-radio-group.service';
 
-export const RADIO_GROUP_VALUE_ACCESSOR: any = {
+const RADIO_GROUP_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => VitamUIRadioGroupComponent),
   multi: true,

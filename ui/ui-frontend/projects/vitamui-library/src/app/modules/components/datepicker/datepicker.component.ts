@@ -67,7 +67,7 @@ function toDate(value: Date | number | null | undefined): Date | null {
   return typeof value === 'number' ? new Date(value) : (value ?? null);
 }
 
-export const DATEPICKER_VALUE_ACCESSOR: any = {
+const DATEPICKER_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => DatepickerComponent),
   multi: true,
