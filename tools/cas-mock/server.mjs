@@ -9,7 +9,7 @@
 //
 // No dependency: Node >= 18 standard library only.
 
-import { createHash, generateKeyPairSync, randomBytes, sign } from 'node:crypto';
+import { createHash, generateKeyPairSync, randomBytes, sign, verify } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { createServer, request as httpsRequest } from 'node:https';
 import { dirname, resolve } from 'node:path';
@@ -66,6 +66,7 @@ const config = {
   // Optional default email, prefilled in the login form.
   defaultEmail: env('CAS_MOCK_DEFAULT_EMAIL', ''),
   tokenTtlSeconds: Number(env('CAS_MOCK_TOKEN_TTL', '28800')),
+  iamTimeoutMs: Number(env('CAS_MOCK_IAM_TIMEOUT', '30000')),
 };
 
 const issuer = `${config.prefix}/oidc`;
@@ -126,9 +127,16 @@ function iam(method, path, { query, body, username = 'cas-mock' } = {}) {
         let data = '';
         res.setEncoding('utf8');
         res.on('data', (chunk) => (data += chunk));
+        // IAM closing the connection mid-response: no 'end', the promise must not hang.
+        res.on('error', (e) => reject(new Error(`IAM ${method} ${url.pathname}: response interrupted (${e.message})`)));
         res.on('end', () => {
           if (res.statusCode >= 200 && res.statusCode < 300) {
-            resolvePromise(data ? JSON.parse(data) : null);
+            try {
+              resolvePromise(data ? JSON.parse(data) : null);
+            } catch {
+              // Thrown here, in an event callback, it would crash the mock instead of failing the login.
+              reject(new Error(`IAM ${method} ${url.pathname} -> HTTP ${res.statusCode}: invalid JSON: ${data.slice(0, 200)}`));
+            }
           } else {
             const error = new Error(`IAM ${method} ${url.pathname} -> HTTP ${res.statusCode}: ${data.slice(0, 500)}`);
             error.status = res.statusCode;
@@ -138,6 +146,12 @@ function iam(method, path, { query, body, username = 'cas-mock' } = {}) {
       },
     );
     req.on('error', (e) => reject(new Error(`IAM unreachable at ${config.iamUrl}: ${e.message}`)));
+    // Deadline for the whole call: destroying the request rejects the promise through 'error' (or the response's).
+    const deadline = setTimeout(
+      () => req.destroy(new Error(`no answer within ${config.iamTimeoutMs} ms`)),
+      config.iamTimeoutMs,
+    );
+    req.on('close', () => clearTimeout(deadline));
     if (payload) req.write(payload);
     req.end();
   });
@@ -228,9 +242,13 @@ function signJwt(claims) {
   return `${unsigned}.${sign('RSA-SHA256', Buffer.from(unsigned), signingKey.privateKey).toString('base64url')}`;
 }
 
-function decodeJwtPayload(token) {
+/** Claims of an id_token this mock signed (current key, our issuer), or null. */
+function verifiedJwtPayload(token) {
   try {
-    return JSON.parse(Buffer.from(token.split('.')[1], 'base64url').toString('utf8'));
+    const [header, payload, signature] = token.split('.');
+    const valid = verify('RSA-SHA256', Buffer.from(`${header}.${payload}`), signingKey.publicKey, Buffer.from(signature, 'base64url'));
+    const claims = valid && JSON.parse(Buffer.from(payload, 'base64url').toString('utf8'));
+    return claims?.iss === issuer ? claims : null;
   } catch {
     return null;
   }
@@ -252,13 +270,21 @@ function userClaims(session) {
 
 // ---------------------------------------------------------------- HTTP helpers
 
+const maxBodyLength = 1e6;
+
 function readBody(req) {
   return new Promise((resolvePromise, reject) => {
     let data = '';
     req.setEncoding('utf8');
     req.on('data', (chunk) => {
+      if (data.length + chunk.length > maxBodyLength) {
+        // Stop reading: the rest of the body is neither buffered nor waited for.
+        req.pause();
+        req.removeAllListeners('data');
+        reject(Object.assign(new Error('Body too large'), { status: 413 }));
+        return;
+      }
       data += chunk;
-      if (data.length > 1e6) reject(new Error('Body too large'));
     });
     req.on('end', () => resolvePromise(new URLSearchParams(data)));
     req.on('error', reject);
@@ -416,7 +442,8 @@ function discovery() {
     subject_types_supported: ['public'],
     id_token_signing_alg_values_supported: ['RS256'],
     scopes_supported: ['openid', 'profile', 'email'],
-    token_endpoint_auth_methods_supported: ['none', 'client_secret_post', 'client_secret_basic'],
+    // Public clients only: no client secret is checked.
+    token_endpoint_auth_methods_supported: ['none'],
     code_challenge_methods_supported: ['S256', 'plain'],
     claims_supported: ['sub', 'email', 'name', 'given_name', 'family_name', 'customerId', 'identifier'],
   };
@@ -480,6 +507,11 @@ async function login(req, res) {
     pendingLogins.delete(loginId);
     return send(res, 400, page('Erreur', `<h1>Session de connexion expirée</h1><p>Relancez la connexion depuis l'application.</p>`));
   }
+  // A double submit must not open two sessions: the first one claims the pending login until IAM answers.
+  if (pending.inProgress) {
+    return send(res, 409, page('Erreur', `<h1>Connexion déjà en cours</h1><p>Patientez, ou relancez la connexion depuis l'application.</p>`));
+  }
+  pending.inProgress = true;
 
   const email = (form.get('email') || '').trim().toLowerCase();
   const chosenCustomerId = form.get('customerId');
@@ -528,12 +560,15 @@ async function login(req, res) {
     });
     pendingLogins.delete(loginId);
     const subrogatedBy = sub ? ` (subrogated by ${sub.superUserEmail})` : '';
-    console.log(`[cas-mock] login ${request.loginEmail}${subrogatedBy} -> ${attributes.authToken}`);
+    console.log(`[cas-mock] login ${request.loginEmail}${subrogatedBy}`);
     issueCode(res, pending, sessionId, { 'Set-Cookie': setSessionCookie(sessionId) });
   } catch (e) {
     console.error('[cas-mock]', e.message);
     const message = e.status === 404 ? 'Utilisateur ou subrogation introuvable.' : e.message;
     send(res, 200, loginPage(loginId, { email, error: message, subrogation: pending.subrogation }));
+  } finally {
+    // Released for the organisation choice, an error or a retry; a successful login has deleted it.
+    pending.inProgress = false;
   }
 }
 
@@ -553,6 +588,10 @@ async function token(req, res) {
   const entry = codes.get(form.get('code'));
   codes.delete(form.get('code'));
   if (!entry || entry.expiresAt < Date.now()) return tokenError('invalid_grant', 'Unknown or expired code');
+  // The code is bound to the client it was issued to (public clients: client_id in the form, or HTTP Basic).
+  const basic = (req.headers.authorization ?? '').match(/^Basic (.+)$/)?.[1];
+  const clientId = form.get('client_id') || (basic && decodeURIComponent(Buffer.from(basic, 'base64').toString('utf8').split(':')[0]));
+  if (clientId !== entry.clientId) return tokenError('invalid_grant', 'client_id mismatch');
   const redirectBase = redirectUriBase(form.get('redirect_uri'));
   if (!redirectBase || redirectBase !== redirectUriBase(entry.redirectUri)) return tokenError('invalid_grant', 'redirect_uri mismatch');
   if (!verifyPkce(entry, form.get('code_verifier'))) return tokenError('invalid_grant', 'PKCE verification failed');
@@ -597,7 +636,7 @@ async function endSession(sessionId) {
   sessions.delete(sessionId);
   try {
     await iamLogout(session);
-    console.log(`[cas-mock] logout ${session.email} (${session.authToken} revoked in IAM)`);
+    console.log(`[cas-mock] logout ${session.email} (IAM token revoked)`);
   } catch (e) {
     console.error('[cas-mock] IAM logout failed:', e.message);
   }
@@ -605,15 +644,17 @@ async function endSession(sessionId) {
 
 async function logout(req, res, url) {
   const p = url.searchParams;
-  const hinted = p.get('id_token_hint') && decodeJwtPayload(p.get('id_token_hint'))?.sid;
+  // Only a hint this mock signed counts. It names the session to end; the browser's own session (cookie) ends too only
+  // when it is the same one, or when there is no valid hint: an old tab must not log out the session opened since.
+  const hinted = p.get('id_token_hint') ? verifiedJwtPayload(p.get('id_token_hint'))?.sid : undefined;
   const fromCookie = cookies(req)[sessionCookie];
-  await Promise.all([...new Set([hinted, fromCookie].filter(Boolean))].map(endSession));
+  const endsBrowserSession = !hinted || hinted === fromCookie;
+  await endSession(hinted ?? fromCookie);
+  const headers = endsBrowserSession ? { 'Set-Cookie': clearSessionCookie } : {};
 
   const target = safeRedirectUrl(p.get('post_logout_redirect_uri') || p.get('service') || '');
-  if (target) return redirect(res, target, { 'Set-Cookie': clearSessionCookie });
-  send(res, 200, page('Déconnexion', `<h1>Vous êtes déconnecté</h1><p class="muted">Mock CAS de développement.</p>`), {
-    'Set-Cookie': clearSessionCookie,
-  });
+  if (target) return redirect(res, target, headers);
+  send(res, 200, page('Déconnexion', `<h1>Vous êtes déconnecté</h1><p class="muted">Mock CAS de développement.</p>`), headers);
 }
 
 // ---------------------------------------------------------------- router
@@ -676,10 +717,17 @@ setInterval(() => {
 
 createServer({ pfx: readFileSync(config.serverKeystore), passphrase: config.keystorePassword }, (req, res) => {
   handle(req, res).catch((e) => {
-    console.error('[cas-mock]', e);
-    if (!res.headersSent) send(res, 500, { error: 'server_error', error_description: e.message });
+    console.error('[cas-mock]', e.status ? e.message : e);
+    if (!res.headersSent) send(res, e.status ?? 500, { error: e.status === 413 ? 'payload_too_large' : 'server_error', error_description: e.message });
   });
-}).listen(config.port, config.host, () => {
-  console.log(`[cas-mock] listening on https://${config.host}:${config.port}${basePath} — issuer ${issuer}`);
-  console.log(`[cas-mock] IAM: ${config.iamUrl}  (DEV ONLY: no password is checked)`);
-});
+})
+  .on('error', (e) => {
+    // Bind on the configured address itself: a probe on another address (127.0.0.1 vs ::1) could be wrong.
+    const reason = e.code === 'EADDRINUSE' ? `${config.host}:${config.port} already in use: stop cas-server (or whatever listens there) first.` : e.message;
+    console.error(`[cas-mock] ${reason}`);
+    process.exit(1);
+  })
+  .listen(config.port, config.host, () => {
+    console.log(`[cas-mock] listening on https://${config.host}:${config.port}${basePath} — issuer ${issuer}`);
+    console.log(`[cas-mock] IAM: ${config.iamUrl}  (DEV ONLY: no password is checked)`);
+  });

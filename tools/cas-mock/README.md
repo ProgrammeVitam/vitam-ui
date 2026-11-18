@@ -12,7 +12,8 @@ SMTP, etc.) when you only need to be logged in.
 
 Prerequisites: MongoDB, **security** and **iam** running (as for cas-server).
 cas-server must be stopped: the mock listens on its port (8080). From 10.0 on,
-the nginx reverse proxy (`tools/docker/nginx`) as well.
+the nginx reverse proxy (`tools/docker/nginx`) must be running too: it serves
+the portal and forwards `/cas/` to the mock, as to cas-server.
 
 ```bash
 tools/cas-mock/start.sh
@@ -96,8 +97,10 @@ the apps are validated with `POST /iam/v1/cas/subrogations/validate` (legacy:
 the surrogate must be among `GET /iam/v1/cas/subrogations?superUserEmail=…`),
 then the IAM token is built for the surrogate.
 
-Sessions are kept in memory: restarting the mock logs everybody out (the apps
-then redirect to the login form).
+Sessions are kept in memory: after a restart of the mock, the next
+authorization asks for the login form again. Restarting does not revoke the IAM
+tokens already handed out: an app keeps using its own until it logs out or the
+token expires in IAM.
 
 ## What it does not do
 
@@ -118,6 +121,7 @@ Environment variables, all optional:
 | `CAS_MOCK_IAM_URL`           | `https://localhost:8083`                  |
 | `CAS_MOCK_DEFAULT_EMAIL`     | empty — email prefilled in the form       |
 | `CAS_MOCK_TOKEN_TTL`         | `28800` (seconds, `id_token` lifetime)    |
+| `CAS_MOCK_IAM_TIMEOUT`       | `30000` (milliseconds, deadline of each IAM call) |
 | `CAS_MOCK_SECRET_TOKEN`      | dev `cas_secret_token`                    |
 | `CAS_MOCK_TENANT`, `CAS_MOCK_IDENTITY` | `-1`, `cas`                     |
 | `CAS_MOCK_SERVER_KEYSTORE`, `CAS_MOCK_CLIENT_KEYSTORE`, `CAS_MOCK_KEYSTORE_PASSWORD` | detected dev `cas-server` keystores, `changeme` |

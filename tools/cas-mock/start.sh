@@ -19,10 +19,5 @@ if [[ "$major" -lt 18 ]]; then
   exit 1
 fi
 
-port="${CAS_MOCK_PORT:-8080}"
-if (exec 3<>"/dev/tcp/127.0.0.1/$port") 2>/dev/null; then
-  echo "Port $port already in use: stop cas-server (or whatever listens there) first." >&2
-  exit 1
-fi
-
+# server.mjs reports a port already in use, on the address it actually binds (CAS_MOCK_HOST).
 exec node server.mjs "$@"
