@@ -200,6 +200,8 @@ async function openSession(request) {
     query: {
       loginEmail: request.loginEmail,
       loginCustomerId: request.loginCustomerId,
+      // Required by 9.0 (no handler matches without it, HTTP 400); empty, as cas-server sends it, means none.
+      idp: '',
       embedded: request.superUserEmail ? 'authtoken,surrogation' : 'authtoken',
     },
     username: request.superUserEmail || request.loginEmail,
@@ -210,8 +212,9 @@ const iamLogout = (session) =>
   iam('GET', '/logout', {
     query: {
       authToken: session.authToken,
-      superUser: session.superUserEmail,
-      superUserCustomerId: session.superUserCustomerId,
+      // Required by 9.0 even without subrogation (HTTP 400, the IAM token then survives); blank means none.
+      superUser: session.superUserEmail ?? '',
+      superUserCustomerId: session.superUserCustomerId ?? '',
     },
     username: session.superUserEmail || session.email,
   });
@@ -336,6 +339,18 @@ function safeRedirectUrl(uri) {
   const { pathname, search, hash } = new URL(uri);
   // The "/" after the host is part of the fixed prefix: the input only ever follows it.
   return `${origin}/${pathname.replace(/^\/+/, '')}${search}${hash}`;
+}
+
+/**
+ * The allowed redirect URI without its query nor fragment. On 9.0 the apps' `redirectUri` is "?", replaced by
+ * `location.href`: the token request then sends the callback URL, with `?code=…&state=…`, not the authorize one.
+ * Comparing origin and path stays safe: the origin is allowed and PKCE binds the code to its requester.
+ */
+function redirectUriBase(uri) {
+  const safe = uri && safeRedirectUrl(uri);
+  if (!safe) return undefined;
+  const { origin, pathname } = new URL(safe);
+  return `${origin}${pathname}`;
 }
 
 // ---------------------------------------------------------------- pages
@@ -538,7 +553,8 @@ async function token(req, res) {
   const entry = codes.get(form.get('code'));
   codes.delete(form.get('code'));
   if (!entry || entry.expiresAt < Date.now()) return tokenError('invalid_grant', 'Unknown or expired code');
-  if (form.get('redirect_uri') !== entry.redirectUri) return tokenError('invalid_grant', 'redirect_uri mismatch');
+  const redirectBase = redirectUriBase(form.get('redirect_uri'));
+  if (!redirectBase || redirectBase !== redirectUriBase(entry.redirectUri)) return tokenError('invalid_grant', 'redirect_uri mismatch');
   if (!verifyPkce(entry, form.get('code_verifier'))) return tokenError('invalid_grant', 'PKCE verification failed');
 
   const session = sessions.get(entry.sessionId);
