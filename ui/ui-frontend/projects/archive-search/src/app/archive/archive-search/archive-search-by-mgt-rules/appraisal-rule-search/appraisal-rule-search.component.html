@@ -46,15 +46,11 @@
         ></vitamui-datepicker>
       </div>
       <div class="col-1 form-control">
-        <button
-          class="validate-date-small-button"
-          *ngIf="!endDateInterval && appraisalRuleCriteriaForm.get('appraisalRuleStartDate').value"
-          type="button"
-          mat-mini-fab
-          (click)="addBeginDtDuaCriteria()"
-        >
-          <i class="material-icons">check</i>
-        </button>
+        @if (!endDateInterval && appraisalRuleCriteriaForm.get('appraisalRuleStartDate').value) {
+          <button class="btn btn-circle secondary small" type="button" (click)="addBeginDtDuaCriteria()">
+            <i class="material-icons">check</i>
+          </button>
+        }
       </div>
 
       <div class="col-4 form-control">
@@ -74,24 +70,22 @@
         }
       </div>
       <div class="col-1 form-control">
-        <button
-          class="validate-date-small-button"
-          *ngIf="
-            endDateInterval &&
-            appraisalRuleCriteriaForm.get('appraisalRuleStartDate').value &&
-            appraisalRuleCriteriaForm.get('appraisalRuleEndDate').value
-          "
-          type="button"
-          mat-mini-fab
-          (click)="addIntervalDtDuaCriteria()"
-        >
-          <i class="material-icons">check</i>
-        </button>
+        @if (
+          endDateInterval &&
+          appraisalRuleCriteriaForm.get('appraisalRuleStartDate').value &&
+          appraisalRuleCriteriaForm.get('appraisalRuleEndDate').value
+        ) {
+          <button class="btn btn-circle secondary small" type="button" (click)="addIntervalDtDuaCriteria()">
+            <i class="material-icons">check</i>
+          </button>
+        }
       </div>
       <div class="col-1 form-control">
-        <p *ngIf="endDateInterval" class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(false)">
-          {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.APPRAISAL_RULE.DELETE_INTERVAL' | translate }}
-        </p>
+        @if (endDateInterval) {
+          <p class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(false)">
+            {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.APPRAISAL_RULE.DELETE_INTERVAL' | translate }}
+          </p>
+        }
       </div>
     </div>
 

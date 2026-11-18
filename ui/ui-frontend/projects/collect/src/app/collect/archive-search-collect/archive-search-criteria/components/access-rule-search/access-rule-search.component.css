@@ -10,9 +10,3 @@
   font-size: 16px;
   color: var(--vitamui-primary) !important;
 }
-
-.validate-date-small-button{
-  background-color: 'green';
-   width: 30px;
-   height: 30px; 
-}
