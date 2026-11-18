@@ -50,8 +50,10 @@ class TestHostComponent {
   control = new FormControl(true);
 }
 
-// Declaring module that does NOT import the stubs: they can only come from the TestBed module,
-// so this checks that the VitamUICommonTestModule scope is available at runtime to TestBed.
+// Only read by the AOT compiler, which needs an NgModule to compile the template of the non-standalone
+// TestHostComponent (without it, the build fails with NG8002 on [formControl]). It does NOT import the
+// stubs, so at runtime the slide toggle stub can only come from the TestBed imports: this is what the
+// test checks. The test therefore never uses this module.
 @NgModule({ declarations: [TestHostComponent], imports: [ReactiveFormsModule] })
 class TestHostModule {}
 
@@ -68,6 +70,5 @@ describe('VitamUICommonTestModule', () => {
     const stub = fixture.debugElement.query(By.directive(VitamUISlideToggleStubComponent));
     expect(stub).toBeTruthy();
     expect(stub.componentInstance.value).toBe(true);
-    expect(TestHostModule).toBeDefined();
   });
 });
