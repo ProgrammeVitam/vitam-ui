@@ -174,6 +174,162 @@ describe('FileSelectorComponent', () => {
       expect((component as any).control.value).not.toContain(file);
     });
 
+<<<<<<< HEAD
     expect(snackBarServiceSpy.open).toHaveBeenCalledWith({ message: 'FILE_SELECTOR.UPLOAD_FILE_ALREADY_IMPORTED' });
+=======
+    it('should have an error if cumulative file size is greater than max allowed size', async () => {
+      fixture.componentInstance.multiple = true;
+      fixture.componentInstance.maxSizeInBytes = 20;
+      fixture.detectChanges();
+
+      await component.handleFilesSelection([
+        file('dir1/file1.json', 'X'.repeat(component.maxSizeInBytes() / 4)),
+        file('dir1/file2.json', 'X'.repeat(component.maxSizeInBytes() / 4)),
+        file('dir2/file.json', 'X'.repeat(component.maxSizeInBytes() / 4)),
+        file('file.json', 'X'.repeat(component.maxSizeInBytes() / 4 + 1)),
+      ]);
+
+      expect(control.valid).toBe(false);
+      expect(control.hasError('maxSizeInBytes')).toBe(true);
+      expect(control.getError('maxSizeInBytes')).toEqual({
+        size: `${component.maxSizeInBytes() + 1} octets`,
+        maxSize: `${component.maxSizeInBytes()} octets`,
+      });
+    });
+  });
+
+  describe('Individual file validation', () => {
+    it('should show an error for invalid extension', async () => {
+      fixture.componentInstance.extensions = ['.json'];
+      fixture.detectChanges();
+
+      await component.handleFilesSelection([file('file1.txt')]);
+      await waitForValidation();
+
+      expect(component.displayFiles[0].errors).toEqual(expect.objectContaining({ invalidExtension: { extensions: '.json' } }));
+      expect(control.valid).toBe(false);
+      expect(control.hasError('invalidFiles')).toBe(true);
+    });
+
+    it('should keep the error when the native file picker is reopened and cancelled (empty FileList)', async () => {
+      fixture.componentInstance.extensions = ['.json'];
+      fixture.detectChanges();
+
+      await component.handleFilesSelection([file('file1.txt')]);
+      await waitForValidation();
+
+      expect(control.valid).toBe(false);
+      expect(control.hasError('invalidFiles')).toBe(true);
+
+      // Simulates the browser firing a (change) event with no files when the OS file dialog is cancelled
+      await component.handleFilesSelection([]);
+      await waitForValidation();
+
+      expect(component.displayFiles.length).toBe(1);
+      expect(component.displayFiles[0].errors).toEqual(expect.objectContaining({ invalidExtension: { extensions: '.json' } }));
+      expect(control.valid).toBe(false);
+      expect(control.hasError('invalidFiles')).toBe(true);
+    });
+
+    describe('Duplication', () => {
+      beforeEach(() => {
+        fixture.componentInstance.multiple = true;
+        fixture.detectChanges();
+      });
+
+      it('should show an error for duplicated file', async () => {
+        await component.handleFilesSelection([file('file.txt')]);
+        await component.handleFilesSelection([file('FILE.txt')]);
+        await waitForValidation();
+
+        expect(control.valid).toBe(false);
+        expect(control.hasError('invalidFiles')).toBe(true);
+        expect(component.displayFiles[0].errors).toEqual(expect.objectContaining({ duplicatedFile: expect.anything() }));
+        expect(component.displayFiles[1].errors).toEqual(expect.objectContaining({ duplicatedFile: expect.anything() }));
+      });
+
+      it('should show an error for duplicated directory', async () => {
+        await component.handleFilesSelection([file('dir/file1.txt')]);
+        await component.handleFilesSelection([file('DIR/file2.txt')]);
+        await waitForValidation();
+
+        expect(control.valid).toBe(false);
+        expect(control.hasError('invalidFiles')).toBe(true);
+        expect(component.displayFiles[0].errors).toEqual(expect.objectContaining({ duplicatedDirectory: expect.anything() }));
+        expect(component.displayFiles[1].errors).toEqual(expect.objectContaining({ duplicatedDirectory: expect.anything() }));
+      });
+
+      it('should show an error for file and directory having the same name', async () => {
+        await component.handleFilesSelection([file('DIR_OR_FILE/file1.txt')]);
+        await component.handleFilesSelection([file('dir_or_file')]);
+        await waitForValidation();
+
+        expect(control.valid).toBe(false);
+        expect(control.hasError('invalidFiles')).toBe(true);
+        expect(component.displayFiles[0].errors).toEqual(expect.objectContaining({ duplicatedDirectory: expect.anything() }));
+        expect(component.displayFiles[1].errors).toEqual(expect.objectContaining({ duplicatedFile: expect.anything() }));
+      });
+    });
+
+    it('should show an error for a directory when only files are allowed', async () => {
+      fixture.componentInstance.directoryMode = false;
+      fixture.detectChanges();
+
+      await component.handleFilesSelection([file('dir/file.txt')]);
+      await waitForValidation();
+
+      expect(control.valid).toBe(false);
+      expect(control.hasError('invalidFiles')).toBe(true);
+      expect(component.displayFiles[0].errors).toEqual(expect.objectContaining({ directoryForbidden: expect.anything() }));
+    });
+
+    it('should show custom validation error', async () => {
+      fixture.componentInstance.fileValidators = (file: File) =>
+        Promise.resolve(
+          file.name === 'file1.json' ? { fileErrors: { 'CUSTOM.ERROR': true }, controlErrors: { invalidFiles: true } } : null,
+        );
+      fixture.detectChanges();
+
+      await component.handleFilesSelection([file('file1.json')]);
+      await waitForValidation();
+
+      expect(component.displayFiles[0].errors).toEqual(expect.objectContaining({ 'CUSTOM.ERROR': expect.anything() }));
+      expect(control.valid).toBe(false);
+      expect(control.hasError('invalidFiles')).toBe(true);
+    });
+
+    it('should accumulate errors', async () => {
+      fixture.componentInstance.multiple = true;
+      fixture.componentInstance.extensions = ['.png'];
+      fixture.componentInstance.fileValidators = (file: File) =>
+        Promise.resolve(file.name === 'file2.json' ? { fileErrors: { 'CUSTOM.ERROR': true }, controlErrors: { toto: true } } : null);
+      fixture.detectChanges();
+
+      await component.handleFilesSelection([file('file1.txt'), file('file2.json')]);
+      await waitForValidation();
+
+      expect(component.displayFiles.length).toBe(2);
+
+      expect(component.displayFiles[0].name).toBe('file1.txt');
+      expect(component.displayFiles[0].errors).toEqual(
+        expect.objectContaining({
+          invalidExtension: expect.anything(),
+        }),
+      );
+
+      expect(component.displayFiles[1].name).toBe('file2.json');
+      expect(component.displayFiles[1].errors).toEqual(
+        expect.objectContaining({
+          invalidExtension: expect.anything(),
+          'CUSTOM.ERROR': expect.anything(),
+        }),
+      );
+
+      expect(control.hasError('invalidFiles')).toBe(true);
+      expect(control.getError('invalidFiles')).toEqual(expect.objectContaining({ files: expect.anything() }));
+      expect(control.getError('invalidFiles').files).toContain(`file1.txt`);
+      expect(control.getError('invalidFiles').files).toContain(`file2.json`);
+    });
+>>>>>>> e63d8925b (Bug #15770: [Search] Display error: non-XML file incorrectly marked as valid after cancellation.)
   });
 });
