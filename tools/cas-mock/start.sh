@@ -10,7 +10,7 @@ if ! command -v node >/dev/null 2>&1 && [[ -s "${NVM_DIR:-$HOME/.nvm}/nvm.sh" ]]
   . "${NVM_DIR:-$HOME/.nvm}/nvm.sh"
 fi
 if ! command -v node >/dev/null 2>&1; then
-  echo "node not found (Node >= 18 required, e.g. 'nvm use' in ui/ui-frontend)" >&2
+  echo "node not found (install Node >= 18)" >&2
   exit 1
 fi
 major=$(node -p 'process.versions.node.split(".")[0]')
