@@ -9,7 +9,8 @@ import java.util.Optional;
 public enum ProfileVersion {
     VERSION_2_1("2.1"),
     VERSION_2_2("2.2"),
-    VERSION_2_3("2.3");
+    VERSION_2_3("2.3"),
+    VERSION_2_4("2.4");
 
     private final String version;
 
@@ -31,7 +32,7 @@ public enum ProfileVersion {
     }
 
     public static ProfileVersion fromVersionString(final String version) {
-        return Optional.of(ENUM_BY_VERSION_STRING.get(version)).orElseThrow(
+        return Optional.ofNullable(ENUM_BY_VERSION_STRING.get(version)).orElseThrow(
             () -> new IllegalArgumentException("Unknown version: " + version)
         );
     }
