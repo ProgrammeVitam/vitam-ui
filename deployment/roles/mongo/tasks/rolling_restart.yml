@@ -46,9 +46,16 @@
 - name: "Wait for {{ mongod_member }} to be back in the replica set"
   # db.hello() needs no authentication. No setName is accepted only when the
   # member had none before the restart: replica set not initiated yet (first installation).
+  # A failed probe (mongod down) proves nothing: the member is then assumed to
+  # belong to the replica set, unless it holds no MongoDB data yet.
+  vars:
+    mongod_member_was_in_replica_set: >-
+      {{ mongod_member_before_restart.stdout | default('') == 'true'
+         or (mongod_member_before_restart.rc | default(0) != 0
+             and hostvars[mongod_member]['mongod_data_directory'].stat.exists | default(false)) }}
   command: >-
     mongosh --host {{ hostvars[mongod_member]['ip_service'] }} --port {{ mongodb.mongod_port }}
-    --quiet --eval 'const wasMember = {{ (mongod_member_before_restart.stdout | default('') == 'true') | ternary('true', 'false') }};
+    --quiet --eval 'const wasMember = {{ mongod_member_was_in_replica_set | bool | ternary('true', 'false') }};
     const member = db.hello();
     quit((!wasMember && !member.setName) || member.isWritablePrimary || member.secondary || member.arbiterOnly ? 0 : 1)'
   delegate_to: "{{ mongod_member }}"
