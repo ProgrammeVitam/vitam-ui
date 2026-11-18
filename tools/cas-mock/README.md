@@ -27,7 +27,7 @@ From IntelliJ: the **CAS mock** run configuration (`intellij-conf/.run/Shell/`,
 see `intellij-conf/README.md`) runs the same script.
 
 No dependency to install: Node ≥ 18 standard library only. `start.sh` loads
-nvm when `node` is not on the `PATH` (IDE run configurations).
+nvm, when installed, if `node` is not on the `PATH` (IDE run configurations).
 
 ## Supported versions
 
@@ -43,6 +43,17 @@ can be cherry-picked as is:
 All three are detected: the public URL is the OIDC `issuer` of the portal's
 `config-dev.json` minus `/oidc`, the keystores are the first existing file,
 and the IAM API flavour is chosen on the first login (see below).
+
+The remaining 9.0 differences are handled without detection:
+
+- its IAM requires `idp` on `/users/provisioning`, and `superUser` and
+  `superUserCustomerId` on `/logout` even without subrogation: the mock always
+  sends them, empty when there is none, as cas-server does (later versions
+  ignore empty values);
+- its apps' `redirectUri` is `"?"`, replaced by the current URL: the token
+  request then sends the callback URL, with `?code=…&state=…`, instead of the
+  authorize one. The mock compares the `redirect_uri` without its query nor
+  fragment (origin and path only).
 
 ## How it works
 
