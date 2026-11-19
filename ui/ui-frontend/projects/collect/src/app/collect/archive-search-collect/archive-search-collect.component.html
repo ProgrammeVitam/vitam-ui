@@ -634,7 +634,12 @@
 <ng-template #type>
   <span>
     {{ 'COLLECT.ARCHIVE_UNIT.FIELDS.TYPE' | translate }}
-    <vitamui-order-by-button orderByKey="#unitType" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()" />
+    <vitamui-order-by-button
+      orderByKey="ALL_ARCHIVE_UNIT_TYPES"
+      [(orderBy)]="orderBy"
+      [(direction)]="direction"
+      (orderChange)="emitOrderChange()"
+    />
   </span>
 </ng-template>
 <ng-template #name_description>
