@@ -42,6 +42,7 @@ import fr.gouv.vitamui.commons.api.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaSort;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InvalidCreateOperationVitamUIException;
 import org.apache.commons.collections4.CollectionUtils;
@@ -86,6 +87,7 @@ import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ID;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.RULES_COMPUTED;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.RULE_ORIGIN_CRITERIA;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING;
+import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.SORT_FIELDS_MAPPING;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.UPDATE_OPERATION_FIELD;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.WAITING_RECALCULATE;
 
@@ -152,8 +154,6 @@ public final class MetadataSearchCriteriaUtils {
             throw new BadRequestException("Can't parse null criteria");
         }
         final SelectMultiQuery selectMultiQuery = new SelectMultiQuery();
-        Optional<String> orderBy = Optional.empty();
-        Optional<DirectionDto> direction = Optional.empty();
         try {
             BooleanQuery query = and();
             query.add(exists(ID));
@@ -167,18 +167,7 @@ public final class MetadataSearchCriteriaUtils {
             }
             selectMultiQuery.setQuery(query);
 
-            if (searchQuery.getSortingCriteria() != null) {
-                direction = Optional.of(searchQuery.getSortingCriteria().getSorting());
-                orderBy = Optional.of(searchQuery.getSortingCriteria().getCriteria());
-            }
-
-            if (orderBy.isPresent() && NonSortableFields.isSortable(NonSortableFields.UNIT_COLLECTION, orderBy.get())) {
-                if (DirectionDto.DESC.equals(direction.get())) {
-                    selectMultiQuery.addOrderByDescFilter(orderBy.get());
-                } else {
-                    selectMultiQuery.addOrderByAscFilter(orderBy.get());
-                }
-            }
+            addSort(selectMultiQuery, searchQuery.getSortingCriteria());
             selectMultiQuery.setLimitFilter(
                 (long) searchQuery.getPageNumber() * searchQuery.getSize(),
                 searchQuery.getSize()
@@ -208,22 +197,10 @@ public final class MetadataSearchCriteriaUtils {
             throw new BadRequestException("Can't parse null criteria");
         }
         SelectMultiQuery selectMultiQuery;
-        Optional<String> orderBy = Optional.empty();
-        Optional<DirectionDto> direction = Optional.empty();
         try {
-            if (searchQuery.getSortingCriteria() != null) {
-                direction = Optional.of(searchQuery.getSortingCriteria().getSorting());
-                orderBy = Optional.of(searchQuery.getSortingCriteria().getCriteria());
-            }
             selectMultiQuery = createSelectMultiQuery(searchQuery.getCriteriaList());
             addProjection(searchQuery, selectMultiQuery);
-            if (orderBy.isPresent() && NonSortableFields.isSortable(NonSortableFields.UNIT_COLLECTION, orderBy.get())) {
-                if (DirectionDto.DESC.equals(direction.get())) {
-                    selectMultiQuery.addOrderByDescFilter(orderBy.get());
-                } else {
-                    selectMultiQuery.addOrderByAscFilter(orderBy.get());
-                }
-            }
+            addSort(selectMultiQuery, searchQuery.getSortingCriteria());
             selectMultiQuery.setLimitFilter(
                 (long) searchQuery.getPageNumber() * searchQuery.getSize(),
                 searchQuery.getSize()
@@ -240,6 +217,35 @@ public final class MetadataSearchCriteriaUtils {
             throw new BadRequestException("Can't parse criteria as Vitam query" + e.getMessage());
         }
         return selectMultiQuery;
+    }
+
+    /**
+     * Adds the sort of the search criteria to the query, on the sortable Vitam fields of the sort key.
+     */
+    public static void addSort(final SelectMultiQuery selectMultiQuery, final SearchCriteriaSort sort)
+        throws InvalidParseOperationException {
+        if (sort == null || sort.getCriteria() == null) {
+            return;
+        }
+        final String[] sortFields = resolveSortFields(sort.getCriteria());
+        if (sortFields.length == 0) {
+            return;
+        }
+        if (DirectionDto.DESC.equals(sort.getSorting())) {
+            selectMultiQuery.addOrderByDescFilter(sortFields);
+        } else {
+            selectMultiQuery.addOrderByAscFilter(sortFields);
+        }
+    }
+
+    /**
+     * Translates a VitamUI sort key into the Vitam fields to sort on.
+     */
+    public static String[] resolveSortFields(final String orderBy) {
+        return SORT_FIELDS_MAPPING.getOrDefault(orderBy, List.of(orderBy))
+            .stream()
+            .filter(field -> NonSortableFields.isSortable(NonSortableFields.UNIT_COLLECTION, field))
+            .toArray(String[]::new);
     }
 
     private static void addProjection(SearchCriteriaDto searchQuery, SelectMultiQuery selectMultiQuery)
