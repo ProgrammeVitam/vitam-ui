@@ -53,6 +53,7 @@ import { DisplayObjectHelperService } from './services/display-object-helper.ser
 import { DisplayRuleHelperService } from './services/display-rule-helper.service';
 import { FavoriteEntryService } from './services/favorite-entry.service';
 import { LayoutService } from './services/layout.service';
+import { ObjectViewerExpansionService } from './services/object-viewer-expansion.service';
 import { PathStrategyDisplayObjectService } from './services/path-strategy-display-object.service';
 import { SchemaElementToDisplayRuleService } from './services/schema-element-to-display-rule.service';
 import { TypeService } from './services/type.service';
@@ -132,6 +133,16 @@ describe('ObjectViewerComponent', () => {
 
     expect(component.data()).toBeTruthy();
     expect(component.template()).toBeTruthy();
+  });
+
+  it('should request every group to be expanded or collapsed', () => {
+    const expansionService = fixture.debugElement.injector.get(ObjectViewerExpansionService);
+
+    component.expandAll();
+    expect(expansionService.expansion()).toEqual({ opened: true });
+
+    component.collapseAll();
+    expect(expansionService.expansion()).toEqual({ opened: false });
   });
 });
 

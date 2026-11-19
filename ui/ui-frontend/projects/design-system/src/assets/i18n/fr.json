@@ -47,6 +47,7 @@
       "TITLE": "Organismes",
       "dialog.TITLE": "Dialog",
       "discussion.TITLE": "Discussion",
+      "object-viewer.TITLE": "Object viewer / editor",
       "snackbar.TITLE": "Snackbar",
       "table.TITLE": "Tableau",
       "tab-group.TITLE": "Tab group"
@@ -225,5 +226,38 @@
     "INVALID_FILE_NAME": "Nom du fichier invalide. Nom attendu : \"{{expectedFileName}}\"",
     "INVALID_CSV": "Fichier CSV invalide",
     "INVALID_CSV_DETAIL": "Détail des erreurs identifiées : <ul>{{detail}}</ul>"
+  },
+  "OBJECT_VIEWER": {
+    "INTRO": "Le viewer affiche des données selon un template (DisplayRule[]). L'éditeur génère un formulaire (EditObject) à partir des données projetées par le template et d'un schéma.",
+    "VIEWER": "Consultation",
+    "EDITOR": "Édition",
+    "DATA": "Données",
+    "EXPAND_ALL": "Tout déplier",
+    "COLLAPSE_ALL": "Tout replier",
+    "PROJECTED_DATA": "Données projetées (valeur du formulaire)",
+    "RECONSTITUTED_DATA": "Données reconstituées (sortie de toOriginal, à envoyer à l'enregistrement)",
+    "TEMPLATE": "Template",
+    "SCHEMA": "Schéma",
+    "PLAYGROUND": {
+      "INTRO": "Modifiez les entrées (JSON) : le composant est recalculé à chaque saisie.",
+      "RESET": "Réinitialiser",
+      "INVALID_JSON": "JSON invalide"
+    },
+    "MODE": {
+      "data-driven": "la structure affichée suit celle des données, le template est ignoré",
+      "template-driven": "seuls les champs mappés par le template sont affichés, selon sa structure",
+      "mixed-driven": "les champs mappés suivent le template, puis les champs non mappés suivent la structure des données (ici status et address)"
+    },
+    "LABEL": {
+      "IDENTIFICATION": "Identification",
+      "IDENTIFIER": "Identifiant",
+      "NAME": "Nom",
+      "OTHER_NAMES": "Autres noms",
+      "LANGUAGES": "Langues",
+      "DESCRIPTION": "Description",
+      "FROM_DATE": "Date de début",
+      "TO_DATE": "Date de fin",
+      "MAX_LENGTH_10": "10 caractères maximum"
+    }
   }
 }

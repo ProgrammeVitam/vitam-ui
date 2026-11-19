@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnChanges, OnInit, SimpleChanges, input } from '@angular/core';
+import { Component, effect, inject, OnChanges, OnInit, SimpleChanges, input, signal } from '@angular/core';
 import type { DisplayObject } from '../../models/display-object.model';
 import { internationalizedKeys } from '../../services/display-object-helper.service';
 import { FavoriteEntryService } from '../../services/favorite-entry.service';
@@ -47,6 +47,7 @@ import { ListComponent } from '../list/list.component';
 import { PrimitiveComponent } from '../primitive/primitive.component';
 import { EmptyPipe } from '../../../pipes/empty.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ObjectViewerExpansionService } from '../../services/object-viewer-expansion.service';
 
 @Component({
   selector: 'vitamui-common-group',
@@ -57,8 +58,11 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class GroupComponent implements OnInit, OnChanges {
   private readonly layoutService = inject(LayoutService);
   private readonly favoriteEntryService = inject(FavoriteEntryService);
+  // Only provided by the object viewer, groups displayed by other components keep their own state.
+  private readonly expansionService = inject(ObjectViewerExpansionService, { optional: true });
 
   readonly displayObject = input<DisplayObject>(undefined);
+  readonly opened = signal(false);
 
   favoriteEntry: [key: string, value: any];
   favoritePath: string;
@@ -68,11 +72,20 @@ export class GroupComponent implements OnInit, OnChanges {
   readonly DisplayObjectType = DisplayObjectType;
   readonly entries = Object.entries as (value: object) => [string, string | string[]][];
 
+  constructor() {
+    effect(() => {
+      const expansion = this.expansionService?.expansion();
+      if (expansion) this.opened.set(expansion.opened);
+    });
+  }
+
   ngOnInit(): void {
     const displayObject = this.displayObject();
     if (displayObject.key !== 'Generalities') {
       displayObject.open = false;
     }
+    // Groups created after an "expand all" request, such as nested groups, follow it.
+    this.opened.set(this.expansionService?.expansion()?.opened ?? displayObject.open);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
