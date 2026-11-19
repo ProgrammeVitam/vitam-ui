@@ -47,9 +47,14 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitCommonService;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.referential.common.service.VitamBatchReportCommonService;
+import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
+import org.apache.pdfbox.text.TextPosition;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,6 +63,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -67,6 +73,9 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -92,6 +101,50 @@ class ProbativeValueServiceTest {
     public void setup() {
         mocks = MockitoAnnotations.openMocks(this);
         probativeValueService = new ProbativeValueService(vitamProbativeValueService, unitCommonService);
+    }
+
+    @Test
+    void shouldPreserveVitamDownloadFailure() throws VitamClientException {
+        VitamClientException cause = new VitamClientException("Vitam report unavailable");
+        when(vitamProbativeValueService.downloadBatchReport(any(), any())).thenThrow(cause);
+
+        InternalServerException exception = assertThrows(
+            InternalServerException.class,
+            () ->
+                probativeValueService.exportReport(
+                    new VitamContext(0),
+                    "Test",
+                    folder.getAbsolutePath(),
+                    new ByteArrayOutputStream()
+                )
+        );
+
+        assertSame(cause, exception.getCause());
+    }
+
+    @Test
+    void shouldPreserveReportReadFailure() throws VitamClientException {
+        IOException cause = new IOException("Report stream interrupted");
+        InputStream reportStream = new InputStream() {
+            @Override
+            public int read() throws IOException {
+                throw cause;
+            }
+        };
+        when(vitamProbativeValueService.downloadBatchReport(any(), any())).thenReturn(reportStream);
+
+        InternalServerException exception = assertThrows(
+            InternalServerException.class,
+            () ->
+                probativeValueService.exportReport(
+                    new VitamContext(0),
+                    "Test",
+                    folder.getAbsolutePath(),
+                    new ByteArrayOutputStream()
+                )
+        );
+
+        assertSame(cause, exception.getCause());
     }
 
     @Test
@@ -126,6 +179,7 @@ class ProbativeValueServiceTest {
         assertTrue(json.exists());
         File pdf = new File(workspace.getAbsolutePath(), operationId + ".pdf");
         assertTrue(pdf.exists());
+        assertPdfContent(pdf, "WARNING", "Pereire.txt", "Détail du rapport numéro 1", "Source comparable");
     }
 
     @Test
@@ -169,6 +223,7 @@ class ProbativeValueServiceTest {
         assertTrue(json.exists());
         File pdf = new File(workspace.getAbsolutePath(), operationId + ".pdf");
         assertTrue(pdf.exists());
+        assertPdfContent(pdf, "WARNING", "Détail du rapport numéro 4", "Source comparable");
     }
 
     @Test
@@ -203,6 +258,45 @@ class ProbativeValueServiceTest {
         assertTrue(json.exists());
         File pdf = new File(workspace.getAbsolutePath(), operationId + ".pdf");
         assertTrue(pdf.exists());
+        assertPdfContent(pdf, "KO", "Détail du rapport numéro 1");
+    }
+
+    /** Checks the rendered report content and catches text overflowing the printable page width. */
+    private void assertPdfContent(File pdf, String... expectedValues) throws IOException {
+        try (PDDocument document = Loader.loadPDF(pdf)) {
+            assertTrue(document.getNumberOfPages() > 0);
+            assertEquals("openhtmltopdf.com", document.getDocumentInformation().getProducer());
+            PDFTextStripper stripper = new PDFTextStripper() {
+                @Override
+                protected void processTextPosition(TextPosition position) {
+                    float rightMargin = document.getPage(getCurrentPageNo() - 1).getMediaBox().getWidth() - 30;
+                    assertTrue(position.getXDirAdj() >= 30, "Text crosses the left page margin");
+                    assertTrue(
+                        position.getXDirAdj() + position.getWidthDirAdj() <= rightMargin,
+                        "Text crosses the right page margin"
+                    );
+                    super.processTextPosition(position);
+                }
+            };
+            String text = stripper.getText(document);
+            assertTrue(text.contains("Relevé de valeur probante"));
+            assertTrue(text.contains("Résumé de l'opération"));
+            assertTrue(text.contains("Requête effectuée"));
+            for (String expected : expectedValues) {
+                assertTrue(text.contains(expected), "Missing PDF content: " + expected);
+            }
+            int pageCount = document.getNumberOfPages();
+            for (int pageNumber = 1; pageNumber <= pageCount; pageNumber++) {
+                stripper.setStartPage(pageNumber);
+                stripper.setEndPage(pageNumber);
+                String pageText = stripper.getText(document);
+                assertTrue(pageText.contains("Relevé de valeur probante"), "Missing header on page " + pageNumber);
+                assertTrue(
+                    pageText.contains(pageNumber + "/" + pageCount),
+                    "Missing page number " + pageNumber + "/" + pageCount
+                );
+            }
+        }
     }
 
     private InputStream buildVitamProbativeReport(String filename)

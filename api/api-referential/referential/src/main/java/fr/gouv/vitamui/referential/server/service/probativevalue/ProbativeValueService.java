@@ -83,8 +83,8 @@ import java.util.Optional;
 @Service
 public class ProbativeValueService {
 
-    private static final String TEMPLATE_PROBATIVEVALUEREPORT_ODT = "templates/probativevaluereport.ftl.odt";
     private static final String JSON_EXTENSION = ".json";
+    private static final String TEMPLATE_PROBATIVEVALUEREPORT_HTML = "templates/probativevaluereport.ftlh";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProbativeValueService.class);
 
@@ -92,6 +92,7 @@ public class ProbativeValueService {
 
     private final UnitCommonService unitCommonService;
 
+    /** Creates a report exporter using VITAM reports and archive metadata for display labels. */
     ProbativeValueService(
         VitamBatchReportCommonService vitamBatchReportCommonService,
         UnitCommonService unitCommonService
@@ -132,14 +133,15 @@ public class ProbativeValueService {
             File file = new File(workspaceOperationPath, operationId + JSON_EXTENSION);
             FileUtils.copyInputStreamToFile(reportStream, file);
         } catch (VitamClientException e) {
-            LOGGER.error("Error while getting probative value report from Vitam", e.getMessage());
+            LOGGER.error("Error while getting probative value report from Vitam", e);
             throw new InternalServerException("Unable to get Probative Value Report from VITAM", e);
         } catch (IOException e) {
-            LOGGER.error("Error on probative value report", e.getMessage());
+            LOGGER.error("Error on probative value report", e);
             throw new InternalServerException("Unable to create JSON from Probative Value Report", e);
         }
     }
 
+    /** Enriches the downloaded JSON report with archive labels and renders the bundled HTML template to PDF. */
     private void generatePDF(
         final VitamContext vitamContext,
         final String operationId,
@@ -153,20 +155,20 @@ public class ProbativeValueService {
             File pdffile = new File(workspaceOperationPath, operationId + ".pdf");
 
             try (
-                InputStream odtTemplate = getClass()
+                InputStream htmlTemplate = getClass()
                     .getClassLoader()
-                    .getResourceAsStream(TEMPLATE_PROBATIVEVALUEREPORT_ODT);
+                    .getResourceAsStream(TEMPLATE_PROBATIVEVALUEREPORT_HTML);
                 OutputStream pdfOutputStream = new java.io.FileOutputStream(pdffile);
             ) {
                 Map<String, Object> dataMap = new HashMap<>();
                 dataMap.put("report", report);
-                PdfFileGenerator.createPdf(odtTemplate, pdfOutputStream, dataMap);
+                PdfFileGenerator.createPdf(htmlTemplate, pdfOutputStream, dataMap);
             } catch (Exception e) {
-                LOGGER.error("Unable to create PDF from Probative Value Report template ODT", e.getMessage());
-                throw new InternalServerException("Unable to create PDF from Probative Value Report template ODT", e);
+                LOGGER.error("Unable to create PDF from Probative Value Report HTML template", e);
+                throw new InternalServerException("Unable to create PDF from Probative Value Report HTML template", e);
             }
         } catch (InvalidParseOperationException | VitamClientException exc) {
-            LOGGER.error("Unable to create PDF from Probative Value Report Json value", exc.getMessage());
+            LOGGER.error("Unable to create PDF from Probative Value Report Json value", exc);
             throw new InternalServerException("Unable to create PDF from Probative Value Report Json value", exc);
         }
     }
@@ -186,7 +188,7 @@ public class ProbativeValueService {
 
             SecureZipUtils.zipFiles(filesPaths, outputStream);
         } catch (Exception e) {
-            LOGGER.error("Unable to generate ZIP", e.getMessage());
+            LOGGER.error("Unable to generate ZIP", e);
             throw new InternalServerException("Unable to generate ZIP: %s".formatted(e.getMessage()), e);
         }
     }
