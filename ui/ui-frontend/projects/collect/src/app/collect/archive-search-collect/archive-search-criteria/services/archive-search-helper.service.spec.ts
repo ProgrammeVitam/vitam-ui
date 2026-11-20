@@ -178,6 +178,28 @@ describe('ArchiveSearchHelperService', () => {
       expect(shared.addSimpleSearchCriteriaSubject).not.toHaveBeenCalled();
     });
 
+    it('should set the keyLabel of a new criteria and keep it when a second value is added without one', () => {
+      service.addCriteria(
+        criterias,
+        keys,
+        0,
+        'Extended.Ext1',
+        { id: 'foo', value: 'foo' },
+        'label',
+        true,
+        CriteriaOperator.EQ,
+        SearchCriteriaTypeEnum.FIELDS,
+        false,
+        CriteriaDataType.STRING,
+        true,
+        'My external field (Extension)',
+      );
+      expect(criterias.get('Extended.Ext1').keyLabel).toEqual('My external field (Extension)');
+
+      add('Extended.Ext1', { id: 'bar', value: 'bar' }, SearchCriteriaTypeEnum.FIELDS);
+      expect(criterias.get('Extended.Ext1').keyLabel).toEqual('My external field (Extension)');
+    });
+
     it('should put NODES keys first and other keys last', () => {
       keys.push('TITLE');
       add('NODE', { id: 'n1', value: 'n1' }, SearchCriteriaTypeEnum.NODES);

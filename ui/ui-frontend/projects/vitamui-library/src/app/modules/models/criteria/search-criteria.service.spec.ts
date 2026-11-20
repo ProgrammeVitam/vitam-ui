@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { SchemaService } from '../../schema/schema.service';
 import { Collection } from '../schema/collection.enum';
 import { Schema } from '../schema/schema.interface';
@@ -54,7 +54,13 @@ import { SearchCriteriaService } from './search-criteria.service';
 describe('SearchCriteriaService', () => {
   let service: SearchCriteriaService;
   let schemaServiceMock: { getSchema: ReturnType<typeof vi.fn> };
-  const schema = [{ Path: 'Title' }] as unknown as Schema;
+  const schema = [
+    { Path: 'Title' },
+    { Path: 'Extended', Origin: 'INTERNAL', ShortName: 'Extension' },
+    { Path: 'Extended.Ext1', Origin: 'EXTERNAL', ShortName: 'My external field' },
+    { Path: 'Extended.Ext2', Origin: 'EXTERNAL' },
+    { Path: 'Internal1', Origin: 'INTERNAL', ShortName: 'InternalShort' },
+  ] as unknown as Schema;
 
   beforeEach(() => {
     schemaServiceMock = { getSchema: vi.fn().mockReturnValue(of(schema)) };
@@ -349,6 +355,46 @@ describe('SearchCriteriaService', () => {
         virtualNodeRealParentTitle: 'Parent title',
       });
       expect(criterion.labelElt).toEqual('/Folder/Sub folder/parent-id/Parent title');
+    });
+
+    it('should resolve a keyLabel from the ShortName of an EXTERNAL schema element and its parent', async () => {
+      const criterion = await single({ 'Extended.Ext1': 'value' });
+
+      expect(criterion.keyElt).toEqual('Extended.Ext1');
+      expect(criterion.keyLabel).toEqual('My external field (Extension)');
+    });
+
+    it('should not set a keyLabel for an INTERNAL schema element', async () => {
+      const criterion = await single({ Internal1: 'value' });
+
+      expect(criterion.keyElt).toEqual('Internal1');
+      expect(criterion.keyLabel).toBeUndefined();
+    });
+
+    it('should not set a keyLabel for an EXTERNAL schema element without a ShortName', async () => {
+      const criterion = await single({ 'Extended.Ext2': 'value' });
+
+      expect(criterion.keyElt).toEqual('Extended.Ext2');
+      expect(criterion.keyLabel).toBeUndefined();
+    });
+
+    it('should still build criteria without a keyLabel when the schema fails to load', async () => {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        providers: [
+          { provide: SchemaService, useValue: { getSchema: vi.fn().mockReturnValue(throwError(() => new Error('schema error'))) } },
+        ],
+      });
+      const freshService = TestBed.inject(SearchCriteriaService);
+
+      const criteria = await freshService.toSearchCriteria({ title: 'x' });
+
+      expect(criteria).toHaveLength(1);
+      expect(criteria[0].keyElt).toEqual('TITLE');
+      expect(criteria[0].keyLabel).toBeUndefined();
+
+      const second = await freshService.toSearchCriteria({ title: 'y' });
+      expect(second[0].keyLabel).toBeUndefined();
     });
   });
 });

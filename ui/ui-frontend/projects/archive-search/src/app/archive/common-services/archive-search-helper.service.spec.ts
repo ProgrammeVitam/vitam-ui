@@ -206,6 +206,30 @@ describe('ArchiveSearchHelperService', () => {
       expect(keys).toEqual(['TITLE']);
     });
 
+    it('should set the keyLabel of a new criteria and keep it when a second value is added without one', () => {
+      const map = new Map<string, CriteriaSearchCriteria>();
+
+      service.addCriteria(
+        map,
+        [],
+        0,
+        'Extended.Ext1',
+        { id: 'foo', value: 'foo' },
+        'label',
+        true,
+        CriteriaOperator.EQ,
+        SearchCriteriaTypeEnum.FIELDS,
+        false,
+        CriteriaDataType.STRING,
+        true,
+        'My external field (Extension)',
+      );
+      expect(map.get('Extended.Ext1').keyLabel).toEqual('My external field (Extension)');
+
+      add(map, ['Extended.Ext1'], 'Extended.Ext1', { id: 'bar', value: 'bar' });
+      expect(map.get('Extended.Ext1').keyLabel).toEqual('My external field (Extension)');
+    });
+
     it('should append a new value to an existing string criteria but ignore an already present value', () => {
       const map = toMap(criteria('TITLE', SearchCriteriaTypeEnum.FIELDS, [{ id: 'foo', value: 'foo' }]));
 
