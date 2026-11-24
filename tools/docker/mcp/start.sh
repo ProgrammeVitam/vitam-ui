@@ -11,7 +11,10 @@ PORT="${MCP_GATEWAY_PORT:-8811}"
 # which also provides them to .mcp.json and to the MCP servers started by Claude Code
 setting() {
   local name="$1"
-  [[ -f "$SETTINGS" ]] && python3 -c 'import json, sys; print(json.load(open(sys.argv[1])).get("env", {}).get(sys.argv[2], ""))' "$SETTINGS" "$name"
+  # A missing settings file must not stop the script (set -e) before the help message below
+  if [[ -f "$SETTINGS" ]]; then
+    python3 -c 'import json, sys; print(json.load(open(sys.argv[1])).get("env", {}).get(sys.argv[2], ""))' "$SETTINGS" "$name"
+  fi
 }
 SONARQUBE_TOKEN="$(setting SONARQUBE_TOKEN)"
 MCP_GATEWAY_AUTH_TOKEN="$(setting MCP_GATEWAY_AUTH_TOKEN)"
