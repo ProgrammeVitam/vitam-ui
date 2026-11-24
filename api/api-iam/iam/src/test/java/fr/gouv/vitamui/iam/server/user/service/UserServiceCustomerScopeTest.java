@@ -12,6 +12,8 @@ import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.logbook.service.AbstractLogbookIntegrationTest;
+import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
+import fr.gouv.vitamui.iam.server.user.converter.UserConverter;
 import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.server.user.domain.User;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
@@ -73,8 +75,8 @@ class UserServiceCustomerScopeTest extends AbstractLogbookIntegrationTest {
             null,
             securityServiceMock,
             null,
-            null,
-            null,
+            Mockito.mock(IamLogbookService.class),
+            Mockito.mock(UserConverter.class),
             null,
             null,
             null,
@@ -168,6 +170,29 @@ class UserServiceCustomerScopeTest extends AbstractLogbookIntegrationTest {
     }
 
     @Test
+    void the_provisioning_process_may_patch_a_generic_user() {
+        final User generic = IamServerUtilsTest.buildUser("generic", "generic@client-a.fr", "gA", CUSTOMER_A, LEVEL_A);
+        generic.setType(UserTypeEnum.GENERIC);
+        userRepository.save(generic);
+        withoutTheGenericRole();
+        asTheProvisioningProcess();
+
+        userService.patch(patchOf("generic", CUSTOMER_A, "firstname", "John"));
+
+        assertThat(userRepository.findById("generic")).get().extracting(User::getFirstname).isEqualTo("John");
+    }
+
+    @Test
+    void the_provisioning_process_may_not_set_a_user_as_generic() {
+        withoutTheGenericRole();
+        asTheProvisioningProcess();
+
+        assertThatThrownBy(() -> userService.patch(patchOf("callerA", CUSTOMER_A, "type", "GENERIC")))
+            .isInstanceOf(ForbiddenException.class)
+            .hasMessageContaining(ServicesData.ROLE_GENERIC_USERS);
+    }
+
+    @Test
     void the_type_of_another_customers_user_is_not_revealed_by_a_patch() {
         withoutTheGenericRole();
 
@@ -180,6 +205,10 @@ class UserServiceCustomerScopeTest extends AbstractLogbookIntegrationTest {
     private void withoutTheGenericRole() {
         Mockito.when(securityServiceMock.hasRole(ServicesData.ROLE_GENERIC_USERS)).thenReturn(false);
         Mockito.lenient().when(securityServiceMock.isLevelAllowed(Mockito.any())).thenReturn(true);
+    }
+
+    private void asTheProvisioningProcess() {
+        Mockito.when(securityServiceMock.hasRole(ServicesData.ROLE_PROVISIONING_USER)).thenReturn(true);
     }
 
     private static Map<String, Object> patchOf(
