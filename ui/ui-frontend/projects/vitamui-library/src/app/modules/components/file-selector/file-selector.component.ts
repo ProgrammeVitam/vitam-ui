@@ -478,7 +478,6 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
         },
       };
     }
-    console.debug(`Maximum size respected: ${size}/${maxSizeInBytes}`);
     return null;
   };
 
