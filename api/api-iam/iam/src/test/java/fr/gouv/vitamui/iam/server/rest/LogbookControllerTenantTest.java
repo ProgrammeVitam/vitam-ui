@@ -21,6 +21,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -67,7 +68,8 @@ class LogbookControllerTenantTest {
 
         when(securityService.getUser()).thenReturn(user);
         when(securityService.getProofTenantIdentifier()).thenReturn(PROOF_TENANT);
-        when(securityService.buildVitamContext(any())).thenReturn(new VitamContext(HEADER_TENANT));
+        // A context of the tenant it is built for, to check which one the search uses.
+        when(securityService.buildVitamContext(any())).thenAnswer(call -> new VitamContext(call.getArgument(0)));
         when(tenantService.findByIdentifier(any())).thenReturn(new TenantDto());
         // Reaching the Vitam call is enough for these tests.
         when(logbookService.selectOperations(any(), any())).thenThrow(new IllegalStateException("search done"));
@@ -117,5 +119,6 @@ class LogbookControllerTenantTest {
     private void assertSearchUses(final int tenant) throws Exception {
         assertThatThrownBy(() -> controller.findOperations(HEADER_TENANT, select, tenant)).hasMessage("search done");
         verify(securityService).buildVitamContext(tenant);
+        verify(logbookService).selectOperations(any(), argThat(context -> context.getTenantId() == tenant));
     }
 }

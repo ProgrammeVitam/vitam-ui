@@ -249,8 +249,11 @@ public class CustomerService extends AbstractResourceClientService<CustomerDto, 
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public CustomerDto update(final CustomerDto dto) {
-        // The previous OTP policy is needed to detect a change and propagate it to the users.
+        // The previous OTP policy is needed to detect a change and propagate it to the users. The customer and its
+        // users are updated in one transaction, as in patch: an interrupted propagation leaves the policy unchanged,
+        // so that a retry propagates it again.
         final OtpEnum previousOtp = find(dto.getId(), "Unable to update customer").getOtp();
         final CustomerDto updatedCustomerDto = super.update(dto);
         updateOtpforUsers(previousOtp, updatedCustomerDto.getOtp(), updatedCustomerDto.getId());

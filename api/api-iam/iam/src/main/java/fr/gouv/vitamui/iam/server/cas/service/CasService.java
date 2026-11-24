@@ -371,6 +371,21 @@ public class CasService {
 
     @Transactional
     public UserDto getUserByEmailAndCustomerId(final String email, final String customerId, final String optEmbedded) {
+        return getUserByEmailAndCustomerId(email, customerId, optEmbedded, null, null);
+    }
+
+    /**
+     * @param superUserEmail      for a subrogation, the super user validated at login, if known: the subrogation bound
+     *                            to the auth token must be his
+     * @param superUserCustomerId customer of that super user
+     */
+    private UserDto getUserByEmailAndCustomerId(
+        final String email,
+        final String customerId,
+        final String optEmbedded,
+        final String superUserEmail,
+        final String superUserCustomerId
+    ) {
         boolean loadFullProfile = checkEmbeddedOption(optEmbedded, CommonConstants.AUTH_TOKEN_PARAMETER);
         boolean isSubrogation = checkEmbeddedOption(optEmbedded, CommonConstants.SURROGATION_PARAMETER);
         boolean isApi = checkEmbeddedOption(optEmbedded, CommonConstants.API_PARAMETER);
@@ -381,7 +396,14 @@ public class CasService {
         }
         checkStatus(userDto.getStatus(), userDto.getEmail());
 
-        return loadFullUserProfileIfRequired(userDto, loadFullProfile, isSubrogation, isApi);
+        return loadFullUserProfileIfRequired(
+            userDto,
+            loadFullProfile,
+            isSubrogation,
+            isApi,
+            superUserEmail,
+            superUserCustomerId
+        );
     }
 
     private boolean checkEmbeddedOption(String optEmbedded, String authTokenParameter) {
@@ -396,7 +418,9 @@ public class CasService {
         UserDto user,
         boolean loadFullProfile,
         boolean subrogation,
-        boolean api
+        boolean api,
+        final String superUserEmail,
+        final String superUserCustomerId
     ) {
         if (!loadFullProfile) {
             return user;
@@ -407,9 +431,31 @@ public class CasService {
         final Subrogation activeSubrogation = subrogation
             ? subrogationRepository.findOneBySurrogateAndSurrogateCustomerId(user.getEmail(), user.getCustomerId())
             : null;
+        if (subrogation && superUserEmail != null) {
+            checkSubrogationOfSuperUser(activeSubrogation, superUserEmail, superUserCustomerId);
+        }
         generateAndAddAuthToken(authUserDto, activeSubrogation, subrogation, api);
         createEventsSubrogation(user, activeSubrogation);
         return authUserDto;
+    }
+
+    /**
+     * The subrogation bound to the auth token must be the one of the super user validated at login: between the
+     * validation and the token creation, the subrogation of the surrogate may have ended and another super user's
+     * subrogation may have started.
+     */
+    private void checkSubrogationOfSuperUser(
+        final Subrogation subrogation,
+        final String superUserEmail,
+        final String superUserCustomerId
+    ) {
+        final boolean ofSuperUser =
+            subrogation != null &&
+            StringUtils.equalsIgnoreCase(subrogation.getSuperUser(), superUserEmail) &&
+            StringUtils.equals(subrogation.getSuperUserCustomerId(), superUserCustomerId);
+        if (!ofSuperUser) {
+            throw new InvalidAuthenticationException("Subrogation unavailable for super user: " + superUserEmail);
+        }
     }
 
     /**
@@ -430,6 +476,18 @@ public class CasService {
         final String userIdentifier,
         final String optEmbedded
     ) {
+        return getUser(loginEmail, loginCustomerId, idp, userIdentifier, optEmbedded, null, null);
+    }
+
+    private UserDto getUser(
+        String loginEmail,
+        final String loginCustomerId,
+        final String idp,
+        final String userIdentifier,
+        final String optEmbedded,
+        final String superUserEmail,
+        final String superUserCustomerId
+    ) {
         // if the user depends on an external idp
         if (StringUtils.isNotBlank(idp)) {
             Optional<ProvidedUserDto> providedUser =
@@ -439,7 +497,13 @@ public class CasService {
             }
         }
 
-        return getUserByEmailAndCustomerId(loginEmail, loginCustomerId, optEmbedded);
+        return getUserByEmailAndCustomerId(
+            loginEmail,
+            loginCustomerId,
+            optEmbedded,
+            superUserEmail,
+            superUserCustomerId
+        );
     }
 
     /**
@@ -808,7 +872,9 @@ public class CasService {
             request.getLoginCustomerId(),
             request.getIdentityProviderId(),
             userIdentifier,
-            embedded
+            embedded,
+            request.getSuperUserEmail(),
+            request.getSuperUserCustomerId()
         );
         if (user == null) {
             throw new NotFoundException(USER_NOT_FOUND_MESSAGE + request.getLoginEmail());

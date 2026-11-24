@@ -9,6 +9,7 @@ import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
+import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
@@ -17,6 +18,7 @@ import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.commons.test.AbstractMongoTests;
 import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
+import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesRequestDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.server.config.ConverterConfig;
@@ -29,6 +31,7 @@ import fr.gouv.vitamui.iam.server.subrogation.domain.Subrogation;
 import fr.gouv.vitamui.iam.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.server.token.dao.TokenRepository;
+import fr.gouv.vitamui.iam.server.token.domain.Token;
 import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.server.user.domain.User;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
@@ -58,11 +61,15 @@ import java.util.Collection;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @ActiveProfiles("test")
 @Import({ ConverterConfig.class, LogbookConfiguration.class, VitamClientTestConfig.class })
 public class CasServiceIntegrationTest extends AbstractMongoTests {
+
+    private static final String SUPER_USER_EMAIL = "superUser@vitamui.com";
+    private static final String SUPER_USER_CUSTOMER_ID = "superUserCustomerId";
 
     private AutoCloseable mocks;
 
@@ -175,33 +182,7 @@ public class CasServiceIntegrationTest extends AbstractMongoTests {
 
     @Test
     void a_surrogation_token_is_bound_to_the_subrogation() {
-        final UserDto surrogate = new UserDto();
-        surrogate.setId("surrogateId");
-        surrogate.setEmail("surrogate@vitamui.com");
-        surrogate.setCustomerId("surrogateCustomerId");
-        surrogate.setType(UserTypeEnum.NOMINATIVE);
-        surrogate.setStatus(UserStatusEnum.ENABLED);
-        final AuthUserDto authUser = new AuthUserDto();
-        authUser.setId(surrogate.getId());
-        authUser.setType(UserTypeEnum.NOMINATIVE);
-        final Subrogation subro = new Subrogation();
-        subro.setId("subrogationId");
-        subro.setSuperUser("superUser@vitamui.com");
-        subro.setSuperUserCustomerId("superUserCustomerId");
-        subro.setSurrogate(surrogate.getEmail());
-        subro.setSurrogateCustomerId(surrogate.getCustomerId());
-        Mockito.when(
-            userService.findUserByEmailAndCustomerId(surrogate.getEmail(), surrogate.getCustomerId())
-        ).thenReturn(surrogate);
-        Mockito.when(userService.loadGroupAndProfiles(surrogate)).thenReturn(authUser);
-        // The start of subrogation event needs the proof tenant of the super user's customer: out of scope here.
-        casService.setIamLogbookService(Mockito.mock(IamLogbookService.class));
-        Mockito.when(
-            subrogationRepository.findOneBySurrogateAndSurrogateCustomerId(
-                surrogate.getEmail(),
-                surrogate.getCustomerId()
-            )
-        ).thenReturn(subro);
+        final UserDto surrogate = givenAnAcceptedSubrogationOf(SUPER_USER_EMAIL, SUPER_USER_CUSTOMER_ID);
 
         final AuthUserDto loggedUser = (AuthUserDto) casService.getUserByEmailAndCustomerId(
             surrogate.getEmail(),
@@ -215,6 +196,77 @@ public class CasServiceIntegrationTest extends AbstractMongoTests {
                 assertThat(token.isSurrogation()).isTrue();
                 assertThat(token.getSubrogationId()).isEqualTo("subrogationId");
             });
+    }
+
+    @Test
+    void a_surrogation_token_is_created_for_the_super_user_validated_at_login() {
+        final UserDto surrogate = givenAnAcceptedSubrogationOf(SUPER_USER_EMAIL, SUPER_USER_CUSTOMER_ID);
+        final UserDto superUser = new UserDto();
+        superUser.setEmail(SUPER_USER_EMAIL);
+        superUser.setCustomerId(SUPER_USER_CUSTOMER_ID);
+        superUser.setStatus(UserStatusEnum.ENABLED);
+        Mockito.when(userService.findUserByEmailAndCustomerId(SUPER_USER_EMAIL, SUPER_USER_CUSTOMER_ID)).thenReturn(
+            superUser
+        );
+
+        casService.buildPrincipalAttributes(subrogationLoginOf(surrogate, SUPER_USER_EMAIL));
+
+        assertThat(tokenRepository.findAll())
+            .singleElement()
+            .extracting(Token::getSubrogationId)
+            .isEqualTo("subrogationId");
+    }
+
+    @Test
+    void a_surrogation_token_is_refused_when_the_subrogation_is_of_another_super_user() {
+        // The subrogation validated at login has ended, and another super user's subrogation has started since.
+        final UserDto surrogate = givenAnAcceptedSubrogationOf("otherSuperUser@vitamui.com", SUPER_USER_CUSTOMER_ID);
+        final PrincipalAttributesRequestDto login = subrogationLoginOf(surrogate, SUPER_USER_EMAIL);
+
+        assertThatThrownBy(() -> casService.buildPrincipalAttributes(login)).isInstanceOf(
+            InvalidAuthenticationException.class
+        );
+        assertThat(tokenRepository.findAll()).isEmpty();
+    }
+
+    private UserDto givenAnAcceptedSubrogationOf(final String superUserEmail, final String superUserCustomerId) {
+        final UserDto surrogate = new UserDto();
+        surrogate.setId("surrogateId");
+        surrogate.setEmail("surrogate@vitamui.com");
+        surrogate.setCustomerId("surrogateCustomerId");
+        surrogate.setType(UserTypeEnum.NOMINATIVE);
+        surrogate.setStatus(UserStatusEnum.ENABLED);
+        final AuthUserDto authUser = new AuthUserDto();
+        authUser.setId(surrogate.getId());
+        authUser.setType(UserTypeEnum.NOMINATIVE);
+        final Subrogation subro = new Subrogation();
+        subro.setId("subrogationId");
+        subro.setSuperUser(superUserEmail);
+        subro.setSuperUserCustomerId(superUserCustomerId);
+        subro.setSurrogate(surrogate.getEmail());
+        subro.setSurrogateCustomerId(surrogate.getCustomerId());
+        Mockito.when(
+            userService.findUserByEmailAndCustomerId(surrogate.getEmail(), surrogate.getCustomerId())
+        ).thenReturn(surrogate);
+        Mockito.lenient().when(userService.loadGroupAndProfiles(surrogate)).thenReturn(authUser);
+        // The start of subrogation event needs the proof tenant of the super user's customer: out of scope here.
+        casService.setIamLogbookService(Mockito.mock(IamLogbookService.class));
+        Mockito.when(
+            subrogationRepository.findOneBySurrogateAndSurrogateCustomerId(
+                surrogate.getEmail(),
+                surrogate.getCustomerId()
+            )
+        ).thenReturn(subro);
+        return surrogate;
+    }
+
+    private static PrincipalAttributesRequestDto subrogationLoginOf(final UserDto surrogate, final String superUser) {
+        final PrincipalAttributesRequestDto request = new PrincipalAttributesRequestDto();
+        request.setLoginEmail(surrogate.getEmail());
+        request.setLoginCustomerId(surrogate.getCustomerId());
+        request.setSuperUserEmail(superUser);
+        request.setSuperUserCustomerId(SUPER_USER_CUSTOMER_ID);
+        return request;
     }
 
     private User prepareUserPwd(final String pwd) {
