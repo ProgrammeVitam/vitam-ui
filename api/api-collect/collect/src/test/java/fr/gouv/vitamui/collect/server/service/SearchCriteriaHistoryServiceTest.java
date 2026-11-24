@@ -30,15 +30,19 @@
 package fr.gouv.vitamui.collect.server.service;
 
 import fr.gouv.vitamui.collect.server.dao.SearchCriteriaHistoryRepository;
+import fr.gouv.vitamui.collect.server.domain.SearchCriteriaHistoryCollect;
+import fr.gouv.vitamui.collect.server.service.converters.SearchCriteriaHistoryConverter;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -47,8 +51,15 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -58,6 +69,9 @@ class SearchCriteriaHistoryServiceTest {
     SearchCriteriaHistoryService searchCriteriaHistoryService;
 
     @Mock
+    SequenceGeneratorService sequenceGeneratorService;
+
+    @Mock
     SecurityService securityService;
 
     @Mock
@@ -65,19 +79,93 @@ class SearchCriteriaHistoryServiceTest {
 
     final PodamFactory factory = new PodamFactoryImpl();
 
+    private SearchCriteriaHistoryService service;
+
+    @BeforeEach
+    void setUp() {
+        service = new SearchCriteriaHistoryService(
+            sequenceGeneratorService,
+            searchCriteriaHistoryRepository,
+            new SearchCriteriaHistoryConverter(),
+            securityService
+        );
+    }
+
     @Test
     void shouldGetSearchCriteriaHistoryDtosWithSuccess() {
         // GIVEN
         final AuthUserDto authUserDto = factory.manufacturePojo(AuthUserDto.class);
         ArrayList resultedValues = factory.manufacturePojo(ArrayList.class, SearchCriteriaHistoryDto.class);
         final QueryDto queryDto = new QueryDto();
-        Mockito.when(securityService.getUser()).thenReturn(authUserDto);
-        Mockito.when(searchCriteriaHistoryService.getAll(queryDto)).thenReturn(resultedValues);
+        when(securityService.getUser()).thenReturn(authUserDto);
+        when(searchCriteriaHistoryService.getAll(queryDto)).thenReturn(resultedValues);
 
         // WHEN
         List<SearchCriteriaHistoryDto> results = searchCriteriaHistoryService.getSearchCriteriaHistoryDtos();
 
         // THEN
         assertNotNull(results);
+    }
+
+    @Test
+    void update_should_reject_search_criteria_history_of_another_user() {
+        final SearchCriteriaHistoryCollect stored = new SearchCriteriaHistoryCollect();
+        stored.setId("history-id");
+        stored.setUserId("other-user");
+        when(securityService.getUser()).thenReturn(currentUser());
+        when(searchCriteriaHistoryRepository.findById("history-id")).thenReturn(Optional.of(stored));
+        final SearchCriteriaHistoryDto dto = new SearchCriteriaHistoryDto();
+        dto.setId("history-id");
+        dto.setUserId("other-user");
+
+        assertThatThrownBy(() -> service.update(dto)).isInstanceOf(NotFoundException.class);
+        verify(searchCriteriaHistoryRepository, never()).save(any());
+    }
+
+    @Test
+    void update_should_keep_current_user_as_owner() {
+        final SearchCriteriaHistoryCollect stored = new SearchCriteriaHistoryCollect();
+        stored.setId("history-id");
+        stored.setUserId("current-user");
+        when(securityService.getUser()).thenReturn(currentUser());
+        when(searchCriteriaHistoryRepository.findById("history-id")).thenReturn(Optional.of(stored));
+        when(searchCriteriaHistoryRepository.existsById("history-id")).thenReturn(true);
+        when(searchCriteriaHistoryRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        final SearchCriteriaHistoryDto dto = new SearchCriteriaHistoryDto();
+        dto.setId("history-id");
+        dto.setUserId("other-user");
+
+        assertThat(service.update(dto).getUserId()).isEqualTo("current-user");
+    }
+
+    @Test
+    void delete_should_reject_search_criteria_history_of_another_user() {
+        final SearchCriteriaHistoryCollect stored = new SearchCriteriaHistoryCollect();
+        stored.setId("history-id");
+        stored.setUserId("other-user");
+        when(securityService.getUser()).thenReturn(currentUser());
+        when(searchCriteriaHistoryRepository.findById("history-id")).thenReturn(Optional.of(stored));
+
+        assertThatThrownBy(() -> service.delete("history-id")).isInstanceOf(NotFoundException.class);
+        verify(searchCriteriaHistoryRepository, never()).deleteById(any());
+    }
+
+    @Test
+    void delete_should_remove_search_criteria_history_of_current_user() {
+        final SearchCriteriaHistoryCollect stored = new SearchCriteriaHistoryCollect();
+        stored.setId("history-id");
+        stored.setUserId("current-user");
+        when(securityService.getUser()).thenReturn(currentUser());
+        when(searchCriteriaHistoryRepository.findById("history-id")).thenReturn(Optional.of(stored));
+
+        service.delete("history-id");
+
+        verify(searchCriteriaHistoryRepository).deleteById("history-id");
+    }
+
+    private AuthUserDto currentUser() {
+        final AuthUserDto user = new AuthUserDto();
+        user.setIdentifier("current-user");
+        return user;
     }
 }

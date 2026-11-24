@@ -41,6 +41,7 @@ import fr.gouv.vitamui.archives.search.server.searchcriteria.dao.SearchCriteriaH
 import fr.gouv.vitamui.archives.search.server.searchcriteria.domain.SearchCriteriaHistory;
 import fr.gouv.vitamui.archives.search.server.utils.Utils;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
@@ -53,17 +54,22 @@ import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class SearchCriteriaHistoryServiceTest {
 
     private SearchCriteriaHistoryService service;
 
-    private final SearchCriteriaHistoryRepository ssearchCriteriaHistoryRepository = mock(
+    private final SearchCriteriaHistoryRepository searchCriteriaHistoryRepository = mock(
         SearchCriteriaHistoryRepository.class
     );
 
@@ -79,7 +85,7 @@ class SearchCriteriaHistoryServiceTest {
     public void setup() throws Exception {
         service = new SearchCriteriaHistoryService(
             sequenceGeneratorService,
-            ssearchCriteriaHistoryRepository,
+            searchCriteriaHistoryRepository,
             searchCriteriaHistoryConverter,
             securityService
         );
@@ -95,7 +101,7 @@ class SearchCriteriaHistoryServiceTest {
         VitamUIUtils.copyProperties(searchCriteriaHistoryDto, other);
         other.setId(UUID.randomUUID().toString());
 
-        when(ssearchCriteriaHistoryRepository.save(ArgumentMatchers.any())).thenReturn(other);
+        when(searchCriteriaHistoryRepository.save(ArgumentMatchers.any())).thenReturn(other);
 
         final AuthUserDto user = Utils.buildAuthUserDto();
 
@@ -112,5 +118,67 @@ class SearchCriteriaHistoryServiceTest {
 
         Assertions.assertNotNull("SearchCriteriaHistoryDto id should be defined", created.getId());
         assertThat(result).isEqualToComparingFieldByField(created);
+    }
+
+    @Test
+    void update_should_reject_search_criteria_history_of_another_user() {
+        final SearchCriteriaHistory stored = new SearchCriteriaHistory();
+        stored.setId("history-id");
+        stored.setUserId("other-user");
+        when(securityService.getUser()).thenReturn(currentUser());
+        when(searchCriteriaHistoryRepository.findById("history-id")).thenReturn(Optional.of(stored));
+        final SearchCriteriaHistoryDto dto = new SearchCriteriaHistoryDto();
+        dto.setId("history-id");
+        dto.setUserId("other-user");
+
+        assertThatThrownBy(() -> service.update(dto)).isInstanceOf(NotFoundException.class);
+        verify(searchCriteriaHistoryRepository, never()).save(any());
+    }
+
+    @Test
+    void update_should_keep_current_user_as_owner() {
+        final SearchCriteriaHistory stored = new SearchCriteriaHistory();
+        stored.setId("history-id");
+        stored.setUserId("current-user");
+        when(securityService.getUser()).thenReturn(currentUser());
+        when(searchCriteriaHistoryRepository.findById("history-id")).thenReturn(Optional.of(stored));
+        when(searchCriteriaHistoryRepository.existsById("history-id")).thenReturn(true);
+        when(searchCriteriaHistoryRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        final SearchCriteriaHistoryDto dto = new SearchCriteriaHistoryDto();
+        dto.setId("history-id");
+        dto.setUserId("other-user");
+
+        assertThat(service.update(dto).getUserId()).isEqualTo("current-user");
+    }
+
+    @Test
+    void delete_should_reject_search_criteria_history_of_another_user() {
+        final SearchCriteriaHistory stored = new SearchCriteriaHistory();
+        stored.setId("history-id");
+        stored.setUserId("other-user");
+        when(securityService.getUser()).thenReturn(currentUser());
+        when(searchCriteriaHistoryRepository.findById("history-id")).thenReturn(Optional.of(stored));
+
+        assertThatThrownBy(() -> service.delete("history-id")).isInstanceOf(NotFoundException.class);
+        verify(searchCriteriaHistoryRepository, never()).deleteById(any());
+    }
+
+    @Test
+    void delete_should_remove_search_criteria_history_of_current_user() {
+        final SearchCriteriaHistory stored = new SearchCriteriaHistory();
+        stored.setId("history-id");
+        stored.setUserId("current-user");
+        when(securityService.getUser()).thenReturn(currentUser());
+        when(searchCriteriaHistoryRepository.findById("history-id")).thenReturn(Optional.of(stored));
+
+        service.delete("history-id");
+
+        verify(searchCriteriaHistoryRepository).deleteById("history-id");
+    }
+
+    private AuthUserDto currentUser() {
+        final AuthUserDto user = new AuthUserDto();
+        user.setIdentifier("current-user");
+        return user;
     }
 }

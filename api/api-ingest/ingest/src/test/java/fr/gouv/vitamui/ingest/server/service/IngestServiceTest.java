@@ -47,9 +47,18 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
+import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
+import fr.gouv.vitamui.commons.api.domain.GroupDto;
+import fr.gouv.vitamui.commons.api.domain.ProfileDto;
+import fr.gouv.vitamui.commons.api.domain.Role;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
+import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractCommonService;
+import fr.gouv.vitamui.iam.security.authentication.AuthenticationToken;
 import fr.gouv.vitamui.iam.security.service.ExternalParametersService;
+import fr.gouv.vitamui.iam.security.service.SecurityService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,11 +68,15 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.InputStream;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -84,6 +97,12 @@ class IngestServiceTest {
     @Spy
     private ObjectMapper objectMapper = new ObjectMapper();
 
+    @Mock
+    private SecurityService securityService;
+
+    @Mock
+    private IngestExternalClient ingestExternalClient;
+
     @InjectMocks
     private IngestService ingestService;
 
@@ -92,7 +111,7 @@ class IngestServiceTest {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         ingestAccessContractService = new IngestAccessContractService(accessContractCommonService, objectMapper);
         VitamContext vitamContext = new VitamContext(1).setAccessContract("ContratTNR");
-        doReturn(vitamContext).when(externalParametersService).buildVitamContextFromExternalParam();
+        lenient().doReturn(vitamContext).when(externalParametersService).buildVitamContextFromExternalParam();
     }
 
     /**
@@ -119,5 +138,79 @@ class IngestServiceTest {
         Assertions.assertDoesNotThrow(
             () -> ingestService.getAllPaginated(0, 10, Optional.empty(), Optional.empty(), Optional.of(criteria))
         );
+    }
+
+    @Test
+    void streamingUpload_should_require_scheme_import_role_for_scheme_workflows() {
+        authenticateWith(ServicesData.ROLE_CREATE_INGEST);
+
+        for (final String workflow : List.of("HOLDING_SCHEME", "FILING_SCHEME")) {
+            Assertions.assertThrows(
+                ForbiddenException.class,
+                () -> ingestService.streamingUpload(InputStream.nullInputStream(), workflow, "RESUME")
+            );
+        }
+        verifyNoInteractions(ingestExternalClient);
+    }
+
+    @Test
+    void streamingUpload_should_require_ingest_role_for_other_workflows() {
+        authenticateWith(ServicesData.ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE);
+
+        Assertions.assertThrows(
+            ForbiddenException.class,
+            () -> ingestService.streamingUpload(InputStream.nullInputStream(), "DEFAULT_WORKFLOW", "RESUME")
+        );
+        verifyNoInteractions(ingestExternalClient);
+    }
+
+    @Test
+    void streamingUpload_should_ignore_roles_granted_on_other_tenants() {
+        // The user has ROLE_CREATE_INGEST on another tenant, but only the scheme import role on the current one
+        final AuthUserDto user = new AuthUserDto();
+        final GroupDto profileGroup = new GroupDto();
+        profileGroup.setProfiles(
+            List.of(
+                profile(1, ServicesData.ROLE_CREATE_INGEST),
+                profile(2, ServicesData.ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE)
+            )
+        );
+        user.setProfileGroup(profileGroup);
+        when(securityService.getAuthentication()).thenReturn(
+            new AuthenticationToken(user, null, null, List.of(ServicesData.ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE))
+        );
+
+        Assertions.assertThrows(
+            ForbiddenException.class,
+            () -> ingestService.streamingUpload(InputStream.nullInputStream(), "DEFAULT_WORKFLOW", "RESUME")
+        );
+        verifyNoInteractions(ingestExternalClient);
+    }
+
+    @Test
+    void streamingUpload_should_send_the_upload_when_the_role_is_granted() throws Exception {
+        authenticateWith(ServicesData.ROLE_CREATE_INGEST);
+        when(securityService.getTenantIdentifier()).thenReturn(1);
+        when(ingestExternalClient.ingest(any(VitamContext.class), any(InputStream.class), any(), any())).thenReturn(
+            new RequestResponseOK<Void>()
+        );
+
+        ingestService.streamingUpload(InputStream.nullInputStream(), "DEFAULT_WORKFLOW", "RESUME");
+
+        verify(ingestExternalClient).ingest(any(VitamContext.class), any(InputStream.class), any(), any());
+    }
+
+    private void authenticateWith(final String... roles) {
+        when(securityService.getAuthentication()).thenReturn(
+            new AuthenticationToken(new AuthUserDto(), null, null, List.of(roles))
+        );
+    }
+
+    private static ProfileDto profile(final int tenantIdentifier, final String roleName) {
+        final ProfileDto profile = new ProfileDto();
+        profile.setTenantIdentifier(tenantIdentifier);
+        profile.setEnabled(true);
+        profile.setRoles(List.of(new Role(roleName)));
+        return profile;
     }
 }

@@ -208,8 +208,8 @@ public class LogbookService {
 
         return toHistoryEvents(response, eventTypesFilter)
             .stream()
-            // Only keep events matching collection name
-            .filter(e -> collectionName.equalsIgnoreCase(e.getObIdReq()))
+            // Only keep events matching identifier and collection name
+            .filter(e -> identifier.equals(e.getObId()) && collectionName.equalsIgnoreCase(e.getObIdReq()))
             .collect(Collectors.toList());
     }
 
