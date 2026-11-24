@@ -34,21 +34,71 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { Component, Input, NO_ERRORS_SCHEMA, forwardRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ControlValueAccessor, FormBuilder, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
+import { Context, VitamUILibraryModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { SecurityProfileService } from '../../../security-profile/security-profile.service';
 import { ContextService } from '../../context.service';
 import { ContextInformationTabComponent } from './context-information-tab.component';
 
-// TODO fix tests
-xdescribe('ContextInformationTabComponent', () => {
+/* eslint-disable @angular-eslint/component-selector */
+@Component({
+  selector: 'vitamui-datepicker',
+  template: '',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DatepickerStubComponent),
+      multi: true,
+    },
+  ],
+  standalone: false,
+})
+class DatepickerStubComponent implements ControlValueAccessor {
+  @Input() label: any;
+  @Input() outputType: any;
+  @Input() format: any;
+  @Input() disabled: boolean;
+
+  writeValue() {}
+
+  registerOnChange() {}
+
+  registerOnTouched() {}
+}
+
+describe('ContextInformationTabComponent', () => {
   let component: ContextInformationTabComponent;
   let fixture: ComponentFixture<ContextInformationTabComponent>;
+  let patchedData: Partial<Context>;
+
+  const context: Context = {
+    id: 'vitam_id',
+    identifier: 'CT-000001',
+    name: 'Name',
+    status: 'ACTIVE',
+    creationDate: '2024-01-01T00:00:00.000Z',
+    lastUpdate: '2024-01-01T00:00:00.000Z',
+    activationDate: '2024-01-01T00:00:00.000Z',
+    deactivationDate: '',
+    enableControl: true as unknown as string,
+    securityProfile: 'SP-000001',
+    permissions: [],
+  };
+
+  const contextServiceMock = {
+    patch: (data: Partial<Context>) => {
+      patchedData = data;
+      return of(null);
+    },
+  };
 
   beforeEach(async () => {
     const securityProfileServiceMock = {
@@ -56,24 +106,41 @@ xdescribe('ContextInformationTabComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, VitamUICommonTestModule, MatSelectModule],
-      declarations: [ContextInformationTabComponent],
+      imports: [
+        ReactiveFormsModule,
+        VitamUICommonTestModule,
+        VitamUILibraryModule,
+        MatSelectModule,
+        NoopAnimationsModule,
+        TranslateModule.forRoot(),
+      ],
+      declarations: [ContextInformationTabComponent, DatepickerStubComponent],
       providers: [
         FormBuilder,
         { provide: SecurityProfileService, useValue: securityProfileServiceMock },
-        { provide: ContextService, useValue: {} },
+        { provide: ContextService, useValue: contextServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
+    patchedData = undefined;
     fixture = TestBed.createComponent(ContextInformationTabComponent);
     component = fixture.componentInstance;
+    component.context = context;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should send id, identifier and name when patching', () => {
+    component.form.get('name').setValue('New Name');
+
+    component.prepareSubmit().subscribe();
+
+    expect(patchedData).toEqual({ id: 'vitam_id', identifier: 'CT-000001', name: 'New Name' });
   });
 });
