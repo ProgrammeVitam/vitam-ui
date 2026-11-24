@@ -24,6 +24,11 @@ export default defineConfig([
         { type: 'library', pattern: 'projects/vitamui-library/**/*' },
         { type: 'app', pattern: 'projects/!(vitamui-library)/**/*', capture: ['project'] }
       ],
+      // Public entry points of the library: the only library files apps may import,
+      // through the 'vitamui-library' and 'vitamui-library/testing' path aliases.
+      'boundaries/files': [
+        { category: 'public-api', pattern: 'projects/vitamui-library/{src/public-api.ts,testing/src/public_api.ts}' }
+      ],
       // Resolve extensionless TS imports and the 'vitamui-library' path alias
       // (mapped in tsconfig.json), otherwise cross-project imports stay invisible.
       'import/resolver': {
@@ -43,8 +48,6 @@ export default defineConfig([
             from: { element: { type: 'app' } },
             allow: {
               // Same project only (captured folder must match).
-              // NB: 'vitamui-library' package imports resolve to dist/ (external),
-              // so they are unaffected — only relative paths land on the element.
               to: [
                 { element: { type: 'app', captured: { project: '{{ from.element.captured.project }}' } } }
               ]
@@ -60,13 +63,21 @@ export default defineConfig([
           },
           {
             // Enforce public entry points: any import resolving inside the
-            // library element is a relative path into its sources — apps must
+            // library element is a deep import into its sources — apps must
             // use 'vitamui-library' / 'vitamui-library/testing' instead.
             from: { element: { type: 'app' } },
             disallow: {
               to: [{ element: { type: 'library' } }]
             },
-            message: 'Import vitamui-library through its public entry points ("vitamui-library", "vitamui-library/testing"), not via relative paths.'
+            message: 'Import vitamui-library through its public entry points ("vitamui-library", "vitamui-library/testing"), not via deep or relative paths.'
+          },
+          {
+            // ...except its public entry points, which the 'vitamui-library' path
+            // aliases resolve to (declared last so that it overrides the policy above).
+            from: { element: { type: 'app' } },
+            allow: {
+              to: [{ element: { type: 'library' }, file: { categories: 'public-api' } }]
+            }
           }
         ]
       }]
