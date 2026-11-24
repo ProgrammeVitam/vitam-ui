@@ -1,12 +1,12 @@
-# Procédure de Montée de version VitamUI V10.0
+# Procédure de Montée de version VitamUI V10.1
 
-> Attention: Veuillez appliquer les procédures spécifiques à chacune des versions précédentes en fonction de la version de départ selon la suite suivante: V7.1 -> V8.0 -> V8.1 -> V9.0 -> V9.1 -> V10.0.
+> Attention: Veuillez appliquer les procédures spécifiques à chacune des versions précédentes en fonction de la version de départ selon la suite suivante: V7.1 -> V8.0 -> V8.1 -> V9.0 -> V9.1 -> V10.0 -> V10.1.
 
 ## Adaptation des sources de déploiement ansible
 
 ### Vérifications de sécurité activées par défaut
 
-À partir de la V10.0, plusieurs vérifications (clés SSH, certificats TLS) sont activées par défaut. Les points suivants sont à contrôler avant de déployer avec les sources de la V10.0.
+À partir de la V10.1, plusieurs vérifications (clés SSH, certificats TLS) sont activées par défaut. Les points suivants sont à contrôler avant de déployer avec les sources de la V10.1.
 
 #### Vérification des clés SSH des hôtes (`ansible.cfg`)
 
@@ -76,7 +76,7 @@ ansible-playbook -i environments/<inventaire> ansible-vitamui-extra/bootstrap.ym
 
 ### Lancement du master playbook VitamUI
 
-> Cette opération doit être effectuée avec les sources de déploiement de la V10.0.
+> Cette opération doit être effectuée avec les sources de déploiement de la V10.1.
 
 ```sh
 ansible-playbook -i environments/<inventaire> ansible-vitamui/vitamui.yml --ask-vault-pass
