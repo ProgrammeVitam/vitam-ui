@@ -39,7 +39,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -60,6 +59,8 @@ import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doCallRealMethod;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class CustomerServiceTest {
@@ -283,7 +284,7 @@ class CustomerServiceTest {
 
         customerService.update(customerToUpdate);
 
-        Mockito.verify(userService).updateOtpForUsersByCustomerId(true, "id");
+        verify(userService).updateOtpForUsersByCustomerId(true, "id");
     }
 
     @Test
@@ -293,7 +294,7 @@ class CustomerServiceTest {
         customerToUpdate.setGdprAlert(true);
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> customerService.update(customerToUpdate));
-        Mockito.verify(customerRepository, Mockito.never()).save(any());
+        verify(customerRepository, never()).save(any());
     }
 
     private CustomerDto givenStoredCustomerUpdatedTo(final OtpEnum storedOtp, final OtpEnum requestedOtp) {

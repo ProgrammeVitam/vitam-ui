@@ -87,27 +87,27 @@ class IamUserAuthentificationServiceTokenTest {
     void a_subrogation_token_without_subrogation_is_rejected() {
         givenSubrogationToken(null);
 
-        assertThatThrownBy(() -> service.getUserFromHttpContext(callWithToken(TOKEN_VALUE))).isInstanceOf(
-            BadCredentialsException.class
-        );
+        final PreAuthenticatedAuthenticationToken call = callWithToken(TOKEN_VALUE);
+
+        assertThatThrownBy(() -> service.getUserFromHttpContext(call)).isInstanceOf(BadCredentialsException.class);
     }
 
     @Test
     void a_subrogation_token_with_a_subrogation_not_accepted_is_rejected() {
         givenSubrogationToken(subrogation(SubrogationStatusEnum.CREATED, inMinutes(30)));
 
-        assertThatThrownBy(() -> service.getUserFromHttpContext(callWithToken(TOKEN_VALUE))).isInstanceOf(
-            BadCredentialsException.class
-        );
+        final PreAuthenticatedAuthenticationToken call = callWithToken(TOKEN_VALUE);
+
+        assertThatThrownBy(() -> service.getUserFromHttpContext(call)).isInstanceOf(BadCredentialsException.class);
     }
 
     @Test
     void a_subrogation_token_with_an_expired_subrogation_is_rejected() {
         givenSubrogationToken(subrogation(SubrogationStatusEnum.ACCEPTED, inMinutes(-1)));
 
-        assertThatThrownBy(() -> service.getUserFromHttpContext(callWithToken(TOKEN_VALUE))).isInstanceOf(
-            BadCredentialsException.class
-        );
+        final PreAuthenticatedAuthenticationToken call = callWithToken(TOKEN_VALUE);
+
+        assertThatThrownBy(() -> service.getUserFromHttpContext(call)).isInstanceOf(BadCredentialsException.class);
     }
 
     @Test
@@ -116,9 +116,9 @@ class IamUserAuthentificationServiceTokenTest {
         newSubrogation.setId("new-subrogation-id");
         givenSubrogationToken(newSubrogation);
 
-        assertThatThrownBy(() -> service.getUserFromHttpContext(callWithToken(TOKEN_VALUE))).isInstanceOf(
-            BadCredentialsException.class
-        );
+        final PreAuthenticatedAuthenticationToken call = callWithToken(TOKEN_VALUE);
+
+        assertThatThrownBy(() -> service.getUserFromHttpContext(call)).isInstanceOf(BadCredentialsException.class);
     }
 
     @Test
@@ -128,9 +128,9 @@ class IamUserAuthentificationServiceTokenTest {
         superUser.setStatus(UserStatusEnum.DISABLED);
         when(userService.findUserByEmailAndCustomerId(SUPER_USER_EMAIL, SUPER_USER_CUSTOMER_ID)).thenReturn(superUser);
 
-        assertThatThrownBy(() -> service.getUserFromHttpContext(callWithToken(TOKEN_VALUE))).isInstanceOf(
-            BadCredentialsException.class
-        );
+        final PreAuthenticatedAuthenticationToken call = callWithToken(TOKEN_VALUE);
+
+        assertThatThrownBy(() -> service.getUserFromHttpContext(call)).isInstanceOf(BadCredentialsException.class);
     }
 
     private void givenSubrogationToken(final Subrogation subrogation) {
@@ -183,9 +183,9 @@ class IamUserAuthentificationServiceTokenTest {
         user.setStatus(status);
         when(userService.findUserById("account-id")).thenReturn(user);
 
-        assertThatThrownBy(() -> service.getUserFromHttpContext(callWithToken(TOKEN_VALUE))).isInstanceOf(
-            BadCredentialsException.class
-        );
+        final PreAuthenticatedAuthenticationToken call = callWithToken(TOKEN_VALUE);
+
+        assertThatThrownBy(() -> service.getUserFromHttpContext(call)).isInstanceOf(BadCredentialsException.class);
     }
 
     private PreAuthenticatedAuthenticationToken callWithToken(final String userToken) {

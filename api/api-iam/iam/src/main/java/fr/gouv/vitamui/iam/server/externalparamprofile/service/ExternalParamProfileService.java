@@ -61,7 +61,6 @@ import fr.gouv.vitamui.iam.server.externalParameters.service.ExternalParametersS
 import fr.gouv.vitamui.iam.server.externalparamprofile.converter.ExternalParamProfileConverter;
 import fr.gouv.vitamui.iam.server.externalparamprofile.dao.ExternalParamProfileRepository;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
-import fr.gouv.vitamui.iam.server.profile.converter.ProfileConverter;
 import fr.gouv.vitamui.iam.server.profile.service.ProfileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,7 +89,6 @@ public class ExternalParamProfileService {
     private final IamLogbookService iamLogbookService;
     private final ExternalParamProfileRepository externalParamProfileRepository;
     private final LogbookService logbookService;
-    private final ProfileConverter profileConverter;
 
     private static final String NAME = "name";
     private static final String DESCRIPTION = "description";
@@ -100,6 +98,7 @@ public class ExternalParamProfileService {
     private static final String BULK_OPERATIONS_THRESHOLD = "bulkOperationsThreshold";
     private static final String ID_PROFILE = "idProfile";
     private static final String EXTERNAL_PARAM_PROFILE = "externalparamprofile";
+    private static final String TENANT_IDENTIFIER = "tenantIdentifier";
     /**
      * Keys a caller may filter the list on.
      */
@@ -109,7 +108,7 @@ public class ExternalParamProfileService {
         ENABLED,
         "identifier",
         "applicationName",
-        "tenantIdentifier"
+        TENANT_IDENTIFIER
     );
 
     public ExternalParamProfileService(
@@ -118,8 +117,7 @@ public class ExternalParamProfileService {
         final SecurityService securityService,
         final IamLogbookService iamLogbookService,
         final ExternalParamProfileRepository externalParamProfileRepository,
-        final LogbookService logbookService,
-        final ProfileConverter profileConverter
+        final LogbookService logbookService
     ) {
         this.externalParametersService = externalParametersService;
         this.securityService = securityService;
@@ -127,7 +125,6 @@ public class ExternalParamProfileService {
         this.iamLogbookService = iamLogbookService;
         this.externalParamProfileRepository = externalParamProfileRepository;
         this.logbookService = logbookService;
-        this.profileConverter = profileConverter;
     }
 
     public PaginatedValuesDto<ExternalParamProfileDto> getAllPaginated(
@@ -143,7 +140,7 @@ public class ExternalParamProfileService {
         // The tenant and level restrictions are in the root AND query, so the operator of the requested
         // criteria only applies inside it.
         final QueryDto queryDto = QueryDto.andQuery()
-            .addCriterion("tenantIdentifier", tenantIdentifier, CriterionOperator.EQUALS);
+            .addCriterion(TENANT_IDENTIFIER, tenantIdentifier, CriterionOperator.EQUALS);
         if (!securityService.userIsRootLevel()) {
             // Same level restriction as the profile reads (ProfileService): sub-levels or the user's own profiles.
             final QueryDto levelQuery = QueryDto.orQuery()
@@ -426,7 +423,7 @@ public class ExternalParamProfileService {
             // The profile patch runs the usual profile checks and journalizes the profile changes.
             profilePatch.put("id", profileDto.getId());
             profilePatch.put("customerId", profileDto.getCustomerId());
-            profilePatch.put("tenantIdentifier", profileDto.getTenantIdentifier());
+            profilePatch.put(TENANT_IDENTIFIER, profileDto.getTenantIdentifier());
             profileService.patch(profilePatch);
         }
     }

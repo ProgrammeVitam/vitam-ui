@@ -281,9 +281,12 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
         }
 
         // The external parameters of a profile are linked when the profile is created and cannot be changed.
-        if (partialDto.containsKey("externalParamId")) {
+        if (partialDto.containsKey(EXTERNAL_PARAM_ID_KEY)) {
             Assert.isTrue(
-                StringUtils.equals(profile.getExternalParamId(), CastUtils.toString(partialDto.get("externalParamId"))),
+                StringUtils.equals(
+                    profile.getExternalParamId(),
+                    CastUtils.toString(partialDto.get(EXTERNAL_PARAM_ID_KEY))
+                ),
                 message + ": externalParamId cannot be modified"
             );
         }
@@ -338,7 +341,7 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
                     );
                     profile.setRoles(roles);
                     break;
-                case "externalParamId":
+                case EXTERNAL_PARAM_ID_KEY:
                     profile.setExternalParamId(CastUtils.toString(entry.getValue()));
                     break;
                 default:

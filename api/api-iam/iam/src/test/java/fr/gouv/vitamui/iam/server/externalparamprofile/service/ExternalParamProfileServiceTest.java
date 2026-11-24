@@ -23,7 +23,6 @@ import fr.gouv.vitamui.iam.server.externalParameters.service.ExternalParametersS
 import fr.gouv.vitamui.iam.server.externalparamprofile.dao.ExternalParamProfileRepository;
 import fr.gouv.vitamui.iam.server.group.domain.Group;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
-import fr.gouv.vitamui.iam.server.profile.converter.ProfileConverter;
 import fr.gouv.vitamui.iam.server.profile.domain.Profile;
 import fr.gouv.vitamui.iam.server.profile.service.ProfileService;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
@@ -74,8 +73,6 @@ class ExternalParamProfileServiceTest {
 
     private final LogbookService logbookService = mock(LogbookService.class);
 
-    private final ProfileConverter profileConverter = new ProfileConverter();
-
     @BeforeEach
     public void setup() throws Exception {
         externalParamProfileService = new ExternalParamProfileService(
@@ -84,8 +81,7 @@ class ExternalParamProfileServiceTest {
             securityService,
             iamLogbookService,
             externalParamProfileRepository,
-            logbookService,
-            profileConverter
+            logbookService
         );
 
         final CustomSequence customSequence = new CustomSequence();

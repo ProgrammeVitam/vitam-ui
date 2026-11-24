@@ -131,16 +131,14 @@ class GroupAndProfileCustomerScopeTest extends AbstractLogbookIntegrationTest {
     void group_levels_are_scoped_to_the_callers_customer() {
         final List<String> levels = groupService.getLevels(Optional.empty());
 
-        assertThat(levels).contains(LEVEL_A);
-        assertThat(levels).doesNotContain(LEVEL_B);
+        assertThat(levels).contains(LEVEL_A).doesNotContain(LEVEL_B);
     }
 
     @Test
     void profile_levels_are_scoped_to_the_callers_customer() {
         final List<String> levels = profileService.getLevels(Optional.empty());
 
-        assertThat(levels).contains(LEVEL_A);
-        assertThat(levels).doesNotContain(LEVEL_B);
+        assertThat(levels).contains(LEVEL_A).doesNotContain(LEVEL_B);
     }
 
     @Test

@@ -115,8 +115,7 @@ class UserServiceCustomerScopeTest extends AbstractLogbookIntegrationTest {
     void levels_are_scoped_to_the_callers_customer() {
         final List<String> levels = userService.getLevels(Optional.empty());
 
-        assertThat(levels).contains(LEVEL_A);
-        assertThat(levels).doesNotContain(LEVEL_B);
+        assertThat(levels).contains(LEVEL_A).doesNotContain(LEVEL_B);
     }
 
     @Test
@@ -139,7 +138,9 @@ class UserServiceCustomerScopeTest extends AbstractLogbookIntegrationTest {
         userRepository.save(generic);
         withoutTheGenericRole();
 
-        assertThatThrownBy(() -> userService.patch(patchOf("generic", CUSTOMER_A, "firstname", "John")))
+        final Map<String, Object> patch = patchOf("generic", CUSTOMER_A, "firstname", "John");
+
+        assertThatThrownBy(() -> userService.patch(patch))
             .isInstanceOf(ForbiddenException.class)
             .hasMessageContaining(ServicesData.ROLE_GENERIC_USERS);
     }
@@ -148,7 +149,9 @@ class UserServiceCustomerScopeTest extends AbstractLogbookIntegrationTest {
     void patching_the_type_to_generic_requires_the_generic_role() {
         withoutTheGenericRole();
 
-        assertThatThrownBy(() -> userService.patch(patchOf("callerA", CUSTOMER_A, "type", "GENERIC")))
+        final Map<String, Object> patch = patchOf("callerA", CUSTOMER_A, "type", "GENERIC");
+
+        assertThatThrownBy(() -> userService.patch(patch))
             .isInstanceOf(ForbiddenException.class)
             .hasMessageContaining(ServicesData.ROLE_GENERIC_USERS);
     }
@@ -187,7 +190,9 @@ class UserServiceCustomerScopeTest extends AbstractLogbookIntegrationTest {
         withoutTheGenericRole();
         asTheProvisioningProcess();
 
-        assertThatThrownBy(() -> userService.patch(patchOf("callerA", CUSTOMER_A, "type", "GENERIC")))
+        final Map<String, Object> patch = patchOf("callerA", CUSTOMER_A, "type", "GENERIC");
+
+        assertThatThrownBy(() -> userService.patch(patch))
             .isInstanceOf(ForbiddenException.class)
             .hasMessageContaining(ServicesData.ROLE_GENERIC_USERS);
     }
@@ -197,7 +202,9 @@ class UserServiceCustomerScopeTest extends AbstractLogbookIntegrationTest {
         withoutTheGenericRole();
 
         // The user of the other customer is not found, whatever its type.
-        assertThatThrownBy(() -> userService.patch(patchOf(otherUserId, CUSTOMER_B, "type", "GENERIC")))
+        final Map<String, Object> patch = patchOf(otherUserId, CUSTOMER_B, "type", "GENERIC");
+
+        assertThatThrownBy(() -> userService.patch(patch))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("is not allowed");
     }

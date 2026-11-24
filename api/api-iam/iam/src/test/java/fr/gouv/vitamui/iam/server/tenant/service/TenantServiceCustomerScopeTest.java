@@ -26,7 +26,6 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 /**
@@ -92,7 +91,7 @@ class TenantServiceCustomerScopeTest extends AbstractLogbookIntegrationTest {
 
         // Caller: authenticated on customer A, holds ROLE_UPDATE_TENANTS but NOT the all-customers one.
         when(securityService.getCustomerId()).thenReturn(CUSTOMER_A);
-        when(securityService.hasRole(eq(ServicesData.ROLE_UPDATE_TENANTS_ALL_CUSTOMERS))).thenReturn(false);
+        when(securityService.hasRole(ServicesData.ROLE_UPDATE_TENANTS_ALL_CUSTOMERS)).thenReturn(false);
         when(securityService.getTenantIdentifier()).thenReturn(TENANT_A_IDENTIFIER);
         when(securityService.getProofTenantIdentifier()).thenReturn(TENANT_A_IDENTIFIER);
         when(securityService.getHttpContext()).thenReturn(

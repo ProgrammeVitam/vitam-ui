@@ -600,8 +600,7 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
         final SecurityService securityService,
         final IamLogbookService iamLogbookService,
         final ExternalParamProfileRepository externalParamProfileRepository,
-        final LogbookService logbookService,
-        final ProfileConverter profileConverter
+        final LogbookService logbookService
     ) {
         return new ExternalParamProfileService(
             externalParametersService,
@@ -609,8 +608,7 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
             securityService,
             iamLogbookService,
             externalParamProfileRepository,
-            logbookService,
-            profileConverter
+            logbookService
         );
     }
 
