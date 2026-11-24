@@ -152,6 +152,9 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
   }
 
   handleFilesSelection(files: FileList | File[]) {
+    // Some browsers fire an empty "change" event when the native file picker is cancelled; skip to avoid wrongly resetting the control's errors.
+    if (!files || files.length === 0) return;
+
     this.control.markAsTouched();
     if (!this.multiple && (this.control.value?.length > 0 || files.length > 1)) {
       this.resetInput();
