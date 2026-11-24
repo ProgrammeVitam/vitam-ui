@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/lib/components/discussions/discussion/discussion.component.scss"],
+  "sourcesContent": [":host {\n  display: flex;\n  flex-direction: column;\n  gap: 20px;\n  flex: 1;\n  min-height: 0;\n}\n\nvitamui-content-divider {\n  background-color: var(--vitamui-white);\n}\n\n.scroll-wrapper {\n  overflow-y: auto;\n  scrollbar-color: var(--vitamui-secondary) var(--vitamui-secondary-50);\n  scrollbar-width: thin;\n}\n"],
+  "mappings": "AAAA,MACE,QAAA,KACA,eAAA,OACA,IAAA,KACA,KAAA,EACA,WAAA,EAGF,wBACE,iBAAA,IAAA,iBAGF,CAAA,eACE,WAAA,KACA,gBAAA,IAAA,qBAAA,IAAA,wBACA,gBAAA",
+  "names": []
+}

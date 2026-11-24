@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/components/information-detail/information-detail.component.scss"],
+  "sourcesContent": [":host {\n  .style {\n    border-radius: 5px;\n    &.primary {\n      background-color: var(--vitamui-primary-50);\n    }\n    &.secondary {\n      background-color: var(--vitamui-secondary-50);\n    }\n    &.danger {\n      background-color: var(--vitamui-red-50);\n    }\n    &.success {\n      background-color: var(--vitamui-green-50);\n    }\n    &.warning {\n      background-color: var(--vitamui-orange-50);\n    }\n    &.neutral {\n      background-color: var(--vitamui-grey-50);\n    }\n  }\n}\n\n.word-break {\n  word-break: break-all;\n}\n\n.detData {\n  padding-left: 14px;\n}\n"],
+  "mappings": "AACE,MAAA,CAAA,MAAA,cACE,IACA,MAAA,CAFF,KAEE,CAAA,QACE,iBAAA,IAAA,sBAEF,MAAA,CALF,KAKE,CAAA,UACE,iBAAA,IAAA,wBAEF,MAAA,CARF,KAQE,CAAA,OACE,iBAAA,IAAA,kBAEF,MAAA,CAXF,KAWE,CAAA,QACE,iBAAA,IAAA,oBAEF,MAAA,CAdF,KAcE,CAAA,QACE,iBAAA,IAAA,qBAEF,MAAA,CAjBF,KAiBE,CAAA,QACE,iBAAA,IAAA,mBAKN,CAAA,WACE,WAAA,UAGF,CAAA,QACE,aAAA",
+  "names": []
+}

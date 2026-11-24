@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["angular:styles/component:css;ac526feb61e4fba7924b661fed73e45ecc42d783bcbf6a71e90607faed9f6af1;/home/runner/work/vitam-ui/vitam-ui/ui/ui-frontend/projects/design-system/src/app/components/organisms/discussion/design-system-discussion.component.ts"],
+  "sourcesContent": ["\n    .bg-grey {\n      background: var(--vitamui-grey-400);\n    }\n  "],
+  "mappings": "AACI,CAAC,QACC,WAAY,IAAI,mBAClB",
+  "names": []
+}

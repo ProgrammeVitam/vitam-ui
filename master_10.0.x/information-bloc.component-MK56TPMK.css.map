@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/components/information-bloc/information-bloc.component.scss"],
+  "sourcesContent": [":host {\n  &.primary {\n    --color: var(--vitamui-primary);\n    --background-color: var(--vitamui-primary-50);\n  }\n  &.secondary {\n    --color: var(--vitamui-secondary);\n    --background-color: var(--vitamui-secondary-50);\n  }\n  &.danger {\n    --color: var(--vitamui-red);\n    --background-color: var(--vitamui-red-50);\n  }\n  &.success {\n    --color: var(--vitamui-green);\n    --background-color: var(--vitamui-green-50);\n  }\n  &.warning {\n    --color: var(--vitamui-orange);\n    --background-color: var(--vitamui-orange-50);\n  }\n  &.neutral {\n    --color: var(--vitamui-grey);\n    --background-color: var(--vitamui-grey-50);\n  }\n\n  .style {\n    border-radius: 10px;\n    background-color: var(--background-color);\n\n    .vitamui-icon {\n      color: var(--color);\n    }\n\n    &.bordered {\n      border: 1px solid var(--color);\n    }\n  }\n}\n"],
+  "mappings": "AACE,KAAA,CAAA,QACE,SAAA,IAAA,mBACA,oBAAA,IAAA,sBAEF,KAAA,CAAA,UACE,SAAA,IAAA,qBACA,oBAAA,IAAA,wBAEF,KAAA,CAAA,OACE,SAAA,IAAA,eACA,oBAAA,IAAA,kBAEF,KAAA,CAAA,QACE,SAAA,IAAA,iBACA,oBAAA,IAAA,oBAEF,KAAA,CAAA,QACE,SAAA,IAAA,kBACA,oBAAA,IAAA,qBAEF,KAAA,CAAA,QACE,SAAA,IAAA,gBACA,oBAAA,IAAA,mBAGF,MAAA,CAAA,MAzBA,cA0BE,KACA,iBAAA,IAAA,oBAEA,MAAA,CAJF,MAIE,CAAA,aACE,MAAA,IAAA,SAGF,MAAA,CARF,KAQE,CAAA,SACE,OAAA,IAAA,MAAA,IAAA",
+  "names": []
+}

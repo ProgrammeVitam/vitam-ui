@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/components/collapse/collapse.component.scss"],
+  "sourcesContent": [":host.collapse-container {\n  .collapse-title {\n    width: 100%;\n    margin-bottom: 10px;\n    cursor: pointer;\n  }\n\n  .collapse-content {\n    overflow: hidden;\n  }\n}\n"],
+  "mappings": "AACE,KAAA,CAAA,mBAAA,CAAA,eACE,MAAA,KACA,cAAA,KACA,OAAA,QAGF,KAAA,CANA,mBAMA,CAAA,iBACE,SAAA",
+  "names": []
+}

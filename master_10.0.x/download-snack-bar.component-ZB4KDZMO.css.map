@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/components/download-snack-bar/download-snack-bar.component.scss"],
+  "sourcesContent": ["// TODO Refactor\n\n:host {\n  width: 100%;\n  background: var(--vitamui-primary);\n  padding: 14px 24px;\n}\n\n.download-label {\n  padding: 15px;\n}\n\n.download-bar-container {\n  height: 100%;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n}\n\n.download-bar-content {\n  font-size: 14px;\n  font-weight: bold;\n  color: white;\n  display: flex;\n  align-items: center;\n  justify-content: flex-start;\n  flex-grow: 1;\n\n  > i.material-icons {\n    margin-right: 10px;\n  }\n}\n\n.download-progress-bar-container {\n  width: 100%;\n  max-width: 300px;\n  padding: 0 15px;\n}\n\n.cancel-link {\n  background: none;\n  border: none;\n  color: white;\n  text-decoration: underline;\n  outline: none;\n  cursor: pointer;\n  padding: 10px;\n  font-size: 14px;\n  font-weight: bold;\n}\n"],
+  "mappings": "AAEA,MACE,MAAA,KACA,WAAA,IAAA,mBAFF,QAGE,KAAA,KAGF,CAAA,eANA,QAOE,KAGF,CAAA,uBACE,OAAA,KACA,QAAA,KACA,YAAA,OACA,gBAAA,cAGF,CAAA,qBACE,UAAA,KACA,YAAA,IACA,MAAA,KACA,QAAA,KACA,YAAA,OACA,gBAAA,WACA,UAAA,EAEA,CATF,oBASE,CAAA,CAAA,CAAA,eACE,aAAA,KAIJ,CAAA,gCACE,MAAA,KACA,UAAA,MAjCF,QAkCE,EAAA,KAGF,CAAA,YACE,WAAA,KACA,OAAA,KACA,MAAA,KACA,gBAAA,UACA,QAAA,KACA,OAAA,QA3CF,QA4CE,KACA,UAAA,KACA,YAAA",
+  "names": []
+}
