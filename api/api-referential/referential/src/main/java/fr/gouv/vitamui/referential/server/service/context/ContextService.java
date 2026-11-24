@@ -234,6 +234,9 @@ public class ContextService extends AbstractService {
         ObjectNode propertiesToUpdate = JsonHandler.createObjectNode();
 
         // Transform Vitam-UI fields into Vitam fields
+        if (partialDto.getName() != null) {
+            propertiesToUpdate.put("Name", partialDto.getName());
+        }
         if (partialDto.getStatus() != null) {
             propertiesToUpdate.put("Status", partialDto.getStatus());
         }
