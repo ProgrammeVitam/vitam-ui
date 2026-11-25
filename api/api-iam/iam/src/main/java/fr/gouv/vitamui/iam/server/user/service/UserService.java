@@ -155,6 +155,9 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
+    /** Refusal message for callers without ROLE_GENERIC_USERS, which does not name the missing role. */
+    public static final String GENERIC_USERS_NOT_ALLOWED = "generic users are not allowed";
+
     private static final String TYPE_KEY = "type";
     private static final String LEVEL_KEY = "level";
     private static final String EMAIL_KEY = "email";
@@ -861,7 +864,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
             user.getType() == UserTypeEnum.GENERIC &&
             (changesType || !securityService.hasRole(ServicesData.ROLE_PROVISIONING_USER));
         if (requestedType == UserTypeEnum.GENERIC || modifiesGenericUser) {
-            throw new ForbiddenException(message + ": generic users require " + ServicesData.ROLE_GENERIC_USERS);
+            throw new ForbiddenException(message + ": " + GENERIC_USERS_NOT_ALLOWED);
         }
     }
 

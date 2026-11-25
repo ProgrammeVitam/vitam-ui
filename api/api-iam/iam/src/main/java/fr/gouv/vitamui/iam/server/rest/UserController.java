@@ -335,7 +335,7 @@ public class UserController implements CrudController<UserDto> {
      */
     private void checkGenericUserCreationAllowed(final UserTypeEnum requestedType, final String message) {
         if (requestedType == UserTypeEnum.GENERIC && !securityService.hasRole(ServicesData.ROLE_GENERIC_USERS)) {
-            throw new ForbiddenException(message + ": generic users require " + ServicesData.ROLE_GENERIC_USERS);
+            throw new ForbiddenException(message + ": " + UserService.GENERIC_USERS_NOT_ALLOWED);
         }
     }
 }

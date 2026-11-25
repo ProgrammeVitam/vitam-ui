@@ -142,7 +142,7 @@ class UserServiceCustomerScopeTest extends AbstractLogbookIntegrationTest {
 
         assertThatThrownBy(() -> userService.patch(patch))
             .isInstanceOf(ForbiddenException.class)
-            .hasMessageContaining(ServicesData.ROLE_GENERIC_USERS);
+            .hasMessageContaining(UserService.GENERIC_USERS_NOT_ALLOWED);
     }
 
     @Test
@@ -153,7 +153,7 @@ class UserServiceCustomerScopeTest extends AbstractLogbookIntegrationTest {
 
         assertThatThrownBy(() -> userService.patch(patch))
             .isInstanceOf(ForbiddenException.class)
-            .hasMessageContaining(ServicesData.ROLE_GENERIC_USERS);
+            .hasMessageContaining(UserService.GENERIC_USERS_NOT_ALLOWED);
     }
 
     @Test
@@ -169,7 +169,7 @@ class UserServiceCustomerScopeTest extends AbstractLogbookIntegrationTest {
 
         assertThatThrownBy(() -> userService.update(dto))
             .isInstanceOf(ForbiddenException.class)
-            .hasMessageContaining(ServicesData.ROLE_GENERIC_USERS);
+            .hasMessageContaining(UserService.GENERIC_USERS_NOT_ALLOWED);
     }
 
     @Test
@@ -194,7 +194,7 @@ class UserServiceCustomerScopeTest extends AbstractLogbookIntegrationTest {
 
         assertThatThrownBy(() -> userService.patch(patch))
             .isInstanceOf(ForbiddenException.class)
-            .hasMessageContaining(ServicesData.ROLE_GENERIC_USERS);
+            .hasMessageContaining(UserService.GENERIC_USERS_NOT_ALLOWED);
     }
 
     @Test
@@ -209,7 +209,7 @@ class UserServiceCustomerScopeTest extends AbstractLogbookIntegrationTest {
 
         assertThatThrownBy(() -> userService.patch(patch))
             .isInstanceOf(ForbiddenException.class)
-            .hasMessageContaining(ServicesData.ROLE_GENERIC_USERS);
+            .hasMessageContaining(UserService.GENERIC_USERS_NOT_ALLOWED);
         assertThat(userRepository.findById("generic")).get().extracting(User::getType).isEqualTo(UserTypeEnum.GENERIC);
     }
 
