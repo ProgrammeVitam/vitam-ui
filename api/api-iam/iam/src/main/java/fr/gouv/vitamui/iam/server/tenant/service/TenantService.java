@@ -308,11 +308,9 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
         final Tenant tenant = findById(tenantDto.getId());
 
         final String message = "Unable to update tenant " + tenantDto.getId();
-        // Authorize the stored tenant's customer before any mutation, and forbid replacing it with a
-        // customer the caller may not manage (requires ROLE_UPDATE_TENANTS_ALL_CUSTOMERS otherwise).
+        // Authorize the stored tenant's customer before any mutation: the customer of a tenant cannot be changed.
         checkCanAccessCustomer(tenant.getCustomerId(), message);
-        checkCanAccessCustomer(tenantDto.getCustomerId(), message);
-        checkCustomer(tenantDto.getCustomerId(), message);
+        checkSameCustomer(tenant, tenantDto.getCustomerId(), message);
         checkIsReadonly(tenant.isReadonly(), message);
         checkIdentifier(tenant.getIdentifier(), tenantDto.getIdentifier(), message);
         checkOwner(tenant, tenantDto.getOwnerId(), message);
@@ -351,7 +349,7 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
 
         final String customerId = CastUtils.toString(partialDto.get(CUSTOMER_ID));
         if (customerId != null) {
-            checkCustomer(customerId, message);
+            checkSameCustomer(tenant, customerId, message);
         }
 
         checkIsReadonly(tenant.isReadonly(), message);
@@ -714,6 +712,13 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
         return (
             securityService.hasRole(ServicesData.ROLE_UPDATE_TENANTS_ALL_CUSTOMERS) ||
             customerId.equals(securityService.getCustomerId())
+        );
+    }
+
+    private void checkSameCustomer(final Tenant tenant, final String customerId, final String message) {
+        Assert.isTrue(
+            StringUtils.equals(tenant.getCustomerId(), customerId),
+            message + ": the customer of a tenant cannot be changed"
         );
     }
 

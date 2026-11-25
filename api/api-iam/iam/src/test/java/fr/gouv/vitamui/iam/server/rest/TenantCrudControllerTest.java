@@ -337,9 +337,9 @@ public final class TenantCrudControllerTest implements CrudControllerTest {
     }
 
     @Test
-    void testUpdateFailsAsCustomerDoesNotExist() throws Exception {
+    void testUpdateFailsAsCustomerIsChanged() throws Exception {
         final TenantDto dto = buildTenantDto();
-        dto.setCustomerId("Bad customerId");
+        dto.setCustomerId("Another customerId");
 
         prepareServices();
 
@@ -347,7 +347,10 @@ public final class TenantCrudControllerTest implements CrudControllerTest {
             controller.update(dto.getId(), dto);
             fail("should fail");
         } catch (final IllegalArgumentException e) {
-            assertEquals("Unable to update tenant tenantId: customer does not exist", e.getMessage());
+            assertEquals(
+                "Unable to update tenant tenantId: the customer of a tenant cannot be changed",
+                e.getMessage()
+            );
         }
     }
 

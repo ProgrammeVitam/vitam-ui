@@ -131,6 +131,20 @@ class TenantServiceCustomerScopeTest extends AbstractLogbookIntegrationTest {
         assertThat(stored.getCustomerId()).isEqualTo(CUSTOMER_B);
     }
 
+    @Test
+    void the_customer_of_a_tenant_cannot_be_changed() {
+        final Map<String, Object> patch = new HashMap<>();
+        patch.put("id", "tenantA");
+        patch.put("customerId", CUSTOMER_B);
+        patch.put("name", "Moved to customer B");
+
+        assertThatThrownBy(() -> service.patch(patch))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("the customer of a tenant cannot be changed");
+
+        assertThat(tenantRepository.findById("tenantA")).get().extracting(Tenant::getCustomerId).isEqualTo(CUSTOMER_A);
+    }
+
     private Customer buildCustomer(final String id, final String identifier, final String code) {
         final Customer customer = IamServerUtilsTest.buildCustomer();
         customer.setId(id);
