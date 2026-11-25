@@ -104,6 +104,27 @@ describe('GroupComponent', () => {
     expect(fixture.componentInstance.opened()).toBe(false);
   });
 
+  it('should follow the opening state of a new display object', () => {
+    const fixture = createComponent();
+    const generalities = { ...group('Generalities', []), open: true };
+
+    fixture.componentRef.setInput('displayObject', generalities);
+    fixture.detectChanges();
+    expect(fixture.componentInstance.opened()).toBe(true);
+
+    fixture.componentRef.setInput('displayObject', displayObject());
+    fixture.detectChanges();
+    expect(fixture.componentInstance.opened()).toBe(false);
+  });
+
+  it('should toggle the group', () => {
+    const fixture = createComponent();
+
+    fixture.componentInstance.toggle();
+
+    expect(fixture.componentInstance.opened()).toBe(true);
+  });
+
   it('should open the group and its nested groups when all are expanded', async () => {
     const fixture = createComponent([ObjectViewerExpansionService]);
 

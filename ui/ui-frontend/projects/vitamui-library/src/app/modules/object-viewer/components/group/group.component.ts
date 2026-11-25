@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, effect, inject, OnChanges, OnInit, SimpleChanges, input, signal } from '@angular/core';
+import { Component, effect, inject, OnChanges, SimpleChanges, input, signal } from '@angular/core';
 import type { DisplayObject } from '../../models/display-object.model';
 import { internationalizedKeys } from '../../services/display-object-helper.service';
 import { FavoriteEntryService } from '../../services/favorite-entry.service';
@@ -55,7 +55,7 @@ import { ObjectViewerExpansionService } from '../../services/object-viewer-expan
   styleUrls: ['./group.component.scss'],
   imports: [DataComponent, NgTemplateOutlet, AccordionComponent, ListComponent, PrimitiveComponent, EmptyPipe, TranslatePipe],
 })
-export class GroupComponent implements OnInit, OnChanges {
+export class GroupComponent implements OnChanges {
   private readonly layoutService = inject(LayoutService);
   private readonly favoriteEntryService = inject(FavoriteEntryService);
   // Only provided by the object viewer, groups displayed by other components keep their own state.
@@ -79,19 +79,12 @@ export class GroupComponent implements OnInit, OnChanges {
     });
   }
 
-  ngOnInit(): void {
-    const displayObject = this.displayObject();
-    if (displayObject.key !== 'Generalities') {
-      displayObject.open = false;
-    }
-    // Groups created after an "expand all" request, such as nested groups, follow it.
-    this.opened.set(this.expansionService?.expansion()?.opened ?? displayObject.open);
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     const { displayObject } = changes;
 
     if (displayObject) {
+      this.initOpened();
+
       const displayObjectValue = this.displayObject();
       if (!displayObjectValue.key) {
         this.display = 'ROWS';
@@ -106,6 +99,17 @@ export class GroupComponent implements OnInit, OnChanges {
   }
 
   toggle(): void {
-    this.displayObject().open = !this.displayObject().open;
+    this.opened.update((opened) => !opened);
+    this.displayObject().open = this.opened();
+  }
+
+  /** Opening state of a new display object: only Generalities are opened, unless every group was expanded or collapsed. */
+  private initOpened(): void {
+    const displayObject = this.displayObject();
+    if (displayObject.key !== 'Generalities') {
+      displayObject.open = false;
+    }
+    // Groups created after an "expand all" request, such as nested groups, follow it.
+    this.opened.set(this.expansionService?.expansion()?.opened ?? displayObject.open);
   }
 }
