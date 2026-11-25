@@ -122,7 +122,7 @@ export class DisplayObjectHelperService {
     // Fields mapped by the template are displayed by the template only, the data structure is used for the other ones.
     const unmappedData = (template || [])
       .filter((displayRule) => displayRule.Path)
-      .reduce((acc, displayRule) => this.omitPath(acc, displayRule.Path.split('.')), data);
+      .reduce((acc, displayRule) => this.omitPath(acc, this.dataStructureService.pathKeys(displayRule.Path)).value, data);
     const dataDisplayObject = this.dataDrivenDisplayObject(unmappedData, configuration);
     const templateDisplayObject = this.templateDrivenDisplayObject(data, template, configuration);
     const dataDisplayObjectValue = dataDisplayObject?.value || {};
@@ -154,19 +154,39 @@ export class DisplayObjectHelperService {
     return template;
   }
 
-  /** Returns a copy of data without the given path, keeping keys order and removing the groups left empty. */
-  private omitPath(data: any, [key, ...subPath]: string[]): any {
-    if (!data || !this.typeService.isGroup(data) || !(key in data)) return data;
+  /**
+   * Returns a copy of data without the value at the given path, keeping keys order, and whether a value was removed.
+   * Groups emptied by the removal are removed too, groups that were already empty are kept.
+   * List items are updated in place so that the indices of the other items do not change: a list item is never removed,
+   * an item whose fields were all removed is kept as an empty group.
+   */
+  private omitPath(data: any, [key, ...subPath]: string[]): { value: any; removed: boolean } {
+    const unchanged = { value: data, removed: false };
+    if (data === null || typeof data !== 'object' || !(key in data)) return unchanged;
 
-    return Object.entries(data).reduce((acc, [currentKey, value]) => {
-      if (currentKey !== key) return { ...acc, [currentKey]: value };
-      if (!subPath.length) return acc;
+    if (this.typeService.isList(data)) {
+      const item = subPath.length ? this.omitPath(data[key], subPath) : unchanged;
+      if (!item.removed) return unchanged;
 
-      const subData = this.omitPath(value, subPath);
-      const isEmptyGroup = this.typeService.isGroup(subData) && Object.keys(subData).length === 0;
+      return { value: data.map((value: any, index: number) => (String(index) === key ? item.value : value)), removed: true };
+    }
 
-      return isEmptyGroup ? acc : { ...acc, [currentKey]: subData };
-    }, {});
+    const entries = Object.entries(data);
+    if (!subPath.length) {
+      return { value: Object.fromEntries(entries.filter(([currentKey]) => currentKey !== key)), removed: true };
+    }
+
+    const subData = this.omitPath(data[key], subPath);
+    if (!subData.removed) return unchanged;
+
+    const isEmptyGroup = this.typeService.isGroup(subData.value) && Object.keys(subData.value).length === 0;
+    const value = Object.fromEntries(
+      entries
+        .filter(([currentKey]) => currentKey !== key || !isEmptyGroup)
+        .map(([currentKey, currentValue]) => [currentKey, currentKey === key ? subData.value : currentValue]),
+    );
+
+    return { value, removed: true };
   }
 
   private mapValueToUiPath(data: any, displayRule: DisplayRule) {
