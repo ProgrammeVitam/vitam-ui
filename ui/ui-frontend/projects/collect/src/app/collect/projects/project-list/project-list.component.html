@@ -1,132 +1,128 @@
-<div class="row">
-  <div class="col">
-    <div vitamuiCommonInfiniteScroll>
-      <table>
-        <thead>
-          <tr class="vitamui-table-rows">
-            <th>
-              <!-- icon -->
-              <i class="vitamui-icon vitamui-icon-ic40-flux"></i>
-            </th>
-            <th>
-              <!-- inttitulé -->
-              <div class="row flex-nowrap">
-                <span class="no-wrap">{{ 'COLLECT.FIELD_PROJECT_TITLE' | translate }}</span>
-                <vitamui-order-by-button
-                  [orderByKey]="messageIdentifier"
-                  [(direction)]="direction"
-                  [(orderBy)]="column"
-                  (directionChange)="changeDirection($event)"
-                  (orderByChange)="changeColumn($event)"
-                  (orderChange)="sortTable()"
-                ></vitamui-order-by-button>
-              </div>
-            </th>
-            <th>
-              <!-- service versant -->
-              <div class="row flex-nowrap">
-                <span class="no-wrap">{{ 'COLLECT.FIELD_SUBMISSION_AGENCY_IDENTIFIER' | translate }}</span>
-                <vitamui-order-by-button
-                  [orderByKey]="submissionAgencyIdentifier"
-                  [(direction)]="direction"
-                  [(orderBy)]="column"
-                  (directionChange)="changeDirection($event)"
-                  (orderByChange)="changeColumn($event)"
-                  (orderChange)="sortTable()"
-                ></vitamui-order-by-button>
-              </div>
-            </th>
-            <th>
-              <!-- date de création -->
-              <div class="row flex-nowrap">
-                <span class="no-wrap">{{ 'COLLECT.FIELD_CREATED_ON' | translate }}</span>
-                <vitamui-order-by-button
-                  [orderByKey]="createdOn"
-                  [(direction)]="direction"
-                  [(orderBy)]="column"
-                  (directionChange)="changeDirection($event)"
-                  (orderByChange)="changeColumn($event)"
-                  (orderChange)="sortTable()"
-                ></vitamui-order-by-button>
-              </div>
-            </th>
-            <th>
-              <!-- date de modification -->
-              <div class="row flex-nowrap">
-                <span class="no-wrap">{{ 'COLLECT.FIELD_LAST_MODIFY_ON' | translate }}</span>
-                <vitamui-order-by-button
-                  [orderByKey]="lastModifyOn"
-                  [(direction)]="direction"
-                  [(orderBy)]="column"
-                  (directionChange)="changeDirection($event)"
-                  (orderByChange)="changeColumn($event)"
-                  (orderChange)="sortTable()"
-                ></vitamui-order-by-button>
-              </div>
-            </th>
-            <th>
-              <!-- action button -->
-            </th>
-          </tr>
-        </thead>
+<div vitamuiCommonInfiniteScroll>
+  <table>
+    <thead>
+      <tr class="vitamui-table-rows">
+        <th>
+          <!-- icon -->
+          <i class="vitamui-icon vitamui-icon-ic40-flux"></i>
+        </th>
+        <th>
+          <!-- inttitulé -->
+          <div class="row flex-nowrap">
+            <span class="no-wrap">{{ 'COLLECT.FIELD_PROJECT_TITLE' | translate }}</span>
+            <vitamui-order-by-button
+              [orderByKey]="messageIdentifier"
+              [(direction)]="direction"
+              [(orderBy)]="column"
+              (directionChange)="changeDirection($event)"
+              (orderByChange)="changeColumn($event)"
+              (orderChange)="sortTable()"
+            ></vitamui-order-by-button>
+          </div>
+        </th>
+        <th>
+          <!-- service versant -->
+          <div class="row flex-nowrap">
+            <span class="no-wrap">{{ 'COLLECT.FIELD_SUBMISSION_AGENCY_IDENTIFIER' | translate }}</span>
+            <vitamui-order-by-button
+              [orderByKey]="submissionAgencyIdentifier"
+              [(direction)]="direction"
+              [(orderBy)]="column"
+              (directionChange)="changeDirection($event)"
+              (orderByChange)="changeColumn($event)"
+              (orderChange)="sortTable()"
+            ></vitamui-order-by-button>
+          </div>
+        </th>
+        <th>
+          <!-- date de création -->
+          <div class="row flex-nowrap">
+            <span class="no-wrap">{{ 'COLLECT.FIELD_CREATED_ON' | translate }}</span>
+            <vitamui-order-by-button
+              [orderByKey]="createdOn"
+              [(direction)]="direction"
+              [(orderBy)]="column"
+              (directionChange)="changeDirection($event)"
+              (orderByChange)="changeColumn($event)"
+              (orderChange)="sortTable()"
+            ></vitamui-order-by-button>
+          </div>
+        </th>
+        <th>
+          <!-- date de modification -->
+          <div class="row flex-nowrap">
+            <span class="no-wrap">{{ 'COLLECT.FIELD_LAST_MODIFY_ON' | translate }}</span>
+            <vitamui-order-by-button
+              [orderByKey]="lastModifyOn"
+              [(direction)]="direction"
+              [(orderBy)]="column"
+              (directionChange)="changeDirection($event)"
+              (orderByChange)="changeColumn($event)"
+              (orderChange)="sortTable()"
+            ></vitamui-order-by-button>
+          </div>
+        </th>
+        <th>
+          <!-- action button -->
+        </th>
+      </tr>
+    </thead>
 
-        <tbody class="vitamui-table-body">
-          @for (project of dataSource(); track project) {
-            <tr
-              class="vitamui-table-rows vitamui-row align-items-center clickable"
-              [class.selected]="(selectedProjectId$ | async) === project.id"
-              (click)="showProjectDetails(project.id)"
+    <tbody class="vitamui-table-body">
+      @for (project of dataSource(); track project) {
+        <tr
+          class="vitamui-table-rows vitamui-row align-items-center clickable"
+          [class.selected]="(selectedProjectId$ | async) === project.id"
+          (click)="showProjectDetails(project.id)"
+        >
+          <td>
+            <i class="vitamui-icon {{ getProjectIcon(project) }}"></i>
+          </td>
+          <td>{{ project.messageIdentifier }}</td>
+          <td>
+            <span class="agency-ellipsis" [vitamuiTooltip]="getAgencyFullLabel(project)" [outline]="true" vitamuiTooltipClass="primary">
+              {{ project.submissionAgencyIdentifier }}
+              @if (getAgencyName(project.submissionAgencyIdentifier)) {
+                - {{ getAgencyName(project.submissionAgencyIdentifier) }}
+              }
+            </span>
+          </td>
+          <td>
+            <div>{{ project.createdOn | dateTime: 'dd/MM/yyyy' | empty }}</div>
+            <span class="text normal light">{{ project.createdOn | dateTime: 'HH:mm:ss' }}</span>
+          </td>
+          <td>
+            <div>{{ project.lastModifyOn | dateTime: 'dd/MM/yyyy' | empty }}</div>
+            <span class="text normal light">{{ project.lastModifyOn | dateTime: 'HH:mm:ss' }}</span>
+          </td>
+          <td>
+            <vitamui-menu-button
+              [overlayPos]="'end'"
+              [icon]="'vitamui-icon-more-horiz'"
+              menuButtonSize="medium"
+              (click)="stopPropagation($event)"
             >
-              <td>
-                <i class="vitamui-icon {{ getProjectIcon(project) }}"></i>
-              </td>
-              <td>{{ project.messageIdentifier }}</td>
-              <td>
-                <span class="agency-ellipsis" [vitamuiTooltip]="getAgencyFullLabel(project)" [outline]="true" vitamuiTooltipClass="primary">
-                  {{ project.submissionAgencyIdentifier }}
-                  @if (getAgencyName(project.submissionAgencyIdentifier)) {
-                    - {{ getAgencyName(project.submissionAgencyIdentifier) }}
-                  }
-                </span>
-              </td>
-              <td>
-                <div>{{ project.createdOn | dateTime: 'dd/MM/yyyy' | empty }}</div>
-                <span class="text normal light">{{ project.createdOn | dateTime: 'HH:mm:ss' }}</span>
-              </td>
-              <td>
-                <div>{{ project.lastModifyOn | dateTime: 'dd/MM/yyyy' | empty }}</div>
-                <span class="text normal light">{{ project.lastModifyOn | dateTime: 'HH:mm:ss' }}</span>
-              </td>
-              <td>
-                <vitamui-menu-button
-                  [overlayPos]="'end'"
-                  [icon]="'vitamui-icon-more-horiz'"
-                  menuButtonSize="medium"
-                  (click)="stopPropagation($event)"
-                >
-                  <button mat-menu-item (click)="searchTransactions(project)">
-                    {{ 'COLLECT.PROJECT_TRANSACTION_PREVIEW.ACTIONS.SHOW_TRANSACTIONS' | translate }}
-                  </button>
-                </vitamui-menu-button>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
+              <button mat-menu-item (click)="searchTransactions(project)">
+                {{ 'COLLECT.PROJECT_TRANSACTION_PREVIEW.ACTIONS.SHOW_TRANSACTIONS' | translate }}
+              </button>
+            </vitamui-menu-button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
 
-      @if (!dataSource() || pending()) {
-        <div class="vitamui-min-content">
-          <mat-spinner class="vitamui-spinner medium"></mat-spinner>
-        </div>
-      }
-      @if (!pending() && dataSource()?.length === 0) {
-        <div class="vitamui-min-content vitamui-table-message">{{ 'COLLECT.NO_RESULT' | translate }}</div>
-      }
-      @if (infiniteScrollDisabled() && projectsService.canLoadMore && !pending()) {
-        <div (click)="projectsService.loadMore()" class="vitamui-min-content vitamui-table-message">
-          <span class="clickable">{{ 'COLLECT.LOAD_MORE_RESULTS' | translate }}</span>
-        </div>
-      }
+  @if (!dataSource() || pending()) {
+    <div class="vitamui-min-content">
+      <mat-spinner class="vitamui-spinner medium"></mat-spinner>
     </div>
-  </div>
+  }
+  @if (!pending() && dataSource()?.length === 0) {
+    <div class="vitamui-min-content vitamui-table-message">{{ 'COLLECT.NO_RESULT' | translate }}</div>
+  }
+  @if (infiniteScrollDisabled() && projectsService.canLoadMore && !pending()) {
+    <div (click)="projectsService.loadMore()" class="vitamui-min-content vitamui-table-message">
+      <span class="clickable">{{ 'COLLECT.LOAD_MORE_RESULTS' | translate }}</span>
+    </div>
+  }
 </div>
