@@ -48,6 +48,9 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.InputStream;
 
 import java.nio.charset.StandardCharsets;
 
@@ -89,6 +92,35 @@ class PastisServiceTest {
         Notice notice = new Notice();
         notice.setPath("unknown.rng");
         Assertions.assertThrows(TechnicalException.class, () -> pastisService.loadProfile(notice));
+    }
+
+    @Test
+    void loadProfileFromFile_should_detect_rng_extension_when_filename_has_several_dots() throws Exception {
+        final String fileName = "OK_profilRNG_mail_Seda2.3.rng";
+        try (InputStream rngStream = new ClassPathResource("rng/PA_Exemple.rng").getInputStream()) {
+            MultipartFile file = new MockMultipartFile("file", fileName, "application/xml", rngStream);
+            ProfileResponse profileResponse = pastisService.loadProfileFromFile(file, fileName, false);
+            Assertions.assertEquals(ProfileType.PA, profileResponse.getType());
+            Assertions.assertNotNull(profileResponse.getProfile());
+        }
+    }
+
+    @Test
+    void loadProfile_should_keep_dataType_declared_in_file_over_default_table() throws Exception {
+        ReflectionTestUtils.setField(pastisService, "rngLocation", "rng/");
+        Notice notice = new Notice();
+        notice.setPath("PA_Exemple.rng");
+
+        ProfileResponse profileResponse = pastisService.loadProfile(notice);
+
+        // RNGConstants maps "Size" to positiveInteger by default, but PA_Exemple.rng declares it as token.
+        ElementProperties sizeElement = profileResponse
+            .getProfile()
+            .flattened()
+            .filter(element -> "Size".equals(element.getName()))
+            .findFirst()
+            .orElseThrow();
+        Assertions.assertEquals("token", sizeElement.getDataType());
     }
 
     @Test

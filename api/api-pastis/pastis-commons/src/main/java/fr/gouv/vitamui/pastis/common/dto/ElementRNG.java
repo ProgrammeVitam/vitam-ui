@@ -84,8 +84,15 @@ public class ElementRNG {
                 RNGConstants.MetadaDataType.ATTRIBUTE.getLabel().equals(parentNode.getType()))
         ) {
             parentNode.setValueOrData(node.getType());
-            if (RNGConstants.getTypesMap().containsKey(parentNode.getName())) {
-                parentNode.setDataType(RNGConstants.getTypesMap().get(parentNode.getName()).getLabel());
+            boolean isExceptValue =
+                null != node.getParent() &&
+                RNGConstants.MetadaDataType.EXCEPT.getLabel().equals(node.getParent().getType());
+            if (!isExceptValue && null == parentNode.getDataType()) {
+                if (null != node.getDataType()) {
+                    parentNode.setDataType(node.getDataType());
+                } else if (RNGConstants.getTypesMap().containsKey(parentNode.getName())) {
+                    parentNode.setDataType(RNGConstants.getTypesMap().get(parentNode.getName()).getLabel());
+                }
             }
             parentNode.setValue(node.getValue());
         } else {

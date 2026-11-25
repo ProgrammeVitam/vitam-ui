@@ -209,6 +209,24 @@ public class SanityCheckerTest {
     }
 
     @Test
+    void testIsValidProfileFileNameWithParenthesesAndSpaces() {
+        final String goodFileName = "OK_profilRNG_matrice (1).rng";
+        assertThatCode(() -> SanityChecker.isValidProfileFileName(goodFileName)).doesNotThrowAnyException();
+    }
+
+    @Test
+    void testIsValidProfileFileNameWithAccentedCharacters() {
+        final String goodFileName = "profil_archivé_référentiel.rng";
+        assertThatCode(() -> SanityChecker.isValidProfileFileName(goodFileName)).doesNotThrowAnyException();
+    }
+
+    @Test
+    void testIsValidProfileFileNameWithNameLongerThan255Characters() {
+        final String goodFileName = "a".repeat(300) + ".rng";
+        assertThatCode(() -> SanityChecker.isValidProfileFileName(goodFileName)).doesNotThrowAnyException();
+    }
+
+    @Test
     void testIsValidFileNameWithXmlString() {
         final String badString = "text<strong>text</strong>bb";
         assertThatCode(() -> SanityChecker.isValidFileName(badString)).hasMessage("The fileName is not valid");
