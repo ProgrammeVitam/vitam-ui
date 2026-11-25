@@ -241,7 +241,8 @@
     "PLAYGROUND": {
       "INTRO": "Edit the inputs (JSON): the component is recomputed on each input.",
       "RESET": "Reset",
-      "INVALID_JSON": "Invalid JSON"
+      "INVALID_JSON": "Invalid JSON",
+      "INVALID_TEMPLATE": "The template must be a list of display rules, each with a \"ui\" object holding a \"Path\" (string)."
     },
     "MODE": {
       "data-driven": "the displayed structure follows the data structure, the template is ignored",

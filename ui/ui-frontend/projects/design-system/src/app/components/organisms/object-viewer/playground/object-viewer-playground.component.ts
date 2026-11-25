@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DisplayRule, Mode, ObjectViewerModule } from 'vitamui-library';
@@ -57,7 +57,10 @@ import { JsonInputsComponent } from './json-inputs.component';
         </mat-radio-button>
       }
     </mat-radio-group>
-    @if (data.parsed().value && template.parsed().value) {
+    @if (data.parsed().value && template.parsed().value && !isTemplateValid()) {
+      <p class="text-danger mt-3">{{ 'OBJECT_VIEWER.PLAYGROUND.INVALID_TEMPLATE' | translate }}</p>
+    }
+    @if (data.parsed().value && isTemplateValid()) {
       <div class="d-flex hgap-2 mt-3">
         <button type="button" class="btn secondary" (click)="viewer.expandAll()">{{ 'OBJECT_VIEWER.EXPAND_ALL' | translate }}</button>
         <button type="button" class="btn secondary" (click)="viewer.collapseAll()">{{ 'OBJECT_VIEWER.COLLAPSE_ALL' | translate }}</button>
@@ -80,4 +83,22 @@ export class ObjectViewerPlaygroundComponent {
 
   protected readonly data = jsonInput<unknown>('OBJECT_VIEWER.DATA', sampleData);
   protected readonly template = jsonInput<DisplayRule[]>('OBJECT_VIEWER.TEMPLATE', sampleTemplate);
+
+  /** Valid JSON may still not be a template, such as {}, which would make the viewer fail. */
+  protected readonly isTemplateValid = computed(() => {
+    const template: unknown = this.template.parsed().value;
+
+    return Array.isArray(template) && template.every((displayRule) => this.isDisplayRule(displayRule));
+  });
+
+  private isDisplayRule(displayRule: any): boolean {
+    const isObject = (value: unknown) => typeof value === 'object' && value !== null && !Array.isArray(value);
+
+    return (
+      isObject(displayRule) &&
+      (displayRule.Path === undefined || displayRule.Path === null || typeof displayRule.Path === 'string') &&
+      isObject(displayRule.ui) &&
+      typeof displayRule.ui.Path === 'string'
+    );
+  }
 }

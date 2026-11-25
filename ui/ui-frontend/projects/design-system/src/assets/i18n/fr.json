@@ -241,7 +241,8 @@
     "PLAYGROUND": {
       "INTRO": "Modifiez les entrées (JSON) : le composant est recalculé à chaque saisie.",
       "RESET": "Réinitialiser",
-      "INVALID_JSON": "JSON invalide"
+      "INVALID_JSON": "JSON invalide",
+      "INVALID_TEMPLATE": "Le template doit être une liste de règles d'affichage, chacune avec un objet « ui » contenant un « Path » (texte)."
     },
     "MODE": {
       "data-driven": "la structure affichée suit celle des données, le template est ignoré",

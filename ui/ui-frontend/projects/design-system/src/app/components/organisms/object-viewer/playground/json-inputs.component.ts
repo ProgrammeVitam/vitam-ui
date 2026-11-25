@@ -55,6 +55,7 @@ import { JsonInput } from './json-input';
           <textarea
             rows="20"
             spellcheck="false"
+            [attr.aria-label]="jsonInput.label | translate"
             [value]="jsonInput.text()"
             (input)="jsonInput.text.set($any($event.target).value)"
           ></textarea>
