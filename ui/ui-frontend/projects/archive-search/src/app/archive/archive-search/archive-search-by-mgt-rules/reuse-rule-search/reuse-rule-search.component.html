@@ -37,10 +37,9 @@
       </div>
       <div class="col-1 form-control">
         <button
-          class="validate-date-small-button"
+          class="btn btn-circle secondary small"
           *ngIf="!endDateInterval && reuseRuleCriteriaForm.get('reuseRuleStartDate').value"
           type="button"
-          mat-mini-fab
           (click)="addBeginDtReuseRuleCriteria()"
         >
           <i class="material-icons">check</i>
@@ -65,12 +64,11 @@
       </div>
       <div class="col-1 form-control">
         <button
-          class="validate-date-small-button"
+          class="btn btn-circle secondary small"
           *ngIf="
             endDateInterval && reuseRuleCriteriaForm.get('reuseRuleStartDate').value && reuseRuleCriteriaForm.get('reuseRuleEndDate').value
           "
           type="button"
-          mat-mini-fab
           (click)="addIntervalDtReuseRuleCriteria()"
         >
           <i class="material-icons">check</i>

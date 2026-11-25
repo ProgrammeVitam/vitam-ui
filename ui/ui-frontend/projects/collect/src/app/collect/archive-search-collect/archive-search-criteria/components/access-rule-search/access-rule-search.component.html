@@ -37,10 +37,9 @@
       </div>
       <div class="col-1 form-control">
         <button
-          class="validate-date-small-button"
+          class="btn btn-circle secondary small"
           *ngIf="!endDateInterval && accessRuleCriteriaForm.get('accessRuleStartDate').value"
           type="button"
-          mat-mini-fab
           (click)="addBeginDtAccessRuleCriteria()"
         >
           <i class="material-icons">check</i>
@@ -65,14 +64,13 @@
       </div>
       <div class="col-1 form-control">
         <button
-          class="validate-date-small-button"
+          class="btn btn-circle secondary small"
           *ngIf="
             endDateInterval &&
             accessRuleCriteriaForm.get('accessRuleStartDate').value &&
             accessRuleCriteriaForm.get('accessRuleEndDate').value
           "
           type="button"
-          mat-mini-fab
           (click)="addIntervalDtAccessRuleCriteria()"
         >
           <i class="material-icons">check</i>
