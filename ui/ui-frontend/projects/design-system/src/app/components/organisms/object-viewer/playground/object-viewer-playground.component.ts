@@ -57,10 +57,10 @@ import { JsonInputsComponent } from './json-inputs.component';
         </mat-radio-button>
       }
     </mat-radio-group>
-    @if (data.parsed().value && template.parsed().value && !isTemplateValid()) {
+    @if (!template.parsed().error && !isTemplateValid()) {
       <p class="text-danger mt-3">{{ 'OBJECT_VIEWER.PLAYGROUND.INVALID_TEMPLATE' | translate }}</p>
     }
-    @if (data.parsed().value && isTemplateValid()) {
+    @if (!data.parsed().error && isTemplateValid()) {
       <div class="d-flex hgap-2 mt-3">
         <button type="button" class="btn secondary" (click)="viewer.expandAll()">{{ 'OBJECT_VIEWER.EXPAND_ALL' | translate }}</button>
         <button type="button" class="btn secondary" (click)="viewer.collapseAll()">{{ 'OBJECT_VIEWER.COLLAPSE_ALL' | translate }}</button>
