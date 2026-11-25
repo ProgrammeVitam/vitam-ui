@@ -198,6 +198,22 @@ class UserServiceCustomerScopeTest extends AbstractLogbookIntegrationTest {
     }
 
     @Test
+    void the_provisioning_process_may_not_change_the_type_of_a_generic_user() {
+        final User generic = IamServerUtilsTest.buildUser("generic", "generic@client-a.fr", "gA", CUSTOMER_A, LEVEL_A);
+        generic.setType(UserTypeEnum.GENERIC);
+        userRepository.save(generic);
+        withoutTheGenericRole();
+        asTheProvisioningProcess();
+
+        final Map<String, Object> patch = patchOf("generic", CUSTOMER_A, "type", "NOMINATIVE");
+
+        assertThatThrownBy(() -> userService.patch(patch))
+            .isInstanceOf(ForbiddenException.class)
+            .hasMessageContaining(ServicesData.ROLE_GENERIC_USERS);
+        assertThat(userRepository.findById("generic")).get().extracting(User::getType).isEqualTo(UserTypeEnum.GENERIC);
+    }
+
+    @Test
     void the_type_of_another_customers_user_is_not_revealed_by_a_patch() {
         withoutTheGenericRole();
 

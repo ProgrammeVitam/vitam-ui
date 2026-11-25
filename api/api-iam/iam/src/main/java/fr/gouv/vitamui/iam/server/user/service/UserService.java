@@ -846,8 +846,8 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
      * Called once the user is found within the caller's customer, so that the type of a user of another
      * customer is not revealed.
      * The provisioning process (CAS user, ROLE_PROVISIONING_USER) updates the attributes of existing users,
-     * generic ones included, when they log in through an identity provider: it may modify a generic user,
-     * but may not set a user as generic.
+     * generic ones included, when they log in through an identity provider: it may modify the attributes of a
+     * generic user, but may neither set a user as generic nor change the type of a generic user.
      *
      * @param requestedType type sent by the caller, if any
      * @param user the modified user
@@ -856,8 +856,10 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         if (securityService.hasRole(ServicesData.ROLE_GENERIC_USERS)) {
             return;
         }
+        final boolean changesType = requestedType != null && requestedType != user.getType();
         final boolean modifiesGenericUser =
-            user.getType() == UserTypeEnum.GENERIC && !securityService.hasRole(ServicesData.ROLE_PROVISIONING_USER);
+            user.getType() == UserTypeEnum.GENERIC &&
+            (changesType || !securityService.hasRole(ServicesData.ROLE_PROVISIONING_USER));
         if (requestedType == UserTypeEnum.GENERIC || modifiesGenericUser) {
             throw new ForbiddenException(message + ": generic users require " + ServicesData.ROLE_GENERIC_USERS);
         }
