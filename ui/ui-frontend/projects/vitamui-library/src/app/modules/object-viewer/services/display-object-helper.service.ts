@@ -44,6 +44,9 @@ import { TypeService } from './type.service';
 
 export const internationalizedKeys = ['Title_', 'Description_'];
 
+/** Marks a list item removed by `omitPath`, so that the indices of the other items stay valid until every path is removed. */
+const REMOVED_ITEM = Symbol('removed list item');
+
 @Injectable()
 export class DisplayObjectHelperService {
   private readonly typeService = inject(TypeService);
@@ -120,9 +123,11 @@ export class DisplayObjectHelperService {
 
   public mixedDrivenDisplayObject(data: any, template: DisplayRule[], configuration = { displayEmptyValues: true }): DisplayObject {
     // Fields mapped by the template are displayed by the template only, the data structure is used for the other ones.
-    const unmappedData = (template || [])
-      .filter((displayRule) => displayRule.Path)
-      .reduce((acc, displayRule) => this.omitPath(acc, this.dataStructureService.pathKeys(displayRule.Path)).value, data);
+    const unmappedData = this.dropRemovedItems(
+      (template || [])
+        .filter((displayRule) => displayRule.Path)
+        .reduce((acc, displayRule) => this.omitPath(acc, this.dataStructureService.pathKeys(displayRule.Path)).value, data),
+    );
     const dataDisplayObject = this.dataDrivenDisplayObject(unmappedData, configuration);
     const templateDisplayObject = this.templateDrivenDisplayObject(data, template, configuration);
     const dataDisplayObjectValue = dataDisplayObject?.value || {};
@@ -157,18 +162,21 @@ export class DisplayObjectHelperService {
   /**
    * Returns a copy of data without the value at the given path, keeping keys order, and whether a value was removed.
    * Groups emptied by the removal are removed too, groups that were already empty are kept.
-   * List items are updated in place so that the indices of the other items do not change: a list item is never removed,
-   * an item whose fields were all removed is kept as an empty group.
+   * A removed list item, or an item whose fields were all removed, is replaced by `REMOVED_ITEM` rather than removed, so that
+   * the next paths still match the indices of the original data. `dropRemovedItems` removes these items afterwards.
    */
   private omitPath(data: any, [key, ...subPath]: string[]): { value: any; removed: boolean } {
     const unchanged = { value: data, removed: false };
     if (data === null || typeof data !== 'object' || !(key in data)) return unchanged;
 
     if (this.typeService.isList(data)) {
-      const item = subPath.length ? this.omitPath(data[key], subPath) : unchanged;
+      const item = subPath.length ? this.omitPath(data[key], subPath) : { value: REMOVED_ITEM, removed: true };
       if (!item.removed) return unchanged;
 
-      return { value: data.map((value: any, index: number) => (String(index) === key ? item.value : value)), removed: true };
+      const isEmptyGroup = this.typeService.isGroup(item.value) && Object.keys(item.value).length === 0;
+      const itemValue = isEmptyGroup ? REMOVED_ITEM : item.value;
+
+      return { value: data.map((value: any, index: number) => (String(index) === key ? itemValue : value)), removed: true };
     }
 
     const entries = Object.entries(data);
@@ -187,6 +195,25 @@ export class DisplayObjectHelperService {
     );
 
     return { value, removed: true };
+  }
+
+  /** Removes the list items marked by `omitPath`, and the lists and groups that only contained removed items. */
+  private dropRemovedItems(data: any): any {
+    const value = this.dropRemovedItemsOrMark(data);
+
+    return value === REMOVED_ITEM ? undefined : value;
+  }
+
+  private dropRemovedItemsOrMark(data: any): any {
+    const isPlainObject = data !== null && typeof data === 'object' && Object.getPrototypeOf(data) === Object.prototype;
+    if (!this.typeService.isList(data) && !isPlainObject) return data;
+
+    const entries = Object.entries(data)
+      .map(([key, value]) => [key, value === REMOVED_ITEM ? REMOVED_ITEM : this.dropRemovedItemsOrMark(value)])
+      .filter(([, value]) => value !== REMOVED_ITEM);
+    if (entries.length === 0 && Object.keys(data).length > 0) return REMOVED_ITEM;
+
+    return this.typeService.isList(data) ? entries.map(([, value]) => value) : Object.fromEntries(entries);
   }
 
   private mapValueToUiPath(data: any, displayRule: DisplayRule) {

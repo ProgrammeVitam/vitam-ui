@@ -545,6 +545,42 @@ describe('DisplayObjectHelperService', () => {
       });
     });
 
+    it('should display a list item mapped by the template only once', () => {
+      const data = { items: ['A', 'B', 'C'] };
+      const template = [rule('', ''), rule('items[0]', 'First'), rule('items[2]', 'Last')];
+
+      const displayObject = service.mixedDrivenDisplayObject(data, template);
+
+      expect(displayObject.value).toEqual({ First: 'A', Last: 'C', items: ['B'] });
+    });
+
+    it('should not display a list item whose fields are all mapped by the template', () => {
+      const data = { items: [{ name: 'A' }, { name: 'B' }] };
+      const template = [rule('', ''), rule('items[0].name', 'Name')];
+
+      const displayObject = service.mixedDrivenDisplayObject(data, template);
+
+      expect(displayObject.value).toEqual({ Name: 'A', items: [{ name: 'B' }] });
+    });
+
+    it('should not display a list whose items are all mapped by the template', () => {
+      const data = { items: ['A'], status: 'ACTIVE' };
+      const template = [rule('', ''), rule('items[0]', 'First')];
+
+      const displayObject = service.mixedDrivenDisplayObject(data, template);
+
+      expect(displayObject.value).toEqual({ First: 'A', status: 'ACTIVE' });
+    });
+
+    it('should display a list moved by the template only once', () => {
+      const data = { items: [{ name: 'A' }, { name: 'B' }], status: 'ACTIVE' };
+      const template = [rule('', ''), rule('items', 'Items')];
+
+      const displayObject = service.mixedDrivenDisplayObject(data, template);
+
+      expect(displayObject.value).toEqual({ Items: [{ name: 'A' }, { name: 'B' }], status: 'ACTIVE' });
+    });
+
     it('should not fail when a group containing a mapped field is null', () => {
       const data = { address: null as unknown, status: 'ACTIVE' };
       const template = [rule('', ''), rule('address.city', 'City')];
