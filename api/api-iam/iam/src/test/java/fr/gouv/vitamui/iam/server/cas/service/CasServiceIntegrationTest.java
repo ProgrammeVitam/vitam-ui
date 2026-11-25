@@ -9,7 +9,7 @@ import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
-import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
@@ -181,21 +181,17 @@ public class CasServiceIntegrationTest extends AbstractMongoTests {
     }
 
     @Test
-    void a_surrogation_token_is_bound_to_the_subrogation() {
+    void a_surrogation_token_is_refused_without_the_super_user() {
+        // The legacy user endpoint does not know the super user validated at login.
         final UserDto surrogate = givenAnAcceptedSubrogationOf(SUPER_USER_EMAIL, SUPER_USER_CUSTOMER_ID);
+        final String email = surrogate.getEmail();
+        final String customerId = surrogate.getCustomerId();
+        final String embedded = CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER;
 
-        final AuthUserDto loggedUser = (AuthUserDto) casService.getUserByEmailAndCustomerId(
-            surrogate.getEmail(),
-            surrogate.getCustomerId(),
-            CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER
+        assertThatThrownBy(() -> casService.getUser(email, customerId, null, null, embedded)).isInstanceOf(
+            NotFoundException.class
         );
-
-        assertThat(tokenRepository.findById(loggedUser.getAuthToken()))
-            .get()
-            .satisfies(token -> {
-                assertThat(token.isSurrogation()).isTrue();
-                assertThat(token.getSubrogationId()).isEqualTo("subrogationId");
-            });
+        assertThat(tokenRepository.findAll()).isEmpty();
     }
 
     @Test
@@ -223,9 +219,7 @@ public class CasServiceIntegrationTest extends AbstractMongoTests {
         final UserDto surrogate = givenAnAcceptedSubrogationOf("otherSuperUser@vitamui.com", SUPER_USER_CUSTOMER_ID);
         final PrincipalAttributesRequestDto login = subrogationLoginOf(surrogate, SUPER_USER_EMAIL);
 
-        assertThatThrownBy(() -> casService.buildPrincipalAttributes(login)).isInstanceOf(
-            InvalidAuthenticationException.class
-        );
+        assertThatThrownBy(() -> casService.buildPrincipalAttributes(login)).isInstanceOf(NotFoundException.class);
         assertThat(tokenRepository.findAll()).isEmpty();
     }
 

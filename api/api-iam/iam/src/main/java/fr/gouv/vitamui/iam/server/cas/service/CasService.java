@@ -375,8 +375,8 @@ public class CasService {
     }
 
     /**
-     * @param superUserEmail      for a subrogation, the super user validated at login, if known: the subrogation bound
-     *                            to the auth token must be his
+     * @param superUserEmail      for a subrogation, the super user validated at login: the subrogation bound to the
+     *                            auth token must be his, so a subrogation without super user is refused
      * @param superUserCustomerId customer of that super user
      */
     private UserDto getUserByEmailAndCustomerId(
@@ -431,7 +431,7 @@ public class CasService {
         final Subrogation activeSubrogation = subrogation
             ? subrogationRepository.findOneBySurrogateAndSurrogateCustomerId(user.getEmail(), user.getCustomerId())
             : null;
-        if (subrogation && superUserEmail != null) {
+        if (subrogation) {
             checkSubrogationOfSuperUser(activeSubrogation, superUserEmail, superUserCustomerId);
         }
         generateAndAddAuthToken(authUserDto, activeSubrogation, subrogation, api);
@@ -442,7 +442,8 @@ public class CasService {
     /**
      * The subrogation bound to the auth token must be the one of the super user validated at login: between the
      * validation and the token creation, the subrogation of the surrogate may have ended and another super user's
-     * subrogation may have started.
+     * subrogation may have started. A refusal is a {@link NotFoundException}, which the authentication server handles
+     * as a refused login.
      */
     private void checkSubrogationOfSuperUser(
         final Subrogation subrogation,
@@ -454,7 +455,7 @@ public class CasService {
             StringUtils.equalsIgnoreCase(subrogation.getSuperUser(), superUserEmail) &&
             StringUtils.equals(subrogation.getSuperUserCustomerId(), superUserCustomerId);
         if (!ofSuperUser) {
-            throw new InvalidAuthenticationException("Subrogation unavailable for super user: " + superUserEmail);
+            throw new NotFoundException("No subrogation of the surrogate by the super user: " + superUserEmail);
         }
     }
 
