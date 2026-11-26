@@ -42,7 +42,7 @@ import { InputComponent, toValidationErrors, VitamUIFieldErrorComponent } from '
 import { KeyValuePipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
-export const LIST_INPUT_ACCESSOR: any = {
+const LIST_INPUT_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
 
   useExisting: forwardRef(() => CustomParamsComponent),

@@ -41,7 +41,7 @@ import { extractSubLevel } from '../../../utils/level.util';
 
 import { TranslatePipe } from '@ngx-translate/core';
 
-export const LEVEL_INPUT_VALUE_ACCESSOR: any = {
+const LEVEL_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => LevelInputComponent),
   multi: true,

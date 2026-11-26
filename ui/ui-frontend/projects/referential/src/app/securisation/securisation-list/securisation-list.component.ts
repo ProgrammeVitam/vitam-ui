@@ -60,7 +60,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
-export class TraceabilityFilter {
+class TraceabilityFilter {
   startDate?: string;
   endDate?: string;
   types?: string[];

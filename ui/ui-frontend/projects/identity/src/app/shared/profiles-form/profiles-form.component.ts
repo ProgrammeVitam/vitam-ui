@@ -63,7 +63,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { CommonModule, NgClass } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
-export const PROFILES_FORM_VALUE_ACCESSOR: any = {
+const PROFILES_FORM_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => ProfilesFormComponent),
   multi: true,

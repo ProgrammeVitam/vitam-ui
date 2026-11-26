@@ -40,7 +40,7 @@ import { Logger } from './logger';
 import { LoggerService } from './logger.service';
 import { NoLogService } from './no-log.service';
 
-export function loggerFactory(environment: any) {
+function loggerFactory(environment: any) {
   if (environment && environment.production) {
     return new NoLogService();
   } else {

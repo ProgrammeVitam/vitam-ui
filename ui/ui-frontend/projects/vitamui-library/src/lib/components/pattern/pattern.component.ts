@@ -43,7 +43,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { SelectComponent } from '../select/select.component';
 import { Option } from '../../../app/modules/components/autocomplete/utils/option.interface';
 
-export const PATTERN_VALUE_ACCESSOR: any = {
+const PATTERN_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
 
   useExisting: forwardRef(() => PatternComponent),

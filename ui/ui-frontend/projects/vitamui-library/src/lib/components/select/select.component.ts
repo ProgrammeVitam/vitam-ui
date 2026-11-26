@@ -81,7 +81,7 @@ import { TooltipDirective } from '../../../app/modules/components/common-tooltip
 import { EllipsisDirective } from '../../../app/modules/directives/ellipsis/ellipsis.directive';
 import { queryChanges } from '../../../app/modules/utils/query-changes.util';
 
-export const VITAMUI_SELECT_VALUE_ACCESSOR: any = {
+const VITAMUI_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => SelectComponent),
   multi: true,

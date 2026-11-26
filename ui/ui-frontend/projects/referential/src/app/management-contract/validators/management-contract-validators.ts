@@ -48,7 +48,7 @@ export enum ManagementContractValidationErrors {
 
 const AUTHORITY_REGEX = /^([0-9]{5}|[0-9]{9})$/;
 
-export class ManagementContractValidators {
+class ManagementContractValidators {
   static authority<TPathKind extends PathKind = PathKind.Root>(path: FieldPath<string, TPathKind>): void {
     validate(path, ({ value }) =>
       AUTHORITY_REGEX.test(value()) ? undefined : { kind: ManagementContractValidationErrors.INVALID_AUTHORITY },
@@ -76,7 +76,7 @@ export class ManagementContractValidators {
   }
 }
 
-export const objectUsagePolicySchema = schema<ObjectUsagePolicyForm>((path) => {
+const objectUsagePolicySchema = schema<ObjectUsagePolicyForm>((path) => {
   required(path.objectUsage);
   requiredValue(path.initialVersion);
   required(path.intermediaryVersion);

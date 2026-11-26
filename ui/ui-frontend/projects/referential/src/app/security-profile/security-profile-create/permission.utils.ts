@@ -43,7 +43,7 @@ export class Permission {
   overrideApiPermission?: string;
 }
 
-export class APIPermissions {
+class APIPermissions {
   service: string;
   type: string;
   name: string;

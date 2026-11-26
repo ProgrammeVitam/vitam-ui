@@ -41,7 +41,7 @@ import { map } from 'rxjs/operators';
 
 import { RoleComponent } from './role.component';
 
-export const ROLE_TOGGLE_VALUE_ACCESSOR: any = {
+const ROLE_TOGGLE_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => RoleToggleComponent),
   multi: true,

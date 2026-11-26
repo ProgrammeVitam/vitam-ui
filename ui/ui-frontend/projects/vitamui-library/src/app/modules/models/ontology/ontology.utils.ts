@@ -34,8 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { FormGroup } from '@angular/forms';
-
 /**
  * Returns the `typeDetail` and `stringSize` values to set for the given ontology type, or `undefined` if they must not change.
  */
@@ -54,13 +52,5 @@ export function getTypeDetailAndStringSize(type: string): { typeDetail: string; 
       return { typeDetail: type, stringSize: null };
     default:
       return undefined;
-  }
-}
-
-export function setTypeDetailAndStringSize(key: string, form: FormGroup) {
-  const typeDetailAndStringSize = getTypeDetailAndStringSize(key);
-  if (typeDetailAndStringSize) {
-    form.get('typeDetail').setValue(typeDetailAndStringSize.typeDetail);
-    form.get('stringSize').setValue(typeDetailAndStringSize.stringSize);
   }
 }

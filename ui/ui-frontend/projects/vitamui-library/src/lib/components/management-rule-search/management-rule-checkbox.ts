@@ -58,7 +58,7 @@ const getOriginKey = (ruleType: string) => ManagementRuleSearchHelper.getRuleKey
 const getActionKey = (ruleType: string) => ManagementRuleSearchHelper.getRuleKey(FINAL_ACTION, ruleType);
 const getTypeKey = (ruleType: string) => ManagementRuleSearchHelper.getRuleKey(FINAL_ACTION_TYPE, ruleType);
 
-export const MANAGEMENT_RULE_CHECKBOX_DESCRIPTORS: Record<string, ManagementRuleCheckboxDescriptor> = {
+const MANAGEMENT_RULE_CHECKBOX_DESCRIPTORS: Record<string, ManagementRuleCheckboxDescriptor> = {
   /* =========================
    * ORIGIN
    * ========================= */

@@ -77,7 +77,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
-export enum ImportType {
+enum ImportType {
   DIRECTORIES_FILES = 'DIRECTORIES_FILES',
   COMPRESSED = 'COMPRESSED',
   SIP = 'SIP',

@@ -44,11 +44,6 @@ export interface ActionsRules {
   stepValid: boolean;
 }
 
-export interface ActionCounter {
-  actionType: string;
-  actionCounter: number;
-}
-
 export interface RuleSearchCriteriaDto {
   searchCriteriaDto: SearchCriteriaDto;
   ruleActions: RuleActions;
@@ -83,11 +78,6 @@ export interface RuleCategoryAction {
   preventRulesIdToRemove?: string[];
 }
 
-export interface RuleCat {
-  ruleCat: string;
-  ruleCategoryAction: RuleCategoryAction;
-}
-
 export interface RuleActions {
   add?: any[];
   update?: any[];
@@ -96,25 +86,8 @@ export interface RuleActions {
   deleteMetadata?: ManagementMetadataAction;
 }
 
-export interface RuleCategoryActionDeletion {
-  rules?: RuleActions[];
-  finalAction?: string;
-  classificationAudience?: string;
-  classificationReassessingDate?: string;
-  needReassessingAuthorization?: boolean;
-  preventInheritance?: boolean;
-  preventRulesId?: string[];
-  preventRulesIdToRemove?: string[];
-}
-
 export interface ManagementMetadataAction {
   archiveUnitProfile: string;
-}
-
-export interface VitamUiRuleActions {
-  actionType: string;
-  ruleCategories: string[];
-  ruleCatgoryAction: RuleCategoryAction;
 }
 
 export interface ManagementRules {

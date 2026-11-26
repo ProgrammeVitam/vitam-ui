@@ -60,7 +60,7 @@ import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-
 import { CustomParamsComponent } from '../../../../shared/custom-params/custom-params.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
-export interface IdentityProviderSamlModel {
+interface IdentityProviderSamlModel {
   keystorePassword: string;
   authnRequestBinding: AuthnRequestBindingEnum;
   maximumAuthenticationLifetime: string;
@@ -69,7 +69,7 @@ export interface IdentityProviderSamlModel {
   propagateLogout: boolean;
 }
 
-export interface IdentityProviderOidcModel {
+interface IdentityProviderOidcModel {
   clientId: string;
   clientSecret: string;
   discoveryUrl: string;
@@ -82,7 +82,7 @@ export interface IdentityProviderOidcModel {
   propagateLogout: boolean;
 }
 
-export interface IdentityProviderCreateModel {
+interface IdentityProviderCreateModel {
   protocoleType: ProtocoleType;
   customerId: string;
   enabled: boolean;

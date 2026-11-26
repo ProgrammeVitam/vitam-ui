@@ -43,7 +43,7 @@ import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { EllipsisDirective } from '../../../directives/ellipsis/ellipsis.directive';
 
-export const EDITABLE_INPUT_VALUE_ACCESSOR: any = {
+const EDITABLE_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => EditableInputComponent),
   multi: true,
