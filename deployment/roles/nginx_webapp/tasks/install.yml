@@ -60,8 +60,8 @@
     owner: "{{ frontend_user }}"
     mode: "{{ vitam_defaults.folder.conf_permission }}"
   with_fileglob:
-    - "{{ inventory_dir }}/certs/server/hosts/{{ inventory_hostname }}/{{ vitamui_struct.vitamui_component }}.crt"
-    - "{{ inventory_dir }}/certs/server/hosts/{{ inventory_hostname }}/{{ vitamui_struct.vitamui_component }}.key"
+    - "{{ inventory_dir }}/certs/client-external/clients/{{ vitamui_struct.vitamui_component }}/{{ vitamui_struct.vitamui_component }}.crt"
+    - "{{ inventory_dir }}/certs/client-external/clients/{{ vitamui_struct.vitamui_component }}/{{ vitamui_struct.vitamui_component }}.key"
   notify: reload nginx
 
 - name: Put ssl configuration when secure is enabled
