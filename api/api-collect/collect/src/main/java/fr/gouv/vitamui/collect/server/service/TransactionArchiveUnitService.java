@@ -62,7 +62,6 @@ import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
-import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.ExportSearchResultParam;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
@@ -73,7 +72,6 @@ import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.InvalidTypeException;
 import fr.gouv.vitamui.commons.api.exception.RequestEntityTooLargeException;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
-import fr.gouv.vitamui.commons.api.utils.NonSortableFields;
 import fr.gouv.vitamui.commons.api.utils.OntologyServiceReader;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
 import fr.gouv.vitamui.commons.vitam.api.administration.RuleCommonService;
@@ -157,6 +155,7 @@ import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.MAX_
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.RULES_RULE_ID_FIELD;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.SOME_FUTUR_DATE;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.SOME_OLD_DATE;
+import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.addSort;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.cleanString;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.createDslQueryWithFacets;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.createSelectMultiQuery;
@@ -1238,22 +1237,10 @@ public class TransactionArchiveUnitService {
             throw new BadRequestException("Can't parse null criteria");
         }
         SelectMultiQuery selectMultiQuery;
-        Optional<String> orderBy = Optional.empty();
-        Optional<DirectionDto> direction = Optional.empty();
         try {
-            if (searchQuery.getSortingCriteria() != null) {
-                direction = Optional.of(searchQuery.getSortingCriteria().getSorting());
-                orderBy = Optional.of(searchQuery.getSortingCriteria().getCriteria());
-            }
             selectMultiQuery = createSelectMultiQuery(searchQuery.getCriteriaList());
 
-            if (orderBy.isPresent() && NonSortableFields.isSortable(NonSortableFields.UNIT_COLLECTION, orderBy.get())) {
-                if (DirectionDto.DESC.equals(direction.get())) {
-                    selectMultiQuery.addOrderByDescFilter(orderBy.get());
-                } else {
-                    selectMultiQuery.addOrderByAscFilter(orderBy.get());
-                }
-            }
+            addSort(selectMultiQuery, searchQuery.getSortingCriteria());
             selectMultiQuery.setLimitFilter(
                 (long) searchQuery.getPageNumber() * searchQuery.getSize(),
                 searchQuery.getSize()
