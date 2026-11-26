@@ -42,6 +42,7 @@ import {
   GriffinsService,
   PreservationScenario,
   PreservationScenariosService,
+  SnackBarService,
   VitamUICommonModule,
   VitamUILibraryModule,
 } from 'vitamui-library';
@@ -68,6 +69,7 @@ export class PreservationPreviewComponent {
 
   private readonly griffinService = inject(GriffinsService);
   private readonly preservationScenarioService = inject(PreservationScenariosService);
+  private readonly snackBarService = inject(SnackBarService);
 
   selectedElement = input.required<Griffin | PreservationScenario>();
   editableElement = signal<Griffin | PreservationScenario | null>(null);
@@ -94,6 +96,7 @@ export class PreservationPreviewComponent {
   downloadScenario() {
     const blob = new Blob([JSON.stringify([this.selectedElement()], null, 2)], { type: 'octet/stream' });
     download(blob, 'PreservationScenario.json');
+    this.snackBarService.notifyDownloadStarted();
   }
 
   emitClose() {
