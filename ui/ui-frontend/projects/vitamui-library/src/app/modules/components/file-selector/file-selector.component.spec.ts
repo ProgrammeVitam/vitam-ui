@@ -176,4 +176,16 @@ describe('FileSelectorComponent', () => {
 
     expect(component.snackBar.open).toHaveBeenCalledWith(jasmine.any(String), null, { duration: 10000 });
   });
+
+  it('should ignore an empty file selection (e.g. native file picker cancelled)', () => {
+    const file1 = new File([''], 'file1.json', { type: 'application/json' });
+    (component as any).control.setValue([file1]);
+    component.displayFiles = [{ name: 'file1.json', size: 0, directory: false }];
+
+    component.handleFilesSelection([]);
+
+    expect((component as any).control.touched).toBe(false);
+    expect((component as any).control.value).toEqual([file1]);
+    expect(component.displayFiles).toEqual([{ name: 'file1.json', size: 0, directory: false }]);
+  });
 });
