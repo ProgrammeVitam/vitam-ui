@@ -1306,7 +1306,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   // Export data to CSV
 
   exportArchiveUnitsToCsvFile() {
-    if (this.hasSearchCriteria()) {
+    if (this.itemSelected > 0 && this.hasSearchCriteria()) {
       this.listOfUACriteriaSearch = this.prepareListOfUACriteriaSearch();
       const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
       const searchCriteria = {
