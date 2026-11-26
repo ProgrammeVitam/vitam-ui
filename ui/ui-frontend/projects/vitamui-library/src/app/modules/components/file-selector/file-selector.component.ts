@@ -59,7 +59,7 @@ import { BytesPipe } from '../../pipes';
 import { AbstractFormInputDirective } from '../../../../lib/components/abstract-form-input.directive';
 import { SnackBarService } from '../snack-bar/snack-bar.service';
 
-export const FILE_SELECTOR_VALUE_ACCESSOR: any = {
+const FILE_SELECTOR_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => FileSelectorComponent),
   multi: true,

@@ -61,7 +61,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormErrorsComponent } from '../../../../lib/components/form-errors/form-errors.component';
 import { DateTime } from 'luxon';
 
-export const DATEPICKER_VALUE_ACCESSOR: any = {
+const DATEPICKER_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => DatepickerComponent),
   multi: true,

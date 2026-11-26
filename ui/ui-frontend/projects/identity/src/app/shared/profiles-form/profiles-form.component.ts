@@ -41,7 +41,7 @@ import { ApplicationApiService, IdentifierName, Option, Profile, ProfileService,
 import { OptionTree } from './option-tree.interface';
 import { zip } from 'rxjs';
 
-export const PROFILES_FORM_VALUE_ACCESSOR: any = {
+const PROFILES_FORM_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => ProfilesFormComponent),
   multi: true,

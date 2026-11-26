@@ -40,7 +40,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { EditableFieldComponent, PatternComponent } from 'vitamui-library';
 import { DOCUMENT } from '@angular/common';
 
-export const EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR: any = {
+const EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   // eslint-disable-next-line no-use-before-define
   useExisting: forwardRef(() => EditablePatternsComponent),

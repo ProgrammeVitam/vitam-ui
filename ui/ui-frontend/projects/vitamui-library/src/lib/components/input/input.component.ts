@@ -43,7 +43,7 @@ import { CommonTooltipModule } from '../../../app/modules/components/common-tool
 import { FormErrorsComponent } from '../form-errors/form-errors.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
-export const INPUT_VALUE_ACCESSOR: any = {
+const INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => InputComponent),
   multi: true,

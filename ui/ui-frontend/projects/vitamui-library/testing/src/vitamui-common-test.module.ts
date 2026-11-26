@@ -44,7 +44,7 @@ import { CdkStepper } from '@angular/cdk/stepper';
   template: '<ng-content></ng-content>',
   standalone: false,
 })
-export class VitamUITenantSelectStubComponent {}
+class VitamUITenantSelectStubComponent {}
 
 @Component({
   selector: 'vitamui-stepper',
@@ -52,7 +52,7 @@ export class VitamUITenantSelectStubComponent {}
   providers: [{ provide: CdkStepper, useExisting: StepperStubComponent }],
   standalone: false,
 })
-export class StepperStubComponent {
+class StepperStubComponent {
   @Input() selectedIndex: number;
   steps: any[] = [];
 }
@@ -62,7 +62,7 @@ export class StepperStubComponent {
   template: '<ng-content></ng-content>',
   standalone: false,
 })
-export class VitamUIInputErrorStubComponent {}
+class VitamUIInputErrorStubComponent {}
 
 @Component({
   selector: 'vitamui-common-input',
@@ -76,7 +76,7 @@ export class VitamUIInputErrorStubComponent {}
   ],
   standalone: false,
 })
-export class VitamUIInputStubComponent implements ControlValueAccessor {
+class VitamUIInputStubComponent implements ControlValueAccessor {
   @Input() placeholder: any;
 
   writeValue() {}
@@ -121,7 +121,7 @@ export class InputStubComponent implements ControlValueAccessor {
   ],
   standalone: false,
 })
-export class VitamUIInputPositiveNumberStubComponent implements ControlValueAccessor {
+class VitamUIInputPositiveNumberStubComponent implements ControlValueAccessor {
   @Input() placeholder: any;
 
   writeValue() {}
@@ -143,7 +143,7 @@ export class VitamUIInputPositiveNumberStubComponent implements ControlValueAcce
   ],
   standalone: false,
 })
-export class VitamUITextareaStubComponent implements ControlValueAccessor {
+class VitamUITextareaStubComponent implements ControlValueAccessor {
   @Input() placeholder: any;
 
   writeValue() {}
@@ -183,7 +183,7 @@ export class VitamUISlideToggleStubComponent implements ControlValueAccessor {
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
-export class EditableFieldStubComponent implements ControlValueAccessor {
+class EditableFieldStubComponent implements ControlValueAccessor {
   @Input() validator: ValidatorFn;
   @Input() asyncValidator: AsyncValidatorFn;
   value: string;
@@ -209,7 +209,7 @@ export class EditableFieldStubComponent implements ControlValueAccessor {
   ],
   standalone: false,
 })
-export class VitamUIEditableEmailInputStubComponent extends EditableFieldStubComponent {
+class VitamUIEditableEmailInputStubComponent extends EditableFieldStubComponent {
   @Input() domains: string[];
 }
 
@@ -232,7 +232,7 @@ export class VitamUIFieldErrorStubComponent {}
   ],
   standalone: false,
 })
-export class VitamUIEditableFileStubComponent extends EditableFieldStubComponent {}
+class VitamUIEditableFileStubComponent extends EditableFieldStubComponent {}
 
 @Component({
   selector: 'vitamui-common-editable-input',
@@ -246,7 +246,7 @@ export class VitamUIEditableFileStubComponent extends EditableFieldStubComponent
   ],
   standalone: false,
 })
-export class VitamUIEditableInputStubComponent extends EditableFieldStubComponent {}
+class VitamUIEditableInputStubComponent extends EditableFieldStubComponent {}
 
 @Component({
   selector: 'vitamui-common-editable-textarea',
@@ -260,7 +260,7 @@ export class VitamUIEditableInputStubComponent extends EditableFieldStubComponen
   ],
   standalone: false,
 })
-export class VitamUIEditableTextareaStubComponent extends EditableFieldStubComponent {}
+class VitamUIEditableTextareaStubComponent extends EditableFieldStubComponent {}
 
 @Component({
   selector: 'vitamui-common-editable-select',
@@ -274,7 +274,7 @@ export class VitamUIEditableTextareaStubComponent extends EditableFieldStubCompo
   ],
   standalone: false,
 })
-export class VitamUIEditableSelectStubComponent extends EditableFieldStubComponent {}
+class VitamUIEditableSelectStubComponent extends EditableFieldStubComponent {}
 
 @Component({
   selector: 'vitamui-common-autocomplete-multi-select',
@@ -288,14 +288,14 @@ export class VitamUIEditableSelectStubComponent extends EditableFieldStubCompone
   ],
   standalone: false,
 })
-export class VitamUIAutocompleteMultiSelectStubComponent extends EditableFieldStubComponent {}
+class VitamUIAutocompleteMultiSelectStubComponent extends EditableFieldStubComponent {}
 
 @Component({
   selector: 'vitamui-common-editable-option',
   template: '',
   standalone: false,
 })
-export class VitamUIEditableOptionStubComponent {
+class VitamUIEditableOptionStubComponent {
   @Input() value: any;
   @Input() content: any;
   @Input() disabled: any;
@@ -313,14 +313,14 @@ export class VitamUIEditableOptionStubComponent {
   ],
   standalone: false,
 })
-export class VitamUIEditableToggleGroupStubComponent extends EditableFieldStubComponent {}
+class VitamUIEditableToggleGroupStubComponent extends EditableFieldStubComponent {}
 
 @Component({
   selector: 'vitamui-common-editable-button-toggle',
   template: '',
   standalone: false,
 })
-export class VitamUIEditableButtonToggleStubComponent {
+class VitamUIEditableButtonToggleStubComponent {
   @Input() value: any;
 }
 
@@ -336,7 +336,7 @@ export class VitamUIEditableButtonToggleStubComponent {
   ],
   standalone: false,
 })
-export class EditableLevelInputStubComponent implements ControlValueAccessor {
+class EditableLevelInputStubComponent implements ControlValueAccessor {
   @Input() validator: any;
   @Input() asyncValidator: any;
   @Input() prefix: any;
@@ -353,7 +353,7 @@ export class EditableLevelInputStubComponent implements ControlValueAccessor {
   name: 'strongify',
   standalone: false,
 })
-export class StrongifyStubPipe implements PipeTransform {
+class StrongifyStubPipe implements PipeTransform {
   transform(value: any): any {
     return value;
   }
@@ -363,7 +363,7 @@ export class StrongifyStubPipe implements PipeTransform {
   name: 'truncate',
   standalone: false,
 })
-export class TruncateStubPipe implements PipeTransform {
+class TruncateStubPipe implements PipeTransform {
   transform(value: string = ''): any {
     return value;
   }
@@ -373,7 +373,7 @@ export class TruncateStubPipe implements PipeTransform {
   name: 'translate',
   standalone: false,
 })
-export class TranslateStubPipe implements PipeTransform {
+class TranslateStubPipe implements PipeTransform {
   transform(value: string = ''): any {
     return value;
   }
@@ -383,7 +383,7 @@ export class TranslateStubPipe implements PipeTransform {
   name: 'dateTime',
   standalone: false,
 })
-export class DateTimeStubPipe implements PipeTransform {
+class DateTimeStubPipe implements PipeTransform {
   transform(value: string = ''): any {
     return value;
   }
@@ -404,7 +404,7 @@ export class InfiniteScrollStubDirective {
   exportAs: 'vitamuiCommonTableFilter',
   standalone: false,
 })
-export class TableFilterStubDirective {
+class TableFilterStubDirective {
   @Input('vitamuiCommonTableFilter') templateRef: TemplateRef<any>;
   @Output() readonly filterClosed = new EventEmitter();
 }
@@ -414,7 +414,7 @@ export class TableFilterStubDirective {
   exportAs: 'vitamuiRowCollapse',
   standalone: false,
 })
-export class RowCollapseStubDirective {
+class RowCollapseStubDirective {
   @Input() vitamuiCommonCollapse: any;
 }
 
@@ -422,7 +422,7 @@ export class RowCollapseStubDirective {
   selector: '[vitamuiCommonRowCollapseTriggerFor]',
   standalone: false,
 })
-export class RowCollapseTriggerForStubDirective {
+class RowCollapseTriggerForStubDirective {
   @Input() vitamuiCommonRowCollapseTriggerFor: any;
 }
 

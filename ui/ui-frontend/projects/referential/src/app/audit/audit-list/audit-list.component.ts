@@ -44,7 +44,7 @@ import { AuditService } from '../audit.service';
 const FILTER_DEBOUNCE_TIME_MS = 400;
 const POLLING_INTERVAL_MS = 5000;
 
-export class AuditFilters {
+class AuditFilters {
   startDate: string;
   endDate: string;
   types: string[];

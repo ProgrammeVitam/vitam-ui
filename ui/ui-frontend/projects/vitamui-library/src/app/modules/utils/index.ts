@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export * from './access-contract.util';
 export * from './diff.util';
 export * from './level.util';
 export * from './role.enum';

@@ -34,10 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export * from './access-right.enum';
 export * from './admin-user-profile.interface';
-export * from './archive-param.interface';
 export * from './display-profile-group.interface';
-export * from './ingest-right.enum';
-export * from './profile-selection.interface';
 export * from './profile.interface';

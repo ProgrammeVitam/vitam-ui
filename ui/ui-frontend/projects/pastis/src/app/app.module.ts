@@ -64,7 +64,7 @@ import { StandaloneThemeService } from './standalone/standalone-theme.service';
 import { NgxUiLoaderConfig, NgxUiLoaderModule, SPINNER } from 'ngx-ui-loader';
 import { provideNativeDateAdapter } from '@angular/material/core';
 
-export function PastisConfigurationFactory(appConfig: PastisConfiguration) {
+function PastisConfigurationFactory(appConfig: PastisConfiguration) {
   return () => appConfig.initConfiguration();
 }
 
