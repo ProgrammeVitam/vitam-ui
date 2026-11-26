@@ -42,7 +42,10 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaSort;
+import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
 import fr.gouv.vitamui.commons.vitam.api.administration.RuleCommonService;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
@@ -53,6 +56,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -103,6 +108,26 @@ class TransactionArchiveUnitCommonServiceTest {
             ruleCommonService,
             objectMapper
         );
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "ASC, 1", "DESC, -1" })
+    void shouldSortOnUnitTypeThenObjectWhenSortingOnArchiveUnitTypes(final DirectionDto direction, final int way)
+        throws VitamClientException {
+        SearchCriteriaSort sort = new SearchCriteriaSort();
+        sort.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
+        sort.setSorting(direction);
+        SearchCriteriaDto searchQuery = new SearchCriteriaDto();
+        searchQuery.setSortingCriteria(sort);
+
+        JsonNode orderBy = TransactionArchiveUnitService.mapRequestToSelectMultiQuery(searchQuery)
+            .getFinalSelect()
+            .get("$filter")
+            .get("$orderby");
+
+        assertThat(orderBy.fieldNames()).toIterable().containsExactly("#unitType", "#object");
+        assertThat(orderBy.get("#unitType").asInt()).isEqualTo(way);
+        assertThat(orderBy.get("#object").asInt()).isEqualTo(way);
     }
 
     @Test
