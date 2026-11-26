@@ -42,7 +42,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { GroupSelection } from '../group-selection.interface';
 import { UserService } from '../user.service';
 
-export const GROUP_ATTRIBUTION_VALUE_ACCESSOR: any = {
+const GROUP_ATTRIBUTION_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   // eslint-disable-next-line no-use-before-define
   useExisting: forwardRef(() => GroupAttributionComponent),

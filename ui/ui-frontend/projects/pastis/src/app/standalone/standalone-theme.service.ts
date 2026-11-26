@@ -50,7 +50,7 @@ import {
   ThemeColorType,
 } from 'vitamui-library';
 
-export interface Theme {
+interface Theme {
   colors: { [colorId: string]: string };
 }
 

@@ -48,12 +48,6 @@ export const rotateAnimation = trigger('rotateAnimation', [
   transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
 ]);
 
-export const rotateUpAnimation = trigger('rotateUpAnimation', [
-  state('true', style({ transform: 'none' })),
-  state('false', style({ transform: 'rotate(180deg)' })),
-  transition('true <=> false', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
-]);
-
 export const rotate90Animation = trigger('rotate90Animation', [
   state('collapsed', style({ transform: 'rotate(-90deg)' })),
   state('expanded', style({ transform: 'rotate(0deg)' })),
@@ -66,17 +60,6 @@ export const fadeInOutAnimation = trigger('fadeInOutAnimation', [
 ]);
 
 export const slideDownAnimation = trigger('slideDownAnimation', [
-  state('*', style({ opacity: 1, transform: 'translateX(0)' })),
-  transition(':enter', [
-    style({
-      opacity: 0,
-      transform: 'translateY(-100%)',
-    }),
-    animate('100ms ease-out'),
-  ]),
-]);
-
-export const tooltipAnimation = trigger('tooltipAnimation', [
   state('*', style({ opacity: 1, transform: 'translateX(0)' })),
   transition(':enter', [
     style({

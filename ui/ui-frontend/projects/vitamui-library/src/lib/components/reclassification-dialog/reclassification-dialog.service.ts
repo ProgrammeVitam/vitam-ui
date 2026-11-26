@@ -58,7 +58,7 @@ import {
 } from '../../../app/modules/services/reclassification.interface';
 import { ReclassificationMode } from './reclassification-dialog.component';
 
-export const RECLASSIFICATION_THRESHOLD = 10_000;
+const RECLASSIFICATION_THRESHOLD = 10_000;
 
 export interface BuildQueryParams {
   action: ReclassificationAction;

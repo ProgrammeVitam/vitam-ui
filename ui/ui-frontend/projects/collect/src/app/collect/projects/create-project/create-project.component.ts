@@ -73,7 +73,7 @@ import {
   ZipFileStatus,
 } from 'vitamui-library';
 
-export enum ImportType {
+enum ImportType {
   DIRECTORIES_FILES = 'DIRECTORIES_FILES',
   COMPRESSED = 'COMPRESSED',
   SIP = 'SIP',

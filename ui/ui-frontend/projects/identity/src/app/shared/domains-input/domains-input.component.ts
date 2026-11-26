@@ -38,7 +38,7 @@ import { ENTER } from '@angular/cdk/keycodes';
 import { Component, EventEmitter, forwardRef, Input, Output } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 
-export const DOMAINS_INPUT_ACCESSOR: any = {
+const DOMAINS_INPUT_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   // eslint-disable-next-line no-use-before-define
   useExisting: forwardRef(() => DomainsInputComponent),

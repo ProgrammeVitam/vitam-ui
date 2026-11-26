@@ -43,7 +43,7 @@ import { IngestService } from '../ingest.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
-export class IngestFilters {
+class IngestFilters {
   startDate?: Date;
   endDate?: Date;
 }

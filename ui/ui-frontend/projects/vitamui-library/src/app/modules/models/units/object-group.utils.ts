@@ -51,21 +51,21 @@ export function qualifiersToVersionsWithQualifier(qualifiers: Array<QualifierDto
   return versionsWithQualifiers;
 }
 
-export function convertToVersionWithQualifier(qualifier: QualifierDto, version: VersionDto): VersionWithQualifierDto {
+function convertToVersionWithQualifier(qualifier: QualifierDto, version: VersionDto): VersionWithQualifierDto {
   const versionWithQualifier: VersionWithQualifierDto = version as VersionWithQualifierDto;
   versionWithQualifier.qualifier = qualifier.qualifier;
   versionWithQualifier.version = parseDataObjectVersion(versionWithQualifier.DataObjectVersion);
   return versionWithQualifier;
 }
 
-export const byQualifierThenVersion = (left: VersionWithQualifierDto, right: VersionWithQualifierDto) => {
+const byQualifierThenVersion = (left: VersionWithQualifierDto, right: VersionWithQualifierDto) => {
   if (left.qualifier === right.qualifier) {
     return left.version - right.version;
   }
   return ObjectQualifierTypeList.indexOf(left.qualifier) - ObjectQualifierTypeList.indexOf(right.qualifier);
 };
 
-export function parseDataObjectVersion(dataObjectVersion: string): number {
+function parseDataObjectVersion(dataObjectVersion: string): number {
   if (!dataObjectVersion) {
     return 0;
   }

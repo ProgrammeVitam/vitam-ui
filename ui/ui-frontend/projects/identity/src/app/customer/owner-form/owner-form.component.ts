@@ -51,7 +51,7 @@ import {
   OwnerFormValidators,
 } from './owner-form.validators';
 
-export const OWNER_FORM_VALUE_ACCESSOR: any = {
+const OWNER_FORM_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   // eslint-disable-next-line no-use-before-define
   useExisting: forwardRef(() => OwnerFormComponent),

@@ -39,7 +39,7 @@ import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractFormInputDirective } from '../abstract-form-input.directive';
 
-export const FORM_FIELD_VALUE_WRAPPER_VALUE_ACCESSOR: any = {
+const FORM_FIELD_VALUE_WRAPPER_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => FormFieldValueWrapperComponent),
   multi: true,

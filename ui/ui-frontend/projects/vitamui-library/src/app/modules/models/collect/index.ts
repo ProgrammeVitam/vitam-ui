@@ -38,4 +38,3 @@ export * from './project';
 export * from './project-status';
 export * from './transaction';
 export * from './transaction-status';
-export * from './legal-status';

@@ -34,11 +34,4 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpHeaders } from '@angular/common/http';
-
 export const SKIP_ERROR_NOTIFICATION = 'SkipErrorNotification';
-
-export function addSkipErrorNotificationHeader(httpHeaders: HttpHeaders): HttpHeaders {
-  const headers = httpHeaders.append(SKIP_ERROR_NOTIFICATION, SKIP_ERROR_NOTIFICATION);
-  return headers;
-}

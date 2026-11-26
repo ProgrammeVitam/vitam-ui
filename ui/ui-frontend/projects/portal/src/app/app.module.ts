@@ -62,7 +62,7 @@ import {
 
 registerLocaleData(localeFr, 'fr');
 
-export function ApplicationSvgLoaderFactory(handler: HttpBackend, transferState: TransferState) {
+function ApplicationSvgLoaderFactory(handler: HttpBackend, transferState: TransferState) {
   return new ApplicationSvgLoader(transferState, new HttpClient(handler), {
     prefix: './assets/app-icons/',
     suffix: '.svg',

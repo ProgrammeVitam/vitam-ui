@@ -43,7 +43,7 @@ import { FilingHoldingSchemeNode, MatchingNodesNumbers } from './node.interface'
 import { copyNodeWithoutChildren } from './node.utils';
 
 export const ORPHANS_NODE_ID = 'ORPHANS_NODE';
-export const PATH_SEPARATOR = '/';
+const PATH_SEPARATOR = '/';
 
 export class FilingHoldingSchemeHandler {
   public static foundNode(nodes: FilingHoldingSchemeNode[], value: string, key = 'id'): FilingHoldingSchemeNode {
