@@ -36,10 +36,10 @@
  */
 import { EditObject } from './edit-object.model';
 
-export type EditObjectOperator = (oe: EditObject) => EditObject;
-export type EditObjectPredicate = (oe: EditObject) => boolean;
+type EditObjectOperator = (oe: EditObject) => EditObject;
+type EditObjectPredicate = (oe: EditObject) => boolean;
 
-export const setDisplayState = (editObject: EditObject, display: boolean): EditObject => {
+const setDisplayState = (editObject: EditObject, display: boolean): EditObject => {
   if (!editObject.displayRule) {
     console.warn(`Element '${editObject.path}' has no displayRule`);
 
@@ -51,30 +51,7 @@ export const setDisplayState = (editObject: EditObject, display: boolean): EditO
   return editObject;
 };
 
-export const display = (editObject: EditObject): EditObject => setDisplayState(editObject, true);
-
 export const hide = (editObject: EditObject): EditObject => setDisplayState(editObject, false);
-
-export const setAccordionState = (editObject: EditObject, open: boolean): EditObject => {
-  if (!editObject.displayRule) {
-    console.warn(`Element '${editObject.path}' has no displayRule`);
-
-    return editObject;
-  }
-
-  editObject.displayRule = { ...editObject.displayRule, ui: { ...editObject.displayRule.ui, open } };
-  editObject.open = open;
-
-  return editObject;
-};
-
-export const expand = (editObject: EditObject): EditObject => {
-  return setAccordionState(editObject, true);
-};
-
-export const collapse = (editObject: EditObject): EditObject => {
-  return setAccordionState(editObject, false);
-};
 
 export const label = (editObject: EditObject, label: string = editObject.displayRule.ui.label || editObject.key): EditObject => {
   editObject.displayRule.ui.label = label;
@@ -99,28 +76,10 @@ export const conditional = (
   };
 };
 
-export const hasDisplayRule: EditObjectPredicate = (editObject: EditObject): boolean => {
-  return Boolean(editObject?.displayRule);
-};
-
-export const hasCardinalityZero: EditObjectPredicate = (editObject: EditObject): boolean => {
-  return editObject?.cardinality === 'ZERO';
-};
-
 export const hasInconsistentValue = (typeService: any): EditObjectPredicate => {
   return (editObject: EditObject): boolean => {
     return !typeService.isConsistent(editObject?.value);
   };
-};
-
-export const hasInPath =
-  (prefix: string) =>
-  (editObject: EditObject): boolean => {
-    return editObject?.path.includes(prefix);
-  };
-
-export const hasNoLabel: EditObjectPredicate = (editObject: EditObject): boolean => {
-  return Boolean(editObject?.displayRule?.ui?.label);
 };
 
 export const hasAllChildrenHidden = (editObject: EditObject): boolean => {

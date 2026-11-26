@@ -44,7 +44,7 @@ import { UnitType } from '../units/unit-type.enum';
 import { DescriptionLevel } from '../../../../lib/models/description-level.enum';
 
 export const ORPHANS_NODE_ID = 'ORPHANS_NODE';
-export const PATH_SEPARATOR = '/';
+const PATH_SEPARATOR = '/';
 
 export class FilingHoldingSchemeHandler {
   public static foundNode(nodes: FilingHoldingSchemeNode[], value: string, key = 'id'): FilingHoldingSchemeNode {

@@ -68,8 +68,6 @@ import { searchAllRecordsQuery } from './reclassification-dialog.queries';
 import { BaseReclassificationDialogService, BuildQueryParams } from './reclassification-dialog.service';
 import { ReclassificationMode } from './reclassification-dialog.types';
 
-export { ReclassificationMode };
-
 interface ActionOption extends Option {
   key: 'ADD' | 'PULL' | 'REPLACE';
 }

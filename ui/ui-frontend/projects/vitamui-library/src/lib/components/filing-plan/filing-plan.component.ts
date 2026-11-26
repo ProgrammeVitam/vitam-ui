@@ -45,7 +45,7 @@ import { FilingPlanMode, FilingPlanService } from './filing-plan.service';
 import { Unit } from '../../../app/modules/models/units/unit.interface';
 import { AbstractFormInputDirective } from '../abstract-form-input.directive';
 
-export const NODE_SELECT_VALUE_ACCESSOR: any = {
+const NODE_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => FilingPlanComponent),
   multi: true,

@@ -38,7 +38,7 @@ import { Component, forwardRef, Input, OnInit, inject } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ValidationErrors } from '@angular/forms';
 import { GroupValidators } from '../group.validators';
 
-export const UNITS_FORM_VALUE_ACCESSOR: any = {
+const UNITS_FORM_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => UnitsFormComponent),
   multi: true,

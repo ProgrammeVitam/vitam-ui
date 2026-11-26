@@ -39,7 +39,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { EditableFieldComponent } from '../editable-field/editable-field.component';
 
-export const MULTIPLE_INPUT_VALUE_ACCESSOR: any = {
+const MULTIPLE_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => VitamuiMultiInputsComponent),
   multi: true,

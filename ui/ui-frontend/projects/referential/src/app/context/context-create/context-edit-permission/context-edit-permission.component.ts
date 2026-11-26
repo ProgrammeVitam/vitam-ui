@@ -43,7 +43,7 @@ import { IngestContractService } from '../../../ingest-contract/ingest-contract.
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-export const CONTEXT_PERMISSION_VALUE_ACCESSOR: any = {
+const CONTEXT_PERMISSION_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => ContextEditPermissionComponent),
   multi: true,

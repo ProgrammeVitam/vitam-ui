@@ -40,7 +40,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { EditableFieldComponent } from '../editable-field.component';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
-export const EDITABLE_TEXTAREA_VALUE_ACCESSOR: any = {
+const EDITABLE_TEXTAREA_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => EditableTextareaComponent),
   multi: true,

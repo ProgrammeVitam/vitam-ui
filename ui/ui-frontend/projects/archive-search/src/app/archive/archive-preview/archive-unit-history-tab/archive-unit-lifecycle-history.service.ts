@@ -101,7 +101,7 @@ export class ArchiveUnitLifecycleHistoryService {
  * evParentId references within the merged flat list. Nodes are keyed by origin+evId so that a UA
  * event and a GOT event never collide even if they happen to share the same evId GUID.
  */
-export function buildConsolidatedHistory(rawEvents: (ApiEvent & { origin: LifecycleOrigin })[]): OperationLifecycleGroup[] {
+function buildConsolidatedHistory(rawEvents: (ApiEvent & { origin: LifecycleOrigin })[]): OperationLifecycleGroup[] {
   const nodesById = new Map<string, ConsolidatedLifecycleEvent>();
   const roots: ConsolidatedLifecycleEvent[] = [];
   const nodeKey = (origin: LifecycleOrigin, evId: string) => `${origin}#${evId}`;

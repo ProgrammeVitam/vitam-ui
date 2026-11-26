@@ -111,13 +111,13 @@ import { EventTypeLabelComponent } from './logbook/event-type-label/event-type-l
 import { HistoryEventsComponent } from './logbook/history/history-events/history-events.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
-export function loadConfigFactory(configService: ConfigService, environment: any) {
+function loadConfigFactory(configService: ConfigService, environment: any) {
   const p = () => configService.load(environment.configUrls).toPromise();
 
   return p;
 }
 
-export function startupServiceFactory(startupService: StartupService, authService: AuthService) {
+function startupServiceFactory(startupService: StartupService, authService: AuthService) {
   // leave it like this due to run packagr issue :
   // https://github.com/ng-packagr/ng-packagr/issues/696 & https://github.com/angular/angular/issues/
   const p = () =>

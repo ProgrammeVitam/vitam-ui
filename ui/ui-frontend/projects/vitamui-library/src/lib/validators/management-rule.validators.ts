@@ -36,11 +36,11 @@
  */
 import { ValidatorFn } from '@angular/forms';
 
-export interface Validators {
+interface Validators {
   readonly ruleIdPattern: ValidatorFn;
 }
 
-export const RULE_ID_PATTERN_ERROR_KEY = 'ruleIdPattern';
+const RULE_ID_PATTERN_ERROR_KEY = 'ruleIdPattern';
 
 export const ManagementRuleValidators: Validators = {
   ruleIdPattern: (control) => (/[À-ÖØ-öø-ÿ ]/.test(control.value) ? { [RULE_ID_PATTERN_ERROR_KEY]: true } : null),

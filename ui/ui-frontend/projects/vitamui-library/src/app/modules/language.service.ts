@@ -54,7 +54,7 @@ export enum FullLangString {
   GERMAN = 'GERMAN',
 }
 
-export interface VitamUILangague {
+interface VitamUILangague {
   fullLangString: FullLangString;
   minLangString: MinLangString;
 }
