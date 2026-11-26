@@ -36,7 +36,7 @@
  */
 import { ObjectQualifierTypeType, SearchCriteriaEltDto } from 'vitamui-library';
 
-export type DIPSedaVersion = '2.1' | '2.2' | '2.3';
+export type DIPSedaVersion = '2.1' | '2.2' | '2.3' | '2.4';
 
 export type QualifierVersion = 'LAST' | 'ALL' | 'FIRST';
 
