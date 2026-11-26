@@ -38,8 +38,10 @@ package fr.gouv.vitamui.iam.server.security;
 
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 import fr.gouv.vitamui.iam.security.service.UserAuthenticationService;
 import fr.gouv.vitamui.iam.server.subrogation.dao.SubrogationRepository;
 import fr.gouv.vitamui.iam.server.subrogation.domain.Subrogation;
@@ -49,6 +51,7 @@ import fr.gouv.vitamui.iam.server.user.service.UserService;
 import fr.gouv.vitamui.security.common.dto.ContextDto;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -152,6 +155,7 @@ public class IamUserAuthentificationService implements UserAuthenticationService
 
     private AuthUserDto getUserByToken(final Token token) {
         final UserDto userDto = userService.findUserById(token.getRefId());
+        rejectIneligibleAccount(userDto);
         final AuthUserDto authUserDto = userService.loadGroupAndProfiles(userDto);
         if (token.isSurrogation()) {
             final String surrogateEmail = userDto.getEmail();
@@ -159,6 +163,7 @@ public class IamUserAuthentificationService implements UserAuthenticationService
                 surrogateEmail,
                 userDto.getCustomerId()
             );
+            rejectInactiveSubrogation(subrogation, token);
             final String superUserEmail = subrogation.getSuperUser();
             authUserDto.setSuperUser(superUserEmail);
             authUserDto.setSuperUserCustomerId(subrogation.getSuperUserCustomerId());
@@ -166,11 +171,41 @@ public class IamUserAuthentificationService implements UserAuthenticationService
                 superUserEmail,
                 subrogation.getSuperUserCustomerId()
             );
+            rejectIneligibleAccount(superUserDto);
             authUserDto.setSuperUserIdentifier(superUserDto.getIdentifier());
         }
         userService.addBasicCustomerAndProofTenantIdentifierInformation(authUserDto);
         userService.addTenantsByAppInformation(authUserDto);
         authUserDto.setAuthToken(token.getRefId());
         return authUserDto;
+    }
+
+    /**
+     * A subrogation token is only valid while the subrogation it was issued for is accepted and not expired.
+     * The surrogate's current subrogation must be that very one: once it ends, a later subrogation of the same
+     * surrogate (by another super user, for instance) does not make the token valid again.
+     */
+    private void rejectInactiveSubrogation(final Subrogation subrogation, final Token token) {
+        if (subrogation == null || subrogation.getStatus() != SubrogationStatusEnum.ACCEPTED) {
+            throw new BadCredentialsException("No accepted subrogation for this token");
+        }
+        if (!StringUtils.equals(subrogation.getId(), token.getSubrogationId())) {
+            throw new BadCredentialsException("The subrogation of this token has ended");
+        }
+        if (subrogation.getDate() != null && subrogation.getDate().before(new Date())) {
+            throw new BadCredentialsException("Subrogation expired for this token");
+        }
+    }
+
+    /**
+     * Refuse to build an authenticated identity for an account that is no longer eligible. Disabling
+     * or logically removing an account must stop its outstanding tokens from being accepted, even
+     * though those tokens are not deleted eagerly.
+     */
+    private void rejectIneligibleAccount(final UserDto userDto) {
+        final UserStatusEnum status = userDto.getStatus();
+        if (status == UserStatusEnum.DISABLED || status == UserStatusEnum.REMOVED) {
+            throw new BadCredentialsException("Account is not eligible for authentication: status=" + status);
+        }
     }
 }

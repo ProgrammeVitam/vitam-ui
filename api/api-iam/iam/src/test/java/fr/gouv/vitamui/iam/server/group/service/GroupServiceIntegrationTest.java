@@ -180,6 +180,14 @@ public class GroupServiceIntegrationTest extends AbstractLogbookIntegrationTest 
     }
 
     @Test
+    void getSubLevels_matchesTheLevelLiterally() {
+        repository.save(IamServerUtilsTest.buildGroup("idChild", "idChild", "child", CUSTOMER_ID, "EDF.RH.PARIS"));
+        repository.save(IamServerUtilsTest.buildGroup("idOther", "idOther", "other", CUSTOMER_ID, "EDFXRH.PARIS"));
+
+        assertThat(service.getSubLevels("EDF.RH", CUSTOMER_ID)).containsOnly("EDF.RH.PARIS");
+    }
+
+    @Test
     void testCheckExist() {
         repository.save(IamServerUtilsTest.buildGroup(ID, "id1", "name", CUSTOMER_ID, LEVEL));
         repository.save(IamServerUtilsTest.buildGroup("idLevel", "id2", "nameLevel", CUSTOMER_ID, LEVEL));

@@ -119,6 +119,7 @@ public class ExternalParametersService
             .stream()
             .filter(p -> Application.EXTERNAL_PARAMS.toString().equalsIgnoreCase(p.getApplicationName()))
             .filter(p -> tenant.equals(p.getTenantIdentifier()))
+            .filter(ProfileDto::isEnabled)
             .findFirst();
         if (optionalExternalParamsProfileDto.isEmpty()) {
             LOGGER.warn("External parameter profile not found");

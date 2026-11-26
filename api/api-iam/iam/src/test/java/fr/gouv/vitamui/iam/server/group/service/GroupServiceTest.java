@@ -331,6 +331,7 @@ class GroupServiceTest {
 
     @Test
     void getLevels_whenProfilesExist_returnsLevels() {
+        wireInternalSecurityServerCalls();
         Optional<String> criteria = Optional.empty();
         List<Document> mappedResults = new ArrayList<>();
         Document document = new Document("level", Arrays.asList("DEV", "TEST"));
@@ -348,6 +349,7 @@ class GroupServiceTest {
 
     @Test
     void getLevels_whenNoProfile_returnsEmptyList() {
+        wireInternalSecurityServerCalls();
         Optional<String> criteria = Optional.empty();
         List<Document> mappedResults = new ArrayList<>();
         Document rawResults = new Document();

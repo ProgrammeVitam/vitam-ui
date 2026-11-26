@@ -155,6 +155,9 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
+    /** Refusal message for callers without ROLE_GENERIC_USERS, which does not name the missing role. */
+    public static final String GENERIC_USERS_NOT_ALLOWED = "generic users are not allowed";
+
     private static final String TYPE_KEY = "type";
     private static final String LEVEL_KEY = "level";
     private static final String EMAIL_KEY = "email";
@@ -447,6 +450,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     protected void beforeUpdate(final UserDto dto) {
         final String message = "Unable to update user " + dto.getId();
         final User user = find(dto.getId(), dto.getCustomerId(), message);
+        checkGenericUserAllowed(dto.getType(), user, message);
 
         checkIsReadonly(user.isReadonly(), message);
         checkCustomer(user.getCustomerId(), message);
@@ -615,6 +619,12 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
 
         checkLevel(user.getLevel(), message);
         checkIsReadonly(user.isReadonly(), message);
+        final String requestedType = CastUtils.toString(partialDto.get("type"));
+        checkGenericUserAllowed(
+            requestedType == null ? null : EnumUtils.stringToEnum(UserTypeEnum.class, requestedType),
+            user,
+            message
+        );
         final Boolean userHasOtp = CastUtils.toBoolean(partialDto.get("otp"));
         if (userHasOtp != null) {
             checkOtp(user, userHasOtp);
@@ -832,6 +842,30 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
                         message + ": no user found for id " + id + " - customerId " + customerId
                     )
             );
+    }
+
+    /**
+     * Generic users can only be modified, or set, by callers holding ROLE_GENERIC_USERS.
+     * Called once the user is found within the caller's customer, so that the type of a user of another
+     * customer is not revealed.
+     * The provisioning process (CAS user, ROLE_PROVISIONING_USER) updates the attributes of existing users,
+     * generic ones included, when they log in through an identity provider: it may modify the attributes of a
+     * generic user, but may neither set a user as generic nor change the type of a generic user.
+     *
+     * @param requestedType type sent by the caller, if any
+     * @param user the modified user
+     */
+    private void checkGenericUserAllowed(final UserTypeEnum requestedType, final User user, final String message) {
+        if (securityService.hasRole(ServicesData.ROLE_GENERIC_USERS)) {
+            return;
+        }
+        final boolean changesType = requestedType != null && requestedType != user.getType();
+        final boolean modifiesGenericUser =
+            user.getType() == UserTypeEnum.GENERIC &&
+            (changesType || !securityService.hasRole(ServicesData.ROLE_PROVISIONING_USER));
+        if (requestedType == UserTypeEnum.GENERIC || modifiesGenericUser) {
+            throw new ForbiddenException(message + ": " + GENERIC_USERS_NOT_ALLOWED);
+        }
     }
 
     private void checkIsReadonly(final boolean readonly, final String message) {
@@ -1130,10 +1164,10 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
             .setAccessContract(securityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
             .setApplicationSessionId(securityService.getApplicationId());
 
-        final Optional<User> user = getRepository().findById(id);
-        user.orElseThrow(() -> new NotFoundException("No user found with id : %s".formatted(id)));
+        // getOne applies the same customer/level restrictions as an ordinary read.
+        final UserDto user = getOne(id);
         return logbookService.findEventsByIdentifierAndCollectionNames(
-            user.get().getIdentifier(),
+            user.getIdentifier(),
             MongoDbCollections.USERS,
             vitamContext,
             USER_OPERATIONS_EVENT_TYPES.stream().map(Enum::name).collect(Collectors.toList())
@@ -1147,7 +1181,9 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
      * @return Matching levels
      */
     public List<String> getLevels(final Optional<String> criteriaJsonString) {
-        final Document document = groupFields(criteriaJsonString, CommonConstants.LEVEL_ATTRIBUTE);
+        // Build the criteria like the paginated search: only allowed keys are accepted and the
+        // customer/level restrictions apply.
+        final Document document = groupFields(checkAuthorization(criteriaJsonString), CommonConstants.LEVEL_ATTRIBUTE);
         LOGGER.debug("getLevels : {}", document);
         if (document == null) {
             return new ArrayList<>();

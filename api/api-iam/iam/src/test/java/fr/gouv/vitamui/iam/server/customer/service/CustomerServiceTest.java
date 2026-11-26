@@ -59,6 +59,8 @@ import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doCallRealMethod;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class CustomerServiceTest {
@@ -274,6 +276,59 @@ class CustomerServiceTest {
             customerDtoUpdated.getId(),
             "Customer id should be returned."
         );
+    }
+
+    @Test
+    void update_propagatesAnOtpPolicyChangeToTheUsers() {
+        final CustomerDto customerToUpdate = givenStoredCustomerUpdatedTo(OtpEnum.OPTIONAL, OtpEnum.MANDATORY);
+
+        customerService.update(customerToUpdate);
+
+        verify(userService).updateOtpForUsersByCustomerId(true, "id");
+    }
+
+    @Test
+    void update_refusesGdprChangesWhenTheSettingIsReadonly() {
+        final CustomerDto customerToUpdate = givenStoredCustomerUpdatedTo(OtpEnum.OPTIONAL, OtpEnum.OPTIONAL);
+        customerService.setGdprAlertReadonly(true);
+        customerToUpdate.setGdprAlert(true);
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> customerService.update(customerToUpdate));
+        verify(customerRepository, never()).save(any());
+    }
+
+    private CustomerDto givenStoredCustomerUpdatedTo(final OtpEnum storedOtp, final OtpEnum requestedOtp) {
+        final CustomerDto customer = buildDto();
+        final Customer stored = new Customer();
+        VitamUIUtils.copyProperties(customer, stored);
+        stored.setId("id");
+        stored.setOtp(storedOtp);
+        stored.setGdprAlert(false);
+        VitamUIUtils.copyProperties(customer.getAddress(), stored.getAddress());
+        stored.setLanguage(customer.getLanguage().toString());
+        stored.setGraphicIdentity(new GraphicIdentity());
+        stored.getGraphicIdentity().setHasCustomGraphicIdentity(false);
+
+        final CustomerDto customerToUpdate = buildDto();
+        customerToUpdate.setId("id");
+        customerToUpdate.setOtp(requestedOtp);
+        customerToUpdate.setGdprAlert(false);
+        customerToUpdate.setGdprAlertDelay(stored.getGdprAlertDelay());
+        customerToUpdate.setHasCustomGraphicIdentity(false);
+
+        final Customer saved = new Customer();
+        VitamUIUtils.copyProperties(customerToUpdate, saved);
+        saved.setOtp(requestedOtp);
+        VitamUIUtils.copyProperties(customerToUpdate.getAddress(), saved.getAddress());
+        saved.setLanguage(customerToUpdate.getLanguage().toString());
+        saved.setGraphicIdentity(new GraphicIdentity());
+        saved.getGraphicIdentity().setHasCustomGraphicIdentity(false);
+
+        when(customerRepository.findById(any())).thenReturn(Optional.of(stored));
+        when(customerRepository.existsById(any())).thenReturn(true);
+        when(customerRepository.save(any())).thenReturn(saved);
+        when(ownerRepository.findAll(any(Query.class))).thenReturn(new ArrayList<>());
+        return customerToUpdate;
     }
 
     @Test

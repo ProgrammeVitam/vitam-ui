@@ -308,7 +308,9 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
         final Tenant tenant = findById(tenantDto.getId());
 
         final String message = "Unable to update tenant " + tenantDto.getId();
-        checkCustomer(tenantDto.getCustomerId(), message);
+        // Authorize the stored tenant's customer before any mutation: the customer of a tenant cannot be changed.
+        checkCanAccessCustomer(tenant.getCustomerId(), message);
+        checkSameCustomer(tenant, tenantDto.getCustomerId(), message);
         checkIsReadonly(tenant.isReadonly(), message);
         checkIdentifier(tenant.getIdentifier(), tenantDto.getIdentifier(), message);
         checkOwner(tenant, tenantDto.getOwnerId(), message);
@@ -333,6 +335,10 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
             .findById(id)
             .orElseThrow(() -> new NotFoundException("Entity not found " + getObjectName() + " with id : " + id));
 
+        // Authorize the stored tenant's customer before mutating it: holding ROLE_UPDATE_TENANTS on
+        // one's own customer must not grant write access to another customer's tenant.
+        checkCanAccessCustomer(tenant.getCustomerId(), message);
+
         Assert.isTrue(
             !checkMapContainsOnlyFieldsUnmodifiable(
                 partialDto,
@@ -343,7 +349,7 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
 
         final String customerId = CastUtils.toString(partialDto.get(CUSTOMER_ID));
         if (customerId != null) {
-            checkCustomer(customerId, message);
+            checkSameCustomer(tenant, customerId, message);
         }
 
         checkIsReadonly(tenant.isReadonly(), message);
@@ -707,6 +713,19 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
             securityService.hasRole(ServicesData.ROLE_UPDATE_TENANTS_ALL_CUSTOMERS) ||
             customerId.equals(securityService.getCustomerId())
         );
+    }
+
+    private void checkSameCustomer(final Tenant tenant, final String customerId, final String message) {
+        Assert.isTrue(
+            StringUtils.equals(tenant.getCustomerId(), customerId),
+            message + ": the customer of a tenant cannot be changed"
+        );
+    }
+
+    private void checkCanAccessCustomer(final String customerId, final String message) {
+        if (!canAccessToCustomer(customerId)) {
+            throw new NoRightsException(message + ": insufficient permissions on customer " + customerId);
+        }
     }
 
     /**

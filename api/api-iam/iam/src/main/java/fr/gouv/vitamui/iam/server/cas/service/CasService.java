@@ -371,6 +371,21 @@ public class CasService {
 
     @Transactional
     public UserDto getUserByEmailAndCustomerId(final String email, final String customerId, final String optEmbedded) {
+        return getUserByEmailAndCustomerId(email, customerId, optEmbedded, null, null);
+    }
+
+    /**
+     * @param superUserEmail      for a subrogation, the super user validated at login: the subrogation bound to the
+     *                            auth token must be his, so a subrogation without super user is refused
+     * @param superUserCustomerId customer of that super user
+     */
+    private UserDto getUserByEmailAndCustomerId(
+        final String email,
+        final String customerId,
+        final String optEmbedded,
+        final String superUserEmail,
+        final String superUserCustomerId
+    ) {
         boolean loadFullProfile = checkEmbeddedOption(optEmbedded, CommonConstants.AUTH_TOKEN_PARAMETER);
         boolean isSubrogation = checkEmbeddedOption(optEmbedded, CommonConstants.SURROGATION_PARAMETER);
         boolean isApi = checkEmbeddedOption(optEmbedded, CommonConstants.API_PARAMETER);
@@ -381,7 +396,14 @@ public class CasService {
         }
         checkStatus(userDto.getStatus(), userDto.getEmail());
 
-        return loadFullUserProfileIfRequired(userDto, loadFullProfile, isSubrogation, isApi);
+        return loadFullUserProfileIfRequired(
+            userDto,
+            loadFullProfile,
+            isSubrogation,
+            isApi,
+            superUserEmail,
+            superUserCustomerId
+        );
     }
 
     private boolean checkEmbeddedOption(String optEmbedded, String authTokenParameter) {
@@ -396,7 +418,9 @@ public class CasService {
         UserDto user,
         boolean loadFullProfile,
         boolean subrogation,
-        boolean api
+        boolean api,
+        final String superUserEmail,
+        final String superUserCustomerId
     ) {
         if (!loadFullProfile) {
             return user;
@@ -404,9 +428,35 @@ public class CasService {
         final AuthUserDto authUserDto = userService.loadGroupAndProfiles(user);
         userService.addBasicCustomerAndProofTenantIdentifierInformation(authUserDto);
         userService.addTenantsByAppInformation(authUserDto);
-        generateAndAddAuthToken(authUserDto, subrogation, api);
-        createEventsSubrogation(user, subrogation);
+        final Subrogation activeSubrogation = subrogation
+            ? subrogationRepository.findOneBySurrogateAndSurrogateCustomerId(user.getEmail(), user.getCustomerId())
+            : null;
+        if (subrogation) {
+            checkSubrogationOfSuperUser(activeSubrogation, superUserEmail, superUserCustomerId);
+        }
+        generateAndAddAuthToken(authUserDto, activeSubrogation, subrogation, api);
+        createEventsSubrogation(user, activeSubrogation);
         return authUserDto;
+    }
+
+    /**
+     * The subrogation bound to the auth token must be the one of the super user validated at login: between the
+     * validation and the token creation, the subrogation of the surrogate may have ended and another super user's
+     * subrogation may have started. A refusal is a {@link NotFoundException}, which the authentication server handles
+     * as a refused login.
+     */
+    private void checkSubrogationOfSuperUser(
+        final Subrogation subrogation,
+        final String superUserEmail,
+        final String superUserCustomerId
+    ) {
+        final boolean ofSuperUser =
+            subrogation != null &&
+            StringUtils.equalsIgnoreCase(subrogation.getSuperUser(), superUserEmail) &&
+            StringUtils.equals(subrogation.getSuperUserCustomerId(), superUserCustomerId);
+        if (!ofSuperUser) {
+            throw new NotFoundException("No subrogation of the surrogate by the super user: " + superUserEmail);
+        }
     }
 
     /**
@@ -427,6 +477,18 @@ public class CasService {
         final String userIdentifier,
         final String optEmbedded
     ) {
+        return getUser(loginEmail, loginCustomerId, idp, userIdentifier, optEmbedded, null, null);
+    }
+
+    private UserDto getUser(
+        String loginEmail,
+        final String loginCustomerId,
+        final String idp,
+        final String userIdentifier,
+        final String optEmbedded,
+        final String superUserEmail,
+        final String superUserCustomerId
+    ) {
         // if the user depends on an external idp
         if (StringUtils.isNotBlank(idp)) {
             Optional<ProvidedUserDto> providedUser =
@@ -436,7 +498,13 @@ public class CasService {
             }
         }
 
-        return getUserByEmailAndCustomerId(loginEmail, loginCustomerId, optEmbedded);
+        return getUserByEmailAndCustomerId(
+            loginEmail,
+            loginCustomerId,
+            optEmbedded,
+            superUserEmail,
+            superUserCustomerId
+        );
     }
 
     /**
@@ -652,12 +720,8 @@ public class CasService {
         }
     }
 
-    private void createEventsSubrogation(final UserDto surrogate, final boolean isSubrogation) {
-        if (isSubrogation) {
-            final Subrogation subro = subrogationRepository.findOneBySurrogateAndSurrogateCustomerId(
-                surrogate.getEmail(),
-                surrogate.getCustomerId()
-            );
+    private void createEventsSubrogation(final UserDto surrogate, final Subrogation subro) {
+        if (subro != null) {
             final EventType type;
             if (surrogate.getType().equals(UserTypeEnum.GENERIC)) {
                 type = EventType.EXT_VITAMUI_START_SURROGATE_GENERIC;
@@ -679,7 +743,12 @@ public class CasService {
         return set;
     }
 
-    private void generateAndAddAuthToken(final AuthUserDto user, final boolean isSubrogation, final boolean isApi) {
+    private void generateAndAddAuthToken(
+        final AuthUserDto user,
+        final Subrogation subrogation,
+        final boolean isSubrogation,
+        final boolean isApi
+    ) {
         final Token token = new Token();
         token.setRefId(user.getId());
         final int ttlInMinutes;
@@ -696,6 +765,9 @@ public class CasService {
         token.setUpdatedDate(nowPlusXMinutes);
         token.setId(generateUniqueTicketId(TOKEN_PREFIX));
         token.setSurrogation(isSubrogation);
+        if (subrogation != null) {
+            token.setSubrogationId(subrogation.getId());
+        }
         tokenRepository.save(token);
         user.setLastConnection(OffsetDateTime.now());
         user.setAuthToken(token.getId());
@@ -801,7 +873,9 @@ public class CasService {
             request.getLoginCustomerId(),
             request.getIdentityProviderId(),
             userIdentifier,
-            embedded
+            embedded,
+            request.getSuperUserEmail(),
+            request.getSuperUserCustomerId()
         );
         if (user == null) {
             throw new NotFoundException(USER_NOT_FOUND_MESSAGE + request.getLoginEmail());
@@ -829,6 +903,11 @@ public class CasService {
      */
     String resolveDelegatedIdentity(final DelegatedIdpContextDto delegatedIdp, final String expectedEmail) {
         final IdentityProviderDto provider = identityProviderService.getOne(delegatedIdp.getProviderId());
+        if (!Boolean.TRUE.equals(provider.getEnabled())) {
+            throw new InvalidAuthenticationException(
+                String.format("Identity provider '%s' is disabled", delegatedIdp.getProviderId())
+            );
+        }
         final Map<String, List<String>> attributes = delegatedIdp.getAttributes();
         final String principalId = delegatedIdp.getPrincipalId();
 

@@ -61,7 +61,6 @@ import fr.gouv.vitamui.iam.server.externalParameters.service.ExternalParametersS
 import fr.gouv.vitamui.iam.server.externalparamprofile.converter.ExternalParamProfileConverter;
 import fr.gouv.vitamui.iam.server.externalparamprofile.dao.ExternalParamProfileRepository;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
-import fr.gouv.vitamui.iam.server.profile.converter.ProfileConverter;
 import fr.gouv.vitamui.iam.server.profile.service.ProfileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,6 +70,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -89,7 +89,6 @@ public class ExternalParamProfileService {
     private final IamLogbookService iamLogbookService;
     private final ExternalParamProfileRepository externalParamProfileRepository;
     private final LogbookService logbookService;
-    private final ProfileConverter profileConverter;
 
     private static final String NAME = "name";
     private static final String DESCRIPTION = "description";
@@ -99,6 +98,18 @@ public class ExternalParamProfileService {
     private static final String BULK_OPERATIONS_THRESHOLD = "bulkOperationsThreshold";
     private static final String ID_PROFILE = "idProfile";
     private static final String EXTERNAL_PARAM_PROFILE = "externalparamprofile";
+    private static final String TENANT_IDENTIFIER = "tenantIdentifier";
+    /**
+     * Keys a caller may filter the list on.
+     */
+    private static final List<String> SEARCHABLE_KEYS = List.of(
+        NAME,
+        DESCRIPTION,
+        ENABLED,
+        "identifier",
+        "applicationName",
+        TENANT_IDENTIFIER
+    );
 
     public ExternalParamProfileService(
         final ExternalParametersService externalParametersService,
@@ -106,8 +117,7 @@ public class ExternalParamProfileService {
         final SecurityService securityService,
         final IamLogbookService iamLogbookService,
         final ExternalParamProfileRepository externalParamProfileRepository,
-        final LogbookService logbookService,
-        final ProfileConverter profileConverter
+        final LogbookService logbookService
     ) {
         this.externalParametersService = externalParametersService;
         this.securityService = securityService;
@@ -115,7 +125,6 @@ public class ExternalParamProfileService {
         this.iamLogbookService = iamLogbookService;
         this.externalParamProfileRepository = externalParamProfileRepository;
         this.logbookService = logbookService;
-        this.profileConverter = profileConverter;
     }
 
     public PaginatedValuesDto<ExternalParamProfileDto> getAllPaginated(
@@ -126,10 +135,20 @@ public class ExternalParamProfileService {
         final DirectionDto direction
     ) {
         final Integer tenantIdentifier = securityService.getTenantIdentifier();
-        QueryDto queryDto = QueryDto.fromJson(criteria);
-        queryDto.addQuery(
-            QueryDto.andQuery().addCriterion("tenantIdentifier", tenantIdentifier, CriterionOperator.EQUALS)
-        );
+        final QueryDto requestedQuery = QueryDto.fromJson(criteria);
+        requestedQuery.keyFilter(SEARCHABLE_KEYS);
+        // The tenant and level restrictions are in the root AND query, so the operator of the requested
+        // criteria only applies inside it.
+        final QueryDto queryDto = QueryDto.andQuery()
+            .addCriterion(TENANT_IDENTIFIER, tenantIdentifier, CriterionOperator.EQUALS);
+        if (!securityService.userIsRootLevel()) {
+            // Same level restriction as the profile reads (ProfileService): sub-levels or the user's own profiles.
+            final QueryDto levelQuery = QueryDto.orQuery()
+                .addCriterion("level", securityService.getLevel() + ".", CriterionOperator.STARTWITH)
+                .addCriterion("_id", securityService.getUser().getProfileGroup().getProfileIds(), CriterionOperator.IN);
+            queryDto.addQuery(levelQuery);
+        }
+        queryDto.addQuery(requestedQuery);
         return externalParamProfileRepository.getAllPaginated(page, size, queryDto.toJson(), orderBy, direction);
     }
 
@@ -187,10 +206,14 @@ public class ExternalParamProfileService {
 
     public ExternalParamProfileDto getOne(final String id) {
         LOGGER.debug("get one with id : {}", id);
+        // Same customer/tenant/level restrictions as an ordinary profile read.
+        profileService.getOne(id);
         return externalParamProfileRepository.findByIdProfile(id);
     }
 
     public List<HistoryEventDto> findHistoryById(final String id) throws VitamClientException {
+        // Same customer/tenant/level restrictions as an ordinary profile read.
+        profileService.getOne(id);
         final Integer tenantIdentifier = securityService.getTenantIdentifier();
         final VitamContext vitamContext = new VitamContext(tenantIdentifier)
             .setAccessContract(securityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
@@ -224,7 +247,10 @@ public class ExternalParamProfileService {
         final Collection<EventDiffDto> externalParamProfileLogbooks = new ArrayList<>();
         String idProfile = (String) partialDto.get(ID_PROFILE);
 
-        ProfileDto profileDto = profileService.getOne(idProfile);
+        ProfileDto profileDto = profileService.checkCanBeModified(
+            idProfile,
+            "Unable to patch external parameter profile " + idProfile
+        );
 
         // Ancienne valeur
         ExternalParamProfileDto externalParamProfileDto = externalParamProfileRepository.findByIdProfile(idProfile);
@@ -360,16 +386,13 @@ public class ExternalParamProfileService {
         Map<String, Object> partialDto,
         Collection<EventDiffDto> externalParamProfileLogbooks
     ) {
-        final Collection<EventDiffDto> logbooks = new ArrayList<>();
+        final Map<String, Object> profilePatch = new HashMap<>();
 
         for (final Map.Entry<String, Object> entry : partialDto.entrySet()) {
             switch (entry.getKey()) {
                 case DESCRIPTION:
                     String description = (String) entry.getValue();
-                    profileDto.setDescription(description);
-                    logbooks.add(
-                        new EventDiffDto(ProfileConverter.DESCRIPTION_KEY, oldDto.getDescription(), description)
-                    );
+                    profilePatch.put(DESCRIPTION, description);
                     externalParamProfileLogbooks.add(
                         new EventDiffDto(
                             ExternalParamProfileConverter.DESCRIPTION,
@@ -380,16 +403,14 @@ public class ExternalParamProfileService {
                     break;
                 case NAME:
                     String name = (String) entry.getValue();
-                    profileDto.setName(name);
-                    logbooks.add(new EventDiffDto(ProfileConverter.NAME_KEY, oldDto.getName(), name));
+                    profilePatch.put(NAME, name);
                     externalParamProfileLogbooks.add(
                         new EventDiffDto(ExternalParamProfileConverter.NAME_KEY, oldDto.getName(), name)
                     );
                     break;
                 case ENABLED:
                     Boolean enabled = (Boolean) entry.getValue();
-                    profileDto.setEnabled(enabled);
-                    logbooks.add(new EventDiffDto(ProfileConverter.ENABLED_KEY, oldDto.isEnabled(), enabled));
+                    profilePatch.put(ENABLED, enabled);
                     externalParamProfileLogbooks.add(
                         new EventDiffDto(ExternalParamProfileConverter.ENABLED_KEY, oldDto.isEnabled(), enabled)
                     );
@@ -398,9 +419,12 @@ public class ExternalParamProfileService {
             }
         }
 
-        if (partialDto.get(DESCRIPTION) != null || partialDto.get(NAME) != null || partialDto.get(ENABLED) != null) {
-            profileService.update(profileDto);
-            iamLogbookService.updateProfileEvent(profileConverter.convertDtoToEntity(profileDto), logbooks);
+        if (!profilePatch.isEmpty()) {
+            // The profile patch runs the usual profile checks and journalizes the profile changes.
+            profilePatch.put("id", profileDto.getId());
+            profilePatch.put("customerId", profileDto.getCustomerId());
+            profilePatch.put(TENANT_IDENTIFIER, profileDto.getTenantIdentifier());
+            profileService.patch(profilePatch);
         }
     }
 
