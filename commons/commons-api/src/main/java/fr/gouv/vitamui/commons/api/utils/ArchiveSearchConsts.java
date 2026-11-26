@@ -256,6 +256,7 @@ public class ArchiveSearchConsts {
     public static final String ALL_ARCHIVE_UNIT_TYPES_CRITERIA = "ALL_ARCHIVE_UNIT_TYPES";
     public static final String ERRORS = "ERRORS";
     public static final String ORPHANS_NODE_CRITERIA = "ORPHANS_NODE";
+    public static final String VIRTUAL_POSITION_CRITERIA = "VIRTUAL";
     public static final String DESCRIPTION_LEVEL_CRITERIA = "DESCRIPTION_LEVEL";
     public static final String DESCRIPTION_LEVEL = "DescriptionLevel";
     public static final String ARCHIVE_UNIT_OBJECTS = "#object";

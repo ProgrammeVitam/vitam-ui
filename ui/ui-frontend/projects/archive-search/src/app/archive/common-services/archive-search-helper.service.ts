@@ -493,20 +493,7 @@ export class ArchiveSearchHelperService {
 
   buildNodesListForQUery(searchCriterias: Map<string, CriteriaSearchCriteria>, criteriaSearchList: SearchCriteriaEltDto[]) {
     searchCriterias.forEach((criteria: CriteriaSearchCriteria) => {
-      if (criteria.key === 'VIRTUAL') {
-        const virtualNodeRealNodeValues: CriteriaValue[] = criteria.values.map((c) => ({
-          ...c.value,
-          id: c.value.virtualNodeRealParentId,
-          value: c.value.virtualNodeRealParentId,
-        }));
-        criteriaSearchList.push({
-          criteria: 'NODE',
-          values: virtualNodeRealNodeValues,
-          operator: criteria.operator,
-          category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.NODES],
-          dataType: criteria.dataType,
-        });
-      } else if (criteria.category === SearchCriteriaTypeEnum.NODES) {
+      if (criteria.category === SearchCriteriaTypeEnum.NODES) {
         this.updateCriteriaStatus(searchCriterias, SearchCriteriaStatusEnum.NOT_INCLUDED, SearchCriteriaStatusEnum.IN_PROGRESS);
         criteriaSearchList.push({
           criteria: 'NODE',

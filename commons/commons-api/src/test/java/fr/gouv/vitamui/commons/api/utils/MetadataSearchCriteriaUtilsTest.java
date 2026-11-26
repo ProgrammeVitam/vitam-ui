@@ -410,4 +410,83 @@ public class MetadataSearchCriteriaUtilsTest {
         );
         Assertions.assertEquals(2, originCriteria.getValues().size());
     }
+
+    @Test
+    void shouldOrVirtualPositionsEachBoundToItsOwnParentWithoutRoots() throws Exception {
+        JsonNode dsl = MetadataSearchCriteriaUtils.createSelectMultiQuery(
+            List.of(virtualCriteria(virtualValue("/A", "ORPHANS_NODE"), virtualValue("/B", "parent-1")))
+        ).getFinalSelect();
+
+        String query = dsl.get("$query").toString();
+        Assertions.assertTrue(dsl.path("$roots").isEmpty(), dsl.toString());
+        Assertions.assertTrue(
+            query.contains(
+                "{\"$or\":[" +
+                "{\"$and\":[{\"$eq\":{\"#vups\":\"/A\"}},{\"$missing\":\"#unitups\"}]}," +
+                "{\"$and\":[{\"$eq\":{\"#vups\":\"/B\"}},{\"$in\":{\"#allunitups\":[\"parent-1\"]}}]}" +
+                "]}"
+            ),
+            query
+        );
+        Assertions.assertFalse(query.contains("ORPHANS_NODE"), query);
+    }
+
+    @Test
+    void shouldKeepCheckedRealNodesAsAlternativeParentsOfVirtualPositions() throws Exception {
+        SearchCriteriaEltDto node = new SearchCriteriaEltDto();
+        node.setCriteria("NODE");
+        node.setCategory(ArchiveSearchConsts.CriteriaCategory.NODES);
+        node.setValues(List.of(new CriteriaValue("node-1")));
+
+        JsonNode dsl = MetadataSearchCriteriaUtils.createSelectMultiQuery(
+            List.of(node, virtualCriteria(virtualValue("/A", "parent-1")))
+        ).getFinalSelect();
+
+        Assertions.assertTrue(dsl.path("$roots").isEmpty(), dsl.toString());
+        Assertions.assertTrue(dsl.toString().contains("\"#allunitups\":[\"node-1\"]"), dsl.toString());
+    }
+
+    @Test
+    void shouldRestrictVirtualValueWithoutParentToCheckedRealNodes() throws Exception {
+        String dsl = MetadataSearchCriteriaUtils.createSelectMultiQuery(
+            List.of(nodeCriteria("node-1"), virtualCriteria(virtualValue("/A", "parent-1"), new CriteriaValue("/B")))
+        )
+            .getFinalSelect()
+            .toString();
+
+        Assertions.assertTrue(
+            dsl.contains("{\"$eq\":{\"#vups\":\"/B\"}},{\"$in\":{\"#allunitups\":[\"node-1\"]}}"),
+            dsl
+        );
+    }
+
+    @Test
+    void shouldKeepRootsWhenNoVirtualPositionCarriesAParent() throws Exception {
+        JsonNode dsl = MetadataSearchCriteriaUtils.createSelectMultiQuery(
+            List.of(nodeCriteria("node-1"), virtualCriteria(new CriteriaValue("/A")))
+        ).getFinalSelect();
+
+        Assertions.assertEquals("node-1", dsl.get("$roots").get(0).asText(), dsl.toString());
+    }
+
+    private static SearchCriteriaEltDto nodeCriteria(String nodeId) {
+        SearchCriteriaEltDto criteria = new SearchCriteriaEltDto();
+        criteria.setCriteria("NODE");
+        criteria.setCategory(ArchiveSearchConsts.CriteriaCategory.NODES);
+        criteria.setValues(List.of(new CriteriaValue(nodeId)));
+        return criteria;
+    }
+
+    private static CriteriaValue virtualValue(String path, String parentId) {
+        return new CriteriaValue(path).setVirtualNodeRealParentId(parentId);
+    }
+
+    private static SearchCriteriaEltDto virtualCriteria(CriteriaValue... values) {
+        SearchCriteriaEltDto criteria = new SearchCriteriaEltDto();
+        criteria.setCriteria("VIRTUAL");
+        criteria.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+        criteria.setOperator("EQ");
+        criteria.setValues(List.of(values));
+        return criteria;
+    }
 }
