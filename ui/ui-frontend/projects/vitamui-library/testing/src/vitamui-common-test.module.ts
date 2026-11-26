@@ -152,7 +152,7 @@ class VitamUITextareaStubComponent implements ControlValueAccessor {
     },
   ],
 })
-class VitamUISlideToggleStubComponent implements ControlValueAccessor {
+export class VitamUISlideToggleStubComponent implements ControlValueAccessor {
   readonly disabled = input<boolean>(undefined);
   readonly checked = input<any>(undefined);
   value: boolean;
@@ -412,6 +412,11 @@ const components = [
   VitamUITextareaStubComponent,
 ];
 
+/**
+ * Only used through VitamUICommonTestModule, but must stay exported: the AOT compilation of the specs
+ * importing VitamUICommonTestModule needs to import this NgModule from their own file.
+ * @public (tells knip to keep this export)
+ */
 @NgModule({
   providers: [provideTranslateService({ fallbackLang: 'fr' })],
 })
