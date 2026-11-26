@@ -38,6 +38,7 @@ import { Component, inject, signal, viewChild } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { form, FormField } from '@angular/forms/signals';
 import { MatDialog } from '@angular/material/dialog';
+import { MatMenuItem } from '@angular/material/menu';
 import { ActivatedRoute } from '@angular/router';
 import {
   DatepickerComponent,
@@ -78,6 +79,7 @@ interface DateRangeFilterForm {
     AuditListComponent,
     TranslatePipe,
     VitamuiMenuButtonComponent,
+    MatMenuItem,
   ],
 })
 export class AuditComponent extends SidenavPage<Event> {
