@@ -60,7 +60,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { last, tap } from 'rxjs/operators';
 import { HttpEventType } from '@angular/common/http';
 
-export enum ImportType {
+enum ImportType {
   DIRECTORIES_FILES = 'DIRECTORIES_FILES',
   COMPRESSED = 'COMPRESSED',
   SIP = 'SIP',

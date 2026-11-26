@@ -36,7 +36,7 @@
  */
 import { CriteriaDataType, CriteriaOperator, SearchCriteriaAddAction, SearchCriteriaTypeEnum } from '../../../../app/modules';
 
-export interface ManagementRuleSearchCriteria extends SearchCriteriaAddAction {}
+interface ManagementRuleSearchCriteria extends SearchCriteriaAddAction {}
 
 export class ManagementRuleSearchHelper {
   static getRuleKey(baseKey: string, ruleType: string): string {

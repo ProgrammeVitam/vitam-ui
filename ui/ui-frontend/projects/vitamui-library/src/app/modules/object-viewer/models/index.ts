@@ -35,12 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export * from '../../models/schema/schema-element.model';
-export * from './configuration.model';
 export * from './display-object-service';
 export * from './display-object.enum';
 export * from './display-object.model';
 export * from './display-rule.model';
 export * from './layout.model';
-export * from './ui-component-date-format-map.model';
 export * from './ui.model';
 export * from './with-path.model';

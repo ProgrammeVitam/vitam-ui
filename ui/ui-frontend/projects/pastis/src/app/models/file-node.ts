@@ -44,7 +44,6 @@ a web application to create, edit, import and export archive
 profiles based on the french SEDA standard
 (https://redirect.francearchives.fr/seda/).
 
-
 This software is governed by the CeCILL-C  license under French law and
 abiding by the rules of distribution of free software.  You can  use,
 modify and/ or redistribute the software under the terms of the CeCILL-C
@@ -155,7 +154,7 @@ export interface FileNode {
 }
 
 // for debug purpose
-export function nodeToString(node: FileNode): string {
+function nodeToString(node: FileNode): string {
   if (!node) {
     return;
   }
@@ -174,7 +173,7 @@ export function nodeToString(node: FileNode): string {
 }
 
 // for debug purpose
-export function nodesToString(nodes: FileNode[]): string {
+function nodesToString(nodes: FileNode[]): string {
   if (!nodes || nodes.length < 1) {
     return '[]';
   }

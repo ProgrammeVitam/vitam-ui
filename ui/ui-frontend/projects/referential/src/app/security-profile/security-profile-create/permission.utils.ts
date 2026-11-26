@@ -36,14 +36,14 @@
  */
 import { Injectable } from '@angular/core';
 
-export class Permission {
+class Permission {
   activated: boolean;
   description: string;
   overridePermission?: string;
   overrideApiPermission?: string;
 }
 
-export class APIPermissions {
+class APIPermissions {
   service: string;
   type: string;
   name: string;
