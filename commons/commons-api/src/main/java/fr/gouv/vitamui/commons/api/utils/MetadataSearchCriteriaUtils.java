@@ -53,6 +53,7 @@ import org.springframework.util.ObjectUtils;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -422,7 +423,8 @@ public final class MetadataSearchCriteriaUtils {
                     criteriaCategory.equals(searchCriteriaEltDto.getCategory()) &&
                     (RULE_ORIGIN_CRITERIA.equals(searchCriteriaEltDto.getCriteria()))
                 ) {
-                    List<CriteriaValue> values = searchCriteriaEltDto.getValues();
+                    // Defensive copy: the values list may be immutable (e.g. List.of(...)).
+                    List<CriteriaValue> values = new ArrayList<>(searchCriteriaEltDto.getValues());
                     values.add(
                         new CriteriaValue(ArchiveSearchConsts.RuleOriginValues.ORIGIN_WAITING_RECALCULATE.name())
                     );
