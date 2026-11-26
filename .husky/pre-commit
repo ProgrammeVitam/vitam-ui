@@ -2,4 +2,4 @@
 
 cd ui/ui-frontend/
 
-npx lint-staged@13
+npx lint-staged@17.0.5

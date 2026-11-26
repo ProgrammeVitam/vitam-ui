@@ -77,7 +77,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { normalizeString } from '../../utils/string.util';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
-export const VITAMUI_SELECT_VALUE_ACCESSOR: any = {
+const VITAMUI_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => SelectComponent),
   multi: true,

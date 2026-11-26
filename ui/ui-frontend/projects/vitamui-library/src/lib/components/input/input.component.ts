@@ -42,7 +42,7 @@ import { FormErrorsComponent } from '../form-errors/form-errors.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';
 
-export const INPUT_VALUE_ACCESSOR: any = {
+const INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => InputComponent),
   multi: true,

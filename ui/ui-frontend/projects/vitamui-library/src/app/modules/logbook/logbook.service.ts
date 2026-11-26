@@ -128,7 +128,7 @@ export class LogbookService {
   }
 }
 
-export function sortEventByDate(ev1: IEvent, ev2: IEvent): number {
+function sortEventByDate(ev1: IEvent, ev2: IEvent): number {
   const ev1Date = getEffectiveDate(ev1);
   const ev2Date = getEffectiveDate(ev2);
 

@@ -38,7 +38,7 @@ import { Component, ElementRef, EventEmitter, forwardRef, Input, Output, inject 
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { EditableFieldComponent } from 'vitamui-library';
 
-export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
+const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
 
   useExisting: forwardRef(() => EditableCustomParamsComponent),

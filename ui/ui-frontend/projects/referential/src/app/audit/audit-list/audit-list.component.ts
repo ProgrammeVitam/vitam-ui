@@ -61,7 +61,7 @@ const AUDIT_CATEGORY_BY_EV_DET_DATA_TYPE: Record<string, AuditCategoryFilter> = 
   [AuditChainType.LOGBOOK_OPERATION]: AuditCategoryFilter.TRACEABILITY_CHAIN_AUDIT_LOGBOOK_OPERATION,
 };
 
-export class AuditFilters {
+class AuditFilters {
   startDate: string;
   endDate: string;
   types: AuditCategoryFilter[];

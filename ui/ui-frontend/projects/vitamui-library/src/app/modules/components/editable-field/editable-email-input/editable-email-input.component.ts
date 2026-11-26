@@ -41,7 +41,7 @@ import { MatSelect } from '@angular/material/select';
 
 import { EditableFieldComponent } from '../editable-field.component';
 
-export const EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR: any = {
+const EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => EditableEmailInputComponent),
   multi: true,

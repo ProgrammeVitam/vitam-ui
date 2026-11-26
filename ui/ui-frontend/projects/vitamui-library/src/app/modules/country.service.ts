@@ -45,7 +45,7 @@ export interface CountryOption {
 }
 
 // Enum of keys, do not use as the name to show itself
-export enum CountryName {
+enum CountryName {
   // can be completed at need
   FRANCE = 'FRANCE',
   UNITED_KINGDOM = 'UNITED_KINGDOM',
@@ -57,7 +57,7 @@ export enum CountryName {
   PORTUGAL = 'PORTUGAL',
 }
 
-export enum CountryCode {
+enum CountryCode {
   // can be completed at need
   FR = 'FR',
   GB = 'GB',

@@ -44,7 +44,7 @@ import { provideTranslateService } from '@ngx-translate/core';
   selector: 'vitamui-common-tenant-select',
   template: '<ng-content></ng-content>',
 })
-export class VitamUITenantSelectStubComponent {}
+class VitamUITenantSelectStubComponent {}
 
 @Component({
   selector: 'vitamui-stepper',
@@ -169,7 +169,7 @@ export class VitamUISlideToggleStubComponent implements ControlValueAccessor {
 // Editable fields
 
 @Directive()
-export class EditableFieldStubComponent implements ControlValueAccessor {
+class EditableFieldStubComponent implements ControlValueAccessor {
   readonly validator = input<ValidatorFn>(undefined);
   readonly asyncValidator = input<AsyncValidatorFn>(undefined);
   value: string;
@@ -215,7 +215,7 @@ export class VitamUIFieldErrorStubComponent {}
     },
   ],
 })
-export class VitamUIEditableFileStubComponent extends EditableFieldStubComponent {}
+class VitamUIEditableFileStubComponent extends EditableFieldStubComponent {}
 
 @Component({
   selector: 'vitamui-common-editable-input',
@@ -228,7 +228,7 @@ export class VitamUIEditableFileStubComponent extends EditableFieldStubComponent
     },
   ],
 })
-export class VitamUIEditableInputStubComponent extends EditableFieldStubComponent {}
+class VitamUIEditableInputStubComponent extends EditableFieldStubComponent {}
 
 @Component({
   selector: 'vitamui-common-editable-textarea',
@@ -241,7 +241,7 @@ export class VitamUIEditableInputStubComponent extends EditableFieldStubComponen
     },
   ],
 })
-export class VitamUIEditableTextareaStubComponent extends EditableFieldStubComponent {}
+class VitamUIEditableTextareaStubComponent extends EditableFieldStubComponent {}
 
 @Component({
   selector: 'vitamui-common-editable-select',
@@ -254,7 +254,7 @@ export class VitamUIEditableTextareaStubComponent extends EditableFieldStubCompo
     },
   ],
 })
-export class VitamUIEditableSelectStubComponent extends EditableFieldStubComponent {}
+class VitamUIEditableSelectStubComponent extends EditableFieldStubComponent {}
 
 @Component({
   selector: 'vitamui-common-autocomplete-multi-select',
@@ -267,7 +267,7 @@ export class VitamUIEditableSelectStubComponent extends EditableFieldStubCompone
     },
   ],
 })
-export class VitamUIAutocompleteMultiSelectStubComponent extends EditableFieldStubComponent {}
+class VitamUIAutocompleteMultiSelectStubComponent extends EditableFieldStubComponent {}
 
 @Component({
   selector: 'vitamui-common-editable-option',
@@ -290,7 +290,7 @@ export class VitamUIEditableOptionStubComponent {
     },
   ],
 })
-export class VitamUIEditableToggleGroupStubComponent extends EditableFieldStubComponent {}
+class VitamUIEditableToggleGroupStubComponent extends EditableFieldStubComponent {}
 
 @Component({
   selector: 'vitamui-common-editable-button-toggle',
@@ -311,7 +311,7 @@ export class VitamUIEditableButtonToggleStubComponent {
     },
   ],
 })
-export class EditableLevelInputStubComponent implements ControlValueAccessor {
+class EditableLevelInputStubComponent implements ControlValueAccessor {
   readonly validator = input<any>(undefined);
   readonly asyncValidator = input<any>(undefined);
   readonly prefix = input<any>(undefined);
@@ -327,7 +327,7 @@ export class EditableLevelInputStubComponent implements ControlValueAccessor {
 @Pipe({
   name: 'strongify',
 })
-export class StrongifyStubPipe implements PipeTransform {
+class StrongifyStubPipe implements PipeTransform {
   transform(value: any): any {
     return value;
   }
@@ -336,7 +336,7 @@ export class StrongifyStubPipe implements PipeTransform {
 @Pipe({
   name: 'truncate',
 })
-export class TruncateStubPipe implements PipeTransform {
+class TruncateStubPipe implements PipeTransform {
   transform(value: string = ''): any {
     return value;
   }
@@ -345,7 +345,7 @@ export class TruncateStubPipe implements PipeTransform {
 @Pipe({
   name: 'dateTime',
 })
-export class DateTimeStubPipe implements PipeTransform {
+class DateTimeStubPipe implements PipeTransform {
   transform(value: string = ''): any {
     return value;
   }
@@ -364,7 +364,7 @@ export class InfiniteScrollStubDirective {
   selector: '[vitamuiCommonTableFilter]',
   exportAs: 'vitamuiCommonTableFilter',
 })
-export class TableFilterStubDirective {
+class TableFilterStubDirective {
   readonly templateRef = input<TemplateRef<any>>(undefined, { alias: 'vitamuiCommonTableFilter' });
   readonly filterClosed = output();
 }
@@ -412,6 +412,11 @@ const components = [
   VitamUITextareaStubComponent,
 ];
 
+/**
+ * Only used through VitamUICommonTestModule, but must stay exported: the AOT compilation of the specs
+ * importing VitamUICommonTestModule needs to import this NgModule from their own file.
+ * @public (tells knip to keep this export)
+ */
 @NgModule({
   providers: [provideTranslateService({ fallbackLang: 'fr' })],
 })

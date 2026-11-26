@@ -62,7 +62,7 @@ import { FormErrorsComponent } from '../../../../lib/components/form-errors/form
 import { DateTime } from 'luxon';
 import { TranslatePipe } from '@ngx-translate/core';
 
-export const DATEPICKER_VALUE_ACCESSOR: any = {
+const DATEPICKER_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => DatepickerComponent),
   multi: true,
