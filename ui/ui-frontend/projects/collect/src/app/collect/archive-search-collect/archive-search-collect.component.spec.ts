@@ -109,6 +109,7 @@ describe('ArchiveSearchCollectComponent', () => {
   };
 
   const archiveCollectServiceStub = {
+    exportCsvSearchArchiveUnitsByCriteria: (_criteriaDto: SearchCriteriaDto, _transactionId: string) => of(void 0),
     getAccessContractById: () => of({}),
     getLastTransactionByProjectId: () => of(transaction),
     getProjectById: () => of(project),
@@ -422,6 +423,34 @@ describe('ArchiveSearchCollectComponent', () => {
 
       expect('someRealParentId').toEqual(virtualValues[0].value.virtualNodeRealParentId);
       expect('someRealParentTitle').toEqual(virtualValues[0].value.virtualNodeRealParentTitle);
+    });
+  });
+
+  describe('exportArchiveUnitsToCsvFile', () => {
+    beforeEach(async () => await setupTest({}));
+
+    it('should not export when no result is selected', () => {
+      spyOn(archiveCollectServiceStub, 'exportCsvSearchArchiveUnitsByCriteria');
+      component.itemSelected = 0;
+      component.criteriaSearchList = [
+        { criteria: 'GUID', values: [{ id: 'guid', value: '1234' }], operator: 'EQ', category: 'FIELDS', dataType: 'STRING' } as any,
+      ];
+
+      component.exportArchiveUnitsToCsvFile();
+
+      expect(archiveCollectServiceStub.exportCsvSearchArchiveUnitsByCriteria).not.toHaveBeenCalled();
+    });
+
+    it('should export when at least one result is selected and search criteria are set', () => {
+      spyOn(archiveCollectServiceStub, 'exportCsvSearchArchiveUnitsByCriteria');
+      component.itemSelected = 1;
+      component.criteriaSearchList = [
+        { criteria: 'GUID', values: [{ id: 'guid', value: '1234' }], operator: 'EQ', category: 'FIELDS', dataType: 'STRING' } as any,
+      ];
+
+      component.exportArchiveUnitsToCsvFile();
+
+      expect(archiveCollectServiceStub.exportCsvSearchArchiveUnitsByCriteria).toHaveBeenCalledTimes(1);
     });
   });
 });
