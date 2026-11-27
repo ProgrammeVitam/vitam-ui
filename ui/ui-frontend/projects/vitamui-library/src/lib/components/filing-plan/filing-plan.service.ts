@@ -47,12 +47,6 @@ import { Node } from '../../models/node.interface';
 import { getKeywordValue } from '../../utils/keyword.util';
 import { HttpHeaders } from '@angular/common/http';
 
-export enum ExpandLevel {
-  NONE,
-  ROOT_ONLY,
-  ALL,
-}
-
 export enum FilingPlanMode {
   SOLO,
   INCLUDE_ONLY,

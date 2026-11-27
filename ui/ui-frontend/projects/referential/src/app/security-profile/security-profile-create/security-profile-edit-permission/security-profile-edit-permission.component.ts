@@ -38,7 +38,7 @@ import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { PermissionStructure, PermissionUtils } from '../permission.utils';
 
-export const PERMISSION_SELECT_VALUE_ACCESSOR: any = {
+const PERMISSION_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => SecurityProfileEditPermissionComponent),
   multi: true,

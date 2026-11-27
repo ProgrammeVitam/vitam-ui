@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export * from './accession-register';
 export * from './accession-register-detail';
 export * from './accession-register-status';
 export * from './accession-register-summary';

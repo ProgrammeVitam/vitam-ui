@@ -39,7 +39,6 @@
  */
 
 /* API SERVICES */
-export * from './lib/api/metadata-api.service';
 export * from './lib/api/search-unit-api.service';
 /* COMPONENTS */
 export * from './lib/components/confirm-action/confirm-action.component';
@@ -73,29 +72,20 @@ export * from './lib/i18n/i18n.provider';
 /* MODELS */
 export * from './lib/models/access-contract.interface';
 export * from './lib/models/agency';
-export * from './lib/models/autocomplete-response.interface';
-export * from './lib/models/date-query.interface';
-export * from './lib/models/date-range-query.interface';
 export * from './lib/models/description-level.enum';
 export * from './lib/models/dsl-query-type.enum';
 export * from './lib/models/event';
 export * from './lib/models/file-format';
 export * from './lib/models/file-types.enum';
-export * from './lib/models/metadata.interface';
 export * from './lib/models/node.interface';
 export * from './lib/models/ontology';
-export * from './lib/models/precise-date-query.interface';
 export * from './lib/models/rule';
-export * from './lib/models/search-criteria.interface';
-export * from './lib/models/search-query.interface';
-export * from './lib/models/year-month-query.interface';
 export * from './lib/models/zip/zip-file.class';
 export * from './lib/models/zip/zip-file-status.interface';
 export * from './lib/models/confirm-dialog-data.interface';
 
 /* SERVICES */
 export * from './lib/components/filing-plan/filing-plan.service';
-export * from './lib/services/metadata.service';
 export * from './lib/services/spinner-overlay.service';
 /* UTILS */
 export * from './lib/utils/download';

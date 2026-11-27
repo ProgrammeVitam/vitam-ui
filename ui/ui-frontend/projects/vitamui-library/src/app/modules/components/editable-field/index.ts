@@ -35,14 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export { EditableFieldComponent } from './editable-field.component';
-export { EditableEmailInputComponent } from './editable-email-input/editable-email-input.component';
-export { EditableFileComponent } from './editable-file/editable-file.component';
-export { EditableInputComponent } from './editable-input/editable-input.component';
-export { EditableLevelInputComponent } from './editable-level-input/editable-level-input.component';
-export { SubLevelPipe } from './editable-level-input/sub-level.pipe';
-export { EditableTextareaComponent } from './editable-textarea/editable-textarea.component';
-export { EditableButtonToggleComponent } from './editable-toggle-group/editable-button-toggle.component';
-export { EditableToggleGroupComponent } from './editable-toggle-group/editable-toggle-group.component';
 
 export * from './level-input';
 export { EditableFieldModule } from './editable-field.module';

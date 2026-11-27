@@ -1,0 +1,36 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema-jsonc.json",
+  // The knip Karma plugin is disabled: it evaluates karma.conf.js outside the Angular builder,
+  // where config.buildWebpack is undefined. karma.conf.ci.js (angular.json "karmaConfig") is
+  // found by the Angular plugin and requires karma.conf.js, so the Karma plugins it requires
+  // are still seen as used.
+  "karma": false,
+  // Dev server proxy passed to "ng serve" by the "start" script (--proxy-config).
+  "entry": ["proxy.conf.js"],
+  "rules": {
+    // Enums mirror backend contracts (roles, statuses, action types) and some are
+    // iterated with Object.values(), which knip does not see.
+    "enumMembers": "off"
+  },
+  "husky": {
+    "config": ["../../.husky/pre-commit"]
+  },
+  "ignoreDependencies": [
+    // ESLint plugins and parsers loaded by name through FlatCompat in eslint.config.mjs.
+    "@angular-eslint/eslint-plugin",
+    "@angular-eslint/eslint-plugin-template",
+    "@angular-eslint/template-parser",
+    "@typescript-eslint/eslint-plugin",
+    "@typescript-eslint/parser",
+    // Schematic collection declared in angular.json (cli.schematicCollections).
+    "@angular-eslint/schematics",
+    // Imported from SCSS (@use/@import), which knip does not analyse.
+    "bootstrap",
+    "material-design-icons-iconfont",
+    // Pinned to 1.4.0 to keep the transitive dependency of karma-spec-reporter away from
+    // the sabotaged colors releases (> 1.4.0).
+    "colors",
+    // Jasmine framework run by Karma ("frameworks": ["jasmine"]), never imported.
+    "jasmine-core"
+  ]
+}

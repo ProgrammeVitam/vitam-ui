@@ -40,7 +40,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { EditableFieldComponent } from '../editable-field.component';
 import { EditableButtonToggleComponent } from './editable-button-toggle.component';
 
-export const EDITABLE_TOGGLE_GROUP_VALUE_ACCESSOR: any = {
+const EDITABLE_TOGGLE_GROUP_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => EditableToggleGroupComponent),
   multi: true,
