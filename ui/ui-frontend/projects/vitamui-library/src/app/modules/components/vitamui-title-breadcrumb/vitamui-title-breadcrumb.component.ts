@@ -42,6 +42,7 @@ import { ApplicationService } from '../../application.service';
 import { Logger } from '../../logger/logger';
 import { Application } from '../../models/application/application.interface';
 import { BreadCrumbData } from '../../models/breadcrumb/breadcrumb.interface';
+import { WINDOW_LOCATION } from '../../injection-tokens';
 import { StartupService } from '../../startup.service';
 import { VitamuiBreadcrumbComponent } from './vitamui-breadcrumb/vitamui-breadcrumb.component';
 
@@ -57,6 +58,7 @@ export class VitamuiTitleBreadcrumbComponent {
   private readonly router = inject(Router);
   private readonly startupService = inject(StartupService);
   private readonly logger = inject(Logger);
+  private readonly windowLocation = inject(WINDOW_LOCATION);
 
   public readonly data = input<BreadCrumbData[]>(undefined);
 
@@ -64,7 +66,12 @@ export class VitamuiTitleBreadcrumbComponent {
     if (data.redirectUrl) {
       this.router.navigateByUrl(data.redirectUrl);
     } else if (!data.identifier || data.identifier === ApplicationId.PORTAL_APP) {
-      this.router.navigate([this.startupService.getPortalUrl()]);
+      const portalPath = this.startupService.getPortalRouterPath();
+      if (portalPath === undefined) {
+        this.windowLocation.href = this.startupService.getPortalUrl();
+      } else {
+        this.router.navigateByUrl(portalPath);
+      }
     } else {
       this.applicationService.getApplications$().subscribe((applications: Application[]) => {
         const app = applications.find((application: Application) => application.identifier === data.identifier);

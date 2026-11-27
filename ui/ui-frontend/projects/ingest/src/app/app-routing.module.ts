@@ -38,6 +38,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AccountComponent, ActiveTenantGuard, AnalyticsResolver, AppGuard, AuthGuard } from 'vitamui-library';
 import { AppComponent } from './app.component';
+import { INGEST_ROUTES } from './ingest.routes';
 
 const routes: Routes = [
   {
@@ -56,30 +57,7 @@ const routes: Routes = [
     resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'ACCOUNTS_APP' },
   },
-  // =====================================================
-  //                      Ingests
-  // =====================================================
-  {
-    path: 'ingest',
-    loadChildren: () => import('./ingest/ingest.module').then((m) => m.IngestModule),
-    canActivate: [AuthGuard, AppGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'INGEST_MANAGEMENT_APP' },
-  },
-
-  // =====================================================
-  //                      TREES PLANS API
-  // =====================================================
-  {
-    path: 'holding-filling-scheme',
-    loadChildren: () => import('./holding-filling-scheme/holding-filling-scheme.module').then((m) => m.HoldingFillingSchemeModule),
-    canActivate: [AuthGuard, AppGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'HOLDING_FILLING_SCHEME_APP' },
-  },
-  // =====================================================
-  //                      unknown path
-  // =====================================================
+  ...INGEST_ROUTES,
   { path: '**', redirectTo: '' },
 ];
 

@@ -5,13 +5,6 @@
 
 # VITAMUI
 
-upstream IDENTITY {
-  ip_hash;
-{% for h in groups['hosts_ui_identity'] %}
-  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_identity.port_service }};
-{% endfor %}
-}
-
 upstream IDENTITY_ADMIN {
   ip_hash;
 {% for h in groups['hosts_ui_identity_admin'] %}
@@ -33,50 +26,6 @@ upstream PORTAL {
 {% endfor %}
 }
 
-{% if groups['hosts_ui_referential']|length > 0 %}
-upstream REFERENTIAL {
-  ip_hash;
-{% for h in groups['hosts_ui_referential'] %}
-  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_referential.port_service }};
-{% endfor %}
-}
-{% endif %}
-
-{% if groups['hosts_ui_ingest']|length > 0 %}
-upstream INGEST {
-  ip_hash;
-{% for h in groups['hosts_ui_ingest'] %}
-  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_ingest.port_service }};
-{% endfor %}
-}
-{% endif %}
-
-{% if groups['hosts_ui_archive_search']|length > 0 %}
-upstream ARCHIVE_SEARCH {
-  ip_hash;
-{% for h in groups['hosts_ui_archive_search'] %}
-  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_archive_search.port_service }};
-{% endfor %}
-}
-{% endif %}
-
-{% if groups['hosts_ui_collect']|length > 0 %}
-upstream COLLECT {
-  ip_hash;
-{% for h in groups['hosts_ui_collect'] %}
-  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_collect.port_service }};
-{% endfor %}
-}
-{% endif %}
-
-{% if groups['hosts_ui_pastis']|length > 0 %}
-upstream PASTIS {
-  ip_hash;
-{% for h in groups['hosts_ui_pastis'] %}
-  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_pastis.port_service }};
-{% endfor %}
-}
-{% endif %}
 {% if groups.get('hosts_ui_design_system', []) | length > 0 %}
 
 upstream DESIGN_SYSTEM {

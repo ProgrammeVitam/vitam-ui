@@ -328,66 +328,35 @@ La surcharge faite sur CAS nous empêche de lancer avec le plugin spring-boot
 
 ## Utilisation en dev
 
-### 8 - Lancement de l'application Angular UI-Portal
+### 8 - Lancement de l'application Angular VitamUI
+
+Une seule application Angular (projet `portal`) embarque toutes les fonctionnalités
+(identity, referential, ingest, archive-search, collect, pastis), chargées en lazy loading.
 
 ```
 └── ui
-    ├── ui-frontend: 'npm run start:portal'
+    ├── ui-frontend: 'npm run start:vitamui'
 ```
 
-### 9 - Lancement de l'application Angular UI-Identity
-
-```
-└── ui
-    ├── ui-frontend: 'npm run start:identity'
-```
-
-### 10 - Lancement de l'application Angular UI-Ingest
-
-```
-└── ui
-    ├── ui-frontend: 'npm run start:ingest'
-```
-
-### 11 - Lancement de l'application Angular UI-Archive-Search
-
-```
-└── ui
-    ├── ui-frontend: 'npm run start:archive-search'
-```
-
-### 12 - Lancement de l'application Angular UI-Collect
-
-```
-└── ui
-    ├── ui-frontend: 'npm run start:collect'
-```
-
-### 13 - Lancement de l'application Angular UI-Pastis
-
-```
-└── ui
-    ├── ui-frontend: 'npm run start:pastis'
-```
-
-## 14 - Démarrer le reverse proxy, qui expose tout sous une origine unique
+## 9 - Démarrer le reverse proxy, qui expose tout sous une origine unique
 
 ```
 └── tools/docker/nginx: './vitamui-nginx.sh up'
 ```
 
-Les applications ne sont plus servies chacune sur son port, mais sous une seule origine,
-comme sur les environnements déployés :
+Tout est servi sous une seule origine, comme sur les environnements déployés ; les
+fonctionnalités sont des routes de l'application VitamUI :
 
 | | |
 |---|---|
-| portal | https://dev.vitamui.com/ |
-| identity | https://dev.vitamui.com/identity/ |
-| referential | https://dev.vitamui.com/referential/ |
-| ingest | https://dev.vitamui.com/ingest/ |
-| archive-search | https://dev.vitamui.com/archive-search/ |
-| collect | https://dev.vitamui.com/collect/ |
-| pastis | https://dev.vitamui.com/pastis/ |
+| VitamUI | https://dev.vitamui.com/ |
+| identity | https://dev.vitamui.com/identity |
+| identity (administration) | https://dev.vitamui.com/identity-admin |
+| referential | https://dev.vitamui.com/referential |
+| ingest | https://dev.vitamui.com/ingest |
+| archive-search | https://dev.vitamui.com/archive-search |
+| collect | https://dev.vitamui.com/collect |
+| pastis | https://dev.vitamui.com/pastis |
 | design-system | https://dev.vitamui.com/design-system/ |
 | CAS | https://dev.vitamui.com/cas/login |
 
@@ -399,15 +368,15 @@ seule origine désormais, https://dev.vitamui.com/
 
 > **Attention**: Sans cette étape, le logout sur toutes les applications par CAS ne fonctionne pas.
 
-## 15 - Se connecter sur le portail via
+## 10 - Se connecter sur le portail via
 
 * https://dev.vitamui.com/
 
-## 16 - Se connecter sur la page de réception des mails smtp4dev via
+## 11 - Se connecter sur la page de réception des mails smtp4dev via
 
 * http://localhost:3000/
 
-## 17 - Lancer l'application 'design-system' contenant des exemples de composants graphiques du design system
+## 12 - Lancer l'application 'design-system' contenant des exemples de composants graphiques du design system
 
 ```
 └── ui

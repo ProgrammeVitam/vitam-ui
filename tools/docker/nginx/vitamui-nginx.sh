@@ -22,19 +22,23 @@ warn()  { printf '%s!%s %s\n' "$YELLOW" "$OFF" "$*"; }
 fail()  { printf '%s✘%s %s\n' "$RED" "$OFF" "$*" >&2; }
 die()   { fail "$*"; exit 1; }
 
-# Angular dev-server ports, from ui/ui-frontend/angular.json.
+# Angular dev-server ports, from ui/ui-frontend/angular.json. portal is the
+# single frontend application (npm run start:vitamui): every feature is one of
+# its routes.
 declare -A NG_PORTS=(
   [portal]=4200
-  [identity]=4201
-  [referential]=4202
-  [ingest]=4208
-  [archive-search]=4209
-  [collect]=4210
   [design-system]=4242
-  [pastis]=4251
 )
 
-APPS=(portal identity referential ingest archive-search collect pastis design-system)
+declare -A START_SCRIPTS=(
+  [portal]=start:vitamui
+  [design-system]=start:design-system
+)
+
+APPS=(portal design-system)
+
+# Routes of the portal's features (ui/ui-frontend/projects/portal/src/app/app-routing.module.ts).
+FEATURES=(identity identity-admin referential ingest archive-search collect pastis)
 
 # Fall back to the `default` docker context when the current one (typically
 # desktop-linux with Docker Desktop stopped) is unreachable.
@@ -118,7 +122,7 @@ preflight() {
     done
 
     if ((${#missing[@]} == 0)); then
-      ok "all 8 dist/ are present"
+      ok "all ${#APPS[@]} dist/ are present"
     else
       warn "missing dist/: ${missing[*]}"
       info "    these applications will answer 404; nginx starts anyway."
@@ -165,9 +169,9 @@ preflight() {
 build_hint() {
   info "    build (development configuration, the only one embedding config-dev.json):"
   info "      cd ../../../ui/ui-frontend"
-  info "      npm run build:allModulesDev        # or npm run build:<app>:dev"
+  info "      npm run build:allModulesDev        # or npm run build:portal:dev"
   info "    or, without building anything, serve the app live:"
-  info "      cd ../../../ui/ui-frontend && npm run start:<app>"
+  info "      cd ../../../ui/ui-frontend && npm run start:vitamui   # or start:design-system"
 }
 
 container_state() {
@@ -222,11 +226,14 @@ cmd_status() {
   fi
 
   info ""
-  info "${BOLD}Applications${OFF} (live = served from a running \`npm run start:<app>\`, else dist)"
-  printf '  %-16s %-42s %s\n' portal "$origin/" "$(app_mode portal)"
-  for app in "${APPS[@]}"; do
-    [[ "$app" == portal ]] && continue
-    printf '  %-16s %-42s %s\n' "$app" "$origin/$app/" "$(app_mode "$app")"
+  info "${BOLD}Applications${OFF} (live = served from a running dev server, else dist)"
+  printf '  %-16s %-42s %s\n' vitamui "$origin/" "$(app_mode portal)"
+  printf '  %-16s %-42s %s\n' design-system "$origin/design-system/" "$(app_mode design-system)"
+  info ""
+  info "${BOLD}Features${OFF} (routes of vitamui)"
+  local feature
+  for feature in "${FEATURES[@]}"; do
+    printf '  %-16s %s\n' "$feature" "$origin/$feature"
   done
   info ""
   info "${BOLD}Services${OFF}"
@@ -239,7 +246,7 @@ cmd_status() {
 app_mode() {
   local app="$1" port="${NG_PORTS[$1]}" dist_dir index built
   if timeout 0.3 bash -c "exec 3<>/dev/tcp/127.0.0.1/$port" 2>/dev/null; then
-    printf '%slive%s (:%s)' "$GREEN" "$OFF" "$port"
+    printf '%slive%s (:%s, npm run %s)' "$GREEN" "$OFF" "$port" "${START_SCRIPTS[$app]}"
     return 0
   fi
   dist_dir="$(env_value VITAMUI_DIST_DIR ../../../ui/ui-frontend/dist)"
@@ -263,11 +270,12 @@ VitamUI dev reverse proxy — single origin for all frontends.
   down      stop and remove the container
   status    container state, probe, URL table with live/dist mode
 
-An application whose Angular dev server is running (`npm run start:<app>` in
-ui/ui-frontend) is served live from it, with hot reload; otherwise its dist/
-is served. The switch is automatic, per request — nothing to toggle.
+An application whose Angular dev server is running (in ui/ui-frontend:
+`npm run start:vitamui`, `npm run start:design-system`) is served live from
+it, with hot reload; otherwise its dist/ is served. The switch is automatic,
+per request — nothing to toggle.
 
-Applications: portal identity referential ingest archive-search collect pastis design-system
+Applications: vitamui (at /, every feature is one of its routes), design-system
 EOF
 }
 
