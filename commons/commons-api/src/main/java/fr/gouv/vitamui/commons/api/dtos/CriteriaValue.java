@@ -42,6 +42,7 @@ public class CriteriaValue {
     private String value;
     private String beginInterval;
     private String endInterval;
+    private String virtualNodeRealParentId;
 
     public CriteriaValue(String value) {
         this.value = value;

@@ -209,9 +209,9 @@ describe('ArchiveSearchHelperService', () => {
     });
 
     it('should deduplicate VIRTUAL criteria by value and real parent id', () => {
-      add('VIRTUAL', { id: 'v', value: 'v1', virtualNodeRealParentId: 'p1' }, SearchCriteriaTypeEnum.NODES);
-      add('VIRTUAL', { id: 'v', value: 'v1', virtualNodeRealParentId: 'p2' }, SearchCriteriaTypeEnum.NODES);
-      add('VIRTUAL', { id: 'v', value: 'v1', virtualNodeRealParentId: 'p1' }, SearchCriteriaTypeEnum.NODES);
+      add('VIRTUAL', { id: 'v', value: 'v1', virtualNodeRealParentId: 'p1' }, SearchCriteriaTypeEnum.FIELDS);
+      add('VIRTUAL', { id: 'v', value: 'v1', virtualNodeRealParentId: 'p2' }, SearchCriteriaTypeEnum.FIELDS);
+      add('VIRTUAL', { id: 'v', value: 'v1', virtualNodeRealParentId: 'p1' }, SearchCriteriaTypeEnum.FIELDS);
 
       expect(criterias.get('VIRTUAL').values.map((v) => v.value.virtualNodeRealParentId)).toEqual(['p1', 'p2']);
     });
@@ -328,7 +328,7 @@ describe('ArchiveSearchHelperService', () => {
     it('should only remove the VIRTUAL value matching the real parent id and emit the composite node target', () => {
       criterias.set(
         'VIRTUAL',
-        criteriaOf('VIRTUAL', SearchCriteriaTypeEnum.NODES, [
+        criteriaOf('VIRTUAL', SearchCriteriaTypeEnum.FIELDS, [
           { id: 'v', value: 'v1', virtualNodeRealParentId: 'p1' },
           { id: 'v', value: 'v1', virtualNodeRealParentId: 'p2' },
         ]),
@@ -540,11 +540,28 @@ describe('ArchiveSearchHelperService', () => {
       expect(criterias.get('RULE_IDENTIFIER_APPRAISAL_RULE').values[0].status).toBe(SearchCriteriaStatusEnum.IN_PROGRESS);
     });
 
-    it('buildNodesListForQUery should map NODES criteria and VIRTUAL nodes to their real parent', () => {
+    it('should send the real parent id of each virtual position with the VIRTUAL criteria', () => {
+      criterias.set(
+        'VIRTUAL',
+        criteriaOf('VIRTUAL', SearchCriteriaTypeEnum.FIELDS, [
+          { id: 'VIRTUAL', value: '/A', virtualNodeRealParentId: ORPHANS_NODE_ID },
+          { id: 'VIRTUAL', value: '/A', virtualNodeRealParentId: 'real-1' },
+        ]),
+      );
+      const list: SearchCriteriaEltDto[] = [];
+
+      service.buildFieldsCriteriaListForQUery(criterias, list);
+      service.buildNodesListForQUery(criterias, list);
+
+      expect(list.map((c) => c.criteria)).toEqual(['VIRTUAL']);
+      expect(list[0].values.map((v) => v.virtualNodeRealParentId)).toEqual([ORPHANS_NODE_ID, 'real-1']);
+    });
+
+    it('buildNodesListForQUery should map NODES criteria and add no NODE criteria for VIRTUAL nodes', () => {
       criterias.set('NODE', criteriaOf('NODE', SearchCriteriaTypeEnum.NODES, [{ id: 'n1', value: 'n1' }]));
       criterias.set(
         'VIRTUAL',
-        criteriaOf('VIRTUAL', SearchCriteriaTypeEnum.NODES, [{ id: 'v', value: 'v1', virtualNodeRealParentId: 'p1' }]),
+        criteriaOf('VIRTUAL', SearchCriteriaTypeEnum.FIELDS, [{ id: 'v', value: 'v1', virtualNodeRealParentId: 'p1' }]),
       );
       criterias.set('TITLE', criteriaOf('TITLE', SearchCriteriaTypeEnum.FIELDS, [{ id: 'a', value: 'a' }]));
       const list: SearchCriteriaEltDto[] = [];
@@ -553,13 +570,6 @@ describe('ArchiveSearchHelperService', () => {
 
       expect(list).toEqual([
         { criteria: 'NODE', values: [{ id: 'n1', value: 'n1' }], operator: CriteriaOperator.EQ, category: 'NODES', dataType: 'STRING' },
-        {
-          criteria: 'NODE',
-          values: [{ id: 'p1', value: 'p1', virtualNodeRealParentId: 'p1' }],
-          operator: CriteriaOperator.EQ,
-          category: 'NODES',
-          dataType: 'STRING',
-        },
       ]);
     });
   });

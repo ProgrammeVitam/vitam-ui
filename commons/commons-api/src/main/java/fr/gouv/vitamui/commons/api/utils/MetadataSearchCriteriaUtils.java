@@ -65,6 +65,7 @@ import java.util.stream.Collectors;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.exists;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.not;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ARCHIVE_UNIT_FILING_UNIT;
@@ -320,11 +321,20 @@ public final class MetadataSearchCriteriaUtils {
             .map(CriteriaValue::getValue)
             .collect(Collectors.toList());
 
-        if (!CollectionUtils.isEmpty(nodesCriteriaList)) {
+        List<SearchCriteriaEltDto> virtualCriteriaList = simpleCriteriaList
+            .stream()
+            .filter(MetadataSearchCriteriaUtils::isVirtualPositionWithParent)
+            .collect(Collectors.toList());
+        simpleCriteriaList.removeAll(virtualCriteriaList);
+
+        if (!CollectionUtils.isEmpty(nodesCriteriaList) && virtualCriteriaList.isEmpty()) {
             select.addRoots(nodesCriteriaList.toArray(new String[0]));
             query.setDepthLimit(DEFAULT_DEPTH);
         }
         fillQueryFromCriteriaList(query, simpleCriteriaList);
+        for (SearchCriteriaEltDto virtualCriteria : virtualCriteriaList) {
+            query.add(buildVirtualPositionQuery(virtualCriteria.getValues(), nodesCriteriaList));
+        }
         fillQueryFromMgtRulesCriteriaList(query, mgtRulesCriteriaList);
         if (query.isReady()) {
             select.setQuery(query);
@@ -1569,6 +1579,45 @@ public final class MetadataSearchCriteriaUtils {
             subQueryAnd.add(subQueryOr);
         }
         return subQueryAnd;
+    }
+
+    private static boolean isVirtualPositionWithParent(SearchCriteriaEltDto searchCriteria) {
+        return (
+            ArchiveSearchConsts.VIRTUAL_POSITION_CRITERIA.equals(searchCriteria.getCriteria()) &&
+            EQ.name().equals(searchCriteria.getOperator()) &&
+            searchCriteria.getValues().stream().anyMatch(value -> value.getVirtualNodeRealParentId() != null)
+        );
+    }
+
+    private static Query buildVirtualPositionQuery(List<CriteriaValue> values, List<String> checkedNodes)
+        throws InvalidCreateOperationException {
+        BooleanQuery anyPosition = or();
+        for (CriteriaValue value : values) {
+            Query hasPath = VitamQueryHelper.buildSubQueryByOperator(
+                ArchiveSearchConsts.ARCHIVE_UNIT_VIRTUAL_PATHS,
+                value.getValue(),
+                EQ
+            );
+            String parentId = value.getVirtualNodeRealParentId();
+            if (parentId == null) {
+                anyPosition.add(
+                    checkedNodes.isEmpty()
+                        ? hasPath
+                        : and().add(hasPath, in(ArchiveSearchConsts.ALL_UNIT_UPS, checkedNodes.toArray(new String[0])))
+                );
+                continue;
+            }
+            Query underParent = ArchiveSearchConsts.ORPHANS_NODE_CRITERIA.equals(parentId)
+                ? buildOrphansNodeQuery()
+                : in(ArchiveSearchConsts.ALL_UNIT_UPS, parentId);
+            anyPosition.add(and().add(hasPath, underParent));
+            if (!checkedNodes.isEmpty()) {
+                anyPosition.add(
+                    and().add(hasPath, in(ArchiveSearchConsts.ALL_UNIT_UPS, checkedNodes.toArray(new String[0])))
+                );
+            }
+        }
+        return anyPosition;
     }
 
     private static Query buildOrphansNodeQuery() throws InvalidCreateOperationException {
