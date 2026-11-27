@@ -65,3 +65,10 @@ export interface ProfiledSchemaElement extends SchemaElement {
   readonly Control?: Control;
   readonly EffectiveCardinality?: EffectiveCardinality;
 }
+
+// Display label for a schema element, suffixed with its parent's short name when there is one,
+// e.g. "My external field (Extension)". Callers resolve the parent however fits their context
+// (a displayed options tree, a flattened schema map, …) and pass it in already resolved.
+export function getSchemaElementLabel(element: SchemaElement, parent?: SchemaElement): string {
+  return `${element.ShortName}${parent?.ShortName ? ` (${parent.ShortName})` : ''}`;
+}
