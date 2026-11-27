@@ -38,7 +38,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PreservationComponent } from './preservation.component';
-import { InjectorModule, LoggerModule, SecurityService, VitamUICommonModule } from 'vitamui-library';
+import {
+  GriffinsService,
+  InjectorModule,
+  LoggerModule,
+  PreservationScenariosService,
+  SecurityService,
+  SnackBarService,
+  VitamUICommonModule,
+} from 'vitamui-library';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
@@ -48,6 +56,15 @@ describe('PreservationComponent', () => {
 
   const securityServiceMock = {
     hasRole: vi.fn().mockReturnValue(true),
+  };
+  const griffinsServiceMock = {
+    list: vi.fn().mockReturnValue(of([])),
+  };
+  const preservationScenariosServiceMock = {
+    list: vi.fn().mockReturnValue(of([])),
+  };
+  const snackBarServiceMock = {
+    notifyDownloadStarted: vi.fn(),
   };
 
   beforeEach(async () => {
@@ -69,6 +86,9 @@ describe('PreservationComponent', () => {
           provide: SecurityService,
           useValue: securityServiceMock,
         },
+        { provide: GriffinsService, useValue: griffinsServiceMock },
+        { provide: PreservationScenariosService, useValue: preservationScenariosServiceMock },
+        { provide: SnackBarService, useValue: snackBarServiceMock },
       ],
     }).compileComponents();
 
@@ -79,5 +99,39 @@ describe('PreservationComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('exports', () => {
+    let downloadedFileName: string;
+
+    beforeEach(() => {
+      snackBarServiceMock.notifyDownloadStarted.mockClear();
+      window.URL.createObjectURL = vi.fn().mockReturnValue('blob:mock');
+      vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(function (this: HTMLAnchorElement) {
+        downloadedFileName = this.download;
+      });
+    });
+
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
+
+    it('should download the griffins and notify the user that the download started', () => {
+      griffinsServiceMock.list.mockReturnValueOnce(of([{ Identifier: 'GRI-1', Name: 'griffin' }]));
+
+      component['exportGriffins']();
+
+      expect(downloadedFileName).toBe('griffins.json');
+      expect(snackBarServiceMock.notifyDownloadStarted).toHaveBeenCalledTimes(1);
+    });
+
+    it('should download the scenarios and notify the user that the download started', () => {
+      preservationScenariosServiceMock.list.mockReturnValueOnce(of([{ Identifier: 'PSC-1', Name: 'scenario' }]));
+
+      component['exportScenarios']();
+
+      expect(downloadedFileName).toBe('scenarios.json');
+      expect(snackBarServiceMock.notifyDownloadStarted).toHaveBeenCalledTimes(1);
+    });
   });
 });

@@ -50,6 +50,7 @@ import {
   Role,
   SecurityService,
   SidenavPage,
+  SnackBarService,
   VitamUICommonModule,
   VitamUILibraryModule,
 } from 'vitamui-library';
@@ -85,6 +86,7 @@ export class PreservationComponent extends SidenavPage<Griffin | PreservationSce
   private readonly griffinsService = inject(GriffinsService);
   private readonly securityService = inject(SecurityService);
   private readonly dialog = inject(MatDialog);
+  private readonly snackBarService = inject(SnackBarService);
 
   readonly hasUpdateRole = this.securityService.hasRole(ApplicationId.PRESERVATION_APP, Role.ROLE_UPDATE_GRIFFINS);
 
@@ -103,6 +105,7 @@ export class PreservationComponent extends SidenavPage<Griffin | PreservationSce
       .subscribe((scenarios) => {
         const blob = new Blob([JSON.stringify(scenarios, null, 2)], { type: 'octet/stream' });
         download(blob, 'scenarios.json');
+        this.snackBarService.notifyDownloadStarted();
       });
   }
 
@@ -124,6 +127,7 @@ export class PreservationComponent extends SidenavPage<Griffin | PreservationSce
         }));
         const blob = new Blob([JSON.stringify(griffinsToExport, null, 2)], { type: 'octet/stream' });
         download(blob, 'griffins.json');
+        this.snackBarService.notifyDownloadStarted();
       });
   }
 
