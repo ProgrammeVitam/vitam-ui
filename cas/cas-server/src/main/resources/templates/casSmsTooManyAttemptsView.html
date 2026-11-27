@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="fr" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+  <title th:text="#{screen.mfa.sms.toomanyattempts.pagetitle}"></title>
+</head>
+<body>
+
+
+<div layout:fragment="content" class="col">
+  <div class="Text-large-bold" th:text="#{screen.mfa.sms.toomanyattempts.title}">Trop de codes saisis</div>
+  <div class="Text-medium margin-top-10" th:text="#{screen.mfa.sms.toomanyattempts.text1}">
+    Vous avez saisi trop de codes de vérification. Par sécurité, aucun code n'est plus accepté pour le moment.
+  </div>
+  <div class="Text-medium">
+    <span th:text="#{screen.mfa.sms.toomanyattempts.text2}">Patientez quelques minutes avant de</span>
+    <a th:href="@{/login}" th:text="#{screen.mfa.sms.toomanyattempts.login}">vous reconnecter</a>.
+  </div>
+</div>
+
+
+</body>
+</html>

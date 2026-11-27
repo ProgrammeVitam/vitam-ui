@@ -59,6 +59,11 @@ management:
         enabled: false
 
 # Root: cas - Apereo CAS technical and functional configuration
+# The keys below, like cas_secret_token and the dev-deployment keystores, are shared development values published
+# with the sources. They only exist so that a local workstation starts without setup: never copy them to another
+# environment. Deployed environments get their own values from the Ansible inventory and vault (see
+# deployment/roles/vitamui/templates/cas-server/application.yml.j2, where CAS generates its webflow keys when none is
+# set, and vitamui.cas_server.secret_token in deployment/environments/group_vars/all/vault-vitamui.yml.example).
 cas:
   server.prefix: https://dev.vitamui.com/cas
   webflow.crypto:
@@ -70,6 +75,7 @@ cas:
     # Authent with x509 certificate :
     # x509:
     #   sslHeaderName: x-ssl-cert
+    #   (with vitamui.authn.x509.trusted-proxies: 127.0.0.1,::1, see the README)
     pac4j:
       cas:
         - login-url: https://dev.vitamui.com/cas/login
@@ -111,6 +117,7 @@ iam-client:
 vitamui:
   portal.url: https://dev.vitamui.com/
 
+# Development value, also loaded by the IAM dev profile: see the note above the cas section.
 cas_secret_token: tokcas_ie6UZsEcHIWrfv2x
 
 # Root: opentracing - Jaeger distributed tracing
