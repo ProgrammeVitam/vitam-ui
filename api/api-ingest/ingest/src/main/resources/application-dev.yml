@@ -60,16 +60,6 @@ download:
     ttl-seconds: 60
     clock-skew-seconds: 5
 
-# Jaeger
-opentracing:
-  jaeger:
-    enabled: true
-    logSpans: true
-    expandExceptionLogs: true
-    udp-sender:
-      host: localhost
-      port: 6831
-
 logging:
   level:
     fr.gouv.vitamui: DEBUG
