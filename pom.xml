@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.11</version>
+        <version>3.5.16</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -82,6 +82,12 @@
         <!--Spring dependencies version override-->
         <!-- override it to fix CVE-2025-48924 -->
         <commons-lang3.version>3.20.0</commons-lang3.version>
+        <!-- override Spring Boot managed versions to fix Checkmarx findings -->
+        <tomcat.version>10.1.62</tomcat.version>
+        <logback.version>1.5.37</logback.version>
+        <netty.version>4.1.138.Final</netty.version>
+        <freemarker.version>2.3.35</freemarker.version>
+        <hibernate-validator.version>8.0.6.Final</hibernate-validator.version>
 
         <!--Plugins version -->
         <asciidoctorj.pdf.version>1.5.4</asciidoctorj.pdf.version>
