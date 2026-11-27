@@ -110,10 +110,7 @@ export class DataStructureService {
    * @returns Found value.
    */
   public deepValue(obj: any, path: any): any {
-    path = path.replace(/\[(\w+)\]/g, '.$1'); // Convertit tous les [index] en .index
-    path = path.replace(/^\./, ''); // Supprime le point au début s'il y en a un
-
-    const keys = path.split('.');
+    const keys = this.pathKeys(path);
 
     for (let i = 0, len = keys.length; i < len; i++) {
       if (obj && typeof obj === 'object') {
@@ -124,6 +121,19 @@ export class DataStructureService {
     }
 
     return obj;
+  }
+
+  /**
+   * Splits a path into the keys to follow, list indices included.
+   *
+   * @param path Path in dot notation, with list indices in brackets, such as `items[0].name`.
+   * @returns Keys of the path, such as `['items', '0', 'name']`.
+   */
+  public pathKeys(path: string): string[] {
+    return path
+      .replace(/\[(\w+)\]/g, '.$1') // Convertit tous les [index] en .index
+      .replace(/^\./, '') // Supprime le point au début s'il y en a un
+      .split('.');
   }
 
   /**
