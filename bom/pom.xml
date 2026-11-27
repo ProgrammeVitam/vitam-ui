@@ -72,7 +72,7 @@
         <serenity.cucumber.version>2.2.6</serenity.cucumber.version>
         <serenity.version>3.3.10</serenity.version>
         <slf4j.version>1.7.30</slf4j.version>
-        <spring-cloud-dependencies.version>2025.0.0</spring-cloud-dependencies.version>
+        <spring-cloud-dependencies.version>2025.0.3</spring-cloud-dependencies.version>
         <spring-security-cas.version>6.2.8</spring-security-cas.version>
         <spring-webmvc-pac4j.version>6.0.3</spring-webmvc-pac4j.version>
         <swagger.version>3.0.0</swagger.version>
