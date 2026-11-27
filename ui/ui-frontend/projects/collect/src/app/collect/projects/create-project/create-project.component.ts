@@ -61,6 +61,7 @@ import {
   InputComponent,
   ItemNode,
   Logger,
+  MessageIdentifierRule,
   MetadataUnitUp,
   NextStepComponent,
   Option,
@@ -95,7 +96,7 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTreeModule } from '@angular/material/tree';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
 
 enum ImportType {
   DIRECTORIES_FILES = 'DIRECTORIES_FILES',
@@ -127,12 +128,19 @@ export interface RuleParamForm {
 }
 
 interface CreateProjectForm {
+  // Choice of project type (step 1): no default selection
+  workflow: Workflow | null;
   automaticIngest: boolean;
   referentialCheckup: boolean;
   connectedToArchivingSystem: boolean;
   archivingSystem: string | null;
+  // Multi-transactions project only: project "Name" and "Description" (US #16976)
+  name: string | null;
+  description: string | null;
   archivalAgreement: string | null;
   messageIdentifier: string | null;
+  // Multi-transactions project only: rule applied to derive each transaction's MessageIdentifier (US #16976)
+  messageIdentifierRule: MessageIdentifierRule;
   archivalAgencyIdentifier: string | null;
   transferringAgencyIdentifier: string | null;
   originatingAgencyIdentifier: string | null;
@@ -186,7 +194,7 @@ const emptyAttachmentNodes = (): AttachmentNodes => ({ included: [], excluded: [
     CommonModule,
     FilingPlanComponent,
     MatButtonModule,
-    MatCheckboxModule,
+    MatRadioModule,
     MatProgressSpinnerModule,
     MatTreeModule,
   ],
@@ -214,21 +222,25 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   FilingPlanMode = FilingPlanMode;
   FlowType = FlowType;
   FixedAttachmentMode = AttachmentMode;
+  MessageIdentifierRule = MessageIdentifierRule;
   // http calls
   isLoading: boolean;
 
-  selectedWorkflow: Workflow = Workflow.MANUAL;
   selectedFlowType: FlowType = FlowType.FIX;
   fixedAttachmentMode: AttachmentMode = AttachmentMode.TREE;
   stepIndex = 0;
 
   private readonly projectModel = signal<CreateProjectForm>({
+    workflow: null,
     automaticIngest: true,
     referentialCheckup: false,
     connectedToArchivingSystem: false,
     archivingSystem: null,
+    name: null,
+    description: null,
     archivalAgreement: null,
     messageIdentifier: null,
+    messageIdentifierRule: MessageIdentifierRule.SERIAL_NUMBER,
     archivalAgencyIdentifier: null,
     transferringAgencyIdentifier: null,
     originatingAgencyIdentifier: null,
@@ -250,13 +262,16 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     required(path.archivingSystem, {
       when: ({ valueOf }) => valueOf(path.connectedToArchivingSystem) && this.easOptions().length > 1,
     });
+    // Multi-transactions projects have their own "Description du projet" step with its own required "Name"
+    required(path.name, { when: ({ valueOf }) => valueOf(path.workflow) === Workflow.MULTI_TRANSACTION });
     required(path.messageIdentifier);
-    required(path.originatingAgencyIdentifier);
-    required(path.submissionAgencyIdentifier);
-    required(path.archivalAgencyIdentifier);
-    required(path.transferringAgencyIdentifier);
-    required(path.archivalAgreement);
-    required(path.importType);
+    // Context metadata is required for simplified/flow projects, but optional (propagated to transactions) for multi-transactions projects
+    required(path.originatingAgencyIdentifier, { when: ({ valueOf }) => valueOf(path.workflow) !== Workflow.MULTI_TRANSACTION });
+    required(path.submissionAgencyIdentifier, { when: ({ valueOf }) => valueOf(path.workflow) !== Workflow.MULTI_TRANSACTION });
+    required(path.archivalAgencyIdentifier, { when: ({ valueOf }) => valueOf(path.workflow) !== Workflow.MULTI_TRANSACTION });
+    required(path.transferringAgencyIdentifier, { when: ({ valueOf }) => valueOf(path.workflow) !== Workflow.MULTI_TRANSACTION });
+    required(path.archivalAgreement, { when: ({ valueOf }) => valueOf(path.workflow) !== Workflow.MULTI_TRANSACTION });
+    required(path.importType, { when: ({ valueOf }) => valueOf(path.workflow) === Workflow.MANUAL });
     requiredValue(path.rulesParams);
     applyEach(path.rulesParams, (ruleParam) => {
       requiredValue(ruleParam.ontologyList);
@@ -394,8 +409,19 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     this.dialogRefToClose.close(true);
   }
 
+  get selectedWorkflow(): Workflow {
+    return this.projectForm.workflow().value();
+  }
+
   setWorkflow(value: Workflow) {
-    this.selectedWorkflow = value;
+    if (
+      this.selectedWorkflow === Workflow.MULTI_TRANSACTION &&
+      this.selectedFlowType === FlowType.NONE &&
+      value !== Workflow.MULTI_TRANSACTION
+    ) {
+      this.selectedFlowType = FlowType.FIX;
+    }
+    this.projectForm.workflow().value.set(value);
   }
 
   setFlowType(value: FlowType) {
@@ -472,6 +498,78 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     );
   }
 
+  /*** Multi-transactions project Step : Description du projet ***/
+  stepProjectNameIsInvalid() {
+    return this.projectForm.name().invalid();
+  }
+
+  /*** Multi-transactions project Step : Règles d'application des informations de description des transactions ***/
+  stepMessageIdentifierRuleIsInvalid() {
+    return this.projectForm.messageIdentifier().invalid();
+  }
+
+  getStepTitle(): string {
+    if (this.stepIndex === 0) {
+      return this.translationService.instant('COLLECT.MODAL.WORKFLOW_CHOICE');
+    }
+    if (this.stepIndex === 1) {
+      return this.translationService.instant('COLLECT.PROJECT_REFERENTIAL_CONNECTION_SUB_TITLE');
+    }
+    if (this.selectedWorkflow === Workflow.MULTI_TRANSACTION) {
+      switch (this.stepIndex) {
+        case 2:
+          return this.translationService.instant('COLLECT.MODAL.MULTI_TRANSACTION_PROJECT_DESCRIPTION_TITLE');
+        case 3:
+          return this.translationService.instant('COLLECT.MODAL.MULTI_TRANSACTION_MESSAGE_IDENTIFIER_RULES_TITLE');
+        case 4:
+          return this.translationService.instant('COLLECT.MODAL.MULTI_TRANSACTION_CONTEXT_RULES_TITLE');
+        case 5:
+          return this.translationService.instant('COLLECT.MODAL.MULTI_TRANSACTION_ATTACHMENT_TYPE_CHOICE');
+        case 6:
+          if (this.selectedFlowType === FlowType.NONE) {
+            return this.translationService.instant('COLLECT.MODAL.NO_ATTACHMENT_TITLE');
+          }
+          return this.selectedFlowType === FlowType.FIX
+            ? this.translationService.instant('COLLECT.MODAL.ARCHIVE_POSITION_SUB_TITLE')
+            : this.translationService.instant('COLLECT.MODAL.RULES_TITLE');
+        case 7:
+          return this.translationService.instant('COLLECT.MODAL.UPLOAD_CONF_FILES');
+        case 8:
+          return this.translationService.instant(this.hasError ? 'COLLECT.MODAL.PROJECT_CREATION_ERROR' : 'COLLECT.MODAL.PROJECT_CREATED');
+      }
+    }
+    switch (this.stepIndex) {
+      case 2:
+        return this.translationService.instant('COLLECT.PROJECT_DESCRIPTION_SUB_TITLE');
+      case 3:
+        return this.translationService.instant('COLLECT.PROJECT_CONTEXT_SUB_TITLE');
+      case 4:
+        return this.translationService.instant(
+          this.selectedWorkflow === Workflow.MANUAL ? 'COLLECT.MODAL.UPLOAD_SUB_TITLE' : 'COLLECT.MODAL.FLOW_WORKFLOW_TYPE_CHOICE',
+        );
+      case 5:
+        return this.translationService.instant(
+          this.selectedWorkflow === Workflow.MANUAL || this.selectedFlowType === FlowType.FIX
+            ? 'COLLECT.MODAL.ARCHIVE_POSITION_SUB_TITLE'
+            : 'COLLECT.MODAL.RULES_TITLE',
+        );
+      case 6:
+        return this.translationService.instant(
+          this.selectedWorkflow === Workflow.MANUAL ? 'COLLECT.MODAL.UPLOAD_FILES' : 'COLLECT.MODAL.UPLOAD_CONF_FILES',
+        );
+      case 7:
+        return this.translationService.instant(this.hasError ? 'COLLECT.MODAL.PROJECT_CREATION_ERROR' : 'COLLECT.MODAL.PROJECT_CREATED');
+      default:
+        return this.translationService.instant('COLLECT.MODAL.TITLE');
+    }
+  }
+
+  getStepSubhead(): string {
+    return this.stepIndex > 0 && this.selectedWorkflow === Workflow.MULTI_TRANSACTION
+      ? this.translationService.instant('COLLECT.MODAL.MULTI_TRANSACTION_TITLE')
+      : this.translationService.instant('COLLECT.MODAL.TITLE');
+  }
+
   /*** Form validator Step : Parametrer les regles de rattachement ***/
   stepRulesParamsIsInvalid() {
     return this.projectForm.rulesParams().invalid();
@@ -501,9 +599,12 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     const archivingSystemTenant = tenantStr ? Number(tenantStr) : null;
 
     const project: Project = {
-      name: projectFormValue.messageIdentifier,
+      name: this.selectedWorkflow === Workflow.MULTI_TRANSACTION ? projectFormValue.name : projectFormValue.messageIdentifier,
+      description: this.selectedWorkflow === Workflow.MULTI_TRANSACTION ? projectFormValue.description : null,
       archivalAgreement: projectFormValue.archivalAgreement,
       messageIdentifier: projectFormValue.messageIdentifier,
+      //TODO Not yet applied server-side (US #16976 follow-up): see the messageIdentifierRule comment on the Project model.
+      messageIdentifierRule: this.selectedWorkflow === Workflow.MULTI_TRANSACTION ? projectFormValue.messageIdentifierRule : null,
       archivalAgencyIdentifier: projectFormValue.archivalAgencyIdentifier,
       transferringAgencyIdentifier: projectFormValue.transferringAgencyIdentifier,
       originatingAgencyIdentifier: projectFormValue.originatingAgencyIdentifier,
@@ -517,9 +618,11 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       archivingSystemTenant: archivingSystemTenant,
       status: ProjectStatus.OPEN,
       transformationRules: projectFormValue.transformationRules,
-      automaticIngest: this.selectedWorkflow === Workflow.MANUAL ? null : projectFormValue.automaticIngest === true,
+      automaticIngest: this.selectedWorkflow === Workflow.FLOW ? projectFormValue.automaticIngest === true : null,
     } as Project;
-    if (this.selectedWorkflow === Workflow.MANUAL || this.selectedFlowType === FlowType.FIX) {
+    if (this.selectedWorkflow === Workflow.MULTI_TRANSACTION && this.selectedFlowType === FlowType.NONE) {
+      // Multi-transactions project without any attachment defined at project level
+    } else if (this.selectedWorkflow === Workflow.MANUAL || this.selectedFlowType === FlowType.FIX) {
       project.unitUp = this.resolveFixedUnitUp();
     } else {
       project.unitUps = this.convertRuleParamsToMetadata();

@@ -1,48 +1,38 @@
-<vitamui-dialog-header
-  [stepper]="stepper"
-  [subhead]="'COLLECT.MODAL.TITLE' | translate"
-  [title]="[
-    'COLLECT.MODAL.WORKFLOW_CHOICE' | translate,
-    'COLLECT.PROJECT_REFERENTIAL_CONNECTION_SUB_TITLE' | translate,
-    'COLLECT.PROJECT_DESCRIPTION_SUB_TITLE' | translate,
-    'COLLECT.PROJECT_CONTEXT_SUB_TITLE' | translate,
-    (selectedWorkflow === Workflow.MANUAL ? 'COLLECT.MODAL.UPLOAD_SUB_TITLE' : 'COLLECT.MODAL.FLOW_WORKFLOW_TYPE_CHOICE') | translate,
-    (selectedWorkflow === Workflow.MANUAL || selectedFlowType === FlowType.FIX
-      ? 'COLLECT.MODAL.ARCHIVE_POSITION_SUB_TITLE'
-      : 'COLLECT.MODAL.RULES_TITLE'
-    ) | translate,
-    (selectedWorkflow === Workflow.MANUAL ? 'COLLECT.MODAL.UPLOAD_FILES' : 'COLLECT.MODAL.UPLOAD_CONF_FILES') | translate,
-    (selectedWorkflow === Workflow.FLOW
-      ? hasError
-        ? 'COLLECT.MODAL.PROJECT_CREATION_ERROR'
-        : 'COLLECT.MODAL.PROJECT_CREATED'
-      : 'UNKNOWN STEP!!'
-    ) | translate,
-  ]"
-></vitamui-dialog-header>
+<vitamui-dialog-header [stepper]="stepper" [subhead]="getStepSubhead()" [title]="getStepTitle()"></vitamui-dialog-header>
 
-<!-- workflow 1 projet de versement manuel -->
-<!-- workflow 2 projet de versement de flux + position de rattachement fixe -->
-<!-- workflow 3 projet de versement de flux + parametrage des regles de rattachement -->
+<!-- workflow 1 : projet de versement manuel (parcours simplifié) -->
+<!-- workflow 2 : projet de versement manuel multi-transactions -->
+<!-- workflow 3 : projet de versement de flux + position de rattachement fixe -->
+<!-- workflow 4 : projet de versement de flux + parametrage des regles de rattachement -->
 
 <div>
   <vitamui-stepper #stepper [(selectedIndex)]="stepIndex">
-    <!-- ########## stepIndex 1 : workflow 1-2-3 , step 1/8 : Choix du type de projet ########## -->
+    <!-- ########## stepIndex 1 : workflow 1-2-3-4 , step 1/8-9 : Choix du type de projet ########## -->
     <cdk-step>
       <mat-dialog-content>
-        <div class="main-content">
-          <mat-button-toggle-group class="vitamui-button-toggle-group">
-            <mat-button-toggle value="{{ Workflow.MANUAL }}" (click)="setWorkflow(Workflow.MANUAL)" [checked]="true">
-              {{ 'COLLECT.MODAL.MANUAL_WORKFLOW' | translate }}
-            </mat-button-toggle>
-            <mat-button-toggle value="{{ Workflow.FLOW }}" (click)="setWorkflow(Workflow.FLOW)">
-              {{ 'COLLECT.MODAL.FLOW_WORKFLOW' | translate }}
-            </mat-button-toggle>
-          </mat-button-toggle-group>
-        </div>
+        <mat-radio-group class="main-content gap-4" [value]="selectedWorkflow" (change)="setWorkflow($event.value)">
+          <mat-radio-button [value]="Workflow.MANUAL">
+            <div class="gap-1">
+              <div class="text bold normal">{{ 'COLLECT.MODAL.WIZARD_MANUAL_WORKFLOW' | translate }}</div>
+              <div class="text normal light">{{ 'COLLECT.MODAL.MANUAL_WORKFLOW_DESC' | translate }}</div>
+            </div>
+          </mat-radio-button>
+          <mat-radio-button [value]="Workflow.MULTI_TRANSACTION">
+            <div class="gap-1">
+              <div class="text bold normal">{{ 'COLLECT.MODAL.MULTI_TRANSACTION_WORKFLOW' | translate }}</div>
+              <div class="text normal light">{{ 'COLLECT.MODAL.MULTI_TRANSACTION_WORKFLOW_DESC' | translate }}</div>
+            </div>
+          </mat-radio-button>
+          <mat-radio-button [value]="Workflow.FLOW">
+            <div class="gap-1">
+              <div class="text bold normal">{{ 'COLLECT.MODAL.WIZARD_FLOW_WORKFLOW' | translate }}</div>
+              <div class="text normal light">{{ 'COLLECT.MODAL.FLOW_WORKFLOW_DESC' | translate }}</div>
+            </div>
+          </mat-radio-button>
+        </mat-radio-group>
       </mat-dialog-content>
       <mat-dialog-actions>
-        <vitamui-next-step></vitamui-next-step>
+        <vitamui-next-step [disabled]="!selectedWorkflow"></vitamui-next-step>
         <button (click)="onClose()" class="btn cancel link" type="button">
           {{ 'COMMON.UNDO' | translate }}
         </button>
@@ -88,205 +78,451 @@
       </mat-dialog-actions>
     </cdk-step>
 
-    <!-- ########## stepIndex 3 : workflow 1-2-3 , step 3/8 :  Description du versement ########## -->
-    <cdk-step>
-      <mat-dialog-content>
-        <div class="gap-3 align-items-stretch">
-          <div class="row">
-            <vitamui-input
-              class="col"
-              [formField]="projectForm.messageIdentifier"
-              [placeholder]="'COLLECT.PROJECT_DESCRIPTION_LABEL' | translate"
-            >
-            </vitamui-input>
-          </div>
-          <div class="row">
-            <vitamui-input
-              [textarea]="true"
-              class="col"
-              [formField]="projectForm.comment"
-              [placeholder]="'COLLECT.PROJECT_DESCRIPTION_DESC' | translate"
-            >
-            </vitamui-input>
-          </div>
+    <!-- ########## stepIndex 3 : workflow 1-3-4 , step 3/8 :  Description du versement ########## -->
+    @if (selectedWorkflow !== Workflow.MULTI_TRANSACTION) {
+      <cdk-step>
+        <mat-dialog-content>
+          <div class="gap-3 align-items-stretch">
+            <div class="row">
+              <vitamui-input
+                class="col"
+                [formField]="projectForm.messageIdentifier"
+                [placeholder]="'COLLECT.PROJECT_DESCRIPTION_LABEL' | translate"
+              >
+              </vitamui-input>
+            </div>
+            <div class="row">
+              <vitamui-input
+                [textarea]="true"
+                class="col"
+                [formField]="projectForm.comment"
+                [placeholder]="'COLLECT.PROJECT_DESCRIPTION_DESC' | translate"
+              >
+              </vitamui-input>
+            </div>
 
+            @if (connectedToArchivingSystem) {
+              <div class="row">
+                <vitamui-select
+                  class="col-6 w-100"
+                  [formField]="projectForm.originatingAgencyIdentifier"
+                  [placeholder]="'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY' | translate"
+                  [searchBarPlaceHolder]="'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY' | translate"
+                  [options]="agenciesOptions()"
+                  [multiple]="false"
+                  [enableSearch]="true"
+                ></vitamui-select>
+                <vitamui-select
+                  class="col-6 w-100"
+                  [formField]="projectForm.submissionAgencyIdentifier"
+                  [placeholder]="'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY' | translate"
+                  [searchBarPlaceHolder]="'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY' | translate"
+                  [options]="agenciesOptions()"
+                  [multiple]="false"
+                  [enableSearch]="true"
+                ></vitamui-select>
+              </div>
+            }
+
+            @if (!connectedToArchivingSystem) {
+              <div class="row">
+                <vitamui-input
+                  class="col-6 w-100"
+                  [formField]="projectForm.originatingAgencyIdentifier"
+                  placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY_ID' | translate }}"
+                >
+                </vitamui-input>
+                <vitamui-input
+                  class="col-6 w-100"
+                  [formField]="projectForm.submissionAgencyIdentifier"
+                  placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY_ID' | translate }}"
+                >
+                </vitamui-input>
+              </div>
+            }
+          </div>
+        </mat-dialog-content>
+        <mat-dialog-actions>
+          <div>
+            <vitamui-next-step [disabled]="stepDescriptionIsInvalid()"></vitamui-next-step>
+            <button (click)="onClose()" class="btn cancel link" type="button">
+              {{ 'COMMON.UNDO' | translate }}
+            </button>
+          </div>
+          <vitamui-previous-step></vitamui-previous-step>
+        </mat-dialog-actions>
+      </cdk-step>
+    }
+
+    <!-- ########## stepIndex 3' : workflow 2 , step 3/9 : Description du projet (multi-transactions) ########## -->
+    @if (selectedWorkflow === Workflow.MULTI_TRANSACTION) {
+      <cdk-step>
+        <mat-dialog-content>
+          <div class="gap-3 align-items-stretch">
+            <div class="row">
+              <vitamui-input class="col" [formField]="projectForm.name" [placeholder]="'COLLECT.PROJECT_NAME_LABEL' | translate">
+              </vitamui-input>
+            </div>
+            <div class="row">
+              <vitamui-input
+                [textarea]="true"
+                class="col"
+                [formField]="projectForm.description"
+                [placeholder]="'COLLECT.MODAL.MULTI_TRANSACTION_PROJECT_DESCRIPTION_TITLE' | translate"
+              >
+              </vitamui-input>
+            </div>
+          </div>
+        </mat-dialog-content>
+        <mat-dialog-actions>
+          <div>
+            <vitamui-next-step [disabled]="stepProjectNameIsInvalid()"></vitamui-next-step>
+            <button (click)="onClose()" class="btn cancel link" type="button">
+              {{ 'COMMON.UNDO' | translate }}
+            </button>
+          </div>
+          <vitamui-previous-step></vitamui-previous-step>
+        </mat-dialog-actions>
+      </cdk-step>
+
+      <!-- ########## stepIndex 4' : workflow 2 , step 4/9 : Règles d'application des informations de description des transactions ########## -->
+      <cdk-step>
+        <mat-dialog-content>
+          <div class="gap-3 align-items-stretch">
+            <div class="info-message info-banner d-flex flex-row align-items-center hgap-2">
+              <i class="vitamui-icon vitamui-icon-info"></i>
+              <div class="text normal">{{ 'COLLECT.MODAL.MESSAGE_IDENTIFIER_RULES_INFO' | translate }}</div>
+            </div>
+            <div class="row">
+              <vitamui-input
+                class="col"
+                [formField]="projectForm.messageIdentifier"
+                [placeholder]="'COLLECT.MODAL.MESSAGE_IDENTIFIER_LABEL' | translate"
+              >
+              </vitamui-input>
+            </div>
+            <mat-radio-group class="hgap-4" [formField]="projectForm.messageIdentifierRule">
+              <mat-radio-button [value]="MessageIdentifierRule.IDENTICAL">
+                {{ 'COLLECT.MODAL.MESSAGE_IDENTIFIER_RULE_IDENTICAL' | translate }}
+              </mat-radio-button>
+              <mat-radio-button [value]="MessageIdentifierRule.SERIAL_NUMBER">
+                {{ 'COLLECT.MODAL.MESSAGE_IDENTIFIER_RULE_SERIAL' | translate }}
+              </mat-radio-button>
+            </mat-radio-group>
+            <div class="row">
+              <vitamui-input
+                [textarea]="true"
+                class="col"
+                [formField]="projectForm.comment"
+                [placeholder]="'COLLECT.MODAL.COMMENT_LABEL' | translate"
+              >
+              </vitamui-input>
+            </div>
+          </div>
+        </mat-dialog-content>
+        <mat-dialog-actions>
+          <div>
+            <vitamui-next-step [disabled]="stepMessageIdentifierRuleIsInvalid()"></vitamui-next-step>
+            <button (click)="onClose()" class="btn cancel link" type="button">
+              {{ 'COMMON.UNDO' | translate }}
+            </button>
+          </div>
+          <vitamui-previous-step></vitamui-previous-step>
+        </mat-dialog-actions>
+      </cdk-step>
+
+      <!-- ########## stepIndex 5' : workflow 2 , step 5/9 : Règles d'application des informations de contexte des transactions ########## -->
+      <cdk-step>
+        <mat-dialog-content>
+          <div class="info-message info-banner d-flex flex-row align-items-center hgap-2">
+            <i class="vitamui-icon vitamui-icon-info"></i>
+            <div class="text normal">{{ 'COLLECT.MODAL.CONTEXT_RULES_INFO' | translate }}</div>
+          </div>
           @if (connectedToArchivingSystem) {
-            <div class="row">
-              <vitamui-select
-                class="col-6 w-100"
-                [formField]="projectForm.originatingAgencyIdentifier"
-                [placeholder]="'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY' | translate"
-                [searchBarPlaceHolder]="'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY' | translate"
-                [options]="agenciesOptions()"
-                [multiple]="false"
-                [enableSearch]="true"
-              ></vitamui-select>
-              <vitamui-select
-                class="col-6 w-100"
-                [formField]="projectForm.submissionAgencyIdentifier"
-                [placeholder]="'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY' | translate"
-                [searchBarPlaceHolder]="'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY' | translate"
-                [options]="agenciesOptions()"
-                [multiple]="false"
-                [enableSearch]="true"
-              ></vitamui-select>
+            <div class="gap-3 align-items-stretch">
+              <div class="row">
+                <vitamui-select
+                  class="col-6 w-100"
+                  [formField]="projectForm.originatingAgencyIdentifier"
+                  [placeholder]="'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY' | translate"
+                  [searchBarPlaceHolder]="'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY' | translate"
+                  [options]="agenciesOptions()"
+                  [multiple]="false"
+                  [enableSearch]="true"
+                ></vitamui-select>
+                <vitamui-select
+                  class="col-6 w-100"
+                  [formField]="projectForm.submissionAgencyIdentifier"
+                  [placeholder]="'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY' | translate"
+                  [searchBarPlaceHolder]="'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY' | translate"
+                  [options]="agenciesOptions()"
+                  [multiple]="false"
+                  [enableSearch]="true"
+                ></vitamui-select>
+              </div>
+              <div class="row">
+                <vitamui-select
+                  class="col-6 w-100"
+                  [formField]="projectForm.archivalAgencyIdentifier"
+                  [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate"
+                  [searchBarPlaceHolder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate"
+                  [options]="agenciesOptions()"
+                  [multiple]="false"
+                  [enableSearch]="true"
+                ></vitamui-select>
+                <vitamui-select
+                  class="col-6 w-100"
+                  [formField]="projectForm.transferringAgencyIdentifier"
+                  [placeholder]="'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate"
+                  [searchBarPlaceHolder]="'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate"
+                  [options]="agenciesOptions()"
+                  [multiple]="false"
+                  [enableSearch]="true"
+                ></vitamui-select>
+              </div>
+              <div class="row">
+                <vitamui-select
+                  class="col-6 w-100"
+                  [formField]="projectForm.archivalAgreement"
+                  [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate"
+                  [searchBarPlaceHolder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate"
+                  [options]="archivalAgreementOptions()"
+                  [multiple]="false"
+                  [enableSearch]="true"
+                ></vitamui-select>
+                <vitamui-select
+                  class="col-6 w-100"
+                  [formField]="projectForm.archiveProfile"
+                  [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate"
+                  [options]="archiveProfileOptions()"
+                  [multiple]="false"
+                  [enableSearch]="false"
+                ></vitamui-select>
+              </div>
+              <div class="row">
+                <vitamui-select
+                  class="col-6 w-100"
+                  [formField]="projectForm.acquisitionInformation"
+                  [placeholder]="'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate"
+                  [options]="acquisitionInformationsList"
+                  [multiple]="false"
+                  [enableSearch]="false"
+                ></vitamui-select>
+                <vitamui-select
+                  class="col-6 w-100"
+                  [formField]="projectForm.legalStatus"
+                  [placeholder]="'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate"
+                  [options]="legalStatusList"
+                  [multiple]="false"
+                  [enableSearch]="false"
+                ></vitamui-select>
+              </div>
             </div>
           }
-
           @if (!connectedToArchivingSystem) {
-            <div class="row">
-              <vitamui-input
-                class="col-6 w-100"
-                [formField]="projectForm.originatingAgencyIdentifier"
-                placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY_ID' | translate }}"
-              >
-              </vitamui-input>
-              <vitamui-input
-                class="col-6 w-100"
-                [formField]="projectForm.submissionAgencyIdentifier"
-                placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY_ID' | translate }}"
-              >
-              </vitamui-input>
+            <div class="gap-3 align-items-stretch">
+              <div class="row">
+                <vitamui-input
+                  class="col-6"
+                  [formField]="projectForm.originatingAgencyIdentifier"
+                  placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY_ID' | translate }}"
+                >
+                </vitamui-input>
+                <vitamui-input
+                  class="col-6"
+                  [formField]="projectForm.submissionAgencyIdentifier"
+                  placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY_ID' | translate }}"
+                >
+                </vitamui-input>
+              </div>
+              <div class="row">
+                <vitamui-input
+                  class="col-6"
+                  [formField]="projectForm.archivalAgencyIdentifier"
+                  placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY_ID' | translate }}"
+                >
+                </vitamui-input>
+                <vitamui-input
+                  class="col-6"
+                  [formField]="projectForm.transferringAgencyIdentifier"
+                  placeholder="{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY_ID' | translate }}"
+                >
+                </vitamui-input>
+              </div>
+              <div class="row">
+                <vitamui-input
+                  class="col-6"
+                  [formField]="projectForm.archivalAgreement"
+                  placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT_ID' | translate }}"
+                >
+                </vitamui-input>
+                <vitamui-input
+                  class="col-6"
+                  [formField]="projectForm.archiveProfile"
+                  placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE_ID' | translate }}"
+                >
+                </vitamui-input>
+              </div>
+              <div class="row">
+                <vitamui-select
+                  class="col-6 w-100"
+                  [formField]="projectForm.acquisitionInformation"
+                  [placeholder]="'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate"
+                  [options]="acquisitionInformationsList"
+                  [multiple]="false"
+                  [enableSearch]="false"
+                ></vitamui-select>
+                <vitamui-select
+                  class="col-6 w-100"
+                  [formField]="projectForm.legalStatus"
+                  [placeholder]="'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate"
+                  [options]="legalStatusList"
+                  [multiple]="false"
+                  [enableSearch]="false"
+                ></vitamui-select>
+              </div>
             </div>
           }
-        </div>
-      </mat-dialog-content>
-      <mat-dialog-actions>
-        <div>
-          <vitamui-next-step [disabled]="stepDescriptionIsInvalid()"></vitamui-next-step>
-          <button (click)="onClose()" class="btn cancel link" type="button">
-            {{ 'COMMON.UNDO' | translate }}
-          </button>
-        </div>
-        <vitamui-previous-step></vitamui-previous-step>
-      </mat-dialog-actions>
-    </cdk-step>
+        </mat-dialog-content>
+        <mat-dialog-actions>
+          <div>
+            <vitamui-next-step></vitamui-next-step>
+            <button (click)="onClose()" class="btn cancel link" type="button">
+              {{ 'COMMON.UNDO' | translate }}
+            </button>
+          </div>
+          <vitamui-previous-step></vitamui-previous-step>
+        </mat-dialog-actions>
+      </cdk-step>
+    }
 
-    <!-- ########## stepIndex 4 : workflow 1-2-4 , step 4/8 : Contexte du versement ########## -->
-    <cdk-step>
-      <mat-dialog-content>
-        @if (connectedToArchivingSystem) {
-          <div class="gap-3 align-items-stretch">
-            <div class="row">
-              <vitamui-select
-                class="col-6 w-100"
-                [formField]="projectForm.archivalAgencyIdentifier"
-                [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate"
-                [searchBarPlaceHolder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate"
-                [options]="agenciesOptions()"
-                [multiple]="false"
-                [enableSearch]="true"
-              ></vitamui-select>
-              <vitamui-select
-                class="col-6 w-100"
-                [formField]="projectForm.transferringAgencyIdentifier"
-                [placeholder]="'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate"
-                [searchBarPlaceHolder]="'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate"
-                [options]="agenciesOptions()"
-                [multiple]="false"
-                [enableSearch]="true"
-              ></vitamui-select>
+    <!-- ########## stepIndex 4 : workflow 1-3-4 , step 4/8 : Contexte du versement ########## -->
+    @if (selectedWorkflow !== Workflow.MULTI_TRANSACTION) {
+      <cdk-step>
+        <mat-dialog-content>
+          @if (connectedToArchivingSystem) {
+            <div class="gap-3 align-items-stretch">
+              <div class="row">
+                <vitamui-select
+                  class="col-6 w-100"
+                  [formField]="projectForm.archivalAgencyIdentifier"
+                  [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate"
+                  [searchBarPlaceHolder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate"
+                  [options]="agenciesOptions()"
+                  [multiple]="false"
+                  [enableSearch]="true"
+                ></vitamui-select>
+                <vitamui-select
+                  class="col-6 w-100"
+                  [formField]="projectForm.transferringAgencyIdentifier"
+                  [placeholder]="'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate"
+                  [searchBarPlaceHolder]="'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate"
+                  [options]="agenciesOptions()"
+                  [multiple]="false"
+                  [enableSearch]="true"
+                ></vitamui-select>
+              </div>
+              <div class="row">
+                <vitamui-select
+                  class="col-6 w-100"
+                  [formField]="projectForm.archivalAgreement"
+                  [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate"
+                  [searchBarPlaceHolder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate"
+                  [options]="archivalAgreementOptions()"
+                  [multiple]="false"
+                  [enableSearch]="true"
+                ></vitamui-select>
+                <vitamui-select
+                  class="col-6 w-100"
+                  [formField]="projectForm.archiveProfile"
+                  [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate"
+                  [options]="archiveProfileOptions()"
+                  [multiple]="false"
+                  [enableSearch]="false"
+                ></vitamui-select>
+              </div>
+              <div class="row">
+                <vitamui-select
+                  class="col-6 w-100"
+                  [formField]="projectForm.acquisitionInformation"
+                  [placeholder]="'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate"
+                  [options]="acquisitionInformationsList"
+                  [multiple]="false"
+                  [enableSearch]="false"
+                ></vitamui-select>
+                <vitamui-select
+                  class="col-6 w-100"
+                  [formField]="projectForm.legalStatus"
+                  [placeholder]="'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate"
+                  [options]="legalStatusList"
+                  [multiple]="false"
+                  [enableSearch]="false"
+                ></vitamui-select>
+              </div>
             </div>
-            <div class="row">
-              <vitamui-select
-                class="col-6 w-100"
-                [formField]="projectForm.archivalAgreement"
-                [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate"
-                [searchBarPlaceHolder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate"
-                [options]="archivalAgreementOptions()"
-                [multiple]="false"
-                [enableSearch]="true"
-              ></vitamui-select>
-              <vitamui-select
-                class="col-6 w-100"
-                [formField]="projectForm.archiveProfile"
-                [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate"
-                [options]="archiveProfileOptions()"
-                [multiple]="false"
-                [enableSearch]="false"
-              ></vitamui-select>
+          }
+          @if (!connectedToArchivingSystem) {
+            <div class="gap-3 align-items-stretch">
+              <div class="row">
+                <vitamui-input
+                  class="col-6"
+                  [formField]="projectForm.archivalAgencyIdentifier"
+                  placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY_ID' | translate }}"
+                >
+                </vitamui-input>
+                <vitamui-input
+                  class="col-6"
+                  [formField]="projectForm.transferringAgencyIdentifier"
+                  placeholder="{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY_ID' | translate }}"
+                >
+                </vitamui-input>
+              </div>
+              <div class="row">
+                <vitamui-input
+                  class="col-6"
+                  [formField]="projectForm.archivalAgreement"
+                  placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT_ID' | translate }}"
+                >
+                </vitamui-input>
+                <vitamui-input
+                  class="col-6"
+                  [formField]="projectForm.archiveProfile"
+                  placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE_ID' | translate }}"
+                >
+                </vitamui-input>
+              </div>
+              <div class="row">
+                <vitamui-select
+                  class="col-6 w-100"
+                  [formField]="projectForm.acquisitionInformation"
+                  [placeholder]="'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate"
+                  [options]="acquisitionInformationsList"
+                  [multiple]="false"
+                  [enableSearch]="false"
+                ></vitamui-select>
+                <vitamui-select
+                  class="col-6 w-100"
+                  [formField]="projectForm.legalStatus"
+                  [placeholder]="'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate"
+                  [options]="legalStatusList"
+                  [multiple]="false"
+                  [enableSearch]="false"
+                ></vitamui-select>
+              </div>
             </div>
-            <div class="row">
-              <vitamui-select
-                class="col-6 w-100"
-                [formField]="projectForm.acquisitionInformation"
-                [placeholder]="'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate"
-                [options]="acquisitionInformationsList"
-                [multiple]="false"
-                [enableSearch]="false"
-              ></vitamui-select>
-              <vitamui-select
-                class="col-6 w-100"
-                [formField]="projectForm.legalStatus"
-                [placeholder]="'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate"
-                [options]="legalStatusList"
-                [multiple]="false"
-                [enableSearch]="false"
-              ></vitamui-select>
-            </div>
+          }
+        </mat-dialog-content>
+        <mat-dialog-actions>
+          <div>
+            <vitamui-next-step [disabled]="stepContextIsInvalid()"></vitamui-next-step>
+            <button (click)="onClose()" class="btn cancel link" type="button">
+              {{ 'COMMON.UNDO' | translate }}
+            </button>
           </div>
-        }
-        @if (!connectedToArchivingSystem) {
-          <div class="gap-3 align-items-stretch">
-            <div class="row">
-              <vitamui-input
-                class="col-6"
-                [formField]="projectForm.archivalAgencyIdentifier"
-                placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY_ID' | translate }}"
-              >
-              </vitamui-input>
-              <vitamui-input
-                class="col-6"
-                [formField]="projectForm.transferringAgencyIdentifier"
-                placeholder="{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY_ID' | translate }}"
-              >
-              </vitamui-input>
-            </div>
-            <div class="row">
-              <vitamui-input
-                class="col-6"
-                [formField]="projectForm.archivalAgreement"
-                placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT_ID' | translate }}"
-              >
-              </vitamui-input>
-              <vitamui-input
-                class="col-6"
-                [formField]="projectForm.archiveProfile"
-                placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE_ID' | translate }}"
-              >
-              </vitamui-input>
-            </div>
-            <div class="row">
-              <vitamui-select
-                class="col-6 w-100"
-                [formField]="projectForm.acquisitionInformation"
-                [placeholder]="'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate"
-                [options]="acquisitionInformationsList"
-                [multiple]="false"
-                [enableSearch]="false"
-              ></vitamui-select>
-              <vitamui-select
-                class="col-6 w-100"
-                [formField]="projectForm.legalStatus"
-                [placeholder]="'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate"
-                [options]="legalStatusList"
-                [multiple]="false"
-                [enableSearch]="false"
-              ></vitamui-select>
-            </div>
-          </div>
-        }
-      </mat-dialog-content>
-      <mat-dialog-actions>
-        <div>
-          <vitamui-next-step [disabled]="stepContextIsInvalid()"></vitamui-next-step>
-          <button (click)="onClose()" class="btn cancel link" type="button">
-            {{ 'COMMON.UNDO' | translate }}
-          </button>
-        </div>
-        <vitamui-previous-step></vitamui-previous-step>
-      </mat-dialog-actions>
-    </cdk-step>
+          <vitamui-previous-step></vitamui-previous-step>
+        </mat-dialog-actions>
+      </cdk-step>
+    }
 
     <!-- ########## stepIndex 5 : workflow 1     , step 5/8 : Choix des fichiers à upload ########## -->
     @if (selectedWorkflow === Workflow.MANUAL) {
@@ -376,6 +612,70 @@
       </cdk-step>
     }
 
+    <!-- stepIndex 6' : workflow 2   , step 6/9 : Choisir le type de rattachement (multi-transactions) -->
+    @if (selectedWorkflow === Workflow.MULTI_TRANSACTION) {
+      <cdk-step>
+        <mat-dialog-content>
+          <div class="main-content gap-4">
+            <div class="info-message info-banner d-flex flex-row align-items-center hgap-2">
+              <i class="vitamui-icon vitamui-icon-info"></i>
+              <div class="text normal">{{ 'COLLECT.MODAL.ATTACHMENT_TYPE_CHOICE_INFO' | translate }}</div>
+            </div>
+            <mat-button-toggle-group class="vitamui-button-toggle-group">
+              <mat-button-toggle
+                [value]="FlowType.NONE"
+                (click)="setFlowType(FlowType.NONE)"
+                [checked]="selectedFlowType === FlowType.NONE"
+              >
+                {{ 'COLLECT.MODAL.NO_ATTACHMENT_WORKFLOW' | translate }}
+              </mat-button-toggle>
+              <mat-button-toggle [value]="FlowType.FIX" (click)="setFlowType(FlowType.FIX)" [checked]="selectedFlowType === FlowType.FIX">
+                {{ 'COLLECT.MODAL.FIX_FLOW_WORKFLOW' | translate }}
+              </mat-button-toggle>
+              <mat-button-toggle
+                [value]="FlowType.RULES"
+                (click)="setFlowType(FlowType.RULES)"
+                [checked]="selectedFlowType === FlowType.RULES"
+              >
+                {{ 'COLLECT.MODAL.RULES_FLOW_WORKFLOW' | translate }}
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+        </mat-dialog-content>
+        <mat-dialog-actions>
+          <div>
+            <button (click)="prepareRulesAndMoveToNextStep()" class="btn primary" type="button">
+              {{ 'COMMON.NEXT' | translate }}
+            </button>
+            <button (click)="onClose()" class="btn cancel link" type="button">
+              {{ 'COMMON.UNDO' | translate }}
+            </button>
+          </div>
+          <vitamui-previous-step (click)="clearRulesParams()"></vitamui-previous-step>
+        </mat-dialog-actions>
+      </cdk-step>
+    }
+
+    <!-- stepIndex 7'a : workflow 2 + NONE   , step 7/9 : Sans rattachement -->
+    @if (selectedWorkflow === Workflow.MULTI_TRANSACTION && selectedFlowType === FlowType.NONE) {
+      <cdk-step>
+        <mat-dialog-content>
+          <div class="main-content">
+            <div class="info-message">{{ 'COLLECT.MODAL.NO_ATTACHMENT_MESSAGE' | translate }}</div>
+          </div>
+        </mat-dialog-content>
+        <mat-dialog-actions>
+          <div>
+            <vitamui-next-step></vitamui-next-step>
+            <button (click)="onClose()" class="btn cancel link" type="button">
+              {{ 'COMMON.UNDO' | translate }}
+            </button>
+          </div>
+          <vitamui-previous-step></vitamui-previous-step>
+        </mat-dialog-actions>
+      </cdk-step>
+    }
+
     <!-- stepIndex 7 : workflow 1-2   , step 7/8 : Définir la position fixe de rattachement -->
     @if (selectedWorkflow === Workflow.MANUAL || selectedFlowType === FlowType.FIX) {
       <cdk-step>
@@ -443,8 +743,8 @@
       </cdk-step>
     }
 
-    <!-- stepIndex 7 : workflow 3     , step 5/8 : Parametrer les regles de rattachement -->
-    @if (selectedWorkflow === Workflow.FLOW && selectedFlowType === FlowType.RULES) {
+    <!-- stepIndex 7 : workflow 3-4   , step 5/8 : Parametrer les regles de rattachement -->
+    @if ((selectedWorkflow === Workflow.FLOW || selectedWorkflow === Workflow.MULTI_TRANSACTION) && selectedFlowType === FlowType.RULES) {
       <cdk-step>
         <mat-dialog-content>
           <div class="gap-4 align-items-stretch">
@@ -614,11 +914,17 @@
       </cdk-step>
     }
 
-    <!-- ########## stepIndex 6 : workflow 2     , step 6/8 : Choix des fichiers à upload ########## -->
-    @if (selectedWorkflow === Workflow.FLOW) {
+    <!-- ########## stepIndex 6 : workflow 2-4     , step 6/8-9 : Chargement de la configuration JSLT ########## -->
+    @if (selectedWorkflow === Workflow.FLOW || selectedWorkflow === Workflow.MULTI_TRANSACTION) {
       <cdk-step>
         <mat-dialog-content>
           <div class="w-100">
+            @if (selectedWorkflow === Workflow.MULTI_TRANSACTION) {
+              <div class="info-message info-banner d-flex flex-row align-items-center hgap-2">
+                <i class="vitamui-icon vitamui-icon-info"></i>
+                <div class="text normal">{{ 'COLLECT.MODAL.UPLOAD_CONF_FILES_INFO' | translate }}</div>
+              </div>
+            }
             <vitamui-file-selector
               [multiple]="false"
               [maxSizeInBytes]="10 * 1024"
@@ -633,7 +939,7 @@
         <mat-dialog-actions>
           <div>
             <button (click)="validateAndCreateProject()" [disabled]="jsltFileForm().invalid()" class="btn primary" type="button">
-              {{ 'COMMON.SUBMIT' | translate }}
+              {{ (selectedWorkflow === Workflow.MULTI_TRANSACTION ? 'COLLECT.MODAL.CREATE_PROJECT_SUBMIT' : 'COMMON.SUBMIT') | translate }}
             </button>
             <button (click)="onClose()" class="btn cancel link" type="button">
               {{ 'COMMON.UNDO' | translate }}
@@ -683,8 +989,8 @@
       </cdk-step>
     }
 
-    <!-- workflow 2-3 step 8/8   : Projet de versement cree -->
-    @if (selectedWorkflow === Workflow.FLOW) {
+    <!-- workflow 2-3-4 step 8/8-9   : Projet de versement cree -->
+    @if (selectedWorkflow === Workflow.FLOW || selectedWorkflow === Workflow.MULTI_TRANSACTION) {
       <cdk-step>
         <mat-dialog-content>
           <div class="main-content">

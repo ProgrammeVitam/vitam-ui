@@ -64,6 +64,7 @@ class ProjectConverterTest {
             .lastModifyOn("lastModifyOn_lastUpdate")
             .status("status")
             .name("name")
+            .description("description")
             .automaticIngest(true)
             .archivingSystemId("archivingSystemId")
             .archivingSystemTenant(12)
@@ -99,6 +100,7 @@ class ProjectConverterTest {
         externalDto.setCreationDate("createdOn_creationDate");
         externalDto.setLastUpdate("lastModifyOn_lastUpdate");
         externalDto.setName("name");
+        externalDto.setDescription("description");
         externalDto.setAutomaticIngest(true);
         externalDto.setArchivingSystemId("archivingSystemId");
         externalDto.setArchivingSystemTenant(12);

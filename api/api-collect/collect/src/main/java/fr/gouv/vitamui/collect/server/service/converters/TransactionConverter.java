@@ -90,6 +90,8 @@ public class TransactionConverter {
         transactionDto.setArchivalAgreement(projectDto.getArchivalAgreement());
         transactionDto.setComment(projectDto.getComment());
         transactionDto.setArchivalProfile(projectDto.getArchivalProfile());
+        // Note (US #16976): messageIdentifierRule (SERIAL_NUMBER vs IDENTICAL) is applied by Vitam when the
+        // transaction is created, not in this converter.
         transactionDto.setMessageIdentifier(projectDto.getMessageIdentifier());
         transactionDto.setOriginatingAgencyIdentifier(projectDto.getOriginatingAgencyIdentifier());
         transactionDto.setSubmissionAgencyIdentifier(projectDto.getSubmissionAgencyIdentifier());

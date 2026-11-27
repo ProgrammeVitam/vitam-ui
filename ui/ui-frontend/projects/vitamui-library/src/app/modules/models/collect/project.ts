@@ -40,8 +40,12 @@ import { ProjectStatus } from './project-status';
 
 export interface Project extends Id {
   name: string;
+  // Project description (US #16976), only set for multi-transaction projects
+  description?: string;
   archivalAgreement: string;
   messageIdentifier: string;
+  // TODO Rule applied to derive each transaction's MessageIdentifier from the project's (US #16976) - not yet persisted by the backend:
+  messageIdentifierRule?: MessageIdentifierRule;
   archivalAgencyIdentifier: string;
   transferringAgencyIdentifier: string;
   originatingAgencyIdentifier: string;
@@ -81,12 +85,19 @@ export interface ElectronicArchivingSystem {
 
 export enum Workflow {
   MANUAL = 'MANUAL',
+  MULTI_TRANSACTION = 'MULTI_TRANSACTION',
   FLOW = 'FLOW',
 }
 
 export enum FlowType {
+  NONE = 'NONE',
   FIX = 'FIX',
   RULES = 'RULES',
+}
+
+export enum MessageIdentifierRule {
+  IDENTICAL = 'IDENTICAL',
+  SERIAL_NUMBER = 'SERIAL_NUMBER',
 }
 
 export function getProjectWorkflow(project: Project): Workflow {
@@ -100,6 +111,7 @@ export function getProjectIcon(project: Project): string {
     case Workflow.FLOW:
       return 'vitamui-icon-ic40-flux-industriel';
     case Workflow.MANUAL:
+    case Workflow.MULTI_TRANSACTION:
       return 'vitamui-icon-ic40-flux-manuel';
   }
 }

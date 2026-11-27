@@ -46,6 +46,7 @@ import {
   FlowType,
   InjectorModule,
   LoggerModule,
+  MessageIdentifierRule,
   Project,
   ProjectStatus,
   TenantSelectionService,
@@ -220,7 +221,7 @@ describe('CreateProjectComponent', () => {
       },
     };
 
-    component.selectedWorkflow = Workflow.MANUAL;
+    component.setWorkflow(Workflow.MANUAL);
     component.selectedFlowType = FlowType.FIX;
     component.projectForm().value.update((value) => ({ ...value, ...form }));
 
@@ -251,7 +252,7 @@ describe('CreateProjectComponent', () => {
       automaticIngest: true,
     };
 
-    component.selectedWorkflow = Workflow.FLOW;
+    component.setWorkflow(Workflow.FLOW);
     component.selectedFlowType = FlowType.RULES;
     component.projectForm().value.update((value) => ({ ...value, ...form }));
 
@@ -265,6 +266,48 @@ describe('CreateProjectComponent', () => {
     expect(arg.messageIdentifier).toBe(form.messageIdentifier);
     expect(arg.unitUp).toBeUndefined();
     expect(arg.automaticIngest).toBeTruthy();
+  });
+
+  describe('multi-transactions workflow', () => {
+    it('should have no workflow selected by default', () => {
+      expect(component.selectedWorkflow).toBeFalsy();
+    });
+
+    it('should require the project name but not the context metadata', () => {
+      component.setWorkflow(Workflow.MULTI_TRANSACTION);
+      fixture.detectChanges();
+
+      expect(component.stepProjectNameIsInvalid()).toBe(true);
+      expect(component.projectForm.originatingAgencyIdentifier().invalid()).toBe(false);
+      expect(component.projectForm.archivalAgencyIdentifier().invalid()).toBe(false);
+
+      component.projectForm().value.update((value) => ({ ...value, name: 'My project' }));
+      fixture.detectChanges();
+
+      expect(component.stepProjectNameIsInvalid()).toBe(false);
+    });
+
+    it('should create a project using name, description and messageIdentifierRule instead of messageIdentifier as name', () => {
+      component.setWorkflow(Workflow.MULTI_TRANSACTION);
+      component.setFlowType(FlowType.NONE);
+      component.projectForm().value.update((value) => ({
+        ...value,
+        name: 'My project',
+        description: 'My description',
+        messageIdentifier: 'abcd',
+        messageIdentifierRule: MessageIdentifierRule.IDENTICAL,
+      }));
+
+      component.validateAndCreateProject();
+
+      const arg = vi.mocked(projectsServiceMock.create).mock.lastCall[0] as Project;
+      expect(arg.name).toBe('My project');
+      expect(arg.description).toBe('My description');
+      expect(arg.messageIdentifier).toBe('abcd');
+      expect(arg.messageIdentifierRule).toBe(MessageIdentifierRule.IDENTICAL);
+      expect(arg.unitUp).toBeUndefined();
+      expect(arg.unitUps).toBeUndefined();
+    });
   });
 
   describe('DOM', () => {
