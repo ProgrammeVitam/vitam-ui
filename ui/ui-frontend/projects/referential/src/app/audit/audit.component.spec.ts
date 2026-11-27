@@ -102,4 +102,17 @@ describe('AuditComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('shouldDisplayChainAuditActionAsMatMenuItem', async () => {
+    const trigger: HTMLButtonElement = fixture.nativeElement.querySelector('vitamui-menu-button button[aria-label="more menu"]');
+    trigger.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const chainAuditButton = Array.from(document.querySelectorAll<HTMLButtonElement>('.mat-mdc-menu-panel button')).find((button) =>
+      button.textContent?.includes('START_CHAIN_AUDIT'),
+    );
+    expect(chainAuditButton).toBeTruthy();
+    expect(chainAuditButton?.classList).toContain('mat-mdc-menu-item');
+  });
 });
