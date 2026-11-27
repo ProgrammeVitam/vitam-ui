@@ -1,127 +1,128 @@
 package fr.gouv.vitamui.commons.utils;
 
-import fr.opensagres.xdocreport.document.images.FileImageProvider;
+import freemarker.core.InvalidReferenceException;
+import freemarker.core.ParseException;
+import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
+import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 
-@Disabled //Tests sur des fonctionnalités non utilisées de vitamui + erreur librairie interne "fr.opensagres.xdocreport"
-// => tests + fonctionnalités à supprimer?
-public class PdfFileGeneratorTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-    public static final String GENERATED_PDF_NAME = "generated-pdf.pdf";
+class PdfFileGeneratorTest {
 
-    private static final String TEST_DIRECTORY = "src/test/resources/";
+    @Test
+    void shouldRenderUtf8ValuesListsAndEscapeHtml() throws Exception {
+        String template =
+            """
+            <html><body><h1>${title}</h1>
+            [#list values as value]<p>${value}</p>[/#list]
+            <p>${optional!"Absent"}</p></body></html>
+            """;
+        byte[] pdf = render(
+            template,
+            Map.of("title", "Relevé de valeur probante", "values", List.of("été & archives", "<b>texte</b>"))
+        );
 
-    private static final String TMP_DIRECTORY = "/tmp/dlab/test/PdfFileGeneratorTest/";
-
-    @BeforeAll
-    public static void setUp() throws IOException {
-        if (!new File(TMP_DIRECTORY).exists()) {
-            Files.createDirectories(Path.of(TMP_DIRECTORY));
+        try (PDDocument document = Loader.loadPDF(pdf)) {
+            String text = new PDFTextStripper().getText(document);
+            assertEquals(1, document.getNumberOfPages());
+            assertTrue(text.contains("Relevé de valeur probante"));
+            assertTrue(text.contains("été & archives"));
+            assertTrue(text.contains("<b>texte</b>"));
+            assertTrue(text.contains("Absent"));
+            assertEquals("openhtmltopdf.com", document.getDocumentInformation().getProducer());
         }
     }
 
     @Test
-    void testCreatePdfWithDynamicInfo() throws Exception {
-        // The template contains "${data},${dynamic.field}"
-        try (
-            final InputStream templateInput = new FileInputStream(
-                new File(TEST_DIRECTORY + "template-dynamic-info.odt")
-            );
-            final FileOutputStream pdfOutput = new FileOutputStream(new File(TMP_DIRECTORY + GENERATED_PDF_NAME))
-        ) {
-            final Map<String, Object> dataMap = new HashMap<>();
-            final String[] dynamicFields = { "dynamic.field" };
-            dataMap.put("data", "value1");
-            dataMap.put("dynamic.field", "value2");
-
-            PdfFileGenerator.createPdfWithDynamicInfo(templateInput, pdfOutput, dataMap, dynamicFields);
-        }
-
-        try (final PDDocument document = PDDocument.load(new File(TMP_DIRECTORY + GENERATED_PDF_NAME))) {
-            final String content = new PDFTextStripper().getText(document);
-            final String[] results = content.split(",");
-            Assertions.assertEquals("value1", results[0].trim());
-            Assertions.assertEquals("value2", results[1].trim());
+    void shouldPaginateWithoutLosingContent() throws Exception {
+        String template =
+            """
+            <html><body>[#list 1..100 as index]
+            <p>Vérification ${index}</p>[/#list]</body></html>
+            """;
+        try (PDDocument document = Loader.loadPDF(render(template, Map.of()))) {
+            assertTrue(document.getNumberOfPages() > 1);
+            String text = new PDFTextStripper().getText(document);
+            for (int index = 1; index <= 100; index++) {
+                assertTrue(text.contains("Vérification " + index + "\n"));
+            }
         }
     }
 
     @Test
-    void testCreatePdfWithMetadata() throws Exception {
-        // The template contains "${data},${dynamic.field},${imageField}"
-        try (
-            final InputStream templateInput = new FileInputStream(new File(TEST_DIRECTORY + "template-metadata.odt"));
-            final FileOutputStream pdfOutput = new FileOutputStream(new File(TMP_DIRECTORY + GENERATED_PDF_NAME))
-        ) {
-            final Map<String, Object> dataMap = new HashMap<>();
-            final String[] dynamicFields = { "dynamic.field" };
-            final String[] imageFields = { "imageField" };
-            dataMap.put("data", "value1");
-            dataMap.put("dynamic.field", "value2");
-            dataMap.put("imageField", "value3");
+    void shouldRejectMissingRequiredValue() {
+        assertThrows(InvalidReferenceException.class, () -> render("<html><body>${required}</body></html>", Map.of()));
+    }
 
-            PdfFileGenerator.createPdfWithMetadata(templateInput, pdfOutput, dataMap, dynamicFields, imageFields);
-        }
+    @Test
+    void shouldRejectInvalidTemplate() {
+        assertThrows(ParseException.class, () -> render("<html><body>[#list values as value]</body></html>", Map.of()));
+    }
 
-        try (final PDDocument document = PDDocument.load(new File(TMP_DIRECTORY + GENERATED_PDF_NAME))) {
-            final String content = new PDFTextStripper().getText(document);
-            final String[] results = content.split(",");
-            Assertions.assertEquals("value1", results[0].trim());
-            Assertions.assertEquals("value2", results[1].trim());
-            Assertions.assertEquals("value3", results[2].trim());
+    @Test
+    void shouldNotResolveExternalResources(@TempDir Path directory) throws Exception {
+        Path image = directory.resolve("image.png");
+        Files.write(
+            image,
+            Base64.getDecoder()
+                .decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=")
+        );
+        String template =
+            """
+            <html><head><link rel="stylesheet" href="https://example.invalid/style.css" /></head>
+            <body><p>Rapport autonome</p><img src="%s" /></body></html>
+            """.formatted(image.toUri());
+        try (PDDocument document = Loader.loadPDF(render(template, Map.of()))) {
+            assertTrue(new PDFTextStripper().getText(document).contains("Rapport autonome"));
+            assertFalse(document.getPage(0).getResources().getXObjectNames().iterator().hasNext());
         }
     }
 
     @Test
-    void testCreatePdfWithMetadataAndHtml() throws Exception {
-        // The template contains "${data},${dynamic.field},${imageField},${htmlField}"
+    void shouldLeaveCallerStreamsOpen() throws Exception {
+        boolean[] closed = { false, false };
+        var input = new ByteArrayInputStream("<html><body>Rapport</body></html>".getBytes(StandardCharsets.UTF_8)) {
+            @Override
+            public void close() {
+                closed[0] = true;
+            }
+        };
+        var output = new ByteArrayOutputStream() {
+            @Override
+            public void close() {
+                closed[1] = true;
+            }
+        };
+
+        PdfFileGenerator.createPdf(input, output, Map.of());
+
+        assertFalse(closed[0]);
+        assertFalse(closed[1]);
+        assertTrue(output.size() > 0);
+    }
+
+    private byte[] render(String template, Map<String, Object> data) throws Exception {
         try (
-            final InputStream templateInput = new FileInputStream(
-                new File(TEST_DIRECTORY + "template-metadata-html.odt")
-            );
-            final FileOutputStream pdfOutput = new FileOutputStream(new File(TMP_DIRECTORY + GENERATED_PDF_NAME))
+            var input = new ByteArrayInputStream(template.getBytes(StandardCharsets.UTF_8));
+            var output = new ByteArrayOutputStream()
         ) {
-            final Map<String, Object> dataMap = new HashMap<>();
-            final String[] dynamicFields = { "dynamic.field" };
-            final String[] imageFields = { "imageField" };
-            final String[] htmlFields = { "htmlField" };
-            dataMap.put("data", "data");
-            dataMap.put("dynamic.field", "dynamic field");
-            dataMap.put("imageField", new FileImageProvider(Path.of(TEST_DIRECTORY, "image.png").toFile()));
-
-            dataMap.put("htmlField", "<span><i>html</i> field</span>");
-
-            PdfFileGenerator.createPdfWithMetadataAndHtml(
-                templateInput,
-                pdfOutput,
-                dataMap,
-                dynamicFields,
-                imageFields,
-                htmlFields
-            );
-        }
-
-        try (final PDDocument document = PDDocument.load(new File(TMP_DIRECTORY + GENERATED_PDF_NAME))) {
-            final String content = new PDFTextStripper().getText(document);
-            final String[] results = content.split(",");
-            Assertions.assertEquals("data", results[0].trim());
-            Assertions.assertEquals("dynamic field", results[1].trim());
-            Assertions.assertEquals("", results[2].trim());
-            Assertions.assertEquals("html field", results[3].trim());
+            PdfFileGenerator.createPdf(input, output, data);
+            return output.toByteArray();
         }
     }
 }
