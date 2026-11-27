@@ -65,6 +65,7 @@ public class ProjectConverter {
             .lastModifyOn(projectDto.getLastUpdate())
             .status(projectDto.getStatus())
             .name(projectDto.getName())
+            .description(projectDto.getDescription())
             .automaticIngest(projectDto.getAutomaticIngest())
             .transformationRules(projectDto.getTransformationRules())
             .archivingSystemId(projectDto.getArchivingSystemId())
@@ -112,6 +113,7 @@ public class ProjectConverter {
         externalDto.setCreationDate(collectProjectDto.getCreatedOn());
         externalDto.setLastUpdate(collectProjectDto.getLastModifyOn());
         externalDto.setName(collectProjectDto.getName());
+        externalDto.setDescription(collectProjectDto.getDescription());
         externalDto.setAutomaticIngest(collectProjectDto.getAutomaticIngest());
         externalDto.setTransformationRules(collectProjectDto.getTransformationRules());
         externalDto.setArchivingSystemId(collectProjectDto.getArchivingSystemId());

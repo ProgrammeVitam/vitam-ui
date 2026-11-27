@@ -680,7 +680,9 @@ export class ProjectPreviewComponent implements OnChanges, OnInit, AfterViewInit
       id: this.project().id,
       createdOn: this.project().createdOn,
       status: this.project().status,
-      name: this.form.messageIdentifier().value(),
+      // Keep the project's own name as-is: for multi-transactions projects it is distinct from messageIdentifier,
+      // so it must not be overwritten with the (possibly just edited) messageIdentifier value.
+      name: this.project().name,
       archivingSystemId: this.project().archivingSystemId,
       archivingSystemTenant: this.project().archivingSystemTenant,
       connectedToArchivingSystem: this.project().connectedToArchivingSystem,

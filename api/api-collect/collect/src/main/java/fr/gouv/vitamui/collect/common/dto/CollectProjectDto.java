@@ -65,6 +65,7 @@ public class CollectProjectDto extends IdDto {
     private String transformationRules;
 
     private String name;
+    private String description;
     private String archivalAgreement;
     private String messageIdentifier;
     private String archivalAgencyIdentifier;

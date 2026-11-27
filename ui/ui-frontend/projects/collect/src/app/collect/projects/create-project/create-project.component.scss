@@ -14,3 +14,26 @@ vitamui-common-accordion ::ng-deep {
 .vitamui-button-toggle-group {
   align-self: flex-start;
 }
+
+mat-radio-group.gap-4 mat-radio-button {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+  border: 1px solid var(--vitamui-grey-400);
+  border-radius: 4px;
+}
+
+.info-message {
+  margin-bottom: 1rem;
+}
+
+.info-banner {
+  padding: 10px 20px;
+  border-radius: 10px;
+  background-color: var(--vitamui-grey-50);
+
+  .vitamui-icon {
+    color: var(--vitamui-grey);
+  }
+}
