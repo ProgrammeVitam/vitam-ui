@@ -43,7 +43,9 @@ import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaSort;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
@@ -67,6 +69,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -164,6 +167,29 @@ class TransactionArchiveUnitCommonServiceTest {
         // THEN
         assertNotNull(archiveUnitsDto);
         assertThat(archiveUnitsDto.getResults().size()).isGreaterThan(0);
+    }
+
+    @Test
+    void shouldNotThrowWhenSearchingWithWaitingToRecalculateCriterionAlone()
+        throws VitamClientException, InvalidParseOperationException, InvalidCreateOperationException, IOException {
+        // GIVEN: the "waiting to recalculate" filter used alone, with facets computation enabled.
+        when(collectService.searchUnitsByTransactionId(any(), any(), any())).thenReturn(
+            buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_UNIT_WITH_OBJECT)
+        );
+        SearchCriteriaEltDto waitingToRecalculateCriteria = new SearchCriteriaEltDto()
+            .setCriteria(ArchiveSearchConsts.WAITING_RECALCULATE)
+            .setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS)
+            .setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name())
+            .setValues(List.of(new CriteriaValue().setValue("true")))
+            .setDataType(ArchiveSearchConsts.CriteriaDataType.STRING.name());
+        SearchCriteriaDto searchQuery = new SearchCriteriaDto();
+        searchQuery.setCriteriaList(List.of(waitingToRecalculateCriteria));
+        searchQuery.setComputeMgtRulesFacets(true);
+
+        // WHEN / THEN: used to throw an UnsupportedOperationException (immutable criterion values list).
+        assertDoesNotThrow(
+            () -> transactionArchiveUnitService.searchArchiveUnitsByCriteria(TRANSACTION_ID, searchQuery, vitamContext)
+        );
     }
 
     @Test
