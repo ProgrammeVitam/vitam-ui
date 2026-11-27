@@ -31,7 +31,15 @@
     SSLProxyEngine on
     # Client CA path
     SSLProxyCACertificatePath /etc/{{ apache_service }}/ca/{{ vitamui_site_name }}
-    # Don't check the CN of the server's certificate
+{% if vitamui_proxy_ssl_verify | default(true) | bool %}
+    # Verify the backend certificate chain against the deployment CA
+    # (applies to every HTTPS backend of this vhost: CAS server and UIs with secure: true)
+    SSLProxyCACertificateFile /etc/{{ apache_service }}/ca/{{ vitamui_site_name }}-bundle.crt
+    SSLProxyVerify require
+    SSLProxyVerifyDepth 3
+    SSLProxyCheckPeerExpire on
+{% endif %}
+    # Don't check the CN of the server's certificate (backends are addressed by IP)
     SSLProxyCheckPeerCN off
     # Don't check the hostname of the server
     SSLProxyCheckPeerName off
