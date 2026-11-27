@@ -21,32 +21,39 @@
   when: mongo_authent_enabled.rc != 0
   tags: update_mongodb_configuration
 
-# Activate security on mongo instances
+# Enforce client authentication on mongo instances (keyfile is already set by the mongo role)
 - name: Activate security on mongod instances
-  blockinfile:
+  lineinfile:
     dest: "{{ mongod_config_path }}/mongod.conf"
-    insertafter: EOF
-    block: |
-      security:
-        authorization: enabled
-        clusterAuthMode: keyFile
-        keyFile: "{{ mongod_config_path }}/keyfile"
+    regexp: '^\s*transitionToAuth:'
+    line: "  authorization: enabled"
+    backrefs: yes
   tags: update_mongodb_configuration
 
-# Restart the mongo instances (to enable auth)
-- name: Restart vitamui-mongod service
-  service:
-    name: vitamui-mongod
-    enabled: "{{ mongodb.at_boot | default(service_at_boot) }}"
-    state: restarted
+# Secondaries first, primary last: a single election during the rolling restart.
+- name: Look for the replica set primary
+  command: >-
+    mongosh --host {{ hostvars[item]['ip_service'] }} --port {{ mongodb.mongod_port }}
+    --quiet --eval 'print(db.hello().isWritablePrimary === true)'
   delegate_to: "{{ item }}"
-  with_items: "{{ groups['hosts_vitamui_mongod'] }}"
+  loop: "{{ groups['hosts_vitamui_mongod'] }}"
+  register: mongod_hello
+  failed_when: false
+  changed_when: false
+  run_once: true
   tags: update_mongodb_configuration
 
-# Make sure the service is open (mongod listening on 27017)
-- name: "Wait for the service port {{ mongodb.mongod_port }} to be open"
-  wait_for:
-    host: "{{ ip_service }}"
-    port: "{{ mongodb.mongod_port }}"
-    timeout: "{{ vitamui_defaults.services.start_timeout }}"
+# Restart the mongo instances (to enable auth), one member at a time
+- name: Restart vitamui-mongod service, one replica set member at a time
+  include_tasks:
+    file: restart_member.yml
+    # apply: propagate the tag to the included tasks
+    apply:
+      tags: update_mongodb_configuration
+  vars:
+    mongod_primary_members: "{{ mongod_hello.results | selectattr('stdout', 'defined') | selectattr('stdout', 'equalto', 'true') | map(attribute='item') | list }}"
+  loop: "{{ groups['hosts_vitamui_mongod'] | reject('in', mongod_primary_members) | list + mongod_primary_members }}"
+  loop_control:
+    loop_var: mongod_member
+  run_once: true
   tags: update_mongodb_configuration

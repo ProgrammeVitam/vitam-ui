@@ -43,8 +43,10 @@ replication:
   replSetName: shard{{ mongo_shard_id | default(0) }} # name of the replica set
   enableMajorityReadConcern: true
 
-sharding:
-  clusterRole: shardsvr # role du shard
-
-# During (re)initialization, authentication is temporarily disabled to ensure replica-set & user creation/update.
-# Authentication will be (re)enabled during mongo_configure role execution
+# During (re)initialization, client authentication is not enforced (transitionToAuth) to ensure replica-set & user creation/update.
+# Members still authenticate each other with the keyfile, so they can run side by side with fully secured members during a rolling restart.
+# Client authentication will be (re)enforced during mongo_configure role execution
+security:
+  keyFile: {{ mongo_config_path }}/keyfile
+  clusterAuthMode: keyFile
+  transitionToAuth: true
