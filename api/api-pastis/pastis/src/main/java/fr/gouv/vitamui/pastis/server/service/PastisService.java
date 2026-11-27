@@ -425,10 +425,9 @@ public class PastisService {
 
         try {
             if (fileName != null) {
-                String fileExtension = fileName.split("\\.")[1];
-                String profileName = fileName.split("\\.(?=[^\\.]+$)")[0];
-                profileResponse.setType(fileExtension.equals("rng") ? ProfileType.PA : ProfileType.PUA);
-                profileResponse.setName(profileName);
+                int dotIndex = fileName.lastIndexOf('.');
+                String fileExtension = dotIndex >= 0 ? fileName.substring(dotIndex + 1) : "";
+                profileResponse.setType(fileExtension.equalsIgnoreCase("rng") ? ProfileType.PA : ProfileType.PUA);
             }
             InputStream fileInputStream = file.getInputStream();
             InputSource inputSource = new InputSource(file.getInputStream());

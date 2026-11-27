@@ -71,6 +71,7 @@ public class SanityChecker {
     private static final long DEFAULT_LIMIT_FILE_SIZE = 8000000000L;
 
     public static final String HTTP_PARAMETER_VALUE = "HTTPParameterValue";
+    public static final String FILE_NAME = "FileName";
 
     private static final int REQUEST_LIMIT = 10000;
     private static final String INVALID_IDENTIFIER_SANITIZE = "Invalid identifier";
@@ -141,6 +142,20 @@ public class SanityChecker {
      */
     public static void isValidFileName(String fileName) throws PreconditionFailedException {
         if (StringUtils.HTML_PATTERN.matcher(fileName).find() || isStringInfected(fileName, HTTP_PARAMETER_VALUE)) {
+            throw new PreconditionFailedException("The fileName is not valid", "The fileName is not valid");
+        }
+    }
+
+    /**
+     * Sanitize the fileName of a local file uploaded for editing (e.g. a Pastis archive profile opened from the
+     * user's machine). Unlike {@link #isValidFileName(String)}, this accepts accented letters and a broader set of
+     * punctuation found in real-world desktop file names. It must not be used for file names forwarded to Vitam
+     * (rules, formats, agencies, profiles import, ...), which enforce their own, stricter naming rules.
+     *
+     * @param fileName : name of a file
+     */
+    public static void isValidProfileFileName(String fileName) throws PreconditionFailedException {
+        if (StringUtils.HTML_PATTERN.matcher(fileName).find() || isStringInfected(fileName, FILE_NAME)) {
             throw new PreconditionFailedException("The fileName is not valid", "The fileName is not valid");
         }
     }

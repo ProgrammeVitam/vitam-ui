@@ -159,7 +159,7 @@ class PastisController {
     ResponseEntity<ProfileResponse> loadProfileFromFile(@RequestParam MultipartFile file)
         throws NoSuchAlgorithmException, TechnicalException, PreconditionFailedException {
         String fileName = file.getOriginalFilename();
-        SanityChecker.isValidFileName(fileName);
+        SanityChecker.isValidProfileFileName(fileName);
         ProfileResponse profileResponse = profileService.loadProfileFromFile(file, fileName, false);
         if (profileResponse != null) {
             return ResponseEntity.ok(profileResponse);
